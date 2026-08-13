@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+    color: #0B1711;
+    background-color: #FAF8F5;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6, .font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F3ECE0;
+}
+::-webkit-scrollbar-thumb {
+  background: #2E543D;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #1D3B2A;
+}
+
+/* Glassmorphism Navigation */
+.glass-nav {
+  background: rgba(250, 248, 245, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(229, 223, 213, 0.6);
+}
+
+.glass-nav-scrolled {
+  background: rgba(22, 46, 33, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(197, 160, 89, 0.25);
+  color: #FAF8F5;
+}
+
+/* Custom Image Overlay Gradients */
+.editorial-overlay {
+  background: linear-gradient(180deg, rgba(11, 23, 17, 0.2) 0%, rgba(11, 23, 17, 0.75) 100%);
+}
+
+.editorial-card-gradient {
+  background: linear-gradient(180deg, rgba(22, 46, 33, 0) 40%, rgba(11, 23, 17, 0.92) 100%);
+}
+
+/* Reduced Motion Fallbacks */
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
