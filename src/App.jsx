@@ -22,12 +22,12 @@ import NotFound from './pages/NotFound';
 function AppContent() {
   const [bookingOpen, setBookingOpen] = useState(false);
   const location = useLocation();
-  const isAdmin = location.pathname.startsWith('/admin');
+  const isAdmin = location.pathname.startsWith('/admin') || location.pathname.startsWith('/login');
 
   return (
     <div className="min-h-screen bg-cream-50 font-sans text-earth-900 selection:bg-brass-500 selection:text-forest-950 flex flex-col justify-between">
       
-      {/* Navigation Bar across public pages (hidden on /admin) */}
+      {/* Navigation Bar across public pages (hidden on /admin and /login) */}
       {!isAdmin && <Navbar onOpenBooking={() => setBookingOpen(true)} />}
 
 
@@ -58,9 +58,12 @@ function AppContent() {
           <Route path="/book-appointment" element={<BookAppointment />} />
           <Route path="/book-appointment." element={<Navigate to="/book-appointment" replace />} />
 
-          {/* Clinic Admin Dashboard */}
+          {/* Clinic Admin Dashboard & Login Routes */}
           <Route path="/admin" element={<Admin />} />
           <Route path="/admin." element={<Navigate to="/admin" replace />} />
+          <Route path="/admin/login" element={<Navigate to="/admin" replace />} />
+          <Route path="/login" element={<Admin />} />
+          <Route path="/login." element={<Navigate to="/admin" replace />} />
           
           <Route path="*" element={<NotFound />} />
         </Routes>
