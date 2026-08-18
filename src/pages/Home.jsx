@@ -123,9 +123,9 @@ export default function Home({ onOpenBooking }) {
             <div className="bg-white rounded-2xl border border-earth-200 shadow-elevated overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
               <div className="h-52 overflow-hidden relative">
                 <img 
-                  src={clinicData.images.herbs} 
-                  alt="Classical Formulations" 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                  src={clinicData.images.formulations} 
+                  alt="Classical Ayurvedic Formulations" 
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                 />
                 <div className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm text-forest-900 flex items-center justify-center shadow-md border border-earth-200/50">
                   <ShieldCheck className="w-5 h-5 text-forest-800" />
