@@ -44,6 +44,7 @@ export const clinicData = {
     consultation: "/images/consultation.png",
     formulations: "/images/classical_formulations.png",
     trust: "/images/trust_ayurveda.png",
+    nadiPariksha: "/images/nadi_pariksha.png",
     herbs: "/images/hero_adobe_1.jpg",
     clinic: "/images/hero_adobe_4.jpg",
     shirodhara: "/images/shirodhara.jpg",
@@ -62,17 +63,17 @@ export const clinicData = {
     },
     {
       id: 2,
-      image: "/images/hero_adobe_4.jpg",
-      tagline: "AYURVEDIC SANCTUARY",
-      title: "A Golden & Serene Environment for Mind & Body Healing",
-      badge: "Wellness Sanctuary"
+      image: "/images/hero_adobe_1.jpg",
+      tagline: "AUTHENTIC AYURVEDA",
+      title: "Nadi Pariksha & Root-Cause Consultations by Dr. Anand Krishna",
+      badge: "Pulse Diagnosis"
     },
     {
       id: 3,
-      image: "/images/hero_adobe_1.jpg",
-      tagline: "BOTANICAL PREPARATION",
-      title: "Authentic Herbal Grinding with Traditional Stone Mortar",
-      badge: "Herbal Remedies"
+      image: "/images/hero_adobe_4.jpg",
+      tagline: "AYURVEDIC CLINIC & PHARMACY",
+      title: "Modern Clinical Comfort Rooted in Vedic Healing Traditions",
+      badge: "26+ Years Experience"
     },
     {
       id: 4,
@@ -139,7 +140,8 @@ export const clinicData = {
       number: "01",
       title: "Nadi Pariksha (Pulse Diagnosis)",
       subtitle: "Ancient Diagnostic Art",
-      description: "An intricate Ayurvedic pulse evaluation to assess your unique Prakriti, detect hidden imbalances, and identify early root causes of discomfort.",
+      image: "/images/nadi_pariksha.png",
+      description: "An intricate Ayurvedic pulse evaluation assessing Vata, Pitta, and Kapha to detect hidden imbalances and identify early root causes of discomfort.",
       benefits: ["Accurate Dosha assessment", "Early imbalance detection", "Personalized health roadmap"],
       duration: "30 - 45 Minutes"
     },
@@ -148,6 +150,7 @@ export const clinicData = {
       number: "02",
       title: "Panchakarma Detox Therapies",
       subtitle: "Cellular Rejuvenation",
+      image: "/images/shirodhara.jpg",
       description: "Five traditional bio-purification procedures designed to flush accumulated Ama (toxins) from cellular tissues and revive bodily channels.",
       benefits: ["Deep tissue detoxification", "Boosted metabolic Agni", "Restored digestive strength"],
       duration: "7 to 21 Days Program"
@@ -157,6 +160,7 @@ export const clinicData = {
       number: "03",
       title: "Joint & Spine Pain Care",
       subtitle: "Targeted Rheumatic Relief",
+      image: "/images/hero_adobe_5.jpg",
       description: "Specialized herbal oil bastis, Kati Vasti, and internal Ayurvedic medications for lumbar spondylosis, knee arthritis, and chronic stiffness.",
       benefits: ["Relieves joint inflammation", "Enhances spinal flexibility", "Natural cartilage support"],
       duration: "45 - 60 Minutes per Session"
@@ -166,6 +170,7 @@ export const clinicData = {
       number: "04",
       title: "Digestive & Metabolic Wellness",
       subtitle: "Restoring Agni",
+      image: "/images/hero_adobe_2.jpg",
       description: "Natural, non-invasive protocols for Acidity, IBS, Fatty Liver, Gastritis, and sluggish metabolism through herbomineral digestive blends.",
       benefits: ["Normalizes bowel function", "Eliminates bloating & reflux", "Improves nutrient absorption"],
       duration: "Customized Regimen"
@@ -175,6 +180,7 @@ export const clinicData = {
       number: "05",
       title: "Shirodhara & Mind Relaxation",
       subtitle: "Nervous System Calm",
+      image: "/images/hero_adobe_4.jpg",
       description: "Continuous warm herbal oil flow over the forehead marma points to alleviate anxiety, chronic stress, insomnia, and migraines.",
       benefits: ["Deep mental relaxation", "Sound sleep quality", "Calms hyperactive nervous system"],
       duration: "45 Minutes per Session"
@@ -184,6 +190,7 @@ export const clinicData = {
       number: "06",
       title: "Skin & Hair Therapy",
       subtitle: "Internal Pure Radiance",
+      image: "/images/hero_adobe_1.jpg",
       description: "Ayurvedic blood purification therapies and botanical oils targeting Eczema, Psoriasis, Acne, premature graying, and hair loss.",
       benefits: ["Purifies Rakta (blood)", "Soothes skin allergies", "Promotes dense hair growth"],
       duration: "Custom Consultation"

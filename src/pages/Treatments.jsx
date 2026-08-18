@@ -54,47 +54,69 @@ export default function Treatments({ onOpenBooking }) {
             {treatmentsList.map((item) => (
               <div
                 key={item.id}
-                className="bg-white p-8 rounded-2xl border border-earth-200 shadow-elevated flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 group"
+                className="bg-white rounded-2xl border border-earth-200 shadow-elevated overflow-hidden flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 group"
               >
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <span className="text-xs font-semibold text-brass-600 uppercase tracking-widest">
-                      {item.subtitle}
-                    </span>
-                    <span className="text-xs font-bold font-mono text-gray-400">
-                      {item.number}
-                    </span>
+                {item.image && (
+                  <div className="h-52 overflow-hidden relative">
+                    <img 
+                      src={item.image} 
+                      alt={item.title} 
+                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-sm text-brass-400 text-[10px] font-mono font-bold uppercase tracking-wider border border-brass-400/30 shadow-md">
+                      {item.number} • THERAPY
+                    </div>
+                  </div>
+                )}
+
+                <div className="p-8 space-y-4 flex-1 flex flex-col justify-between">
+                  <div className="space-y-4">
+                    {!item.image && (
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-semibold text-brass-600 uppercase tracking-widest">
+                          {item.subtitle}
+                        </span>
+                        <span className="text-xs font-bold font-mono text-gray-400">
+                          {item.number}
+                        </span>
+                      </div>
+                    )}
+                    {item.image && (
+                      <span className="text-xs font-semibold text-brass-600 uppercase tracking-widest block">
+                        {item.subtitle}
+                      </span>
+                    )}
+
+                    <h3 className="font-serif text-2xl text-forest-950 font-light group-hover:text-forest-800 transition-colors">
+                      {item.title}
+                    </h3>
+
+                    <p className="text-xs text-earth-800 leading-relaxed font-light">
+                      {item.description}
+                    </p>
+
+                    {item.benefits && item.benefits.length > 0 && (
+                      <ul className="space-y-1.5 pt-2 border-t border-earth-100 text-[11px] text-earth-800">
+                        {item.benefits.map((b, idx) => (
+                          <li key={idx} className="flex items-center gap-1.5">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                            <span>{b}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
 
-                  <h3 className="font-serif text-2xl text-forest-950 font-light group-hover:text-forest-800 transition-colors">
-                    {item.title}
-                  </h3>
-
-                  <p className="text-xs text-earth-800 leading-relaxed font-light">
-                    {item.description}
-                  </p>
-
-                  {item.benefits && item.benefits.length > 0 && (
-                    <ul className="space-y-1.5 pt-2 border-t border-earth-100 text-[11px] text-earth-800">
-                      {item.benefits.map((b, idx) => (
-                        <li key={idx} className="flex items-center gap-1.5">
-                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-                          <span>{b}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                </div>
-
-                <div className="pt-6 mt-6 border-t border-earth-200 flex items-center justify-between">
-                  <span className="text-[11px] text-gray-500 font-medium">{item.duration}</span>
-                  
-                  <button
-                    onClick={onOpenBooking}
-                    className="px-4 py-2 bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-bold uppercase tracking-wider rounded-full shadow-soft transition-all"
-                  >
-                    Book
-                  </button>
+                  <div className="pt-6 mt-6 border-t border-earth-200 flex items-center justify-between">
+                    <span className="text-[11px] text-gray-500 font-medium">{item.duration}</span>
+                    
+                    <button
+                      onClick={onOpenBooking}
+                      className="px-4 py-2 bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-bold uppercase tracking-wider rounded-full shadow-soft transition-all"
+                    >
+                      Book
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
