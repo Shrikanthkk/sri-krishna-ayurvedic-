@@ -43,6 +43,7 @@ export const clinicData = {
     doctor: "/images/doctor.jpg",
     consultation: "/images/consultation.png",
     formulations: "/images/classical_formulations.png",
+    trust: "/images/trust_ayurveda.png",
     herbs: "/images/hero_adobe_1.jpg",
     clinic: "/images/hero_adobe_4.jpg",
     shirodhara: "/images/shirodhara.jpg",
