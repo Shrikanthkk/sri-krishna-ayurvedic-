@@ -38,11 +38,11 @@ const defaultAppointments = [
     name: 'Praveen Venkatesh',
     phone: '+91 97312 45678',
     email: 'praveen.v@outlook.com',
-    treatment: 'Swarnamrutha Prashana',
+    treatment: 'Swarnaprashana Pediatric Care',
     date: '2026-08-18',
     timeSlot: '11:00 AM',
     status: 'Completed',
-    notes: 'Child immunity monthly gold drop session.',
+    notes: 'Child traditional gold drop wellness session.',
     submittedAt: '2026-08-11 05:20 PM'
   }
 ];

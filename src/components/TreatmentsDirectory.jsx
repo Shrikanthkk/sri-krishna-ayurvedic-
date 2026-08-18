@@ -27,7 +27,8 @@ export default function TreatmentsDirectory({ onOpenBooking }) {
     { id: 15, name: "Ayurvedic Hair & Scalp Care", category: "Wellness", desc: "Shiroabhyanga and herbal oils for hair fall & scalp nourishment." },
     { id: 16, name: "Stress & Insomnia Protocol", category: "Wellness", desc: "Herbal nervine tonics & Shirodhara for anxiety and deep sleep restoration." },
     { id: 17, name: "Rasayana Rejuvenation Care", category: "Wellness", desc: "Anti-aging cellular nourishment and immune boosting therapies." },
-    { id: 18, name: "Metabolic & Diabetes Care", category: "Internal Care", desc: "Herbomineral formulations for sugar management and metabolic strength." }
+    { id: 18, name: "Metabolic & Diabetes Care", category: "Internal Care", desc: "Herbomineral formulations for sugar management and metabolic strength." },
+    { id: 19, name: "Swarnaprashana (Pediatric Gold Drops)", category: "Ayurveda", desc: "Classical Kashyapa Samhita pediatric gold electuary for cognitive and vitality support.", popular: true }
   ];
 
   const categories = ["All", "Ayurveda", "Pain Care", "Wellness", "Internal Care"];

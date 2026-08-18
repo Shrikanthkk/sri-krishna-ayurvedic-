@@ -150,26 +150,26 @@ export default function Treatments({ onOpenBooking }) {
             </div>
           </div>
 
-          {/* Card 2: Swarnamrutha Prashana */}
+          {/* Card 2: Swarnaprashana */}
           <div className="p-8 bg-cream-100 text-forest-950 rounded-3xl space-y-4 flex flex-col justify-between border border-earth-200 shadow-elevated">
             <div className="space-y-2">
               <span className="px-3 py-1 bg-brass-500/20 text-brass-700 text-[10px] font-bold uppercase tracking-widest rounded-full border border-brass-500/30 inline-block">
-                PEDIATRIC IMMUNITY
+                PEDIATRIC AYURVEDA
               </span>
               <h3 className="font-serif text-2xl font-light text-forest-950">
-                Swarnamrutha Prashana (Gold Drop Immunity)
+                Swarnaprashana (Ayurvedic Pediatric Care)
               </h3>
               <p className="text-xs text-earth-800 leading-relaxed font-light">
-                Monthly traditional gold bio-purified liquid drops administered to infants and children for memory, digestion, and seasonal defense.
+                Traditional Ayurvedic gold-based formulation (*Kashyapa Samhita*) supportive of childhood vitality, cognitive nurturing, and metabolic harmony.
               </p>
             </div>
 
             <div className="pt-4 border-t border-earth-200 flex items-center justify-between">
               <Link
-                to="/treatments/swarnamrutha"
+                to="/treatments/swarnaprashana"
                 className="text-xs font-bold text-forest-900 hover:text-emerald-700 uppercase tracking-wider flex items-center gap-1"
               >
-                <span>Read Full Swarnamrutha Details</span>
+                <span>Read Full Swarnaprashana Details</span>
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>

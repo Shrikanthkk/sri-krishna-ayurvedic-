@@ -175,7 +175,7 @@ export default function BookAppointment() {
                       <option key={t.id} value={t.title}>{t.title}</option>
                     ))}
                     <option value="Integrative Cancer Consultation">Integrative Cancer Supportive Consultation</option>
-                    <option value="Swarnamrutha Prashana">Swarnamrutha Prashana (Pediatric Immunity)</option>
+                    <option value="Swarnaprashana Pediatric Care">Swarnaprashana (Ayurvedic Pediatric Care)</option>
                     <option value="General Consultation">General Ayurvedic Consultation</option>
                   </select>
                 </div>

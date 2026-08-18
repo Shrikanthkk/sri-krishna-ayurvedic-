@@ -319,15 +319,15 @@ export default function Home({ onOpenBooking }) {
             </div>
 
             <div className="lg:col-span-4 bg-forest-900 p-8 rounded-3xl border border-forest-800 space-y-4">
-              <h3 className="font-serif text-2xl text-cream-50 font-light">Swarnamrutha Prashana</h3>
+              <h3 className="font-serif text-2xl text-cream-50 font-light">Swarnaprashana</h3>
               <p className="text-xs text-cream-200/80 font-light leading-relaxed">
-                Classical pediatric gold-infused botanical drops to support children's immunity, memory, and digestion.
+                Traditional Ayurvedic pediatric gold formulation (*Kashyapa Samhita*) supportive of cognitive focus (*Medha*) and vitality.
               </p>
               <Link
-                to="/treatments/swarnamrutha"
+                to="/treatments/swarnaprashana"
                 className="inline-block text-xs font-bold text-brass-400 hover:text-white uppercase tracking-wider"
               >
-                View Swarnamrutha Care →
+                View Swarnaprashana Details →
               </Link>
             </div>
 

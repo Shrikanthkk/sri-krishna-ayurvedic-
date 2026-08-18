@@ -11,6 +11,7 @@ import Home from './pages/Home';
 import About from './pages/About';
 import Treatments from './pages/Treatments';
 import CancerCare from './pages/CancerCare';
+import Swarnaprashana from './pages/Swarnaprashana';
 import Swarnamrutha from './pages/Swarnamrutha';
 import Gallery from './pages/Gallery';
 import Testimonials from './pages/Testimonials';
@@ -47,7 +48,8 @@ function AppContent() {
           <Route path="/treatments" element={<Treatments onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments." element={<Navigate to="/treatments" replace />} />
           <Route path="/treatments/cancer-care" element={<CancerCare />} />
-          <Route path="/treatments/swarnamrutha" element={<Swarnamrutha />} />
+          <Route path="/treatments/swarnaprashana" element={<Swarnaprashana onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/swarnamrutha" element={<Swarnaprashana onOpenBooking={() => setBookingOpen(true)} />} />
           
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/gallery." element={<Navigate to="/gallery" replace />} />

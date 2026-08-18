@@ -82,8 +82,8 @@ export default function Footer({ onOpenBooking }) {
                 </Link>
               </li>
               <li>
-                <Link to="/treatments/swarnamrutha" className="hover:text-brass-300 transition-colors flex items-center gap-1 font-medium text-cream-100">
-                  <span>Swarnamrutha Prashana</span>
+                <Link to="/treatments/swarnaprashana" className="hover:text-brass-300 transition-colors flex items-center gap-1 font-medium text-cream-100">
+                  <span>Swarnaprashana Care</span>
                   <ArrowUpRight className="w-3 h-3 text-brass-400" />
                 </Link>
               </li>

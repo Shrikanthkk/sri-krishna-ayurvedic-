@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Search, MapPin, Zap, Stethoscope, ChevronDown, X, Sparkles } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
@@ -8,6 +9,7 @@ export default function SearchBar({ onOpenBooking }) {
   const [locationQuery, setLocationQuery] = useState('KR Puram, Bangalore');
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const searchRef = useRef(null);
+  const navigate = useNavigate();
 
   // Close dropdown on click outside
   useEffect(() => {
@@ -23,8 +25,8 @@ export default function SearchBar({ onOpenBooking }) {
   const popularSearches = [
     { title: "Nadi Pariksha", sectionId: "treatments" },
     { title: "Panchakarma Detox", sectionId: "treatments" },
-    { title: "Swarnamrutha Prashana", sectionId: "swarnamrutha" },
-    { title: "Integrative Cancer Care", sectionId: "cancer" }
+    { title: "Swarnaprashana (Suvarnaprashana)", path: "/treatments/swarnaprashana" },
+    { title: "Integrative Cancer Care", path: "/treatments/cancer-care" }
   ];
 
   const commonSpecialities = [
@@ -33,7 +35,8 @@ export default function SearchBar({ onOpenBooking }) {
     { title: "Panchakarma Detox Therapist", type: "SPECIALITY", sectionId: "treatments" },
     { title: "Spine & Joint Care Specialist", type: "SPECIALITY", sectionId: "treatments" },
     { title: "Digestive & IBS Specialist", type: "SPECIALITY", sectionId: "treatments" },
-    { title: "Pediatric Swarnamrutha Specialist", type: "SPECIALITY", sectionId: "swarnamrutha" },
+    { title: "Pediatric Swarnaprashana (Suvarnaprashana)", type: "SPECIALITY", path: "/treatments/swarnaprashana" },
+    { title: "Swarna Prashana Gold Drops", type: "SPECIALITY", path: "/treatments/swarnaprashana" },
     { title: "Stress & Shirodhara Therapist", type: "SPECIALITY", sectionId: "treatments" }
   ];
 
@@ -44,6 +47,11 @@ export default function SearchBar({ onOpenBooking }) {
   const handleSelectSearch = (item) => {
     setSearchQuery(item.title);
     setDropdownOpen(false);
+
+    if (item.path) {
+      navigate(item.path);
+      return;
+    }
 
     if (item.sectionId) {
       const targetEl = document.getElementById(item.sectionId);

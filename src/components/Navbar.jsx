@@ -31,7 +31,7 @@ export default function Navbar({ onOpenBooking }) {
   const subLinks = [
     { name: 'ALL TREATMENTS', path: '/treatments' },
     { name: 'CANCER CARE', path: '/treatments/cancer-care' },
-    { name: 'SWARNAMRUTHA', path: '/treatments/swarnamrutha' }
+    { name: 'SWARNAPRASHANA', path: '/treatments/swarnaprashana' }
   ];
 
   const isPathActive = (link) => {

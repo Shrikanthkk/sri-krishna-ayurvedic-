@@ -68,11 +68,11 @@ export default function Gallery() {
     },
     {
       id: 7,
-      title: "Swarnamrutha Prashana Pediatric Immunity Care",
+      title: "Swarnaprashana Ayurvedic Pediatric Care",
       category: "consultation",
-      tag: "Child Immunity & Growth",
+      tag: "Child Wellness & Vitality",
       src: "/images/hero_stock_2.jpg",
-      description: "Gold-infused botanical drops administered monthly to children for enhanced memory, digestion, and seasonal immunity."
+      description: "Classical Kashyapa Samhita gold-based pediatric formulation administered under physician guidance for cognitive and vitality support."
     },
     {
       id: 8,
