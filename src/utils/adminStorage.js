@@ -242,7 +242,17 @@ export function getStoredTreatments() {
       localStorage.setItem(TREATMENTS_KEY, JSON.stringify(clinicData.treatments));
       return clinicData.treatments;
     }
-    return JSON.parse(stored);
+    const parsed = JSON.parse(stored);
+    const merged = parsed.map(item => {
+      const defaultItem = clinicData.treatments.find(t => t.id === item.id);
+      return {
+        ...defaultItem,
+        ...item,
+        image: item.image || defaultItem?.image || (item.id === 'nadi-pariksha' ? '/images/nadi_pariksha.png' : undefined)
+      };
+    });
+    localStorage.setItem(TREATMENTS_KEY, JSON.stringify(merged));
+    return merged;
   } catch (err) {
     console.error('Error reading stored treatments:', err);
     return clinicData.treatments;
