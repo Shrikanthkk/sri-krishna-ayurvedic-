@@ -61,17 +61,27 @@ export default function Home({ onOpenBooking }) {
               </div>
             </div>
 
-            <div className="lg:col-span-6">
-              <div className="rounded-2xl overflow-hidden shadow-elevated border border-earth-200 aspect-[16/10] relative group">
-                <img
-                  src={clinicData.images.shirodhara}
-                  alt="Sri Krishna Ayurvedic Clinic Therapy Room"
+            <div className="lg:col-span-6 relative">
+              {/* Subtle Ambient Backing Frame & Glow */}
+              <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-tr from-brass-400/20 via-forest-800/10 to-transparent rounded-[2.5rem] transform rotate-1 pointer-events-none -z-10" />
+
+              <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-earth-200 aspect-[16/10] relative group bg-forest-950">
+                <video
+                  autoPlay
+                  loop
+                  muted
+                  playsInline
                   className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 editorial-overlay flex items-end p-6">
+                  poster="/images/shirodhara.jpg"
+                >
+                  <source src="/videos/meditation_chakras.mp4" type="video/mp4" />
+                  <source src="/meditation_chakras.mp4" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+                <div className="absolute inset-0 bg-gradient-to-t from-forest-950/85 via-forest-950/20 to-transparent flex items-end p-6 pointer-events-none">
                   <div className="text-cream-50">
-                    <p className="font-serif text-lg">Sri Krishna Ayurvedic Clinic</p>
-                    <p className="text-xs text-brass-400">KR Puram, Bangalore</p>
+                    <p className="font-serif text-lg font-medium text-cream-50 drop-shadow">Sri Krishna Ayurvedic Clinic</p>
+                    <p className="text-xs text-brass-400 font-medium">Vedic Healing & Vitality • KR Puram, Bangalore</p>
                   </div>
                 </div>
               </div>
