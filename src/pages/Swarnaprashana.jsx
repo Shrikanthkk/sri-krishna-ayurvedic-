@@ -185,61 +185,14 @@ export default function Swarnaprashana({ onOpenBooking }) {
           </div>
         </section>
 
-        {/* SECTION 3: WHO IS IT FOR? */}
-        <section className="py-16 border-t border-earth-200 mb-20">
-          <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
-            <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
-              03 • INDIVIDUAL ASSESSMENT
-            </span>
-            <h2 className="text-3xl sm:text-4xl font-serif font-light text-forest-950">
-              Who Is Swarnaprashana For?
-            </h2>
-            <p className="text-earth-800 text-base font-light leading-relaxed">
-              While the practice is traditionally referenced for infants and children up to 16 years of age, suitability is not one-size-fits-all.
-            </p>
-          </div>
-
-          <div className="p-8 sm:p-10 bg-white rounded-3xl border border-earth-200 shadow-elevated space-y-6 max-w-4xl mx-auto">
-            <div className="flex items-start gap-4">
-              <div className="w-11 h-11 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center shrink-0 mt-1">
-                <ShieldCheck className="w-6 h-6 text-forest-800" />
-              </div>
-              <div className="space-y-3">
-                <h3 className="font-serif text-2xl text-forest-950 font-medium">
-                  Physician-Led Individualization
-                </h3>
-                <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed">
-                  <strong>Suitability, formulation, dosage, and frequency should be determined by a qualified Ayurvedic practitioner based on the child's age, health, constitution (*Prakriti*), and individual needs.</strong>
-                </p>
-              </div>
-            </div>
-
-            <div className="pt-4 border-t border-earth-100 grid grid-cols-1 md:grid-cols-2 gap-6 text-xs text-earth-800">
-              <div className="space-y-2 bg-cream-50 p-4 rounded-xl">
-                <strong className="text-forest-950 text-sm font-serif block">When It Is Considered:</strong>
-                <p className="font-light leading-relaxed">
-                  For healthy infants and children under professional medical supervision as part of a traditional wellness and lifestyle regimen.
-                </p>
-              </div>
-
-              <div className="space-y-2 bg-amber-500/10 p-4 rounded-xl border border-amber-500/20">
-                <strong className="text-amber-950 text-sm font-serif block">Temporary Contraindications:</strong>
-                <p className="font-light leading-relaxed text-amber-900">
-                  Administration is traditionally postponed during active fever (*Jwara*), acute digestive distress (*Ama*), diarrhea, severe coughs, or active acute infections until evaluated.
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* SECTION 4: HOW IT IS TRADITIONALLY ADMINISTERED */}
+        {/* SECTION 3: HOW IT IS TRADITIONALLY ADMINISTERED */}
         <section className="py-16 border-t border-earth-200 mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             <div className="lg:col-span-6 space-y-6">
               <div className="space-y-2">
                 <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
-                  04 • PROTOCOL & TRADITION
+                  03 • PROTOCOL & TRADITION
                 </span>
                 <h2 className="text-3xl sm:text-4xl font-serif font-light text-forest-950">
                   How It Is Traditionally Administered
@@ -315,11 +268,11 @@ export default function Swarnaprashana({ onOpenBooking }) {
           </div>
         </section>
 
-        {/* SECTION 5: POTENTIAL TRADITIONAL BENEFITS (RESPONSIBLE CARD GRID) */}
+        {/* SECTION 4: POTENTIAL TRADITIONAL BENEFITS (RESPONSIBLE CARD GRID) */}
         <section className="py-16 border-t border-earth-200 mb-20">
           <div className="text-center max-w-3xl mx-auto space-y-3 mb-12">
             <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
-              05 • CLASSICAL THEMES
+              04 • CLASSICAL THEMES
             </span>
             <h2 className="text-3xl sm:text-4xl font-serif font-light text-forest-950">
               Potential Traditional Benefits
