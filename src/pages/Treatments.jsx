@@ -40,7 +40,7 @@ export default function Treatments({ onOpenBooking }) {
             Ayurvedic Consultation & Therapeutic Care
           </h2>
           <p className="text-earth-800 text-sm font-light leading-relaxed">
-            Every clinical procedure at Sri Krishna Ayurvedic Clinic begins with evaluating your unique body constitution (*Prakriti*) and Dosha balance. Dr. Anand Krishna (BAMS) prescribes authentic herbal formulations, tailored Panchakarma therapies, and dietary guidelines.
+            Every procedure begins with evaluating your constitution (*Prakriti*) and Dosha balance. Dr. Anand Krishna (BAMS) prescribes authentic herbal formulations, tailored Panchakarma therapies, and dietary guidelines.
           </p>
         </div>
 

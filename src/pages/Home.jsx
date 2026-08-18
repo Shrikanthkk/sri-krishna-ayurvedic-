@@ -40,15 +40,14 @@ export default function Home({ onOpenBooking }) {
               </div>
 
               <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed">
-                For over 26 years, Dr. Anand Krishna (BAMS) has provided compassionate, transparent Ayurvedic consultations in KR Puram. Our practice focuses on understanding root causes through ancient pulse diagnosis, classical Panchakarma detox, and tailored herbal regimens.
+                For over 26 years, Dr. Anand Krishna (BAMS) has provided authentic Ayurvedic care in KR Puram, specializing in pulse diagnosis (Nadi Pariksha), classical Panchakarma detox, and tailored herbal wellness.
               </p>
 
               <div className="grid grid-cols-2 gap-4 pt-2">
                 <div className="p-4 bg-cream-100/80 rounded-xl border border-earth-200">
                   <span className="block font-serif text-2xl text-forest-900 font-medium">26+ Years</span>
-                  <span className="text-xs text-earth-700 font-light">Clinical Experience</span>
+                  <span className="text-xs text-earth-700 font-light">Clinical Practice</span>
                 </div>
-
               </div>
 
               <div className="pt-2">
@@ -56,7 +55,7 @@ export default function Home({ onOpenBooking }) {
                   to="/about"
                   className="inline-flex items-center gap-2 px-7 py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-semibold uppercase tracking-wider rounded-full transition-all shadow-elevated"
                 >
-                  <span>Learn More About Our Doctor & Clinic</span>
+                  <span>About Doctor & Clinic</span>
                   <ArrowRight className="w-4 h-4 text-brass-400" />
                 </Link>
               </div>
@@ -94,7 +93,7 @@ export default function Home({ onOpenBooking }) {
               Patient-Centric Care
             </h2>
             <p className="text-earth-800 text-base font-light leading-relaxed">
-              Ayurveda views health not merely as the absence of illness, but as a dynamic equilibrium between physical constitution (Prakriti), digestive capacity (Agni), and mental wellbeing. At Sri Krishna Ayurvedic Clinic, every consultation begins with evaluating your unique body composition and lifestyle factors.
+              Ayurveda restores dynamic balance between your constitution (Prakriti), digestive fire (Agni), and mental wellbeing through personalized evaluation and natural therapies.
             </p>
           </div>
 
@@ -114,7 +113,7 @@ export default function Home({ onOpenBooking }) {
                 <div>
                   <h3 className="font-serif text-xl font-medium text-forest-950 mb-2">Personalised Consultations</h3>
                   <p className="text-xs text-earth-800 leading-relaxed font-light">
-                    No two individuals share identical constitutions. Consultations are structured around your unique Nadi evaluation, daily routine, and health history.
+                    Consultations structured around your unique Nadi evaluation, daily lifestyle, and complete medical history.
                   </p>
                 </div>
               </div>
@@ -135,7 +134,7 @@ export default function Home({ onOpenBooking }) {
                 <div>
                   <h3 className="font-serif text-xl font-medium text-forest-950 mb-2">Classical Formulations</h3>
                   <p className="text-xs text-earth-800 leading-relaxed font-light">
-                    We utilize authentic Ayurvedic herbs and classical preparations prepared according to traditional textual guidelines.
+                    Authentic Ayurvedic herbs and classical preparations crafted according to traditional textual standards.
                   </p>
                 </div>
               </div>
@@ -156,7 +155,7 @@ export default function Home({ onOpenBooking }) {
                 <div>
                   <h3 className="font-serif text-xl font-medium text-forest-950 mb-2">26+ Years Trust</h3>
                   <p className="text-xs text-earth-800 leading-relaxed font-light">
-                    Guided directly by Dr. Anand Krishna (BAMS), providing compassionate and transparent clinical care in KR Puram.
+                    Guided directly by Dr. Anand Krishna (BAMS), delivering trusted, transparent clinical care in KR Puram.
                   </p>
                 </div>
               </div>
@@ -178,7 +177,7 @@ export default function Home({ onOpenBooking }) {
               Our Core Healing Principles
             </h2>
             <p className="text-earth-800 text-base font-light leading-relaxed">
-              Four guiding principles that shape every diagnosis, treatment plan, and patient recommendation at our clinic.
+              Four guiding principles that shape every diagnosis, treatment plan, and recommendation at our clinic.
             </p>
           </div>
 
@@ -292,7 +291,7 @@ export default function Home({ onOpenBooking }) {
                 Integrative Cancer Care & Supportive Consultation
               </h2>
               <p className="text-cream-200/80 text-base font-light leading-relaxed">
-                We provide personalized Ayurvedic consultation and traditional wellness care for individuals seeking supportive approaches alongside primary oncological treatment.
+                Personalized Ayurvedic consultation and supportive wellness care for individuals seeking natural adjunct support alongside primary oncology treatment.
               </p>
 
               <div className="p-4 bg-forest-900/80 border-l-4 border-brass-500 rounded-r-xl text-xs text-cream-200">
@@ -304,7 +303,7 @@ export default function Home({ onOpenBooking }) {
                   to="/treatments/cancer-care"
                   className="px-7 py-3.5 bg-brass-500 hover:bg-brass-400 text-forest-950 font-semibold text-xs uppercase tracking-wider rounded-full shadow-soft transition-all"
                 >
-                  Learn About Cancer Approach →
+                  Cancer Care Approach →
                 </Link>
               </div>
             </div>
@@ -312,7 +311,7 @@ export default function Home({ onOpenBooking }) {
             <div className="lg:col-span-4 bg-forest-900 p-8 rounded-3xl border border-forest-800 space-y-4">
               <h3 className="font-serif text-2xl text-cream-50 font-light">Swarnamrutha Prashana</h3>
               <p className="text-xs text-cream-200/80 font-light leading-relaxed">
-                Pediatric gold-infused botanical liquid drops for children's memory, digestion, and seasonal immunity.
+                Classical pediatric gold-infused botanical drops to support children's immunity, memory, and digestion.
               </p>
               <Link
                 to="/treatments/swarnamrutha"

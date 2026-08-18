@@ -60,10 +60,10 @@ export default function About() {
                 Traditional Ayurveda. Root-Cause Healing. Accessible Healthcare.
               </h2>
               <p className="text-earth-800 text-base leading-relaxed font-light">
-                Established as a trusted center for authentic Ayurvedic healthcare in Krishnarajapuram (KR Puram), Bangalore, <strong>Sri Krishna Ayurvedic Clinic</strong> is committed to restoring wellness through classical diagnostic methods, time-honored botanical remedies, and personalized care regimens.
+                Located in Krishnarajapuram (KR Puram), Bangalore, <strong>Sri Krishna Ayurvedic Clinic</strong> provides authentic Ayurvedic healthcare through classical pulse diagnosis, time-tested herbal formulations, and personalized therapeutic regimens.
               </p>
               <p className="text-earth-800 text-base leading-relaxed font-light">
-                Our medical approach is founded on the timeless principles of classical Ayurveda. Rather than suppressing superficial symptoms, we evaluate your unique physical constitution (*Prakriti*), digestive capacity (*Agni*), and internal balance to formulate targeted, sustainable healing paths.
+                Rather than treating superficial symptoms, we evaluate your individual constitution (*Prakriti*), digestive vitality (*Agni*), and Dosha balance to establish sustainable root-cause recovery.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
@@ -108,7 +108,7 @@ export default function About() {
               Meet Our Doctor: Dr. Anand Krishna (BAMS)
             </h2>
             <p className="text-earth-800 text-base font-light">
-              Consult directly with senior Ayurvedic physician Dr. Anand Krishna, bringing over two decades of dedicated clinical expertise to every patient.
+              Senior Ayurvedic Physician Dr. Anand Krishna brings over 26 years of dedicated clinical practice to patient care in KR Puram.
             </p>
           </div>
 

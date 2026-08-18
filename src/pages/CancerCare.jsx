@@ -50,10 +50,10 @@ export default function CancerCare() {
               Understanding Our Supportive Ayurvedic Approach
             </h2>
             <p className="text-earth-800 text-base font-light leading-relaxed">
-              At Sri Krishna Ayurvedic Clinic in KR Puram, Bangalore, Dr. Anand Krishna (BAMS) provides personalized consultations for individuals seeking traditional Ayurvedic supportive care alongside primary oncological therapies.
+              Dr. Anand Krishna (BAMS) provides personalized Ayurvedic consultations for individuals seeking traditional supportive wellness care alongside primary oncological therapies in KR Puram.
             </p>
             <p className="text-earth-800 text-base font-light leading-relaxed">
-              Cancer and conventional oncology treatments can place significant physical and emotional stress on the body. Our supportive consultations evaluate individual tissue vitality (*Ojas*), digestive appetite (*Agni*), and internal balance to assist in maintaining quality of life.
+              Oncology treatments place substantial physical stress on the body. Our supportive consultations evaluate tissue vitality (*Ojas*) and digestive strength (*Agni*) to support quality of life.
             </p>
 
             <div className="space-y-3 pt-2">

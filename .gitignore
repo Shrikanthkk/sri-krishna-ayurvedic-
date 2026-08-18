@@ -33,3 +33,6 @@ logs/
 .cache/
 .parcel-cache/
 .vite/
+
+.vercel
+.env*

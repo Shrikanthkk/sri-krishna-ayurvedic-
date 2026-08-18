@@ -1,275 +1,274 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
+import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Calendar, ArrowDownRight, Sparkles, MapPin, Award, ChevronLeft, ChevronRight, Leaf, ShieldAlert, HeartHandshake } from 'lucide-react';
+import { Calendar, ArrowRight, Sparkles, ChevronLeft, ChevronRight, Leaf, HeartHandshake, ShieldCheck, Award } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
 
 export default function Hero({ onOpenBooking }) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [touchStartX, setTouchStartX] = useState(null);
   const slides = clinicData.heroSlides || [];
 
-  // Auto-advance slide every 4.5 seconds unless hovered
+  const nextSlide = useCallback(() => {
+    if (slides.length <= 1) return;
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
+
+  const prevSlide = useCallback(() => {
+    if (slides.length <= 1) return;
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
+
+  // Auto-advance slides every 5.5s unless hovered
   useEffect(() => {
     if (isPaused || slides.length <= 1) return;
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % slides.length);
-    }, 4500);
+    const interval = setInterval(nextSlide, 5500);
     return () => clearInterval(interval);
-  }, [isPaused, slides.length]);
+  }, [isPaused, nextSlide, slides.length]);
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowLeft') prevSlide();
+      if (e.key === 'ArrowRight') nextSlide();
+    };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [prevSlide, nextSlide]);
+
+  const handleTouchStart = (e) => {
+    setTouchStartX(e.touches[0].clientX);
   };
 
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  const handleTouchEnd = (e) => {
+    if (touchStartX === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
+    const diff = touchStartX - touchEndX;
+    if (diff > 50) nextSlide();
+    if (diff < -50) prevSlide();
+    setTouchStartX(null);
   };
 
-  const activeSlideData = slides[currentSlide] || slides[0];
+  const activeSlide = slides[currentSlide] || slides[0];
 
   return (
-    <section id="hero" className="relative min-h-screen flex flex-col justify-center pt-8 pb-16 overflow-hidden bg-cream-50">
-      {/* Decorative Subtle Background Elements */}
-      <div className="absolute top-0 right-0 w-1/3 h-full bg-cream-100/60 -z-10 rounded-l-[140px] hidden lg:block" />
-      <div className="absolute top-1/4 left-10 w-80 h-80 bg-forest-100/40 rounded-full filter blur-3xl -z-10" />
+    <section 
+      id="hero" 
+      className="relative min-h-[calc(100vh-4rem)] flex flex-col justify-center py-12 lg:py-16 overflow-hidden bg-gradient-to-b from-cream-50 via-cream-100/40 to-cream-50"
+      onMouseEnter={() => setIsPaused(true)}
+      onMouseLeave={() => setIsPaused(false)}
+      onTouchStart={handleTouchStart}
+      onTouchEnd={handleTouchEnd}
+    >
+      {/* Soft Ambient Organic Shapes & Subtle Glow */}
+      <div className="absolute top-1/4 -left-20 w-96 h-96 bg-forest-100/40 rounded-full filter blur-3xl pointer-events-none -z-10" />
+      <div className="absolute top-10 right-0 w-1/3 h-full bg-cream-100/70 rounded-l-[120px] pointer-events-none -z-10 hidden lg:block" />
+      <div className="absolute bottom-10 right-10 w-80 h-80 bg-brass-100/30 rounded-full filter blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-10 items-center">
           
-          {/* Left Editorial Content Focused on Integrative Ayurvedic Cancer Care */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 space-y-7"
-          >
-            {/* Prominent Small Highlight Label */}
-            <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-forest-900 text-brass-400 border border-forest-800 text-xs font-semibold uppercase tracking-widest shadow-md">
+          {/* LEFT SIDE: Concise, Authoritative & Inviting Copy */}
+          <div className="lg:col-span-6 space-y-6 sm:space-y-7 text-left">
+            
+            {/* Small Eyebrow Badge */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-forest-900/90 text-brass-400 border border-forest-800/80 text-xs font-semibold uppercase tracking-wider shadow-sm"
+            >
               <Sparkles className="w-3.5 h-3.5 text-brass-400" />
-              <span>AYURVEDIC • KR PURAM</span>
+              <span>TRADITIONAL AYURVEDA • MODERN CARE</span>
+            </motion.div>
+
+            {/* Main Headline & Supporting Text Animated with Crossfade */}
+            <div className="min-h-[160px] sm:min-h-[170px] flex flex-col justify-center">
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={currentSlide}
+                  initial={{ opacity: 0, y: 14 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -14 }}
+                  transition={{ duration: 0.45, ease: 'easeOut' }}
+                  className="space-y-3"
+                >
+                  <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-light text-forest-950 leading-[1.12] tracking-tight">
+                    {activeSlide.title}
+                  </h1>
+                  
+                  <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed max-w-xl">
+                    {activeSlide.description}
+                  </p>
+                </motion.div>
+              </AnimatePresence>
             </div>
 
-            {/* Main Headline & Supporting Headline */}
-            <div className="space-y-2">
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-light text-forest-950 leading-[1.08] tracking-tight">
-                Cancer Care Through the Wisdom of Ayurveda
-              </h1>
-              <p className="text-lg sm:text-xl font-serif italic text-brass-700 font-medium">
-                "Traditional Ayurvedic Care. Personalised Guidance. Compassionate Support."
-              </p>
-            </div>
-
-            {/* Introductory Paragraph */}
-            <p className="text-sm sm:text-base text-earth-800 leading-relaxed font-normal">
-              At Sri Krishna Ayurvedic Clinic, we provide personalised Ayurvedic consultation and traditional wellness care for individuals seeking an integrated approach to cancer care. Our focus is on understanding each person's needs and providing thoughtful guidance rooted in Ayurvedic principles.
-            </p>
-
-            {/* Responsible Medical Disclaimer Banner */}
-            <div className="p-3.5 bg-amber-500/10 border-l-4 border-amber-600 rounded-r-xl flex items-start gap-3 text-xs text-earth-900">
-              <ShieldAlert className="w-4 h-4 text-amber-700 shrink-0 mt-0.5" />
-              <p className="leading-normal font-medium">
-                <strong>Medical Notice:</strong> Ayurvedic care should be discussed with qualified healthcare professionals and should not replace medically recommended cancer diagnosis or treatment.
-              </p>
-            </div>
-
-            {/* Primary & Secondary CTAs */}
-            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-1">
+            {/* Primary & Secondary Action CTAs */}
+            <motion.div
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 pt-1"
+            >
               <button
-                onClick={() => onOpenBooking('Integrative Cancer Care Consultation')}
-                className="px-7 py-4 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs tracking-ultra uppercase -skew-x-12 shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 flex items-center justify-center gap-2 group border-0 cursor-pointer"
-                style={{ borderRadius: '2px 6px 2px 6px' }}
+                onClick={() => onOpenBooking('General Ayurvedic Consultation')}
+                className="inline-flex items-center justify-center gap-2.5 px-8 py-4 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer group"
               >
-                <span className="skew-x-12 flex items-center gap-2 whitespace-nowrap">
-                  <Calendar className="w-4 h-4 text-brass-400 group-hover:scale-110 transition-transform" />
-                  <span>BOOK A CANCER CONSULTATION →</span>
-                </span>
+                <Calendar className="w-4 h-4 text-brass-400 group-hover:scale-110 transition-transform" />
+                <span>Book an Appointment</span>
               </button>
 
-              <a
-                href="#cancer"
-                className="px-7 py-4 bg-cream-100 hover:bg-earth-200 text-forest-900 font-semibold text-xs tracking-ultra uppercase -skew-x-12 border border-earth-200 transition-all duration-300 text-center flex items-center justify-center gap-2 group"
-                style={{ borderRadius: '2px 6px 2px 6px' }}
+              <Link
+                to="/treatments"
+                className="inline-flex items-center justify-center gap-2 px-7 py-4 bg-white hover:bg-cream-100 text-forest-950 font-semibold text-xs uppercase tracking-wider rounded-full border border-earth-200 shadow-sm transition-all duration-300 transform hover:-translate-y-0.5"
               >
-                <span className="skew-x-12 flex items-center gap-2 whitespace-nowrap">
-                  <span>LEARN ABOUT OUR APPROACH →</span>
-                  <ArrowDownRight className="w-4 h-4 text-forest-700 group-hover:translate-x-0.5 group-hover:translate-y-0.5 transition-transform" />
-                </span>
-              </a>
-            </div>
+                <span>Explore Treatments</span>
+                <ArrowRight className="w-4 h-4 text-brass-600 transition-transform group-hover:translate-x-1" />
+              </Link>
+            </motion.div>
 
-            {/* Cancer Section Preview Highlight Box */}
-            <div className="p-4 bg-white/90 rounded-2xl border border-earth-200 shadow-sm space-y-2">
-              <div className="flex items-center gap-2 text-xs font-bold text-forest-950 uppercase tracking-wider">
-                <HeartHandshake className="w-4 h-4 text-emerald-600 shrink-0" />
-                <span>Exploring an Ayurvedic approach to cancer care?</span>
-              </div>
-              <p className="text-xs text-earth-800 leading-relaxed">
-                Learn about our consultation process, traditional Ayurvedic practices, and the supportive care approach offered at Sri Krishna Ayurvedic Clinic.
+            {/* Trust Indicator Footnote */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="pt-4 border-t border-earth-200/80 space-y-2"
+            >
+              <p className="text-xs font-medium text-brass-800 tracking-wide flex items-center gap-1.5">
+                <ShieldCheck className="w-4 h-4 text-forest-700 shrink-0" />
+                <span>Trusted Ayurvedic Care • Personalized Treatment • Holistic Wellness</span>
               </p>
-              <a
-                href="#cancer"
-                className="inline-flex items-center gap-1.5 text-xs font-bold text-emerald-700 hover:text-emerald-900 tracking-wider uppercase pt-1"
-              >
-                <span>EXPLORE CANCER CARE →</span>
-              </a>
-            </div>
 
-            {/* Doctor & Clinic Credentials Badges */}
-            <div className="pt-4 border-t border-earth-200 grid grid-cols-2 sm:grid-cols-3 gap-6 text-xs text-forest-900">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-forest-100 flex items-center justify-center text-forest-800 shrink-0">
-                  <Award className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="font-semibold">26+ Years Exp.</p>
-                  <p className="text-[11px] text-earth-600">Dr. Anand Krishna</p>
-                </div>
+              <div className="flex flex-wrap items-center gap-y-1 gap-x-4 text-xs text-earth-700 font-light">
+                <span>👨‍⚕️ <strong>Dr. Anand Krishna</strong> (BAMS, 26+ Yrs Exp.)</span>
+                <span>📍 KR Puram, Bangalore</span>
               </div>
+            </motion.div>
 
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-forest-100 flex items-center justify-center text-forest-800 shrink-0">
-                  <MapPin className="w-4 h-4" />
-                </div>
-                <div>
-                  <p className="font-semibold">KR Puram</p>
-                  <p className="text-[11px] text-earth-600">Bangalore</p>
-                </div>
-              </div>
+          </div>
 
-
-            </div>
-
-          </motion.div>
-
-          {/* Right Interactive Editorial Hero Slider Container */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.9, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-            className="lg:col-span-6 relative"
-            onMouseEnter={() => setIsPaused(true)}
-            onMouseLeave={() => setIsPaused(false)}
-          >
+          {/* RIGHT SIDE: Hero Visual Composition with Floating Information Cards */}
+          <div className="lg:col-span-6 relative">
             <div className="relative mx-auto max-w-lg lg:max-w-none">
               
-              {/* Asymmetrical Floating Backing Frame */}
-              <div className="absolute -inset-4 border border-brass-500/30 rounded-3xl -rotate-2 scale-[0.98] pointer-events-none hidden sm:block" />
+              {/* Soft Organic Backing Glow & Frame */}
+              <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-tr from-brass-400/20 via-forest-800/10 to-transparent rounded-[2.5rem] transform rotate-1 pointer-events-none" />
 
-              {/* Main Image Slider Card */}
-              <div className="relative rounded-2xl overflow-hidden shadow-elevated border border-earth-200 aspect-[4/5] sm:aspect-[16/14] lg:aspect-[4/5] group bg-forest-950">
+              {/* Main Rounded Image Container */}
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-earth-200/90 aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] bg-forest-950 group">
                 
-                {/* Crossfade Images */}
+                {/* Crossfade Image Slides */}
                 <AnimatePresence mode="wait">
                   <motion.div
                     key={currentSlide}
-                    initial={{ opacity: 0, scale: 1.05 }}
-                    animate={{ opacity: 1, scale: 1.02 }}
-                    exit={{ opacity: 0, scale: 1 }}
-                    transition={{ duration: 0.8, ease: 'easeOut' }}
+                    initial={{ opacity: 0, scale: 1.04 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={{ opacity: 0, scale: 0.98 }}
+                    transition={{ duration: 0.65, ease: 'easeOut' }}
                     className="absolute inset-0 w-full h-full"
                   >
                     <img
-                      src={activeSlideData.image}
-                      alt={activeSlideData.title}
-                      className="w-full h-full object-cover"
+                      src={activeSlide.image}
+                      alt={activeSlide.title}
+                      className="w-full h-full object-cover object-center"
                     />
                   </motion.div>
                 </AnimatePresence>
 
-                {/* Editorial Gradient Overlay */}
-                <div className="absolute inset-0 editorial-card-gradient flex flex-col justify-between p-6 sm:p-8 text-cream-50 pointer-events-none">
+                {/* Subtle Editorial Gradient Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-forest-950/80 via-forest-950/20 to-transparent flex flex-col justify-between p-5 sm:p-6 text-cream-50 pointer-events-none">
                   
-                  {/* Top Bar inside image */}
+                  {/* Top Slide Badge */}
                   <div className="flex items-center justify-between z-10">
-                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest-950/70 backdrop-blur-md border border-brass-500/30 text-brass-400 text-[10px] uppercase font-semibold tracking-widest">
+                    <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-md border border-brass-400/30 text-brass-400 text-[11px] font-semibold tracking-wider">
                       <Leaf className="w-3 h-3 text-brass-400" />
-                      <span>{activeSlideData.badge}</span>
+                      <span>{activeSlide.badge}</span>
                     </div>
 
-                    {/* Counter 01 / 03 */}
-                    <div className="px-3 py-1 rounded-full bg-forest-950/70 backdrop-blur-md border border-earth-200/20 text-cream-50 text-[11px] font-serif tracking-widest">
+                    <div className="px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-md border border-white/20 text-cream-50 text-[11px] font-mono tracking-wider">
                       0{currentSlide + 1} / 0{slides.length}
                     </div>
                   </div>
 
-                  {/* Slide Specific Content Caption */}
-                  <div className="space-y-2 z-10 max-w-md">
-                    <AnimatePresence mode="wait">
-                      <motion.div
-                        key={currentSlide}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        exit={{ opacity: 0, y: -10 }}
-                        transition={{ duration: 0.4 }}
-                        className="space-y-1"
-                      >
-                        <span className="text-[10px] font-semibold uppercase tracking-ultra text-brass-400 block">
-                          {activeSlideData.tagline}
-                        </span>
-                        <h3 className="font-serif text-xl sm:text-2xl font-light text-cream-50 leading-snug">
-                          {activeSlideData.title}
-                        </h3>
-                      </motion.div>
-                    </AnimatePresence>
+                  {/* Bottom Caption Pill */}
+                  <div className="z-10">
+                    <p className="text-xs text-cream-200/90 font-light drop-shadow">
+                      {activeSlide.highlight} • Sri Krishna Ayurvedic Clinic
+                    </p>
                   </div>
-
                 </div>
 
-                {/* Left/Right Slider Arrow Controls */}
-                <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none z-20">
+                {/* Minimal Arrow Slider Controls */}
+                <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-3 z-20 pointer-events-none">
                   <button
                     onClick={prevSlide}
-                    className="p-3 rounded-full bg-forest-950/80 hover:bg-brass-500 hover:text-forest-950 text-cream-50 backdrop-blur-md border border-brass-500/30 transition-all transform hover:scale-110 pointer-events-auto shadow-elevated"
-                    aria-label="Previous slide"
+                    className="p-2.5 rounded-full bg-forest-950/70 hover:bg-forest-900 text-cream-50 backdrop-blur-md border border-white/20 transition-all transform hover:scale-105 pointer-events-auto shadow-md"
+                    aria-label="Previous Slide"
                   >
-                    <ChevronLeft className="w-5 h-5" />
+                    <ChevronLeft className="w-4 h-4" />
                   </button>
                   <button
                     onClick={nextSlide}
-                    className="p-3 rounded-full bg-forest-950/80 hover:bg-brass-500 hover:text-forest-950 text-cream-50 backdrop-blur-md border border-brass-500/30 transition-all transform hover:scale-110 pointer-events-auto shadow-elevated"
-                    aria-label="Next slide"
+                    className="p-2.5 rounded-full bg-forest-950/70 hover:bg-forest-900 text-cream-50 backdrop-blur-md border border-white/20 transition-all transform hover:scale-105 pointer-events-auto shadow-md"
+                    aria-label="Next Slide"
                   >
-                    <ChevronRight className="w-5 h-5" />
+                    <ChevronRight className="w-4 h-4" />
                   </button>
-                </div>
-
-                {/* Bottom Slide Dots / Progress Indicators */}
-                <div className="absolute bottom-4 right-6 flex items-center gap-1.5 z-20">
-                  {slides.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={() => setCurrentSlide(idx)}
-                      className={`h-1.5 rounded-full transition-all duration-300 ${
-                        currentSlide === idx
-                          ? 'w-6 bg-brass-400'
-                          : 'w-2 bg-cream-100/40 hover:bg-cream-100/70'
-                      }`}
-                      aria-label={`Go to slide ${idx + 1}`}
-                    />
-                  ))}
                 </div>
 
               </div>
 
-              {/* Floating Highlight Card */}
+              {/* FLOATING CARD 1: Personalized Care (Top Right) */}
               <motion.div
                 animate={{ y: [0, -6, 0] }}
                 transition={{ repeat: Infinity, duration: 4, ease: 'easeInOut' }}
-                className="absolute -bottom-6 -left-6 bg-cream-50/95 backdrop-blur-md p-4 sm:p-5 rounded-2xl border border-earth-200 shadow-elevated max-w-[250px] hidden sm:block z-30"
+                className="absolute -top-5 -right-3 sm:-right-6 bg-white/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-earth-200 shadow-elevated z-30 flex items-center gap-3 max-w-[210px]"
               >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-forest-900 text-brass-400 flex items-center justify-center font-serif text-lg font-bold">
-                    ॐ
-                  </div>
-                  <div>
-                    <p className="text-xs font-semibold text-forest-950 uppercase tracking-wider">Integrative Care</p>
-                    <p className="text-[11px] text-earth-800">Supportive Wellness Journey</p>
-                  </div>
+                <div className="w-9 h-9 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center shrink-0">
+                  <HeartHandshake className="w-5 h-5 text-forest-800" />
+                </div>
+                <div>
+                  <p className="text-xs font-serif font-bold text-forest-950 leading-tight">Personalized Care</p>
+                  <p className="text-[11px] text-earth-700 leading-tight font-light">Tailored to your needs</p>
+                </div>
+              </motion.div>
+
+              {/* FLOATING CARD 2: Holistic Wellness (Bottom Left) */}
+              <motion.div
+                animate={{ y: [0, 6, 0] }}
+                transition={{ repeat: Infinity, duration: 4.5, ease: 'easeInOut', delay: 0.5 }}
+                className="absolute -bottom-5 -left-3 sm:-left-6 bg-white/95 backdrop-blur-md p-3.5 sm:p-4 rounded-2xl border border-earth-200 shadow-elevated z-30 flex items-center gap-3 max-w-[220px]"
+              >
+                <div className="w-9 h-9 rounded-full bg-brass-100 text-brass-900 flex items-center justify-center shrink-0">
+                  <Award className="w-5 h-5 text-brass-700" />
+                </div>
+                <div>
+                  <p className="text-xs font-serif font-bold text-forest-950 leading-tight">Holistic Wellness</p>
+                  <p className="text-[11px] text-earth-700 leading-tight font-light">Mind • Body • Balance</p>
                 </div>
               </motion.div>
 
             </div>
-          </motion.div>
+
+            {/* Slider Dots / Progress Navigation */}
+            <div className="flex items-center justify-center gap-2 pt-8">
+              {slides.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setCurrentSlide(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                    currentSlide === idx
+                      ? 'w-8 bg-forest-900'
+                      : 'w-2.5 bg-earth-300 hover:bg-earth-400'
+                  }`}
+                  aria-label={`Go to slide ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+          </div>
 
         </div>
       </div>

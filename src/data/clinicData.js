@@ -52,42 +52,34 @@ export const clinicData = {
     treatmentRoom: "/images/hero_adobe_5.jpg"
   },
 
-  // Centrally configurable Hero Slider items (Using user's 5 enhanced Adobe Stock images)
+  // Centrally configurable 3-Slide Hero (Focused, concise & impactful)
   heroSlides: [
     {
       id: 1,
-      image: "/images/hero_adobe_3.jpg",
-      tagline: "CLASSICAL APOTHECARY",
-      title: "Handcrafted Ayurvedic Herbal Formulations & Consultations",
-      badge: "Traditional Care"
+      image: "/images/consultation.png",
+      tagline: "TRADITIONAL AYURVEDA • MODERN CARE",
+      title: "Natural Healing. Personalized Care.",
+      description: "Root-cause healing tailored to your Prakriti, guided by Dr. Anand Krishna with 26+ years of clinical experience in KR Puram.",
+      badge: "Personalized Care",
+      highlight: "Pulse Evaluation"
     },
     {
       id: 2,
-      image: "/images/hero_adobe_1.jpg",
-      tagline: "AUTHENTIC AYURVEDA",
-      title: "Nadi Pariksha & Root-Cause Consultations by Dr. Anand Krishna",
-      badge: "Pulse Diagnosis"
+      image: "/images/shirodhara.jpg",
+      tagline: "HOLISTIC BALANCE & WELLNESS",
+      title: "Restore Balance. Renew Your Wellbeing.",
+      description: "Harmonize Vata, Pitta, and Kapha through classical Panchakarma detoxification, soothing Shirodhara, and lifestyle guidance.",
+      badge: "Holistic Wellness",
+      highlight: "Cellular Detox"
     },
     {
       id: 3,
-      image: "/images/hero_adobe_4.jpg",
-      tagline: "AYURVEDIC CLINIC & PHARMACY",
-      title: "Modern Clinical Comfort Rooted in Vedic Healing Traditions",
-      badge: "26+ Years Experience"
-    },
-    {
-      id: 4,
-      image: "/images/hero_adobe_2.jpg",
-      tagline: "HERBAL OILS & ESSENCES",
-      title: "Pure Botanical Decoctions & Medicated Plant Extracts",
-      badge: "Medicated Oils"
-    },
-    {
-      id: 5,
-      image: "/images/hero_adobe_5.jpg",
-      tagline: "PANCHAKARMA COMPRESS",
-      title: "Classical Potali Compress & Medicinal Herb Pouches",
-      badge: "Panchakarma Care"
+      image: "/images/nadi_pariksha.png",
+      tagline: "ANCIENT WISDOM • THOUGHTFUL CARE",
+      title: "Ancient Wisdom. Thoughtful Care.",
+      description: "Classical Nadi Pariksha pulse diagnosis paired with pure botanical formulations crafted for lasting health and vitality.",
+      badge: "Nadi Pariksha",
+      highlight: "Root-Cause Care"
     }
   ],
 
@@ -96,41 +88,41 @@ export const clinicData = {
     title: "Senior Ayurvedic Physician",
     qualifications: "BAMS (Bachelor of Ayurvedic Medicine & Surgery)",
     experienceYears: "26+ Years of Clinical Practice",
-    bio: "With over two decades of dedicated Ayurvedic clinical experience, Dr. Anand Krishna specializes in classic Nadi Pariksha (Pulse Diagnosis), holistic Panchakarma therapies, and sustainable lifestyle restoration. His approach combines traditional classical formulations with deeply personalized patient care.",
+    bio: "With over 26 years of dedicated Ayurvedic practice, Dr. Anand Krishna specializes in classical Nadi Pariksha (Pulse Diagnosis), holistic Panchakarma therapies, and sustainable lifestyle restoration. His approach combines authentic classical formulations with compassionate, personalized patient care.",
     specialties: [
       "Nadi Pariksha (Pulse Diagnosis)",
       "Panchakarma & Detox Therapy",
-      "Chronic Pain & Joint Management",
-      "Digestive & Metabolic Disorders",
+      "Chronic Joint & Spine Pain Care",
+      "Digestive & Metabolic Health",
       "Stress & Lifestyle Wellness"
     ],
-    quote: "True healing is not merely the suppression of symptoms, but restoring the subtle balance between Vata, Pitta, and Kapha within the individual."
+    quote: "True healing restores the natural equilibrium between Vata, Pitta, and Kapha within the individual."
   },
 
   pillars: [
     {
       number: "01",
       title: "Balance",
-      short: "Promoting harmony between body, mind, and spirit through personalized Ayurvedic regimen.",
-      description: "Restoring equilibrium among the three Doshas (Vata, Pitta, Kapha) to establish lasting vitality."
+      short: "Restoring equilibrium among the three Doshas (Vata, Pitta, Kapha) for lasting vitality.",
+      description: "Restoring harmony among Vata, Pitta, and Kapha to support your body's innate healing ability."
     },
     {
       number: "02",
       title: "Personalised Care",
-      short: "An approach tailored specifically to individual Prakriti (body constitution).",
-      description: "No two individuals are alike. Every consultation begins with evaluating your unique constitution."
+      short: "Therapeutic plans tailored specifically to your individual Prakriti (constitution).",
+      description: "Every consultation begins with an evaluation of your unique constitution and daily routine."
     },
     {
       number: "03",
       title: "Natural Wellness",
-      short: "Rooted in authentic herbal formulations and traditional Ayurvedic principles.",
-      description: "Harnessing nature's apothecary to promote internal purification and gentle, sustained rejuvenation."
+      short: "Rooted in authentic herbal formulations and classical Ayurvedic texts.",
+      description: "Using nature's apothecary to promote gentle internal purification and sustained vitality."
     },
     {
       number: "04",
       title: "Holistic Living",
-      short: "Looking beyond symptoms toward long-term lifestyle, diet, and mental wellbeing.",
-      description: "Empowering you with daily Ahara (nutrition) and Vihara (lifestyle) practices tailored for your life."
+      short: "Integrating nutrition (Ahara) and lifestyle (Vihara) for long-term health.",
+      description: "Practical dietary and lifestyle practices tailored to support sustained daily wellbeing."
     }
   ],
 
@@ -141,7 +133,7 @@ export const clinicData = {
       title: "Nadi Pariksha (Pulse Diagnosis)",
       subtitle: "Ancient Diagnostic Art",
       image: "/images/nadi_pariksha.png",
-      description: "An intricate Ayurvedic pulse evaluation assessing Vata, Pitta, and Kapha to detect hidden imbalances and identify early root causes of discomfort.",
+      description: "Traditional pulse evaluation assessing Vata, Pitta, and Kapha to detect root causes of imbalance.",
       benefits: ["Accurate Dosha assessment", "Early imbalance detection", "Personalized health roadmap"],
       duration: "30 - 45 Minutes"
     },
@@ -151,7 +143,7 @@ export const clinicData = {
       title: "Panchakarma Detox Therapies",
       subtitle: "Cellular Rejuvenation",
       image: "/images/shirodhara.jpg",
-      description: "Five traditional bio-purification procedures designed to flush accumulated Ama (toxins) from cellular tissues and revive bodily channels.",
+      description: "Five classical bio-purification procedures to eliminate accumulated toxins and restore vital Agni.",
       benefits: ["Deep tissue detoxification", "Boosted metabolic Agni", "Restored digestive strength"],
       duration: "7 to 21 Days Program"
     },
@@ -161,7 +153,7 @@ export const clinicData = {
       title: "Joint & Spine Pain Care",
       subtitle: "Targeted Rheumatic Relief",
       image: "/images/hero_adobe_5.jpg",
-      description: "Specialized herbal oil bastis, Kati Vasti, and internal Ayurvedic medications for lumbar spondylosis, knee arthritis, and chronic stiffness.",
+      description: "Specialized herbal bastis, Kati Vasti, and botanical regimens for lumbar spondylosis, arthritis, and stiffness.",
       benefits: ["Relieves joint inflammation", "Enhances spinal flexibility", "Natural cartilage support"],
       duration: "45 - 60 Minutes per Session"
     },
@@ -171,7 +163,7 @@ export const clinicData = {
       title: "Digestive & Metabolic Wellness",
       subtitle: "Restoring Agni",
       image: "/images/hero_adobe_2.jpg",
-      description: "Natural, non-invasive protocols for Acidity, IBS, Fatty Liver, Gastritis, and sluggish metabolism through herbomineral digestive blends.",
+      description: "Natural protocols for acidity, IBS, gastritis, and metabolic sluggishness using classical herbal blends.",
       benefits: ["Normalizes bowel function", "Eliminates bloating & reflux", "Improves nutrient absorption"],
       duration: "Customized Regimen"
     },
@@ -181,8 +173,8 @@ export const clinicData = {
       title: "Shirodhara & Mind Relaxation",
       subtitle: "Nervous System Calm",
       image: "/images/hero_adobe_4.jpg",
-      description: "Continuous warm herbal oil flow over the forehead marma points to alleviate anxiety, chronic stress, insomnia, and migraines.",
-      benefits: ["Deep mental relaxation", "Sound sleep quality", "Calms hyperactive nervous system"],
+      description: "Gentle warm herbal oil stream over forehead marma points to relieve anxiety, insomnia, and mental fatigue.",
+      benefits: ["Deep mental relaxation", "Sound sleep quality", "Calms nervous system"],
       duration: "45 Minutes per Session"
     },
     {
@@ -191,8 +183,8 @@ export const clinicData = {
       title: "Skin & Hair Therapy",
       subtitle: "Internal Pure Radiance",
       image: "/images/hero_adobe_1.jpg",
-      description: "Ayurvedic blood purification therapies and botanical oils targeting Eczema, Psoriasis, Acne, premature graying, and hair loss.",
-      benefits: ["Purifies Rakta (blood)", "Soothes skin allergies", "Promotes dense hair growth"],
+      description: "Blood-purifying botanical preparations targeting eczema, psoriasis, acne, and hair thinning.",
+      benefits: ["Purifies Rakta (blood)", "Soothes skin irritation", "Promotes healthy hair growth"],
       duration: "Custom Consultation"
     }
   ],
@@ -201,53 +193,53 @@ export const clinicData = {
     {
       number: "01",
       title: "Authentic Ayurvedic Approach",
-      description: "We strictly adhere to classical Ayurvedic texts, diagnostic techniques, and herbal preparation standards."
+      description: "Strict adherence to classical texts, pulse diagnostic techniques, and herbal standards."
     },
     {
       number: "02",
       title: "26+ Years Experienced Doctor",
-      description: "Consult directly with Dr. Anand Krishna (BAMS), an established physician dedicated to patient-centric healing."
+      description: "Direct consultation with Dr. Anand Krishna (BAMS), senior physician in KR Puram."
     },
     {
       number: "03",
       title: "Root-Cause Focused Healing",
-      description: "Rather than masking superficial symptoms, our therapies aim to correct underlying metabolic and Dosha imbalances."
+      description: "Correcting underlying metabolic and Dosha imbalances rather than masking symptoms."
     },
     {
       number: "04",
       title: "Personalised Patient Care",
-      description: "Every treatment plan, herbal formulation, and diet chart is customized to your unique body type."
+      description: "Customized treatment plans, herbal preparations, and diet charts for your body type."
     },
     {
       number: "05",
-      title: "Transparent & Affordable Care",
-      description: "Clear consultation processes with nominal fees (₹50) ensuring high-quality holistic healthcare is accessible to all."
+      title: "Transparent & Accessible Care",
+      description: "Affordable consultations (₹50) ensuring quality holistic healthcare for every family."
     },
     {
       number: "06",
       title: "Convenient KR Puram Locations",
-      description: "Easily accessible main clinic at 3rd Main (near Lakshmi Hospital) & branch at T.C. Palya Main Road (Opp Kanti Sweets)."
+      description: "Main clinic at 3rd Main (Near Lakshmi Hospital) & branch at T.C. Palya Main Road."
     }
   ],
 
   testimonials: [
     {
       id: 1,
-      quote: "Dr. Anand Krishna's Nadi Pariksha diagnosis was incredibly insightful. Within three weeks of taking his prescribed herbal medicine and dietary changes, my chronic digestive issues cleared up completely.",
+      quote: "Dr. Anand Krishna's Nadi Pariksha diagnosis was remarkably accurate. Within three weeks of following his herbal regimen and diet advice, my chronic digestive issues resolved completely.",
       author: "Ramesh K.",
       locality: "KR Puram, Bangalore",
       treatment: "Digestive Care"
     },
     {
       id: 2,
-      quote: "Very patient doctor who takes time to explain the root cause of back pain. The treatment plan recommended was extremely effective for my severe knee stiffness.",
+      quote: "A compassionate doctor who explains root causes clearly. The Panchakarma treatment plan was exceptionally effective for my chronic knee stiffness.",
       author: "Sunitha N.",
       locality: "T.C. Palya Main Road",
       treatment: "Joint Care"
     },
     {
       id: 3,
-      quote: "Authentic Ayurvedic consultation with genuine care. Nominal fee and very effective traditional treatments. Highly recommended clinic in KR Puram area.",
+      quote: "Authentic Ayurvedic consultation with genuine care. Nominal fee and very effective traditional treatments. Highly recommended clinic in KR Puram.",
       author: "Praveen V.",
       locality: "Ramamurthy Nagar",
       treatment: "General Consultation"
@@ -257,11 +249,11 @@ export const clinicData = {
   faqs: [
     {
       question: "What should I expect during my first Nadi Pariksha consultation?",
-      answer: "During your initial visit, Dr. Anand Krishna gently evaluates your pulse (Nadi) along with physical signs, lifestyle, and medical history. This helps determine your primary Dosha constitution and any internal blockages."
+      answer: "Dr. Anand Krishna evaluates your pulse (Nadi), health history, and daily routine to determine your Dosha constitution and identify underlying imbalances."
     },
     {
       question: "What are the clinic consultation hours?",
-      answer: "The clinic is open Monday through Saturday from 10:00 AM to 7:00 PM. Sunday consultations are available by prior appointment."
+      answer: "Monday through Saturday from 10:00 AM to 7:00 PM. Sunday consultations are available by prior appointment."
     },
     {
       question: "What is the consultation fee?",
@@ -269,7 +261,7 @@ export const clinicData = {
     },
     {
       question: "Where are the clinic locations in KR Puram?",
-      answer: "Main Address: No 426, Near Lakshmi Super Speciality Hospital, 3rd Main, Krishnarajapuram, Bangalore 560036. Branch Address: No. 98, Opp Kanti Sweets, T.C. Palya Main Road, Anandapura, Krishnarajapuram, Bangalore 560036."
+      answer: "Main Clinic: No 426, Near Lakshmi Super Speciality Hospital, 3rd Main, KR Puram, Bangalore 560036. Branch: No. 98, Opp Kanti Sweets, T.C. Palya Main Road, Anandapura, KR Puram, Bangalore 560036."
     }
   ]
 };

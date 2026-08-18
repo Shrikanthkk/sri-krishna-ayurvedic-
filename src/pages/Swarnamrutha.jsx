@@ -39,10 +39,10 @@ export default function Swarnamrutha() {
               What is Swarnamrutha Prashana?
             </h2>
             <p className="text-earth-800 text-base font-light leading-relaxed">
-              Swarnamrutha Prashana (also known as Swarna Bindu Prashana) is an ancient pediatric regimen described in classical Ayurvedic texts such as the *Kashyapa Samhita*.
+              Swarnamrutha Prashana (Swarna Bindu Prashana) is an ancient Ayurvedic pediatric formulation from the classical *Kashyapa Samhita*.
             </p>
             <p className="text-earth-800 text-base font-light leading-relaxed">
-              Administered to children from birth up to 16 years of age, it involves giving micro-doses of purified gold ash (*Swarna Bhasma*) combined with medicated ghee and processed honey. It is traditionally offered to support natural physical resistance, digestive health, and cognitive memory (*Medha*).
+              Administered to children from birth up to 16 years, it combines micro-doses of purified gold ash (*Swarna Bhasma*) with medicated ghee and herbal honey to support natural immunity, digestion, and cognitive memory (*Medha*).
             </p>
 
             <div className="p-4 bg-cream-100 rounded-2xl border border-earth-200 flex items-center gap-4 text-xs text-forest-950">
