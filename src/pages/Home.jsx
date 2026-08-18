@@ -99,34 +99,67 @@ export default function Home({ onOpenBooking }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-2xl border border-earth-200 shadow-elevated space-y-4">
-              <div className="w-12 h-12 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center font-bold">
-                <HeartHandshake className="w-6 h-6 text-forest-800" />
+            <div className="bg-white rounded-2xl border border-earth-200 shadow-elevated overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
+              <div className="h-52 overflow-hidden relative">
+                <img 
+                  src={clinicData.images.consultation} 
+                  alt="Personalised Consultations at Sri Krishna Ayurvedic Clinic" 
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm text-forest-900 flex items-center justify-center shadow-md border border-earth-200/50">
+                  <HeartHandshake className="w-5 h-5 text-forest-800" />
+                </div>
               </div>
-              <h3 className="font-serif text-xl font-medium text-forest-950">Personalised Consultations</h3>
-              <p className="text-xs text-earth-800 leading-relaxed font-light">
-                No two individuals share identical constitutions. Consultations are structured around your unique Nadi evaluation, daily routine, and health history.
-              </p>
+              <div className="p-7 space-y-3 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-serif text-xl font-medium text-forest-950 mb-2">Personalised Consultations</h3>
+                  <p className="text-xs text-earth-800 leading-relaxed font-light">
+                    No two individuals share identical constitutions. Consultations are structured around your unique Nadi evaluation, daily routine, and health history.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-earth-200 shadow-elevated space-y-4">
-              <div className="w-12 h-12 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center font-bold">
-                <ShieldCheck className="w-6 h-6 text-forest-800" />
+            <div className="bg-white rounded-2xl border border-earth-200 shadow-elevated overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
+              <div className="h-52 overflow-hidden relative">
+                <img 
+                  src={clinicData.images.herbs} 
+                  alt="Classical Formulations" 
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm text-forest-900 flex items-center justify-center shadow-md border border-earth-200/50">
+                  <ShieldCheck className="w-5 h-5 text-forest-800" />
+                </div>
               </div>
-              <h3 className="font-serif text-xl font-medium text-forest-950">Classical Formulations</h3>
-              <p className="text-xs text-earth-800 leading-relaxed font-light">
-                We utilize authentic Ayurvedic herbs and classical preparations prepared according to traditional textual guidelines.
-              </p>
+              <div className="p-7 space-y-3 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-serif text-xl font-medium text-forest-950 mb-2">Classical Formulations</h3>
+                  <p className="text-xs text-earth-800 leading-relaxed font-light">
+                    We utilize authentic Ayurvedic herbs and classical preparations prepared according to traditional textual guidelines.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="bg-white p-8 rounded-2xl border border-earth-200 shadow-elevated space-y-4">
-              <div className="w-12 h-12 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center font-bold">
-                <Award className="w-6 h-6 text-forest-800" />
+            <div className="bg-white rounded-2xl border border-earth-200 shadow-elevated overflow-hidden flex flex-col group hover:-translate-y-1 transition-all duration-300">
+              <div className="h-52 overflow-hidden relative">
+                <img 
+                  src={clinicData.images.doctor} 
+                  alt="26+ Years Trust" 
+                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
+                />
+                <div className="absolute top-4 left-4 w-11 h-11 rounded-full bg-white/90 backdrop-blur-sm text-forest-900 flex items-center justify-center shadow-md border border-earth-200/50">
+                  <Award className="w-5 h-5 text-forest-800" />
+                </div>
               </div>
-              <h3 className="font-serif text-xl font-medium text-forest-950">26+ Years Trust</h3>
-              <p className="text-xs text-earth-800 leading-relaxed font-light">
-                Guided directly by Dr. Anand Krishna (BAMS), providing compassionate and transparent clinical care in KR Puram.
-              </p>
+              <div className="p-7 space-y-3 flex-1 flex flex-col justify-between">
+                <div>
+                  <h3 className="font-serif text-xl font-medium text-forest-950 mb-2">26+ Years Trust</h3>
+                  <p className="text-xs text-earth-800 leading-relaxed font-light">
+                    Guided directly by Dr. Anand Krishna (BAMS), providing compassionate and transparent clinical care in KR Puram.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
 
