@@ -146,6 +146,8 @@ export default function Hero({ onOpenBooking }) {
                   className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                   poster="/images/hero_adobe_3.jpg"
                 >
+                  <source src="/videos/Meditating_figure_chakras_glowing_202608181320.mp4" type="video/mp4" />
+                  <source src="/Meditating_figure_chakras_glowing_202608181320.mp4" type="video/mp4" />
                   <source src="/videos/meditation_chakras.mp4" type="video/mp4" />
                   <source src="/meditation_chakras.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
