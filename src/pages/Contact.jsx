@@ -40,28 +40,28 @@ export default function Contact() {
         bgImage="/images/hero_stock_2.jpg"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Breadcrumb items={[{ label: 'Contact Us' }]} />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 mb-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-10">
           
           {/* Left Column: Practical Contact & Location Reference */}
-          <div className="lg:col-span-5 space-y-6">
-            <div className="space-y-3">
+          <div className="lg:col-span-5 space-y-4">
+            <div className="space-y-1.5">
               <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
                 DIRECT CONTACT
               </span>
-              <h2 className="text-3xl sm:text-4xl font-serif font-light text-forest-950">
+              <h2 className="text-2xl sm:text-3xl font-serif font-light text-forest-950">
                 Clinic Details & Support
               </h2>
             </div>
 
-            <div className="space-y-4 text-xs text-earth-800">
+            <div className="space-y-3 text-xs text-earth-800">
               
               {/* Phone Card */}
-              <div className="p-5 bg-white rounded-2xl border border-earth-200 shadow-sm flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5" />
+              <div className="p-4 bg-white rounded-2xl border border-earth-200 shadow-sm flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center shrink-0">
+                  <Phone className="w-4.5 h-4.5" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm text-forest-950">Phone Call</h3>
@@ -73,9 +73,9 @@ export default function Contact() {
               </div>
 
               {/* Email Card */}
-              <div className="p-5 bg-white rounded-2xl border border-earth-200 shadow-sm flex items-start gap-4">
-                <div className="w-10 h-10 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center shrink-0">
-                  <Mail className="w-5 h-5" />
+              <div className="p-4 bg-white rounded-2xl border border-earth-200 shadow-sm flex items-start gap-3.5">
+                <div className="w-9 h-9 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center shrink-0">
+                  <Mail className="w-4.5 h-4.5" />
                 </div>
                 <div>
                   <h3 className="font-semibold text-sm text-forest-950">Email Inquiry</h3>
@@ -87,7 +87,7 @@ export default function Contact() {
               </div>
 
               {/* Compact Location References */}
-              <div className="p-5 bg-cream-100 rounded-2xl border border-earth-200 space-y-3">
+              <div className="p-4 bg-cream-100 rounded-2xl border border-earth-200 space-y-2.5">
                 <h3 className="font-semibold text-sm text-forest-950 flex items-center gap-2">
                   <MapPin className="w-4 h-4 text-brass-600" />
                   <span>KR Puram Locations</span>
@@ -108,12 +108,12 @@ export default function Contact() {
             </div>
 
             {/* Quick Action Buttons */}
-            <div className="pt-2 flex flex-col sm:flex-row gap-3">
+            <div className="pt-1 flex flex-col sm:flex-row gap-3">
               <a
                 href={whatsappUri}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-6 py-3.5 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-2 shadow-soft"
+                className="px-5 py-3 bg-emerald-600 hover:bg-emerald-500 text-white font-semibold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-2 shadow-soft"
               >
                 <MessageSquare className="w-4 h-4" />
                 <span>WhatsApp Message</span>
@@ -121,7 +121,7 @@ export default function Contact() {
 
               <a
                 href={telUri}
-                className="px-6 py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-2 shadow-elevated"
+                className="px-5 py-3 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-2 shadow-elevated"
               >
                 <Phone className="w-4 h-4 text-brass-400" />
                 <span>Call Clinic</span>
@@ -130,39 +130,39 @@ export default function Contact() {
           </div>
 
           {/* Right Column: Contact Form */}
-          <div className="lg:col-span-7 bg-white p-8 sm:p-10 rounded-3xl border border-earth-200 shadow-elevated">
-            <div className="flex items-center justify-between mb-6">
+          <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated">
+            <div className="flex items-center justify-between mb-5">
               <h3 className="font-serif text-2xl text-forest-950 font-light">
                 Send a Message
               </h3>
             </div>
 
             {submittedInquiry ? (
-              <div className="p-6 sm:p-8 bg-forest-950 text-cream-50 rounded-2xl space-y-5 text-center shadow-elevated border border-brass-500/20">
-                <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-400/30">
-                  <CheckCircle className="w-6 h-6 text-emerald-400" />
+              <div className="p-5 sm:p-6 bg-forest-950 text-cream-50 rounded-2xl space-y-4 text-center shadow-elevated border border-brass-500/20">
+                <div className="w-11 h-11 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-400/30">
+                  <CheckCircle className="w-5 h-5 text-emerald-400" />
                 </div>
-                <div className="space-y-2">
-                  <h4 className="font-serif text-2xl text-cream-50 font-light">Message Sent</h4>
+                <div className="space-y-1.5">
+                  <h4 className="font-serif text-xl sm:text-2xl text-cream-50 font-light">Message Sent</h4>
                   <p className="text-xs text-cream-200/90 leading-relaxed font-light max-w-md mx-auto">
                     Thank you, <strong>{submittedInquiry.name}</strong>. Your inquiry regarding "<strong>{submittedInquiry.subject}</strong>" has been recorded and sent to Dr. Anand Krishna.
                   </p>
                 </div>
 
-                <div className="pt-2 flex justify-center">
+                <div className="pt-1 flex justify-center">
                   <button
                     onClick={() => {
                       setSubmittedInquiry(null);
                       setFormData({ name: '', phone: '', email: '', subject: '', message: '' });
                     }}
-                    className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-forest-950 text-xs font-bold uppercase tracking-wider rounded-full shadow-soft transition-all"
+                    className="px-5 py-2.5 bg-emerald-500 hover:bg-emerald-400 text-forest-950 text-xs font-bold uppercase tracking-wider rounded-full shadow-soft transition-all cursor-pointer"
                   >
                     Send Another Message
                   </button>
                 </div>
 
                 {/* Thanking Note */}
-                <div className="pt-4 border-t border-forest-800/80 max-w-md mx-auto space-y-1 text-xs text-brass-300 font-serif italic">
+                <div className="pt-3 border-t border-forest-800/80 max-w-md mx-auto space-y-1 text-xs text-brass-300 font-serif italic">
                   <div className="flex items-center justify-center gap-1.5 text-brass-400 not-italic">
                     <HeartHandshake className="w-4 h-4 text-brass-400" />
                     <span className="font-sans text-[10px] uppercase tracking-widest font-semibold">Thank You</span>
@@ -173,8 +173,8 @@ export default function Contact() {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4 text-xs">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="space-y-3.5 text-xs">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label className="block font-semibold text-forest-950 uppercase mb-1">Your Full Name *</label>
                     <input
@@ -183,7 +183,7 @@ export default function Contact() {
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Ramesh Kumar"
-                      className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                     />
                   </div>
 
@@ -195,12 +195,12 @@ export default function Contact() {
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="e.g. +91 98450 12345"
-                      className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                     />
                   </div>
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
                   <div>
                     <label className="block font-semibold text-forest-950 uppercase mb-1">Email Address</label>
                     <input
@@ -208,7 +208,7 @@ export default function Contact() {
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="your.email@domain.com"
-                      className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                     />
                   </div>
 
@@ -219,7 +219,7 @@ export default function Contact() {
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
                       placeholder="e.g. Consultation Inquiry"
-                      className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                     />
                   </div>
                 </div>
@@ -232,13 +232,13 @@ export default function Contact() {
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
                     placeholder="Describe your health question or preferred consultation time..."
-                    className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                   />
                 </div>
 
                 <button
                   type="submit"
-                  className="w-full py-4 bg-forest-900 hover:bg-forest-800 text-cream-50 font-bold uppercase text-xs tracking-wider rounded-xl shadow-elevated transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="w-full py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-bold uppercase text-xs tracking-wider rounded-xl shadow-elevated transition-all flex items-center justify-center gap-2 cursor-pointer"
                 >
                   <Send className="w-4 h-4 text-brass-400" />
                   <span>Submit Inquiry</span>
@@ -250,16 +250,16 @@ export default function Contact() {
         </div>
 
         {/* Practical Google Maps Section with Exact Main Address Banner */}
-        <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white min-h-[420px] flex flex-col mb-12">
+        <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white min-h-[380px] flex flex-col mb-10">
           
           {/* Header with Exact Main Address */}
-          <div className="p-6 bg-forest-900 text-cream-50 flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-forest-800">
-            <div className="space-y-1">
+          <div className="p-4 sm:p-5 bg-forest-900 text-cream-50 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-forest-800">
+            <div className="space-y-0.5">
               <span className="text-[10px] font-bold text-brass-400 uppercase tracking-ultra block">
                 MAIN CLINIC LOCATION & MAP
               </span>
               <div className="flex items-center gap-2 text-white font-serif text-lg font-medium">
-                <Building2 className="w-5 h-5 text-brass-400 shrink-0" />
+                <Building2 className="w-4.5 h-4.5 text-brass-400 shrink-0" />
                 <h3>Sri Krishna Ayurvedic Clinic — Main Address</h3>
               </div>
               <p className="text-xs text-cream-200/90 font-light flex items-center gap-1.5">
@@ -272,7 +272,7 @@ export default function Contact() {
               href={clinicData.contact.googleMapsUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="px-5 py-2.5 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-2 shrink-0 shadow-soft transition-all"
+              className="px-4 py-2 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-1.5 shrink-0 shadow-soft transition-all"
             >
               <span>Open Directions</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -282,7 +282,7 @@ export default function Contact() {
           <iframe
             src={clinicData.contact.mapEmbedSrc}
             width="100%"
-            height="380"
+            height="340"
             style={{ border: 0 }}
             allowFullScreen=""
             loading="lazy"
@@ -293,17 +293,17 @@ export default function Contact() {
         </div>
 
         {/* Booking CTA Banner */}
-        <div className="p-8 sm:p-12 bg-forest-950 text-cream-50 rounded-3xl text-center space-y-4">
-          <h3 className="font-serif text-3xl font-light">
+        <div className="p-6 sm:p-8 bg-forest-950 text-cream-50 rounded-3xl text-center space-y-3">
+          <h3 className="font-serif text-2xl sm:text-3xl font-light">
             Book an Appointment Online
           </h3>
           <p className="text-xs text-cream-200/80 max-w-xl mx-auto font-light">
             Dr. Anand Krishna (BAMS) is available Monday – Saturday in KR Puram.
           </p>
-          <div className="pt-2">
+          <div className="pt-1">
             <Link
               to="/book-appointment"
-              className="inline-flex items-center gap-2 px-8 py-4 bg-emerald-500 hover:bg-emerald-400 text-forest-950 font-bold text-xs uppercase tracking-widest rounded-full shadow-soft transition-all"
+              className="inline-flex items-center gap-2 px-7 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-forest-950 font-bold text-xs uppercase tracking-widest rounded-full shadow-soft transition-all"
             >
               <Calendar className="w-4 h-4" />
               <span>Go to Appointment Form</span>

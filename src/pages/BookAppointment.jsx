@@ -46,12 +46,12 @@ export default function BookAppointment() {
         bgImage="/images/hero_stock_1.jpg"
       />
 
-      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Breadcrumb items={[{ label: 'Book Appointment' }]} />
 
-        <div className="bg-white p-8 sm:p-12 rounded-3xl border border-earth-200 shadow-elevated mb-12">
+        <div className="bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated mb-8">
           
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-earth-200 pb-6 mb-8 gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between border-b border-earth-200 pb-4 mb-6 gap-3">
             <div>
               <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
                 Official Appointment Request
@@ -60,45 +60,43 @@ export default function BookAppointment() {
                 Patient & Schedule Details
               </h2>
             </div>
-            
-
           </div>
 
           {submittedAppointment ? (
-            <div className="p-8 sm:p-10 bg-forest-950 text-cream-50 rounded-2xl space-y-6 text-center shadow-elevated border border-brass-500/20">
-              <div className="w-14 h-14 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-400/30">
-                <CheckCircle2 className="w-7 h-7" />
+            <div className="p-6 sm:p-8 bg-forest-950 text-cream-50 rounded-2xl space-y-5 text-center shadow-elevated border border-brass-500/20">
+              <div className="w-12 h-12 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto border border-emerald-400/30">
+                <CheckCircle2 className="w-6 h-6" />
               </div>
 
-              <div className="space-y-3 max-w-lg mx-auto">
-                <h3 className="font-serif text-3xl font-light text-cream-50">Appointment Done</h3>
+              <div className="space-y-2 max-w-lg mx-auto">
+                <h3 className="font-serif text-2xl sm:text-3xl font-light text-cream-50">Appointment Done</h3>
                 <p className="text-xs sm:text-sm text-cream-200/90 leading-relaxed font-light">
                   Your appointment request for <strong>{submittedAppointment.name}</strong> on <strong>{submittedAppointment.date} ({submittedAppointment.timeSlot})</strong> has been saved successfully (Booking ID: <code className="text-brass-300 font-mono font-bold">{submittedAppointment.id}</code>).
                 </p>
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-1">
                 <a
                   href={whatsappUri}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-8 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-soft transition-all"
+                  className="px-6 py-3 bg-emerald-500 hover:bg-emerald-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-soft transition-all"
                 >
                   Confirm Via WhatsApp
                 </a>
                 <a
                   href={telUri}
-                  className="px-8 py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full border border-forest-700 transition-all"
+                  className="px-6 py-3 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full border border-forest-700 transition-all"
                 >
                   Call Clinic Directly ({clinicData.contact.phone})
                 </a>
               </div>
 
               {/* Thanking Note at Bottom */}
-              <div className="pt-6 border-t border-forest-800/80 max-w-md mx-auto space-y-1 text-xs text-brass-300 font-serif italic">
+              <div className="pt-4 border-t border-forest-800/80 max-w-md mx-auto space-y-1 text-xs text-brass-300 font-serif italic">
                 <div className="flex items-center justify-center gap-1.5 text-brass-400 not-italic">
                   <HeartHandshake className="w-4 h-4 text-brass-400" />
-                  <span className="font-sans text-[11px] uppercase tracking-widest font-semibold">Thank You</span>
+                  <span className="font-sans text-[10px] uppercase tracking-widest font-semibold">Thank You</span>
                 </div>
                 <p>
                   Thank you for booking your consultation with Sri Krishna Ayurvedic Clinic! We look forward to welcoming you for your personalized healing care.
@@ -107,69 +105,69 @@ export default function BookAppointment() {
 
             </div>
           ) : (
-            <form onSubmit={handleSubmit} className="space-y-6 text-xs">
+            <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-5 text-xs">
               
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block font-semibold text-forest-950 uppercase mb-1.5">
+                  <label className="block font-semibold text-forest-950 uppercase mb-1">
                     Patient Name *
                   </label>
                   <div className="relative">
-                    <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                    <User className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
                     <input
                       type="text"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                       placeholder="e.g. Ramesh Kumar"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-forest-950 uppercase mb-1.5">
+                  <label className="block font-semibold text-forest-950 uppercase mb-1">
                     Phone Number *
                   </label>
                   <div className="relative">
-                    <Phone className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                    <Phone className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
                     <input
                       type="tel"
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                       placeholder="e.g. +91 98450 12345"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                     />
                   </div>
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block font-semibold text-forest-950 uppercase mb-1.5">
+                  <label className="block font-semibold text-forest-950 uppercase mb-1">
                     Email Address
                   </label>
                   <div className="relative">
-                    <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                    <Mail className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                       placeholder="your.email@domain.com"
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-forest-950 uppercase mb-1.5">
+                  <label className="block font-semibold text-forest-950 uppercase mb-1">
                     Select Service / Treatment
                   </label>
                   <select
                     value={formData.treatment}
                     onChange={(e) => setFormData({ ...formData, treatment: e.target.value })}
-                    className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm bg-white"
+                    className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm bg-white"
                   >
                     {treatmentsList.map((t) => (
                       <option key={t.id} value={t.title}>{t.title}</option>
@@ -181,33 +179,33 @@ export default function BookAppointment() {
                 </div>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block font-semibold text-forest-950 uppercase mb-1.5">
+                  <label className="block font-semibold text-forest-950 uppercase mb-1">
                     Preferred Date *
                   </label>
                   <div className="relative">
-                    <Calendar className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                    <Calendar className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
                     <input
                       type="date"
                       required
                       value={formData.date}
                       onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                     />
                   </div>
                 </div>
 
                 <div>
-                  <label className="block font-semibold text-forest-950 uppercase mb-1.5">
+                  <label className="block font-semibold text-forest-950 uppercase mb-1">
                     Preferred Time Slot
                   </label>
                   <div className="relative">
-                    <Clock className="w-4 h-4 text-gray-400 absolute left-3.5 top-3.5" />
+                    <Clock className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
                     <select
                       value={formData.timeSlot}
                       onChange={(e) => setFormData({ ...formData, timeSlot: e.target.value })}
-                      className="w-full pl-10 pr-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm bg-white"
+                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm bg-white"
                     >
                       <option value="10:00 AM">Morning 10:00 AM</option>
                       <option value="11:30 AM">Morning 11:30 AM</option>
@@ -220,7 +218,7 @@ export default function BookAppointment() {
               </div>
 
               <div>
-                <label className="block font-semibold text-forest-950 uppercase mb-1.5">
+                <label className="block font-semibold text-forest-950 uppercase mb-1">
                   Health Concerns / Special Notes
                 </label>
                 <textarea
@@ -228,13 +226,13 @@ export default function BookAppointment() {
                   value={formData.notes}
                   onChange={(e) => setFormData({ ...formData, notes: e.target.value })}
                   placeholder="Describe any existing conditions or preferred topics for Dr. Anand Krishna..."
-                  className="w-full px-4 py-3 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                  className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                 />
               </div>
 
               <button
                 type="submit"
-                className="w-full py-4 bg-emerald-500 hover:bg-emerald-400 text-forest-950 font-bold text-xs uppercase tracking-widest rounded-xl shadow-soft transition-all cursor-pointer"
+                className="w-full py-3.5 bg-emerald-500 hover:bg-emerald-400 text-forest-950 font-bold text-xs uppercase tracking-widest rounded-xl shadow-soft transition-all cursor-pointer"
               >
                 Submit Consultation Request
               </button>

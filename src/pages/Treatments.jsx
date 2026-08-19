@@ -27,11 +27,11 @@ export default function Treatments({ onOpenBooking }) {
         bgImage="/images/hero_stock_1.jpg"
       />
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Breadcrumb items={[{ label: 'Treatments & Services' }]} />
 
         {/* Introduction Banner */}
-        <div className="bg-white p-8 rounded-3xl border border-earth-200 shadow-elevated mb-16 space-y-4">
+        <div className="bg-white p-6 sm:p-7 rounded-3xl border border-earth-200 shadow-elevated mb-8 space-y-3">
           <div className="flex items-center gap-2 text-xs font-bold text-brass-600 uppercase tracking-widest">
             <Sparkles className="w-4 h-4 text-brass-500" />
             <span>Root-Cause Evaluation & Personalized Regimen</span>
@@ -45,32 +45,32 @@ export default function Treatments({ onOpenBooking }) {
         </div>
 
         {/* Treatment Grid */}
-        <div className="space-y-8 mb-20">
-          <h2 className="text-3xl font-serif text-forest-950 font-light">
+        <div className="space-y-6 mb-10">
+          <h2 className="text-2xl sm:text-3xl font-serif text-forest-950 font-light">
             Core Treatments Directory
           </h2>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {treatmentsList.map((item) => (
               <div
                 key={item.id}
                 className="bg-white rounded-2xl border border-earth-200 shadow-elevated overflow-hidden flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 group"
               >
                 {item.image && (
-                  <div className="h-52 overflow-hidden relative">
+                  <div className="h-48 overflow-hidden relative">
                     <img 
                       src={item.image} 
                       alt={item.title} 
                       className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                     />
-                    <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-sm text-brass-400 text-[10px] font-mono font-bold uppercase tracking-wider border border-brass-400/30 shadow-md">
+                    <div className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-sm text-brass-400 text-[10px] font-mono font-bold uppercase tracking-wider border border-brass-400/30 shadow-md">
                       {item.number} • THERAPY
                     </div>
                   </div>
                 )}
 
-                <div className="p-8 space-y-4 flex-1 flex flex-col justify-between">
-                  <div className="space-y-4">
+                <div className="p-6 space-y-3.5 flex-1 flex flex-col justify-between">
+                  <div className="space-y-3">
                     {!item.image && (
                       <div className="flex items-center justify-between">
                         <span className="text-xs font-semibold text-brass-600 uppercase tracking-widest">
@@ -87,7 +87,7 @@ export default function Treatments({ onOpenBooking }) {
                       </span>
                     )}
 
-                    <h3 className="font-serif text-2xl text-forest-950 font-light group-hover:text-forest-800 transition-colors">
+                    <h3 className="font-serif text-xl sm:text-2xl text-forest-950 font-light group-hover:text-forest-800 transition-colors">
                       {item.title}
                     </h3>
 
@@ -107,12 +107,12 @@ export default function Treatments({ onOpenBooking }) {
                     )}
                   </div>
 
-                  <div className="pt-6 mt-6 border-t border-earth-200 flex items-center justify-between">
+                  <div className="pt-4 mt-4 border-t border-earth-200 flex items-center justify-between">
                     <span className="text-[11px] text-gray-500 font-medium">{item.duration}</span>
                     
                     <button
                       onClick={onOpenBooking}
-                      className="px-4 py-2 bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-bold uppercase tracking-wider rounded-full shadow-soft transition-all"
+                      className="px-4 py-2 bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-bold uppercase tracking-wider rounded-full shadow-soft transition-all cursor-pointer"
                     >
                       Book
                     </button>
@@ -124,14 +124,14 @@ export default function Treatments({ onOpenBooking }) {
         </div>
 
         {/* Specialized High-Priority Cards Banner */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
           {/* Card 1: Cancer Care */}
-          <div className="p-8 bg-forest-950 text-cream-50 rounded-3xl space-y-4 flex flex-col justify-between border border-brass-500/30 shadow-elevated">
+          <div className="p-6 sm:p-7 bg-forest-950 text-cream-50 rounded-3xl space-y-3.5 flex flex-col justify-between border border-brass-500/30 shadow-elevated">
             <div className="space-y-2">
               <span className="px-3 py-1 bg-forest-900 text-brass-400 text-[10px] font-bold uppercase tracking-widest rounded-full border border-brass-400/30 inline-block">
                 SPECIALIZED SUPPORT
               </span>
-              <h3 className="font-serif text-2xl font-light text-cream-50">
+              <h3 className="font-serif text-xl sm:text-2xl font-light text-cream-50">
                 Integrative Cancer Care & Supportive Consultation
               </h3>
               <p className="text-xs text-cream-200/80 leading-relaxed font-light">
@@ -139,7 +139,7 @@ export default function Treatments({ onOpenBooking }) {
               </p>
             </div>
 
-            <div className="pt-4 border-t border-forest-900 flex items-center justify-between">
+            <div className="pt-3 border-t border-forest-900 flex items-center justify-between">
               <Link
                 to="/treatments/cancer-care"
                 className="text-xs font-bold text-brass-400 hover:text-white uppercase tracking-wider flex items-center gap-1"
@@ -151,12 +151,12 @@ export default function Treatments({ onOpenBooking }) {
           </div>
 
           {/* Card 2: Swarnaprashana */}
-          <div className="p-8 bg-cream-100 text-forest-950 rounded-3xl space-y-4 flex flex-col justify-between border border-earth-200 shadow-elevated">
+          <div className="p-6 sm:p-7 bg-cream-100 text-forest-950 rounded-3xl space-y-3.5 flex flex-col justify-between border border-earth-200 shadow-elevated">
             <div className="space-y-2">
               <span className="px-3 py-1 bg-brass-500/20 text-brass-700 text-[10px] font-bold uppercase tracking-widest rounded-full border border-brass-500/30 inline-block">
                 PEDIATRIC AYURVEDA
               </span>
-              <h3 className="font-serif text-2xl font-light text-forest-950">
+              <h3 className="font-serif text-xl sm:text-2xl font-light text-forest-950">
                 Swarnaprashana (Ayurvedic Pediatric Care)
               </h3>
               <p className="text-xs text-earth-800 leading-relaxed font-light">
@@ -164,7 +164,7 @@ export default function Treatments({ onOpenBooking }) {
               </p>
             </div>
 
-            <div className="pt-4 border-t border-earth-200 flex items-center justify-between">
+            <div className="pt-3 border-t border-earth-200 flex items-center justify-between">
               <Link
                 to="/treatments/swarnaprashana"
                 className="text-xs font-bold text-forest-900 hover:text-emerald-700 uppercase tracking-wider flex items-center gap-1"
