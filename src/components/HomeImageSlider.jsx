@@ -1,4 +1,4 @@
-﻿import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ChevronLeft, ChevronRight, Leaf, Sparkles, HeartHandshake, ShieldCheck, Award } from 'lucide-react';
 
@@ -7,9 +7,9 @@ const SLIDE_DURATION = 5000; // 5 seconds per slide
 const slidesData = [
   {
     id: 1,
-    badge: 'Nadi Pariksha',
-    title: 'Ancient Diagnostic Art',
-    subtitle: 'Vedic Pulse Reading & Imbalance Detection',
+    badge: 'Traditional Ayurveda',
+    title: 'Nadi Pariksha',
+    subtitle: 'Vedic Pulse Reading & Apothecary Remedies',
     image: '/images/nadi_pariksha.png',
     card1: {
       title: 'Ancient Diagnostic Art',
@@ -28,7 +28,7 @@ const slidesData = [
     id: 2,
     badge: 'Panchakarma Detox',
     title: 'Cellular Rejuvenation',
-    subtitle: 'Bio-Purification & Shirodhara Stream',
+    subtitle: 'Bio-Purification & Detox Therapies',
     image: '/images/panchakarma.png',
     card1: {
       title: 'Cellular Detox',
