@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowRight, Sparkles, CheckCircle2, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { ArrowRight, Sparkles, CheckCircle2, ShieldCheck, HeartHandshake, Baby } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import { getStoredTreatments } from '../utils/adminStorage';
@@ -24,7 +24,7 @@ export default function Treatments({ onOpenBooking }) {
       <PageHero
         badge="CLASSICAL AYURVEDA"
         title="All Ayurvedic Treatments"
-        subtitle="Personalized Ayurvedic care for chronic diseases, skin and hair concerns, wellness, diabetes and supportive cancer care."
+        subtitle="Personalized Ayurvedic care for chronic diseases, skin and hair concerns, wellness, diabetes, supportive cancer care and pediatric wellness."
         bgImage="/images/hero_stock_1.jpg"
       />
 
@@ -41,18 +41,18 @@ export default function Treatments({ onOpenBooking }) {
             All Ayurvedic Treatments
           </h1>
           <p className="text-earth-800 text-sm font-light leading-relaxed">
-            Personalized Ayurvedic care for chronic diseases, skin and hair concerns, wellness, diabetes and supportive cancer care. Under the clinical leadership of senior physician Dr. Anand Krishna (BAMS, 26+ years experience), each treatment regimen is customized to your unique constitution (<em>Prakriti</em>) and underlying Dosha balance.
+            Personalized Ayurvedic care for chronic diseases, skin and hair concerns, wellness, diabetes, supportive cancer care, and pediatric Swarnaprashana. Under the clinical leadership of senior physician Dr. Anand Krishna (BAMS, 26+ years experience), each treatment regimen is customized to your unique constitution (<em>Prakriti</em>) and underlying Dosha balance.
           </p>
         </div>
 
-        {/* Exactly 7 Treatment Cards Grid */}
+        {/* 8 Dedicated Treatment Cards Grid */}
         <div className="space-y-6 mb-10">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl sm:text-3xl font-serif text-forest-950 font-light">
               Treatment Categories
             </h2>
             <span className="text-xs font-semibold text-brass-700 uppercase tracking-wider">
-              7 Dedicated Therapies
+              {treatmentsList.length} Dedicated Therapies
             </span>
           </div>
 
@@ -72,14 +72,21 @@ export default function Treatments({ onOpenBooking }) {
                     <div className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-sm text-brass-400 text-[10px] font-mono font-bold uppercase tracking-wider border border-brass-400/30 shadow-md">
                       {item.number} • THERAPY
                     </div>
+                    {item.ageBadge && (
+                      <div className="absolute top-3.5 right-3.5 px-3 py-1 rounded-full bg-emerald-500 text-forest-950 text-[10px] font-bold uppercase tracking-wider shadow-md">
+                        {item.ageBadge}
+                      </div>
+                    )}
                   </div>
                 )}
 
                 <div className="p-6 space-y-3.5 flex-1 flex flex-col justify-between">
                   <div className="space-y-3">
-                    <span className="text-xs font-semibold text-brass-600 uppercase tracking-widest block">
-                      {item.subtitle}
-                    </span>
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="text-xs font-semibold text-brass-600 uppercase tracking-widest block">
+                        {item.subtitle}
+                      </span>
+                    </div>
 
                     <h3 className="font-serif text-xl sm:text-2xl text-forest-950 font-light group-hover:text-forest-800 transition-colors leading-snug">
                       {item.title}

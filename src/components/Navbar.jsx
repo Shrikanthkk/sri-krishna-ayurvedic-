@@ -35,7 +35,8 @@ export default function Navbar({ onOpenBooking }) {
     { name: 'Sexual Disorders', path: '/treatments/sexual-disorders' },
     { name: 'De-addiction', path: '/treatments/de-addiction' },
     { name: 'Diabetes', path: '/treatments/diabetes' },
-    { name: 'Cancer Treatment', path: '/treatments/cancer-treatment' }
+    { name: 'Cancer Treatment', path: '/treatments/cancer-treatment' },
+    { name: 'Swarnaprashana', path: '/treatments/swarnaprashana' }
   ];
 
   const isPathActive = (link) => {
@@ -135,7 +136,7 @@ export default function Navbar({ onOpenBooking }) {
                               onClick={() => setHoveringTreatments(false)}
                               className="px-3.5 py-2 text-[11px] font-bold tracking-wider uppercase rounded-xl transition-all border-b border-earth-200/60 mb-1 text-brass-600 hover:text-brass-700 flex items-center justify-between"
                             >
-                              <span>View All 7 Treatments</span>
+                              <span>View All 8 Treatments</span>
                               <span>→</span>
                             </Link>
 

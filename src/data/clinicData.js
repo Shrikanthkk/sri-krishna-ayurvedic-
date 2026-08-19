@@ -220,6 +220,20 @@ export const clinicData = {
       buttonText: "Explore Cancer Support",
       benefits: ["Quality of life & vitality support", "Nutrition & digestive comfort", "Integrative oncology coordination"],
       duration: "Supportive Consultation"
+    },
+    {
+      id: "swarnaprashana",
+      number: "08",
+      title: "Swarnaprashana",
+      shortTitle: "Swarnaprashana",
+      subtitle: "Traditional Ayurvedic Child Wellness",
+      image: "/images/hero_stock_2.jpg",
+      ageBadge: "Children 0–16 Years",
+      description: "Traditional Ayurvedic wellness practice for children, traditionally associated with Pushya Nakshatra and administered under qualified Ayurvedic guidance.",
+      link: "/treatments/swarnaprashana",
+      buttonText: "Explore Swarnaprashana",
+      benefits: ["For infants & children (0–16 Years)", "Administered on Pushya Nakshatra days", "Nurtures vitality, intellect & wellbeing"],
+      duration: "Periodic Administration"
     }
   ],
 

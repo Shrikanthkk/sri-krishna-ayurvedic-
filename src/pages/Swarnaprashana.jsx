@@ -1,9 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, CheckCircle2, Calendar, PhoneCall, Baby, ShieldCheck, ShieldAlert, HeartHandshake, BookOpen, AlertTriangle, ArrowRight, Sun, Clock, Award, Star, CalendarDays } from 'lucide-react';
+import { Sparkles, CheckCircle2, Calendar, PhoneCall, Baby, ShieldCheck, ShieldAlert, HeartHandshake, BookOpen, AlertTriangle, ArrowRight, ArrowLeft, Sun, Clock, Award, Star, CalendarDays } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
+import RelatedTreatments from '../components/RelatedTreatments';
 import { clinicData } from '../data/clinicData';
 import swarnaImg1 from '../assets/swarnaprashana_1.png';
 import swarnaImg2 from '../assets/swarnaprashana_2.png';
@@ -53,7 +54,17 @@ export default function Swarnaprashana({ onOpenBooking }) {
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* 2. BREADCRUMB */}
+        {/* Navigation Back Link & Breadcrumb */}
+        <div className="flex items-center justify-between mb-4">
+          <Link
+            to="/treatments"
+            className="inline-flex items-center gap-1.5 text-xs font-semibold text-forest-800 hover:text-emerald-700 uppercase tracking-wider transition-colors"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>← Back to All Treatments</span>
+          </Link>
+        </div>
+
         <Breadcrumb
           items={[
             { label: 'All Treatments', link: '/treatments' },
@@ -624,6 +635,9 @@ export default function Swarnaprashana({ onOpenBooking }) {
             </Link>
           </div>
         </section>
+
+        {/* SECTION 7: RELATED TREATMENTS */}
+        <RelatedTreatments currentTreatmentId="swarnaprashana" count={3} />
 
       </div>
     </motion.div>

@@ -64,7 +64,7 @@ export default function Footer({ onOpenBooking }) {
           {/* Col 3: Specialized Care */}
           <div className="lg:col-span-2 space-y-2.5">
             <h4 className="text-xs font-semibold uppercase tracking-widest text-brass-400">
-              Our 7 Treatments
+              Our 8 Treatments
             </h4>
             <ul className="space-y-1.5 text-xs text-cream-200/80 font-light">
               <li>
@@ -100,6 +100,12 @@ export default function Footer({ onOpenBooking }) {
               <li>
                 <Link to="/treatments/cancer-treatment" className="hover:text-brass-300 transition-colors flex items-center gap-1 font-medium text-cream-100">
                   <span>Cancer Treatment</span>
+                  <ArrowUpRight className="w-3 h-3 text-brass-400" />
+                </Link>
+              </li>
+              <li>
+                <Link to="/treatments/swarnaprashana" className="hover:text-brass-300 transition-colors flex items-center gap-1 font-medium text-cream-100">
+                  <span>Swarnaprashana Care</span>
                   <ArrowUpRight className="w-3 h-3 text-brass-400" />
                 </Link>
               </li>
