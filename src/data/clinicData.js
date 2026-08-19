@@ -49,7 +49,10 @@ export const clinicData = {
     clinic: "/images/hero_adobe_4.jpg",
     shirodhara: "/images/shirodhara.jpg",
     herbalPrep: "/images/hero_adobe_2.jpg",
-    treatmentRoom: "/images/hero_adobe_5.jpg"
+    treatmentRoom: "/images/hero_adobe_5.jpg",
+    swarnaprashana1: "/images/swarnaprashana_1.png",
+    swarnaprashana2: "/images/swarnaprashana_2.png",
+    swarnaprashana3: "/images/swarnaprashana_3.png"
   },
 
   // Centrally configurable 3-Slide Hero (Focused, concise & impactful)
@@ -142,7 +145,7 @@ export const clinicData = {
       number: "02",
       title: "Panchakarma Detox Therapies",
       subtitle: "Cellular Rejuvenation",
-      image: "/images/shirodhara.jpg",
+      image: "/images/panchakarma.png",
       description: "Five classical bio-purification procedures to eliminate accumulated toxins and restore vital Agni.",
       benefits: ["Deep tissue detoxification", "Boosted metabolic Agni", "Restored digestive strength"],
       duration: "7 to 21 Days Program"

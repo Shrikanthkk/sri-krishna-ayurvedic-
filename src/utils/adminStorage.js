@@ -248,7 +248,7 @@ export function getStoredTreatments() {
       return {
         ...defaultItem,
         ...item,
-        image: item.image || defaultItem?.image || (item.id === 'nadi-pariksha' ? '/images/nadi_pariksha.png' : undefined)
+        image: (item.id === 'panchakarma' && (!item.image || item.image.includes('shirodhara'))) ? '/images/panchakarma.png' : (item.image || defaultItem?.image || (item.id === 'nadi-pariksha' ? '/images/nadi_pariksha.png' : undefined))
       };
     });
     localStorage.setItem(TREATMENTS_KEY, JSON.stringify(merged));

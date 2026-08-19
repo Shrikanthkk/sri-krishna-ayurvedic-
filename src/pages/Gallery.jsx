@@ -28,10 +28,10 @@ export default function Gallery() {
     },
     {
       id: 2,
-      title: "Continuous Shirodhara Medicated Oil Stream",
+      title: "Panchakarma Detox & Shirodhara Stream",
       category: "panchakarma",
-      tag: "Mind & Nervous System Calm",
-      src: "/images/shirodhara.jpg",
+      tag: "Cellular Bio-Purification",
+      src: "/images/panchakarma.png",
       description: "Soothing flow of warm herbal oil over forehead marma points to alleviate stress, anxiety, migraines, and insomnia."
     },
     {

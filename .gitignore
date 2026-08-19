@@ -36,3 +36,5 @@ logs/
 
 .vercel
 .env*
+*.zip
+*.mp4

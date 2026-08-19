@@ -5,6 +5,9 @@ import { Sparkles, CheckCircle2, Calendar, PhoneCall, Baby, ShieldCheck, ShieldA
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import { clinicData } from '../data/clinicData';
+import swarnaImg1 from '../assets/swarnaprashana_1.png';
+import swarnaImg2 from '../assets/swarnaprashana_2.png';
+import swarnaImg3 from '../assets/swarnaprashana_3.png';
 
 export default function Swarnaprashana({ onOpenBooking }) {
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
@@ -22,7 +25,7 @@ export default function Swarnaprashana({ onOpenBooking }) {
         badge="PEDIATRIC AYURVEDA"
         title="Swarnaprashana"
         subtitle="A traditional Ayurvedic practice involving the administration of specially prepared gold-based formulations for children."
-        bgImage="/images/hero_stock_4.jpg"
+        bgImage={swarnaImg1}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
@@ -104,8 +107,8 @@ export default function Swarnaprashana({ onOpenBooking }) {
 
                 <div className="rounded-3xl overflow-hidden shadow-2xl border border-earth-200 aspect-[4/3] bg-forest-950 relative group">
                   <img
-                    src={clinicData.images.herbs}
-                    alt="Classical Ayurvedic Herbs and Botanical Preparations"
+                    src={swarnaImg1}
+                    alt="Classical Ayurvedic Pediatric Essence"
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-forest-950/85 via-forest-950/20 to-transparent flex flex-col justify-end p-6 text-cream-50">
@@ -126,58 +129,81 @@ export default function Swarnaprashana({ onOpenBooking }) {
         <section id="perspective" className="scroll-mt-32 py-16 border-t border-earth-200 mb-20">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
-            {/* Left Classical Shloka Card */}
-            <div className="lg:col-span-5 bg-gradient-to-br from-forest-950 to-forest-900 text-cream-50 p-8 sm:p-10 rounded-3xl border border-forest-800 shadow-2xl space-y-5">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-forest-900/90 text-brass-400 border border-brass-500/30 text-[11px] font-semibold uppercase tracking-wider">
-                <BookOpen className="w-3.5 h-3.5 text-brass-400" />
-                <span>KASHYAPA SAMHITA • LEHA ADHYAYA</span>
+            {/* Left Image & Classical Shloka Card */}
+            <div className="lg:col-span-5 space-y-6">
+              <div className="relative mx-auto max-w-md lg:max-w-none">
+                <div className="absolute -inset-4 bg-gradient-to-tr from-brass-400/20 via-forest-800/10 to-transparent rounded-3xl transform -rotate-2 pointer-events-none -z-10" />
+
+                <div className="rounded-3xl overflow-hidden shadow-2xl border border-earth-200 aspect-[4/3] bg-forest-950 relative group">
+                  <img
+                    src={swarnaImg2}
+                    alt="Traditional Ayurvedic Administration of Swarnaprashana"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-950/85 via-forest-950/20 to-transparent flex flex-col justify-end p-6 text-cream-50">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-brass-400">
+                      Traditional Administration
+                    </span>
+                    <p className="font-serif text-lg font-light">Suvarna Bindu Prashana</p>
+                  </div>
+                </div>
               </div>
 
-              <div className="space-y-3 font-serif text-lg sm:text-xl text-brass-200 italic leading-relaxed pl-4 border-l-2 border-brass-400">
-                <p>
-                  "सुवर्णप्राशनं ह्येतन्मेधाग्निबलवर्धनम् ।"
-                </p>
-                <p>
-                  "आयुष्यं मङ्गलं पुण्यं वृष्यं ग्रहपहम् ॥"
+              <div className="bg-gradient-to-br from-forest-950 to-forest-900 text-cream-50 p-6 sm:p-8 rounded-3xl border border-forest-800 shadow-2xl space-y-4">
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-forest-900/90 text-brass-400 border border-brass-500/30 text-[11px] font-semibold uppercase tracking-wider">
+                  <BookOpen className="w-3.5 h-3.5 text-brass-400" />
+                  <span>KASHYAPA SAMHITA • LEHA ADHYAYA</span>
+                </div>
+
+                <div className="space-y-2 font-serif text-base sm:text-lg text-brass-200 italic leading-relaxed pl-4 border-l-2 border-brass-400">
+                  <p>
+                    "सुवर्णप्राशनं ह्येतन्मेधाग्निबलवर्धनम् ।"
+                  </p>
+                  <p>
+                    "आयुष्यं मङ्गलं पुण्यं वृष्यं ग्रहपहम् ॥"
+                  </p>
+                </div>
+
+                <p className="text-xs text-cream-200/80 font-light leading-relaxed pt-1">
+                  Classical verse highlighting the traditional association of gold-infused electuaries with supporting intellect (*Medha*), metabolic strength (*Agni*), physical vigor (*Bala*), and wholesome auspicious vitality.
                 </p>
               </div>
-
-              <p className="text-xs text-cream-200/80 font-light leading-relaxed pt-2">
-                Classical verse highlighting the traditional association of gold-infused electuaries with supporting intellect (*Medha*), metabolic strength (*Agni*), physical vigor (*Bala*), and wholesome auspicious vitality.
-              </p>
             </div>
 
             {/* Right Perspective Explanation */}
-            <div className="lg:col-span-7 space-y-6">
-              <div className="space-y-2">
-                <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
+            <div className="lg:col-span-7 space-y-8">
+              <div className="space-y-3">
+                <span className="text-xs sm:text-sm uppercase tracking-ultra font-bold text-brass-600 block">
                   02 • VEDIC CONTEXT & PRINCIPLES
                 </span>
-                <h2 className="text-3xl sm:text-4xl font-serif font-light text-forest-950">
+                <h2 className="text-4xl sm:text-5xl lg:text-6xl font-serif font-light text-forest-950 leading-tight">
                   Traditional Ayurvedic Perspective
                 </h2>
               </div>
 
-              <p className="text-earth-800 text-base font-light leading-relaxed">
-                In classical Ayurveda, childhood (*Balyavastha*) is viewed as a period of rapid bodily growth where digestive capacity (*Dhatvagni*) and natural vitality (*Ojas*) are constantly evolving.
+              <p className="text-earth-800 text-lg sm:text-xl font-light leading-relaxed">
+                In classical Ayurveda, childhood (<em>Balyavastha</em>) is viewed as a period of rapid bodily growth where digestive capacity (<em>Dhatvagni</em>) and natural vitality (<em>Ojas</em>) are constantly evolving.
               </p>
 
-              <p className="text-earth-800 text-base font-light leading-relaxed">
+              <p className="text-earth-800 text-base sm:text-lg font-light leading-relaxed">
                 Ancient scholars conceptualized Swarnaprashana as a supportive rasayana measure to nurture equilibrium in growing tissues. While traditional literature associates these botanicals with vitality, modern families should understand these descriptions as a traditional holistic framework rather than guaranteed clinical outcomes.
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
-                <div className="p-4 bg-white rounded-2xl border border-earth-200 shadow-sm text-center">
-                  <span className="text-xl font-serif font-bold text-forest-900 block">Medha</span>
-                  <span className="text-[11px] text-earth-700 uppercase font-semibold">Cognitive Focus</span>
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-5 pt-4">
+                <div className="p-5 bg-white rounded-2xl border border-earth-200 shadow-sm text-center space-y-1">
+                  <span className="text-2xl font-serif font-bold text-forest-900 block">Medha</span>
+                  <span className="text-xs text-brass-700 font-semibold uppercase tracking-wider block">Cognitive Focus</span>
+                  <p className="text-[11px] text-earth-600 font-light">Nurturing clarity and learning</p>
                 </div>
-                <div className="p-4 bg-white rounded-2xl border border-earth-200 shadow-sm text-center">
-                  <span className="text-xl font-serif font-bold text-forest-900 block">Agni</span>
-                  <span className="text-[11px] text-earth-700 uppercase font-semibold">Digestive Fire</span>
+                <div className="p-5 bg-white rounded-2xl border border-earth-200 shadow-sm text-center space-y-1">
+                  <span className="text-2xl font-serif font-bold text-forest-900 block">Agni</span>
+                  <span className="text-xs text-brass-700 font-semibold uppercase tracking-wider block">Digestive Fire</span>
+                  <p className="text-[11px] text-earth-600 font-light">Balanced metabolic assimilation</p>
                 </div>
-                <div className="p-4 bg-white rounded-2xl border border-earth-200 shadow-sm text-center">
-                  <span className="text-xl font-serif font-bold text-forest-900 block">Bala</span>
-                  <span className="text-[11px] text-earth-700 uppercase font-semibold">Physical Strength</span>
+                <div className="p-5 bg-white rounded-2xl border border-earth-200 shadow-sm text-center space-y-1">
+                  <span className="text-2xl font-serif font-bold text-forest-900 block">Bala</span>
+                  <span className="text-xs text-brass-700 font-semibold uppercase tracking-wider block">Physical Strength</span>
+                  <p className="text-[11px] text-earth-600 font-light">Natural stamina and resilience</p>
                 </div>
               </div>
             </div>
@@ -230,38 +256,60 @@ export default function Swarnaprashana({ onOpenBooking }) {
               </div>
             </div>
 
-            <div className="lg:col-span-6 bg-cream-100 p-8 sm:p-10 rounded-3xl border border-earth-200 space-y-6">
-              <div className="flex items-center gap-3 text-forest-950 font-serif text-2xl font-medium">
-                <Award className="w-6 h-6 text-brass-600" />
-                <h3>Clinic Consultation Guidance</h3>
+            <div className="lg:col-span-6 space-y-6">
+              {/* Image 3: Focus & Learning / Medha Vardhana */}
+              <div className="relative mx-auto max-w-md lg:max-w-none">
+                <div className="absolute -inset-4 bg-gradient-to-tr from-brass-400/20 via-forest-800/10 to-transparent rounded-3xl transform rotate-2 pointer-events-none -z-10" />
+
+                <div className="rounded-3xl overflow-hidden shadow-2xl border border-earth-200 aspect-[4/3] bg-forest-950 relative group">
+                  <img
+                    src={swarnaImg3}
+                    alt="Cognitive Development and Learning in Children"
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-950/85 via-forest-950/20 to-transparent flex flex-col justify-end p-6 text-cream-50">
+                    <span className="text-[11px] font-semibold uppercase tracking-wider text-brass-400">
+                      Medha & Smriti Vardhana
+                    </span>
+                    <p className="font-serif text-lg font-light">Supporting Intellect & Focus</p>
+                  </div>
+                </div>
               </div>
 
-              <p className="text-sm text-earth-800 leading-relaxed font-light">
-                At Sri Krishna Ayurvedic Clinic, Dr. Anand Krishna (BAMS, 26+ yrs experience) provides direct consultation for parents. During your visit:
-              </p>
+              {/* Guidance card */}
+              <div className="bg-cream-100 p-8 sm:p-10 rounded-3xl border border-earth-200 space-y-6">
+                <div className="flex items-center gap-3 text-forest-950 font-serif text-2xl font-medium">
+                  <Award className="w-6 h-6 text-brass-600" />
+                  <h3>Clinic Consultation Guidance</h3>
+                </div>
 
-              <ul className="space-y-3 text-xs text-earth-800 font-light">
-                <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>The child's age, dietary patterns, and health history are evaluated.</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Exact formulation, authentic sourcing, and dosage instructions are explained.</span>
-                </li>
-                <li className="flex items-center gap-2.5">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
-                  <span>Guidance on supportive daily diet (Ahara) and routine (Vihara) is provided.</span>
-                </li>
-              </ul>
+                <p className="text-sm text-earth-800 leading-relaxed font-light">
+                  At Sri Krishna Ayurvedic Clinic, Dr. Anand Krishna (BAMS, 26+ yrs experience) provides direct consultation for parents. During your visit:
+                </p>
 
-              <div className="pt-2">
-                <button
-                  onClick={() => onOpenBooking ? onOpenBooking('Swarnaprashana Pediatric Consultation') : null}
-                  className="w-full py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full shadow-md transition-all text-center cursor-pointer"
-                >
-                  Schedule Child Consultation (₹50)
-                </button>
+                <ul className="space-y-3 text-xs text-earth-800 font-light">
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>The child's age, dietary patterns, and health history are evaluated.</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Exact formulation, authentic sourcing, and dosage instructions are explained.</span>
+                  </li>
+                  <li className="flex items-center gap-2.5">
+                    <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span>Guidance on supportive daily diet (Ahara) and routine (Vihara) is provided.</span>
+                  </li>
+                </ul>
+
+                <div className="pt-2">
+                  <button
+                    onClick={() => onOpenBooking ? onOpenBooking('Swarnaprashana Pediatric Consultation') : null}
+                    className="w-full py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full shadow-md transition-all text-center cursor-pointer"
+                  >
+                    Schedule Child Consultation (₹50)
+                  </button>
+                </div>
               </div>
             </div>
 

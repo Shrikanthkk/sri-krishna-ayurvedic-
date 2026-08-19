@@ -238,7 +238,7 @@ export default function Home({ onOpenBooking }) {
               const cardImage = item.image || 
                 (item.id === 'nadi-pariksha' || item.subtitle?.includes('Ancient') || item.title?.includes('Nadi Pariksha') 
                   ? '/images/nadi_pariksha.png' 
-                  : (item.id === 'panchakarma' ? '/images/shirodhara.jpg' : '/images/hero_adobe_5.jpg'));
+                  : (item.id === 'panchakarma' || item.subtitle?.includes('Cellular Rejuvenation') || item.title?.includes('Panchakarma') ? '/images/panchakarma.png' : '/images/hero_adobe_5.jpg'));
 
               return (
                 <div

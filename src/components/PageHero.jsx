@@ -7,8 +7,8 @@ export default function PageHero({ badge, title, subtitle, bgImage }) {
       {/* Background Image with Overlay */}
       {bgImage && (
         <div className="absolute inset-0 z-0">
-          <img src={bgImage} alt={title} className="w-full h-full object-cover opacity-25 filter blur-xs" />
-          <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/80 to-transparent" />
+          <img src={bgImage} alt={title} className="w-full h-full object-cover opacity-35" />
+          <div className="absolute inset-0 bg-gradient-to-t from-forest-950 via-forest-950/75 to-forest-950/50" />
         </div>
       )}
 
