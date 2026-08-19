@@ -17,6 +17,7 @@ import SexualDisorders from './pages/treatments/SexualDisorders';
 import DeAddiction from './pages/treatments/DeAddiction';
 import Diabetes from './pages/treatments/Diabetes';
 import CancerTreatment from './pages/treatments/CancerTreatment';
+import Swarnaprashana from './pages/Swarnaprashana';
 
 import Gallery from './pages/Gallery';
 import Testimonials from './pages/Testimonials';
@@ -62,10 +63,11 @@ function AppContent() {
           <Route path="/treatments/diabetes" element={<Diabetes onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/cancer-treatment" element={<CancerTreatment onOpenBooking={() => setBookingOpen(true)} />} />
 
-          {/* Compatibility Redirects */}
+          {/* Swarnaprashana Dedicated Page & Compatibility Routes */}
+          <Route path="/treatments/swarnaprashana" element={<Swarnaprashana onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/swarnaprashana" element={<Swarnaprashana onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/swarnamrutha" element={<Navigate to="/treatments/swarnaprashana" replace />} />
           <Route path="/treatments/cancer-care" element={<Navigate to="/treatments/cancer-treatment" replace />} />
-          <Route path="/treatments/swarnaprashana" element={<Navigate to="/treatments" replace />} />
-          <Route path="/treatments/swarnamrutha" element={<Navigate to="/treatments" replace />} />
           
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/gallery." element={<Navigate to="/gallery" replace />} />

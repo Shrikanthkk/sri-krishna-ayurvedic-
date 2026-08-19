@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Sparkles, CheckCircle2, Calendar, PhoneCall, Baby, ShieldCheck, ShieldAlert, HeartHandshake, BookOpen, AlertTriangle, ArrowRight, Sun, Clock, Award } from 'lucide-react';
+import { Sparkles, CheckCircle2, Calendar, PhoneCall, Baby, ShieldCheck, ShieldAlert, HeartHandshake, BookOpen, AlertTriangle, ArrowRight, Sun, Clock, Award, Star, CalendarDays } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import { clinicData } from '../data/clinicData';
@@ -11,6 +11,30 @@ import swarnaImg3 from '../assets/swarnaprashana_3.png';
 
 export default function Swarnaprashana({ onOpenBooking }) {
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
+
+  const pushyaDates = [
+    { month: "January", date: "5" },
+    { month: "February", date: "1" },
+    { month: "February", date: "28" },
+    { month: "March", date: "28" },
+    { month: "April", date: "24" },
+    { month: "May", date: "21" },
+    { month: "June", date: "18" },
+    { month: "July", date: "15" },
+    { month: "August", date: "11" },
+    { month: "September", date: "8" },
+    { month: "October", date: "5" },
+    { month: "November", date: "1" },
+    { month: "November", date: "29" },
+    { month: "December", date: "26" }
+  ];
+
+  const purposePoints = [
+    "Supports traditional Ayurvedic child wellness",
+    "Traditionally associated with strength and vitality",
+    "Traditionally described in relation to healthy development",
+    "Supports a holistic approach to children's wellbeing"
+  ];
 
   return (
     <motion.div
@@ -24,7 +48,7 @@ export default function Swarnaprashana({ onOpenBooking }) {
       <PageHero
         badge="PEDIATRIC AYURVEDA"
         title="Swarnaprashana"
-        subtitle="A traditional Ayurvedic practice involving the administration of specially prepared gold-based formulations for children."
+        subtitle="Traditional Ayurvedic Wellness for Children"
         bgImage={swarnaImg1}
       />
 
@@ -32,7 +56,7 @@ export default function Swarnaprashana({ onOpenBooking }) {
         {/* 2. BREADCRUMB */}
         <Breadcrumb
           items={[
-            { label: 'Treatments', link: '/treatments' },
+            { label: 'All Treatments', link: '/treatments' },
             { label: 'Swarnaprashana' }
           ]}
         />
@@ -48,6 +72,154 @@ export default function Swarnaprashana({ onOpenBooking }) {
           </div>
         </div>
 
+        {/* ─────────────────────────────────────────────────────────────
+            NEW ATTRACTIVE SWARNAPRASHANA & PUSHYA NAKSHATRA SECTION
+           ───────────────────────────────────────────────────────────── */}
+        <section className="bg-white p-6 sm:p-8 lg:p-10 rounded-3xl border border-earth-200 shadow-elevated mb-12 space-y-8">
+          
+          {/* Header Row with Prominent Age Badge */}
+          <div className="flex flex-col md:flex-row md:items-start justify-between gap-4 border-b border-earth-200/80 pb-6">
+            <div className="space-y-2 max-w-2xl">
+              <div className="flex items-center gap-2 text-xs font-bold text-brass-600 uppercase tracking-widest">
+                <Sparkles className="w-4 h-4 text-brass-500" />
+                <span>CLASSICAL AYURVEDIC PEDIATRICS</span>
+              </div>
+              <h2 className="text-3xl sm:text-4xl font-serif text-forest-950 font-light">
+                Swarnaprashana
+              </h2>
+              <p className="text-forest-800 font-medium text-sm sm:text-base">
+                Traditional Ayurvedic Wellness for Children
+              </p>
+              <p className="text-earth-800 text-xs sm:text-sm font-light leading-relaxed pt-1">
+                <strong>Swarnaprashana (Swarna Prashana)</strong> is a traditional Ayurvedic practice for children, traditionally associated with <strong>Pushya Nakshatra</strong>. It is described in Ayurveda as a practice intended to support a child's overall wellbeing, strength and healthy development.
+              </p>
+            </div>
+
+            {/* Prominent Age Group Card/Badge */}
+            <div className="bg-forest-950 text-cream-50 p-4 sm:p-5 rounded-2xl border border-brass-500/30 shadow-md text-center shrink-0 min-w-[180px] space-y-1">
+              <span className="text-[10px] font-bold text-brass-400 uppercase tracking-widest block">Age Group</span>
+              <div className="text-2xl sm:text-3xl font-serif font-bold text-cream-50">0–16 Years</div>
+              <span className="text-[11px] text-cream-200/80 font-light block">For Infants & Children</span>
+            </div>
+          </div>
+
+          {/* 2-Column Module: Pushya Nakshatra Day & Schedule + Traditional Ayurvedic Purpose */}
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+            
+            {/* Left Column: Pushya Nakshatra Highlight & 2-Column Schedule */}
+            <div className="lg:col-span-7 bg-cream-100/70 p-6 sm:p-7 rounded-3xl border border-earth-200 space-y-5 flex flex-col justify-between">
+              <div className="space-y-4">
+                {/* Pushya Nakshatra Day Highlight Card */}
+                <div className="p-4 bg-white rounded-2xl border border-brass-500/30 shadow-xs flex items-start gap-3">
+                  <div className="w-9 h-9 rounded-full bg-forest-900 text-brass-400 flex items-center justify-center shrink-0">
+                    <Star className="w-4.5 h-4.5" />
+                  </div>
+                  <div className="space-y-0.5">
+                    <strong className="text-forest-950 font-serif text-sm block">Pushya Nakshatra Day</strong>
+                    <p className="text-xs text-earth-800 font-light leading-relaxed">
+                      “Swarnaprashana is traditionally administered on Pushya Nakshatra days according to Ayurvedic practice.”
+                    </p>
+                  </div>
+                </div>
+
+                {/* Schedule Title */}
+                <div className="flex items-center gap-2 text-forest-950 pt-1">
+                  <CalendarDays className="w-4 h-4 text-brass-600" />
+                  <h3 className="font-serif text-lg sm:text-xl font-medium">Pushya Nakshatra Schedule</h3>
+                </div>
+
+                {/* Two-Column Monthly Schedule Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                  {pushyaDates.map((item, idx) => (
+                    <div
+                      key={idx}
+                      className="flex items-center justify-between p-2.5 px-3.5 bg-white rounded-xl border border-earth-200 shadow-2xs hover:border-brass-400 transition-colors"
+                    >
+                      <span className="font-medium text-forest-950 flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
+                        <span>{item.month}</span>
+                      </span>
+                      <span className="px-2.5 py-0.5 rounded-md bg-forest-50 text-forest-900 font-mono font-bold text-xs border border-forest-900/10">
+                        {item.date}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Schedule Note */}
+                <p className="text-[11px] text-earth-700 italic font-light pt-1">
+                  * Pushya Nakshatra dates vary by year and location. Please confirm the current schedule with our clinic before visiting.
+                </p>
+              </div>
+            </div>
+
+            {/* Right Column: Traditional Ayurvedic Purpose & Medical Safety Notice */}
+            <div className="lg:col-span-5 bg-white p-6 sm:p-7 rounded-3xl border border-earth-200 shadow-sm space-y-5 flex flex-col justify-between">
+              <div className="space-y-4">
+                <span className="text-[11px] font-bold uppercase tracking-widest text-brass-600 block">
+                  CLASSICAL OBJECTIVES
+                </span>
+
+                <h3 className="font-serif text-xl sm:text-2xl text-forest-950 font-light">
+                  Traditional Ayurvedic Purpose
+                </h3>
+
+                <p className="text-xs text-earth-800 font-light leading-relaxed">
+                  In classical Ayurvedic literature (*Kaumarabhritya*), Swarnaprashana is described with the following traditional wellness intentions:
+                </p>
+
+                <ul className="space-y-2.5 text-xs text-earth-900 font-medium">
+                  {purposePoints.map((point, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 p-2.5 bg-cream-50 rounded-xl border border-earth-200/80">
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
+                      <span>{point}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                {/* Specific Medical Safety Box */}
+                <div className="p-3.5 bg-amber-500/10 border-l-3 border-amber-600 rounded-r-xl text-[11px] text-earth-900 leading-relaxed space-y-1">
+                  <strong className="text-forest-950 font-semibold block">Safety & Supervised Administration:</strong>
+                  <p className="font-light">
+                    “Swarnaprashana should be administered only under the guidance of a qualified Ayurvedic practitioner. It should not replace routine pediatric care, vaccination, nutrition or medical treatment.”
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          {/* CTA: Interested in Swarnaprashana for Your Child? */}
+          <div className="p-5 sm:p-7 bg-forest-950 text-cream-50 rounded-2xl flex flex-col sm:flex-row sm:items-center justify-between gap-5 shadow-md">
+            <div className="space-y-1">
+              <h3 className="font-serif text-xl sm:text-2xl font-light text-cream-50">
+                Interested in Swarnaprashana for Your Child?
+              </h3>
+              <p className="text-xs text-cream-200/80 font-light leading-relaxed">
+                Contact our clinic to confirm the upcoming Pushya Nakshatra date and receive guidance from a qualified Ayurvedic practitioner.
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+              <button
+                onClick={() => onOpenBooking ? onOpenBooking('Swarnaprashana Pediatric Consultation') : null}
+                className="px-6 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-soft transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
+              >
+                <Calendar className="w-4 h-4" />
+                <span>Book Swarnaprashana</span>
+              </button>
+              <a
+                href={telUri}
+                className="px-6 py-3 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full border border-forest-700 transition-all text-center flex items-center justify-center gap-2"
+              >
+                <PhoneCall className="w-4 h-4 text-brass-400" />
+                <span>Call Clinic</span>
+              </a>
+            </div>
+          </div>
+
+        </section>
+
         {/* SECTION 1: WHAT IS SWARNAPRASHANA? (#overview) */}
         <section id="overview" className="scroll-mt-28 mb-12">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -57,7 +229,7 @@ export default function Swarnaprashana({ onOpenBooking }) {
                 <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
                   01 • CLASSICAL PEDIATRIC ESSENCE
                 </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light text-forest-950 leading-tight">
+                <h2 className="text-3xl sm:text-4xl font-serif font-light text-forest-950 leading-tight">
                   What is Swarnaprashana?
                 </h2>
               </div>
@@ -176,7 +348,7 @@ export default function Swarnaprashana({ onOpenBooking }) {
                 <span className="text-xs uppercase tracking-ultra font-bold text-brass-600 block">
                   02 • VEDIC CONTEXT & PRINCIPLES
                 </span>
-                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-serif font-light text-forest-950 leading-tight">
+                <h2 className="text-3xl sm:text-4xl font-serif font-light text-forest-950 leading-tight">
                   Traditional Ayurvedic Perspective
                 </h2>
               </div>
@@ -441,7 +613,7 @@ export default function Swarnaprashana({ onOpenBooking }) {
               className="px-7 py-3.5 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-soft transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
             >
               <Calendar className="w-4 h-4" />
-              <span>Book a Consultation</span>
+              <span>Book Swarnaprashana</span>
             </button>
             <Link
               to="/contact"
