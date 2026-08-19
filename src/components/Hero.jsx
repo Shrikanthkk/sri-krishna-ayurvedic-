@@ -1,10 +1,22 @@
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Sparkles, ShieldCheck, Award, HeartHandshake } from 'lucide-react';
-import { clinicData } from '../data/clinicData';
+import heroChakraVideo from '../assets/Meditating_figure_chakras_glowing_202608181320.mp4';
 
 export default function Hero({ onOpenBooking }) {
+  const videoRef = useRef(null);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.defaultMuted = true;
+      videoRef.current.muted = true;
+      videoRef.current.play().catch(() => {
+        // Autoplay policy fallback
+      });
+    }
+  }, []);
+
   return (
     <section 
       id="hero" 
@@ -139,17 +151,18 @@ export default function Hero({ onOpenBooking }) {
               {/* Main Video Container */}
               <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-earth-200/90 aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] bg-forest-950 group">
                 <video
+                  ref={videoRef}
                   autoPlay
                   loop
                   muted
                   playsInline
+                  preload="auto"
+                  src={heroChakraVideo}
                   className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
-                  poster="/images/hero_adobe_3.jpg"
                 >
+                  <source src={heroChakraVideo} type="video/mp4" />
                   <source src="/videos/Meditating_figure_chakras_glowing_202608181320.mp4" type="video/mp4" />
                   <source src="/Meditating_figure_chakras_glowing_202608181320.mp4" type="video/mp4" />
-                  <source src="/videos/meditation_chakras.mp4" type="video/mp4" />
-                  <source src="/meditation_chakras.mp4" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
 
