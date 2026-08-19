@@ -4,5 +4,7 @@ node_modules
 dist
 .vercel
 *.zip
-*.mp4
+/Meditating_figure_chakras_glowing_202608181320.mp4
 animation
+!public/**
+!src/**
