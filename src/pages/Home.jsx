@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, HeartHandshake, Award, Calendar, Phone, CheckCircle2, ChevronRight, ChevronLeft, MapPin } from 'lucide-react';
 import Hero from '../components/Hero';
 import HomeImageSlider from '../components/HomeImageSlider';
+import WeAlsoTreatSlider from '../components/WeAlsoTreatSlider';
 import { clinicData } from '../data/clinicData';
 import { getStoredTreatments } from '../utils/adminStorage';
 
@@ -188,6 +189,9 @@ export default function Home({ onOpenBooking }) {
 
         </div>
       </section>
+
+      {/* 4B. WE ALSO TREAT — HORIZONTAL CAROUSEL */}
+      <WeAlsoTreatSlider onOpenBooking={onOpenBooking} />
 
       {/* 5. FEATURED TREATMENTS */}
       <section className="py-10 sm:py-14 bg-cream-100/60 border-t border-earth-200">
