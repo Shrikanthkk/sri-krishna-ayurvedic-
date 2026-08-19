@@ -17,15 +17,16 @@ import {
 
 /*
  * ─────────────────────────────────────────────────────────────
- *  WeAlsoTreatSlider — Continuous Non-Stopping Treatments Carousel
+ *  WeAlsoTreatSlider — Dual-Track Opposite-Direction Carousel
  *
- *  Displays all 27 Ayurvedic conditions in a seamless,
- *  continuous horizontal moving track without buttons or pauses.
+ *  Row 1: Moves smoothly Right to Left
+ *  Row 2: Moves smoothly Left to Right
+ *  Continuous, seamless non-stopping marquee without buttons.
  * ─────────────────────────────────────────────────────────────
  */
 
-const CAROUSEL_CSS = `
-  @keyframes sk_treatments_marquee {
+const DUAL_CAROUSEL_CSS = `
+  @keyframes sk_treatments_left {
     0% {
       transform: translate3d(0, 0, 0);
     }
@@ -34,31 +35,48 @@ const CAROUSEL_CSS = `
     }
   }
 
-  .sk-treatments-track {
+  @keyframes sk_treatments_right {
+    0% {
+      transform: translate3d(-50%, 0, 0);
+    }
+    100% {
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .sk-treatments-track-left {
     display: flex;
     width: max-content;
     will-change: transform;
-    animation: sk_treatments_marquee 70s linear infinite;
+    animation: sk_treatments_left 42s linear infinite;
+  }
+
+  .sk-treatments-track-right {
+    display: flex;
+    width: max-content;
+    will-change: transform;
+    animation: sk_treatments_right 42s linear infinite;
   }
 
   @media (max-width: 768px) {
-    .sk-treatments-track {
-      animation-duration: 55s;
+    .sk-treatments-track-left,
+    .sk-treatments-track-right {
+      animation-duration: 34s;
     }
   }
 `;
 
-function injectCarouselCSS() {
-  if (document.getElementById('sk-treatments-carousel-style')) return;
+function injectDualCarouselCSS() {
+  if (document.getElementById('sk-treatments-dual-style')) return;
   const style = document.createElement('style');
-  style.id = 'sk-treatments-carousel-style';
-  style.textContent = CAROUSEL_CSS;
+  style.id = 'sk-treatments-dual-style';
+  style.textContent = DUAL_CAROUSEL_CSS;
   document.head.appendChild(style);
 }
 
 export default function WeAlsoTreatSlider({ onOpenBooking }) {
   useEffect(() => {
-    injectCarouselCSS();
+    injectDualCarouselCSS();
   }, []);
 
   const treatmentsData = [
@@ -227,30 +245,34 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
     }
   ];
 
+  // Split into 2 Rows
+  const row1Data = treatmentsData.slice(0, 14);
+  const row2Data = treatmentsData.slice(14);
+
   const renderCard = (item, idx, keyPrefix) => {
     const IconComponent = item.icon;
     return (
       <div
         key={`${keyPrefix}-${item.id}`}
-        className="w-[260px] sm:w-[280px] shrink-0 px-2.5"
+        className="w-[260px] sm:w-[280px] shrink-0 px-2 sm:px-2.5"
       >
         <div
-          className={`h-full min-h-[195px] p-5 sm:p-6 rounded-2xl border transition-all duration-300 flex flex-col justify-between select-none ${
+          className={`h-full min-h-[175px] sm:min-h-[185px] p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between select-none ${
             item.isFeatured
               ? 'bg-gradient-to-br from-forest-950 to-forest-900 text-cream-50 border-brass-500/40 shadow-elevated'
               : 'bg-white text-forest-950 border-earth-200 shadow-sm hover:shadow-elevated'
           }`}
         >
           {/* Top Icon & Index */}
-          <div className="flex items-center justify-between mb-3.5">
+          <div className="flex items-center justify-between mb-2.5">
             <div
-              className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
+              className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center transition-colors ${
                 item.isFeatured
                   ? 'bg-forest-800 text-brass-400 border border-brass-500/30'
                   : 'bg-cream-100 text-forest-800'
               }`}
             >
-              <IconComponent className="w-4.5 h-4.5" />
+              <IconComponent className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
             </div>
             <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
               item.isFeatured ? 'text-brass-400' : 'text-earth-400'
@@ -260,13 +282,13 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
           </div>
 
           {/* Title & Description (No Buttons) */}
-          <div className="space-y-1.5">
-            <h3 className={`font-serif text-lg sm:text-xl font-medium leading-snug ${
+          <div className="space-y-1">
+            <h3 className={`font-serif text-base sm:text-lg font-medium leading-snug ${
               item.isFeatured ? 'text-cream-50' : 'text-forest-950'
             }`}>
               {item.title}
             </h3>
-            <p className={`text-xs font-light leading-relaxed ${
+            <p className={`text-[11px] sm:text-xs font-light leading-relaxed ${
               item.isFeatured ? 'text-cream-200/80' : 'text-earth-800'
             }`}>
               {item.description}
@@ -297,23 +319,37 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
 
       </div>
 
-      {/* Full-width continuous non-stopping moving marquee */}
-      <div className="w-full overflow-hidden relative">
+      {/* Dual Opposite-Direction Continuous Marquee Tracks */}
+      <div className="w-full overflow-hidden relative space-y-3 sm:space-y-4">
+        
         {/* Subtle Edge Vignettes */}
-        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-r from-cream-50/90 to-transparent z-10 pointer-events-none" />
-        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-16 bg-gradient-to-l from-cream-50/90 to-transparent z-10 pointer-events-none" />
+        <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-r from-cream-50/95 to-transparent z-10 pointer-events-none" />
+        <div className="absolute right-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-l from-cream-50/95 to-transparent z-10 pointer-events-none" />
 
-        <div className="sk-treatments-track py-2">
-          {/* First Set of 27 Cards */}
+        {/* ROW 1: Right to Left (←) */}
+        <div className="sk-treatments-track-left">
+          {/* First Copy */}
           <div className="flex items-center">
-            {treatmentsData.map((item, idx) => renderCard(item, idx, 'set1'))}
+            {row1Data.map((item, idx) => renderCard(item, idx, 'row1-set1'))}
           </div>
-
-          {/* Duplicated Second Set for 100% Seamless Continuous Non-Stopping Loop */}
+          {/* Duplicate Copy for Continuous Loop */}
           <div className="flex items-center">
-            {treatmentsData.map((item, idx) => renderCard(item, idx, 'set2'))}
+            {row1Data.map((item, idx) => renderCard(item, idx, 'row1-set2'))}
           </div>
         </div>
+
+        {/* ROW 2: Left to Right (→) */}
+        <div className="sk-treatments-track-right">
+          {/* First Copy */}
+          <div className="flex items-center">
+            {row2Data.map((item, idx) => renderCard(item, idx + 14, 'row2-set1'))}
+          </div>
+          {/* Duplicate Copy for Continuous Loop */}
+          <div className="flex items-center">
+            {row2Data.map((item, idx) => renderCard(item, idx + 14, 'row2-set2'))}
+          </div>
+        </div>
+
       </div>
     </section>
   );
