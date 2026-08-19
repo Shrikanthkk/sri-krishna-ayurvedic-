@@ -13,7 +13,7 @@ export default function BookAppointment() {
     email: '',
     date: '',
     timeSlot: '10:00 AM',
-    treatment: 'Nadi Pariksha (Pulse Diagnosis)',
+    treatment: 'Chronic Diseases – Joint Pains (Arthritis)',
     notes: ''
   });
   const [submittedAppointment, setSubmittedAppointment] = useState(null);
@@ -172,9 +172,7 @@ export default function BookAppointment() {
                     {treatmentsList.map((t) => (
                       <option key={t.id} value={t.title}>{t.title}</option>
                     ))}
-                    <option value="Integrative Cancer Consultation">Integrative Cancer Supportive Consultation</option>
-                    <option value="Swarnaprashana Pediatric Care">Swarnaprashana (Ayurvedic Pediatric Care)</option>
-                    <option value="General Consultation">General Ayurvedic Consultation</option>
+                    <option value="General Ayurvedic Consultation">General Ayurvedic Consultation</option>
                   </select>
                 </div>
               </div>

@@ -64,34 +64,43 @@ export default function Footer({ onOpenBooking }) {
           {/* Col 3: Specialized Care */}
           <div className="lg:col-span-2 space-y-2.5">
             <h4 className="text-xs font-semibold uppercase tracking-widest text-brass-400">
-              Specialized Care
+              Our 7 Treatments
             </h4>
             <ul className="space-y-1.5 text-xs text-cream-200/80 font-light">
               <li>
-                <Link to="/treatments/cancer-care" className="hover:text-brass-300 transition-colors flex items-center gap-1 font-medium text-cream-100">
-                  <span>Integrative Cancer Care</span>
+                <Link to="/treatments/joint-pain-arthritis" className="hover:text-brass-300 transition-colors">
+                  <span>Joint Pain & Arthritis</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/treatments/skin-problems" className="hover:text-brass-300 transition-colors">
+                  <span>Skin Problems</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/treatments/hair-fall" className="hover:text-brass-300 transition-colors">
+                  <span>Hair Fall Treatment</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/treatments/sexual-disorders" className="hover:text-brass-300 transition-colors">
+                  <span>Sexual Disorders</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/treatments/de-addiction" className="hover:text-brass-300 transition-colors">
+                  <span>De-addiction</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/treatments/diabetes" className="hover:text-brass-300 transition-colors">
+                  <span>Diabetes Care</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/treatments/cancer-treatment" className="hover:text-brass-300 transition-colors flex items-center gap-1 font-medium text-cream-100">
+                  <span>Cancer Treatment</span>
                   <ArrowUpRight className="w-3 h-3 text-brass-400" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/treatments/swarnaprashana" className="hover:text-brass-300 transition-colors flex items-center gap-1 font-medium text-cream-100">
-                  <span>Swarnaprashana Care</span>
-                  <ArrowUpRight className="w-3 h-3 text-brass-400" />
-                </Link>
-              </li>
-              <li>
-                <Link to="/treatments" className="hover:text-brass-300 transition-colors">
-                  <span>Nadi Pariksha</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/treatments" className="hover:text-brass-300 transition-colors">
-                  <span>Panchakarma Detox</span>
-                </Link>
-              </li>
-              <li>
-                <Link to="/treatments" className="hover:text-brass-300 transition-colors">
-                  <span>Joint & Spine Care</span>
                 </Link>
               </li>
             </ul>

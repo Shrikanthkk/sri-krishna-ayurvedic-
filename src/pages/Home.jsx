@@ -213,61 +213,54 @@ export default function Home({ onOpenBooking }) {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {treatmentsList.slice(0, 3).map((item) => {
-              const cardImage = item.image || 
-                (item.id === 'nadi-pariksha' || item.subtitle?.includes('Ancient') || item.title?.includes('Nadi Pariksha') 
-                  ? '/images/nadi_pariksha.png' 
-                  : (item.id === 'panchakarma' || item.subtitle?.includes('Cellular Rejuvenation') || item.title?.includes('Panchakarma') ? '/images/panchakarma.png' : '/images/hero_adobe_5.jpg'));
-
-              return (
-                <div
-                  key={item.id}
-                  className="bg-white rounded-2xl border border-earth-200 shadow-elevated overflow-hidden flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 group"
-                >
-                  <div className="h-52 overflow-hidden relative">
-                    <img 
-                      src={cardImage} 
-                      alt={item.title} 
-                      className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-sm text-brass-400 text-[10px] font-mono font-bold uppercase tracking-wider border border-brass-400/30 shadow-md">
-                      {item.number || "01"} • THERAPY
-                    </div>
-                  </div>
-
-                  <div className="p-6 space-y-3.5 flex-1 flex flex-col justify-between">
-                    <div className="space-y-2.5">
-                      <span className="text-xs font-semibold text-brass-600 uppercase tracking-widest block">
-                        {item.subtitle}
-                      </span>
-                      <h3 className="font-serif text-xl sm:text-2xl text-forest-950 font-light group-hover:text-forest-800 transition-colors">
-                        {item.title}
-                      </h3>
-                      <p className="text-xs text-earth-800 leading-relaxed font-light">
-                        {item.description}
-                      </p>
-                    </div>
-
-                    <div className="pt-4 mt-4 border-t border-earth-200 flex items-center justify-between">
-                      <span className="text-[11px] text-gray-500 font-medium">{item.duration}</span>
-                      <Link
-                        to="/treatments"
-                        className="text-xs font-bold text-forest-900 group-hover:text-emerald-600 uppercase tracking-wider flex items-center gap-1"
-                      >
-                        <span>Details</span>
-                        <ArrowRight className="w-3.5 h-3.5" />
-                      </Link>
-                    </div>
+            {treatmentsList.slice(0, 3).map((item) => (
+              <div
+                key={item.id}
+                className="bg-white rounded-2xl border border-earth-200 shadow-elevated overflow-hidden flex flex-col justify-between hover:-translate-y-1 transition-all duration-300 group"
+              >
+                <div className="h-52 overflow-hidden relative">
+                  <img 
+                    src={item.image || '/images/hero_adobe_5.jpg'} 
+                    alt={item.title} 
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3.5 left-3.5 px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-sm text-brass-400 text-[10px] font-mono font-bold uppercase tracking-wider border border-brass-400/30 shadow-md">
+                    {item.number || "01"} • THERAPY
                   </div>
                 </div>
-              );
-            })}
+
+                <div className="p-6 space-y-3.5 flex-1 flex flex-col justify-between">
+                  <div className="space-y-2.5">
+                    <span className="text-xs font-semibold text-brass-600 uppercase tracking-widest block">
+                      {item.subtitle}
+                    </span>
+                    <h3 className="font-serif text-xl sm:text-2xl text-forest-950 font-light group-hover:text-forest-800 transition-colors">
+                      {item.title}
+                    </h3>
+                    <p className="text-xs text-earth-800 leading-relaxed font-light">
+                      {item.description}
+                    </p>
+                  </div>
+
+                  <div className="pt-4 mt-4 border-t border-earth-200 flex items-center justify-between">
+                    <span className="text-[11px] text-gray-500 font-medium">{item.duration}</span>
+                    <Link
+                      to={item.link || `/treatments/${item.id}`}
+                      className="text-xs font-bold text-forest-900 group-hover:text-emerald-600 uppercase tracking-wider flex items-center gap-1"
+                    >
+                      <span>Explore</span>
+                      <ArrowRight className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
 
         </div>
       </section>
 
-      {/* 6. CANCER CARE HIGHLIGHT */}
+      {/* 6. SPECIALIZED SUPPORT HIGHLIGHT (Cancer Treatment & Metabolic Care) */}
       <section className="py-10 sm:py-14 bg-forest-950 text-cream-50 relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
@@ -277,36 +270,37 @@ export default function Home({ onOpenBooking }) {
                 SPECIALIZED SUPPORT
               </span>
               <h2 className="text-3xl sm:text-4xl font-serif font-light text-cream-50 leading-tight">
-                Integrative Cancer Care & Supportive Consultation
+                Cancer Treatment – Ayurvedic Supportive Care
               </h2>
               <p className="text-cream-200/80 text-sm sm:text-base font-light leading-relaxed">
                 Personalized Ayurvedic consultation and supportive wellness care for individuals seeking natural adjunct support alongside primary oncology treatment.
               </p>
 
               <div className="p-3.5 bg-forest-900/80 border-l-4 border-brass-500 rounded-r-xl text-xs text-cream-200">
-                <strong>Medical Notice:</strong> Ayurvedic consultations provide supportive care and do not replace medically recommended cancer diagnosis or treatment.
+                <strong>Medical Notice:</strong> Ayurvedic consultations provide supportive care and do not replace medically recommended cancer diagnosis, surgery, or oncology treatment.
               </div>
 
               <div className="pt-1 flex flex-wrap gap-4">
                 <Link
-                  to="/treatments/cancer-care"
+                  to="/treatments/cancer-treatment"
                   className="px-6 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-semibold text-xs uppercase tracking-wider rounded-full shadow-soft transition-all"
                 >
-                  Cancer Care Approach →
+                  Explore Cancer Support →
                 </Link>
               </div>
             </div>
 
             <div className="lg:col-span-4 bg-forest-900 p-6 sm:p-7 rounded-3xl border border-forest-800 space-y-3">
-              <h3 className="font-serif text-xl sm:text-2xl text-cream-50 font-light">Swarnaprashana</h3>
+              <span className="text-[10px] font-bold uppercase tracking-widest text-brass-400 block">METABOLIC WELLNESS</span>
+              <h3 className="font-serif text-xl sm:text-2xl text-cream-50 font-light">Diabetes Care</h3>
               <p className="text-xs text-cream-200/80 font-light leading-relaxed">
-                Traditional Ayurvedic pediatric gold formulation (*Kashyapa Samhita*) supportive of cognitive focus (*Medha*) and vitality.
+                Classical Madhumeha principles, digestive Agni rejuvenation, and customized glycemic dietary plans.
               </p>
               <Link
-                to="/treatments/swarnaprashana"
+                to="/treatments/diabetes"
                 className="inline-block text-xs font-bold text-brass-400 hover:text-white uppercase tracking-wider pt-1"
               >
-                View Swarnaprashana Details →
+                Explore Diabetes Care →
               </Link>
             </div>
 

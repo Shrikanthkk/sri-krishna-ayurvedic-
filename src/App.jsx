@@ -10,9 +10,14 @@ import BelowNavbarAnimation from './components/BelowNavbarAnimation';
 import Home from './pages/Home';
 import About from './pages/About';
 import Treatments from './pages/Treatments';
-import CancerCare from './pages/CancerCare';
-import Swarnaprashana from './pages/Swarnaprashana';
-import Swarnamrutha from './pages/Swarnamrutha';
+import JointPainArthritis from './pages/treatments/JointPainArthritis';
+import SkinProblems from './pages/treatments/SkinProblems';
+import HairFall from './pages/treatments/HairFall';
+import SexualDisorders from './pages/treatments/SexualDisorders';
+import DeAddiction from './pages/treatments/DeAddiction';
+import Diabetes from './pages/treatments/Diabetes';
+import CancerTreatment from './pages/treatments/CancerTreatment';
+
 import Gallery from './pages/Gallery';
 import Testimonials from './pages/Testimonials';
 import Contact from './pages/Contact';
@@ -31,7 +36,6 @@ function AppContent() {
       {/* Navigation Bar across public pages (hidden on /admin and /login) */}
       {!isAdmin && <Navbar onOpenBooking={() => setBookingOpen(true)} />}
 
-
       {/* Multi-Page Routes — animation bar is first child so it scrolls away behind navbar */}
       <main className={`grow ${isAdmin ? 'pt-0' : 'pt-16'}`}>
         {!isAdmin && <BelowNavbarAnimation />}
@@ -45,11 +49,23 @@ function AppContent() {
           <Route path="/why-choose-us" element={<Navigate to="/about#why-choose-us" replace />} />
           <Route path="/locations" element={<Navigate to="/about#locations" replace />} />
           
+          {/* Central All Treatments Directory Route */}
           <Route path="/treatments" element={<Treatments onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments." element={<Navigate to="/treatments" replace />} />
-          <Route path="/treatments/cancer-care" element={<CancerCare />} />
-          <Route path="/treatments/swarnaprashana" element={<Swarnaprashana onOpenBooking={() => setBookingOpen(true)} />} />
-          <Route path="/treatments/swarnamrutha" element={<Swarnaprashana onOpenBooking={() => setBookingOpen(true)} />} />
+          
+          {/* 7 Dedicated Treatment Routes */}
+          <Route path="/treatments/joint-pain-arthritis" element={<JointPainArthritis onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/skin-problems" element={<SkinProblems onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/hair-fall" element={<HairFall onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/sexual-disorders" element={<SexualDisorders onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/de-addiction" element={<DeAddiction onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/diabetes" element={<Diabetes onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/cancer-treatment" element={<CancerTreatment onOpenBooking={() => setBookingOpen(true)} />} />
+
+          {/* Compatibility Redirects */}
+          <Route path="/treatments/cancer-care" element={<Navigate to="/treatments/cancer-treatment" replace />} />
+          <Route path="/treatments/swarnaprashana" element={<Navigate to="/treatments" replace />} />
+          <Route path="/treatments/swarnamrutha" element={<Navigate to="/treatments" replace />} />
           
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/gallery." element={<Navigate to="/gallery" replace />} />

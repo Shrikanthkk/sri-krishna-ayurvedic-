@@ -22,16 +22,20 @@ export default function Navbar({ onOpenBooking }) {
   const navLinks = [
     { name: 'HOME', path: '/' },
     { name: 'ABOUT US', path: '/about' },
-    { name: 'TREATMENTS', path: '/treatments', hasDropdown: true },
+    { name: 'ALL TREATMENTS', path: '/treatments', hasDropdown: true },
     { name: 'GALLERY', path: '/gallery' },
     { name: 'TESTIMONIALS', path: '/testimonials' },
     { name: 'CONTACT US', path: '/contact' }
   ];
 
   const subLinks = [
-    { name: 'ALL TREATMENTS', path: '/treatments' },
-    { name: 'CANCER CARE', path: '/treatments/cancer-care' },
-    { name: 'SWARNAPRASHANA', path: '/treatments/swarnaprashana' }
+    { name: 'Joint Pain & Arthritis', path: '/treatments/joint-pain-arthritis' },
+    { name: 'Skin Problems', path: '/treatments/skin-problems' },
+    { name: 'Hair Fall Treatment', path: '/treatments/hair-fall' },
+    { name: 'Sexual Disorders', path: '/treatments/sexual-disorders' },
+    { name: 'De-addiction', path: '/treatments/de-addiction' },
+    { name: 'Diabetes', path: '/treatments/diabetes' },
+    { name: 'Cancer Treatment', path: '/treatments/cancer-treatment' }
   ];
 
   const isPathActive = (link) => {
@@ -77,7 +81,7 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
-          {/* Desktop Navigation Links (with 32px / lg:ml-8 gap separating Brand Logo from HOME button) */}
+          {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 lg:ml-8 xl:ml-10">
             {navLinks.map((link) => {
               const active = isPathActive(link);
@@ -109,7 +113,7 @@ export default function Navbar({ onOpenBooking }) {
                       </span>
                     </Link>
 
-                    {/* Submenu Dropdown Container */}
+                    {/* Submenu Dropdown Container with exactly 7 items */}
                     <AnimatePresence>
                       {hoveringTreatments && (
                         <motion.div
@@ -117,30 +121,38 @@ export default function Navbar({ onOpenBooking }) {
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 6, scale: 0.98 }}
                           transition={{ duration: 0.22, ease: 'easeOut' }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 pointer-events-auto"
+                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 pointer-events-auto min-w-[260px]"
                         >
                           <div
-                            className={`flex flex-col gap-2 p-2.5 rounded-2xl shadow-elevated border backdrop-blur-xl ${
+                            className={`flex flex-col gap-1.5 p-3 rounded-2xl shadow-elevated border backdrop-blur-xl ${
                               scrolled
                                 ? 'bg-forest-950/95 border-forest-800/80'
                                 : 'bg-cream-50/95 border-earth-200'
                             }`}
                           >
+                            <Link
+                              to="/treatments"
+                              onClick={() => setHoveringTreatments(false)}
+                              className="px-3.5 py-2 text-[11px] font-bold tracking-wider uppercase rounded-xl transition-all border-b border-earth-200/60 mb-1 text-brass-600 hover:text-brass-700 flex items-center justify-between"
+                            >
+                              <span>View All 7 Treatments</span>
+                              <span>→</span>
+                            </Link>
+
                             {subLinks.map((sub) => (
                               <Link
                                 key={sub.name}
                                 to={sub.path}
                                 onClick={() => setHoveringTreatments(false)}
-                                className={`inline-flex items-center justify-center h-[42px] px-6 text-[12px] font-medium tracking-[0.05em] uppercase whitespace-nowrap transition-all duration-300 -skew-x-12 border-0 cursor-pointer ${
+                                className={`px-3.5 py-2 text-[12px] font-medium tracking-[0.03em] rounded-xl transition-all ${
                                   location.pathname === sub.path
                                     ? 'bg-[rgba(16,185,129,0.35)] text-emerald-300 font-semibold'
                                     : scrolled
-                                    ? 'text-cream-100 hover:bg-[rgba(16,185,129,0.26)]'
-                                    : 'text-forest-950 hover:bg-[rgba(16,185,129,0.24)]'
+                                    ? 'text-cream-100 hover:bg-[rgba(16,185,129,0.22)]'
+                                    : 'text-forest-950 hover:bg-[rgba(16,185,129,0.18)]'
                                 }`}
-                                style={{ borderRadius: '2px 6px 2px 6px' }}
                               >
-                                <span className="skew-x-12 font-medium">{sub.name}</span>
+                                <span>{sub.name}</span>
                               </Link>
                             ))}
                           </div>
@@ -231,7 +243,7 @@ export default function Navbar({ onOpenBooking }) {
               </div>
               <button
                 onClick={() => setMobileOpen(false)}
-                className="p-2 text-cream-200 hover:text-white rounded-full bg-forest-900"
+                className="p-2 text-cream-200 hover:text-white rounded-full bg-forest-900 cursor-pointer"
                 aria-label="Close menu"
               >
                 <X className="w-5 h-5" />
@@ -261,7 +273,7 @@ export default function Navbar({ onOpenBooking }) {
                         </Link>
                         <button
                           onClick={() => setMobileTreatmentsOpen(!mobileTreatmentsOpen)}
-                          className="h-[48px] px-4 bg-[rgba(16,185,129,0.14)] text-cream-100 -skew-x-12 flex items-center justify-center"
+                          className="h-[48px] px-4 bg-[rgba(16,185,129,0.14)] text-cream-100 -skew-x-12 flex items-center justify-center cursor-pointer"
                           style={{ borderRadius: '2px 6px 2px 6px' }}
                         >
                           <ChevronDown className={`skew-x-12 w-4 h-4 text-emerald-300 transition-transform ${mobileTreatmentsOpen ? 'rotate-180' : ''}`} />
@@ -274,14 +286,24 @@ export default function Navbar({ onOpenBooking }) {
                             initial={{ opacity: 0, height: 0 }}
                             animate={{ opacity: 1, height: 'auto' }}
                             exit={{ opacity: 0, height: 0 }}
-                            className="pl-4 space-y-2 overflow-hidden"
+                            className="pl-3 space-y-1.5 overflow-hidden"
                           >
+                            <Link
+                              to="/treatments"
+                              onClick={() => setMobileOpen(false)}
+                              className="w-full h-[40px] px-4 -skew-x-12 text-xs font-bold tracking-wider uppercase bg-[rgba(16,185,129,0.3)] text-brass-300 flex items-center justify-between"
+                              style={{ borderRadius: '2px 6px 2px 6px' }}
+                            >
+                              <span className="skew-x-12">All Treatments Directory</span>
+                              <span className="skew-x-12">→</span>
+                            </Link>
+
                             {subLinks.map((sub) => (
                               <Link
                                 key={sub.name}
                                 to={sub.path}
                                 onClick={() => setMobileOpen(false)}
-                                className="w-full h-[44px] px-4 -skew-x-12 text-sm font-medium tracking-wider uppercase bg-[rgba(16,185,129,0.22)] text-cream-100 flex items-center justify-between"
+                                className="w-full h-[40px] px-4 -skew-x-12 text-xs font-medium tracking-wider uppercase bg-[rgba(16,185,129,0.18)] text-cream-100 flex items-center justify-between"
                                 style={{ borderRadius: '2px 6px 2px 6px' }}
                               >
                                 <span className="skew-x-12">{sub.name}</span>

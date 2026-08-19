@@ -243,16 +243,15 @@ export function getStoredTreatments() {
       return clinicData.treatments;
     }
     const parsed = JSON.parse(stored);
-    const merged = parsed.map(item => {
-      const defaultItem = clinicData.treatments.find(t => t.id === item.id);
-      return {
-        ...defaultItem,
-        ...item,
-        image: (item.id === 'panchakarma' && (!item.image || item.image.includes('shirodhara'))) ? '/images/panchakarma.png' : (item.image || defaultItem?.image || (item.id === 'nadi-pariksha' ? '/images/nadi_pariksha.png' : undefined))
-      };
-    });
-    localStorage.setItem(TREATMENTS_KEY, JSON.stringify(merged));
-    return merged;
+    // If the stored data doesn't match the 7 standard treatment IDs, synchronize with clinicData.treatments
+    const hasCanonicalTreatments = clinicData.treatments.every(canonical => 
+      parsed.some(item => item.id === canonical.id)
+    );
+    if (!hasCanonicalTreatments || parsed.length !== clinicData.treatments.length) {
+      localStorage.setItem(TREATMENTS_KEY, JSON.stringify(clinicData.treatments));
+      return clinicData.treatments;
+    }
+    return parsed;
   } catch (err) {
     console.error('Error reading stored treatments:', err);
     return clinicData.treatments;
