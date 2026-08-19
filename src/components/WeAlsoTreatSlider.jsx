@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Sparkles, 
   Heart, 
@@ -12,16 +12,19 @@ import {
   Droplets,
   Feather, 
   Smile, 
-  PlusCircle
+  HeartHandshake,
+  Pause,
+  Play
 } from 'lucide-react';
 
 /*
  * ─────────────────────────────────────────────────────────────
  *  WeAlsoTreatSlider — Dual-Track Opposite-Direction Carousel
  *
- *  Row 1: Moves smoothly Right to Left
- *  Row 2: Moves smoothly Left to Right
- *  Continuous, seamless non-stopping marquee without buttons.
+ *  Row 1: Moves smoothly Right to Left (←)
+ *  Row 2: Moves smoothly Left to Right (→)
+ *  Clicking anywhere stops / resumes the animation.
+ *  All cards (including "And Many More") have clean white styling.
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -58,6 +61,11 @@ const DUAL_CAROUSEL_CSS = `
     animation: sk_treatments_right 42s linear infinite;
   }
 
+  .sk-treatments-paused .sk-treatments-track-left,
+  .sk-treatments-paused .sk-treatments-track-right {
+    animation-play-state: paused !important;
+  }
+
   @media (max-width: 768px) {
     .sk-treatments-track-left,
     .sk-treatments-track-right {
@@ -75,6 +83,8 @@ function injectDualCarouselCSS() {
 }
 
 export default function WeAlsoTreatSlider({ onOpenBooking }) {
+  const [isPaused, setIsPaused] = useState(false);
+
   useEffect(() => {
     injectDualCarouselCSS();
   }, []);
@@ -240,8 +250,7 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
       id: "and-many-more",
       title: "And Many More",
       description: "Explore personalized Ayurvedic care for additional health and wellness concerns.",
-      icon: PlusCircle,
-      isFeatured: true
+      icon: HeartHandshake
     }
   ];
 
@@ -257,40 +266,24 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
         className="w-[260px] sm:w-[280px] shrink-0 px-2 sm:px-2.5"
       >
         <div
-          className={`h-full min-h-[175px] sm:min-h-[185px] p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between select-none ${
-            item.isFeatured
-              ? 'bg-gradient-to-br from-forest-950 to-forest-900 text-cream-50 border-brass-500/40 shadow-elevated'
-              : 'bg-white text-forest-950 border-earth-200 shadow-sm hover:shadow-elevated'
-          }`}
+          className="h-full min-h-[175px] sm:min-h-[185px] p-4 sm:p-5 rounded-2xl border transition-all duration-300 flex flex-col justify-between select-none bg-white text-forest-950 border-earth-200 shadow-sm hover:shadow-elevated hover:border-brass-400/50"
         >
           {/* Top Icon & Index */}
           <div className="flex items-center justify-between mb-2.5">
-            <div
-              className={`w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center transition-colors ${
-                item.isFeatured
-                  ? 'bg-forest-800 text-brass-400 border border-brass-500/30'
-                  : 'bg-cream-100 text-forest-800'
-              }`}
-            >
-              <IconComponent className="w-4 h-4 sm:w-4.5 sm:h-4.5" />
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl flex items-center justify-center bg-cream-100 text-forest-800 transition-colors">
+              <IconComponent className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-forest-900" />
             </div>
-            <span className={`text-[10px] font-mono font-bold uppercase tracking-wider ${
-              item.isFeatured ? 'text-brass-400' : 'text-earth-400'
-            }`}>
+            <span className="text-[10px] font-mono font-bold uppercase tracking-wider text-earth-400">
               {String(idx + 1).padStart(2, '0')}
             </span>
           </div>
 
-          {/* Title & Description (No Buttons) */}
+          {/* Title & Description (Clean White, No Buttons, No + Symbol) */}
           <div className="space-y-1">
-            <h3 className={`font-serif text-base sm:text-lg font-medium leading-snug ${
-              item.isFeatured ? 'text-cream-50' : 'text-forest-950'
-            }`}>
+            <h3 className="font-serif text-base sm:text-lg font-medium leading-snug text-forest-950">
               {item.title}
             </h3>
-            <p className={`text-[11px] sm:text-xs font-light leading-relaxed ${
-              item.isFeatured ? 'text-cream-200/80' : 'text-earth-800'
-            }`}>
+            <p className="text-[11px] sm:text-xs font-light leading-relaxed text-earth-800">
               {item.description}
             </p>
           </div>
@@ -315,12 +308,38 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
           <p className="text-earth-800 text-xs sm:text-sm font-light leading-relaxed">
             Personalized Ayurvedic support for a wide range of health and wellness concerns.
           </p>
+
+          {/* Click to Pause / Resume Hint Button */}
+          <div className="pt-2">
+            <button
+              onClick={() => setIsPaused(!isPaused)}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-earth-200 text-[11px] font-medium text-forest-800 hover:bg-forest-900 hover:text-cream-50 transition-all shadow-2xs cursor-pointer"
+            >
+              {isPaused ? (
+                <>
+                  <Play className="w-3 h-3 text-emerald-600 fill-emerald-600" />
+                  <span>Paused — Click to Resume Sliding</span>
+                </>
+              ) : (
+                <>
+                  <Pause className="w-3 h-3 text-brass-600 fill-brass-600" />
+                  <span>Click Anywhere on Cards to Pause</span>
+                </>
+              )}
+            </button>
+          </div>
         </div>
 
       </div>
 
-      {/* Dual Opposite-Direction Continuous Marquee Tracks */}
-      <div className="w-full overflow-hidden relative space-y-3 sm:space-y-4">
+      {/* Dual Opposite-Direction Continuous Marquee Tracks (Click to Toggle Pause) */}
+      <div 
+        onClick={() => setIsPaused(!isPaused)}
+        title={isPaused ? "Click to resume sliding" : "Click to pause sliding"}
+        className={`w-full overflow-hidden relative space-y-3 sm:space-y-4 cursor-pointer ${
+          isPaused ? 'sk-treatments-paused' : ''
+        }`}
+      >
         
         {/* Subtle Edge Vignettes */}
         <div className="absolute left-0 top-0 bottom-0 w-8 sm:w-20 bg-gradient-to-r from-cream-50/95 to-transparent z-10 pointer-events-none" />
