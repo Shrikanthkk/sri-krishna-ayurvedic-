@@ -233,7 +233,7 @@ export default function Hero({ onOpenBooking }) {
 
           </div>
 
-          {/* RIGHT SIDE: Auto-Sliding Visual with Smooth Crossfade & Floating Cards */}
+          {/* RIGHT SIDE: Auto-Sliding Visual with Smooth Crossfade, Floating Cards & Controls */}
           <div className="lg:col-span-6 relative flex flex-col items-center">
             
             <div className="relative w-full max-w-[480px] lg:max-w-[500px]">

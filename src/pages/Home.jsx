@@ -62,10 +62,10 @@ export default function Home({ onOpenBooking }) {
             </div>
 
             <div className="lg:col-span-6 relative">
-              {/* Subtle Ambient Backing Frame & Glow */}
+              {/* Soft Ambient Backing Frame & Glow */}
               <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-tr from-brass-400/20 via-forest-800/10 to-transparent rounded-[2.5rem] transform rotate-1 pointer-events-none -z-10" />
 
-              <div className="rounded-2xl sm:rounded-3xl overflow-hidden shadow-2xl border border-earth-200 aspect-[16/10] relative group bg-forest-950">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-earth-200/90 aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] bg-forest-950 group">
                 <video
                   autoPlay
                   loop
