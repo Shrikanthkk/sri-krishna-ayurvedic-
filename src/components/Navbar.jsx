@@ -58,13 +58,13 @@ export default function Navbar({ onOpenBooking }) {
       >
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-visible relative">
           
-          {/* Clinic Brand with Breakout Logo */}
+          {/* Clinic Brand with Distinct Separated Breakout Logo Medallion */}
           <Link
             to="/"
-            className="group flex items-center gap-3 sm:gap-4 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-30"
+            className="group flex items-center gap-3 sm:gap-4 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-30 mr-2 sm:mr-4"
           >
-            {/* Breakout Logo extending evenly above and below navbar */}
-            <div className="relative w-[78px] h-[78px] sm:w-[94px] sm:h-[94px] md:w-[102px] md:h-[102px] -my-4 rounded-full overflow-hidden border-2 border-brass-400 bg-forest-950 shadow-[0_6px_20px_rgba(0,0,0,0.35)] shrink-0 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+            {/* Standalone Circular Medallion */}
+            <div className="relative w-[78px] h-[78px] sm:w-[92px] sm:h-[92px] md:w-[100px] md:h-[100px] -my-4 rounded-full overflow-hidden border-2 border-brass-400/90 ring-2 ring-brass-500/40 ring-offset-2 ring-offset-forest-950/20 bg-forest-950 shadow-[0_8px_25px_rgba(0,0,0,0.4)] shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_10px_30px_rgba(197,160,89,0.35)]">
               <img
                 src="/images/logo.jpg"
                 alt="Sri Krishna Ayurvedic Logo"
@@ -72,7 +72,7 @@ export default function Navbar({ onOpenBooking }) {
               />
             </div>
 
-            <div className="flex flex-col justify-center pl-0.5">
+            <div className="flex flex-col justify-center pl-1">
               <span className={`font-serif text-base sm:text-lg lg:text-xl font-medium tracking-tight leading-tight transition-colors ${
                 scrolled ? 'text-cream-50' : 'text-forest-950'
               }`}>
@@ -86,8 +86,11 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
+          {/* Elegant Divider between Logo Brand & Nav Links */}
+          <div className="hidden 2xl:block h-8 w-px bg-earth-300/40 mx-2" />
+
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 lg:ml-8 xl:ml-10">
+          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 lg:ml-4 xl:ml-6">
             {navLinks.map((link) => {
               const active = isPathActive(link);
 
