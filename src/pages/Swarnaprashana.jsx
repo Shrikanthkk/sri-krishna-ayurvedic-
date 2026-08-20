@@ -179,14 +179,48 @@ export default function Swarnaprashana({ onOpenBooking }) {
                   In classical Ayurvedic literature (*Kaumarabhritya*), Swarnaprashana is described with the following traditional wellness intentions:
                 </p>
 
-                <ul className="space-y-2.5 text-xs text-earth-900 font-medium">
+                <motion.ul
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-40px" }}
+                  variants={{
+                    hidden: { opacity: 0 },
+                    visible: {
+                      opacity: 1,
+                      transition: {
+                        staggerChildren: 0.12,
+                        delayChildren: 0.05
+                      }
+                    }
+                  }}
+                  className="space-y-2.5 text-xs text-earth-900 font-medium"
+                >
                   {purposePoints.map((point, idx) => (
-                    <li key={idx} className="flex items-start gap-2.5 p-2.5 bg-cream-50 rounded-xl border border-earth-200/80">
+                    <motion.li
+                      key={idx}
+                      variants={{
+                        hidden: { opacity: 0, y: 14, scale: 0.98 },
+                        visible: {
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                          transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1.0] }
+                        }
+                      }}
+                      whileHover={{
+                        y: -3,
+                        scale: 1.015,
+                        boxShadow: "0 10px 25px -5px rgba(28, 59, 44, 0.08), 0 8px 10px -6px rgba(28, 59, 44, 0.04)",
+                        borderColor: "rgba(197, 160, 89, 0.45)"
+                      }}
+                      transition={{ duration: 0.25, ease: "easeOut" }}
+                      className="flex items-start gap-2.5 p-3 bg-cream-50/90 rounded-xl border border-earth-200/80 cursor-default transition-colors"
+                    >
                       <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span>{point}</span>
-                    </li>
+                      <span className="leading-relaxed">{point}</span>
+                    </motion.li>
                   ))}
-                </ul>
+                </motion.ul>
 
                 {/* Specific Medical Safety Box */}
                 <div className="p-3.5 bg-amber-500/10 border-l-3 border-amber-600 rounded-r-xl text-[11px] text-earth-900 leading-relaxed space-y-1">

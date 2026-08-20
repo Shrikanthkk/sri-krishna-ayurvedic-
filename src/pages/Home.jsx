@@ -197,7 +197,7 @@ export default function Home({ onOpenBooking }) {
       <section className="py-10 sm:py-14 bg-cream-100/60 border-t border-earth-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-5">
             <div className="space-y-2">
               <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
                 CORE CLINICAL SERVICES
@@ -207,13 +207,35 @@ export default function Home({ onOpenBooking }) {
               </h2>
             </div>
 
-            <Link
-              to="/treatments"
-              className="inline-flex items-center gap-2 text-xs font-bold text-forest-900 hover:text-emerald-700 uppercase tracking-widest"
-            >
-              <span>View All Treatments</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            <div className="flex flex-col items-start md:items-end gap-2.5">
+              <Link
+                to="/treatments"
+                className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-bold uppercase tracking-widest transition-all shadow-sm group"
+              >
+                <span>View All Treatments</span>
+                <ArrowRight className="w-4 h-4 text-brass-400 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+
+              {/* Two prominent buttons in exact order: 1. Cancer Treatment, 2. Swarnaprashana */}
+              <div className="flex flex-wrap items-center gap-2">
+                <Link
+                  to="/treatments/cancer-treatment"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-earth-200 hover:border-brass-400 hover:bg-cream-50 text-forest-950 text-[11px] font-bold uppercase tracking-wider transition-all shadow-2xs group"
+                >
+                  <span className="w-2 h-2 rounded-full bg-brass-500 shrink-0" />
+                  <span>1. Cancer Treatment</span>
+                  <ArrowRight className="w-3 h-3 text-brass-600 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+                <Link
+                  to="/treatments/swarnaprashana"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-earth-200 hover:border-emerald-500 hover:bg-cream-50 text-forest-950 text-[11px] font-bold uppercase tracking-wider transition-all shadow-2xs group"
+                >
+                  <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                  <span>2. Swarnaprashana</span>
+                  <ArrowRight className="w-3 h-3 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+                </Link>
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

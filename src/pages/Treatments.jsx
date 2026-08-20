@@ -45,15 +45,32 @@ export default function Treatments({ onOpenBooking }) {
           </p>
         </div>
 
-        {/* 8 Dedicated Treatment Cards Grid */}
+        {/* Treatment Cards Grid */}
         <div className="space-y-6 mb-10">
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
             <h2 className="text-2xl sm:text-3xl font-serif text-forest-950 font-light">
               Treatment Categories
             </h2>
-            <span className="text-xs font-semibold text-brass-700 uppercase tracking-wider">
-              {treatmentsList.length} Dedicated Therapies
-            </span>
+
+            {/* Two prominent buttons in exact order: 1. Cancer Treatment, 2. Swarnaprashana */}
+            <div className="flex flex-wrap items-center gap-2.5">
+              <Link
+                to="/treatments/cancer-treatment"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-earth-200 hover:border-brass-400 hover:bg-cream-50 text-forest-950 text-xs font-semibold uppercase tracking-wider transition-all shadow-2xs group"
+              >
+                <span className="w-2 h-2 rounded-full bg-brass-500 shrink-0" />
+                <span>1. Cancer Treatment</span>
+                <ArrowRight className="w-3.5 h-3.5 text-brass-600 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link
+                to="/treatments/swarnaprashana"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-earth-200 hover:border-emerald-500 hover:bg-cream-50 text-forest-950 text-xs font-semibold uppercase tracking-wider transition-all shadow-2xs group"
+              >
+                <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+                <span>2. Swarnaprashana</span>
+                <ArrowRight className="w-3.5 h-3.5 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
