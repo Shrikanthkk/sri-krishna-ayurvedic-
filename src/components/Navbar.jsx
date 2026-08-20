@@ -86,11 +86,18 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
-          {/* Elegant Divider between Logo Brand & Nav Links */}
-          <div className="hidden 2xl:block h-8 w-px bg-earth-300/40 mx-2" />
+          {/* Slanted Dual Divider between Brand/Logo & Navigation Links */}
+          <div className="hidden lg:flex items-center gap-1 px-3 sm:px-4 select-none -skew-x-12 shrink-0" aria-hidden="true">
+            <div className={`w-[2.5px] h-8 sm:h-9 rounded-full transition-colors ${
+              scrolled ? 'bg-emerald-400/50 shadow-[0_0_8px_rgba(52,211,153,0.35)]' : 'bg-brass-500/60 shadow-[0_0_6px_rgba(197,160,89,0.3)]'
+            }`} />
+            <div className={`w-[1.5px] h-7 sm:h-8 rounded-full transition-colors ${
+              scrolled ? 'bg-emerald-400/25' : 'bg-brass-500/30'
+            }`} />
+          </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5 lg:ml-4 xl:ml-6">
+          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5">
             {navLinks.map((link) => {
               const active = isPathActive(link);
 
