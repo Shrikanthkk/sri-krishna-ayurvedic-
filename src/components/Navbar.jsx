@@ -61,20 +61,22 @@ export default function Navbar({ onOpenBooking }) {
           {/* Clinic Brand */}
           <Link
             to="/"
-            className="group flex items-center gap-2.5 focus:outline-none shrink-0 cursor-pointer"
+            className="group flex items-center gap-2.5 sm:gap-3 focus:outline-none shrink-0 cursor-pointer py-1"
           >
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center border transition-colors ${
-              scrolled ? 'border-emerald-400/40 bg-forest-800' : 'border-forest-900/20 bg-forest-900 text-cream-50'
-            }`}>
-              <span className="font-serif text-sm font-bold tracking-wider text-brass-400">SK</span>
+            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border border-brass-500/40 bg-forest-950 shadow-sm shrink-0 flex items-center justify-center">
+              <img
+                src="/images/logo.jpg"
+                alt="Sri Krishna Ayurvedic Logo"
+                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+              />
             </div>
             <div className="flex flex-col">
-              <span className={`font-serif text-base font-medium tracking-tight leading-tight transition-colors ${
+              <span className={`font-serif text-base sm:text-lg font-medium tracking-tight leading-tight transition-colors ${
                 scrolled ? 'text-cream-50' : 'text-forest-950'
               }`}>
                 {clinicData.clinicName}
               </span>
-              <span className={`text-[9px] tracking-widest uppercase font-semibold transition-colors ${
+              <span className={`text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold transition-colors ${
                 scrolled ? 'text-emerald-300/80' : 'text-forest-700'
               }`}>
                 KR Puram, Bangalore
@@ -236,12 +238,20 @@ export default function Navbar({ onOpenBooking }) {
           >
             {/* Header in Drawer */}
             <div className="flex items-center justify-between border-b border-forest-800 pb-4">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-forest-800 border border-brass-400/40 flex items-center justify-center text-brass-400 font-serif font-bold text-sm">
-                  SK
+              <Link
+                to="/"
+                onClick={() => setMobileOpen(false)}
+                className="flex items-center gap-3"
+              >
+                <div className="w-10 h-10 rounded-full overflow-hidden border border-brass-400/40 bg-forest-950 shrink-0">
+                  <img
+                    src="/images/logo.jpg"
+                    alt="Sri Krishna Ayurvedic Logo"
+                    className="w-full h-full object-cover object-center"
+                  />
                 </div>
                 <span className="font-serif text-lg text-cream-50">{clinicData.clinicName}</span>
-              </div>
+              </Link>
               <button
                 onClick={() => setMobileOpen(false)}
                 className="p-2 text-cream-200 hover:text-white rounded-full bg-forest-900 cursor-pointer"

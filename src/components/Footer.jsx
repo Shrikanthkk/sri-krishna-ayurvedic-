@@ -13,14 +13,18 @@ export default function Footer({ onOpenBooking }) {
           
           {/* Col 1: Clinic Brand & Info */}
           <div className="lg:col-span-4 space-y-3">
-            <div className="flex items-center gap-2.5">
-              <div className="w-8 h-8 rounded-full bg-forest-800 border border-brass-500/40 flex items-center justify-center text-brass-400 font-serif font-bold text-sm">
-                SK
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-10 h-10 rounded-full overflow-hidden border border-brass-500/40 bg-forest-950 shrink-0">
+                <img
+                  src="/images/logo.jpg"
+                  alt="Sri Krishna Ayurvedic Logo"
+                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
+                />
               </div>
               <span className="font-serif text-lg font-medium tracking-tight text-cream-50">
                 {clinicData.clinicName}
               </span>
-            </div>
+            </Link>
 
             <p className="text-xs text-cream-200/70 font-light leading-relaxed max-w-sm">
               Authentic Ayurvedic healthcare, classic Nadi Pariksha, and holistic Panchakarma therapies guided by Dr. Anand Krishna (BAMS) with over 26 years of clinical practice in KR Puram, Bangalore.
