@@ -14,12 +14,14 @@ export default function Footer({ onOpenBooking }) {
           {/* Col 1: Clinic Brand & Info */}
           <div className="lg:col-span-4 space-y-3">
             <Link to="/" className="flex items-center gap-3 group">
-              <div className="w-10 h-10 rounded-full overflow-hidden border border-brass-500/40 bg-forest-950 shrink-0">
-                <img
-                  src="/images/logo.png"
-                  alt="Sri Krishna Ayurvedic Logo"
-                  className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
-                />
+              <div className="w-11 h-11 rounded-full p-0.5 bg-white border border-brass-400/60 shadow-sm shrink-0 flex items-center justify-center">
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <img
+                    src="/images/logo.png"
+                    alt="Sri Krishna Ayurvedic Logo"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
+                  />
+                </div>
               </div>
               <span className="font-serif text-lg font-medium tracking-tight text-cream-50">
                 {clinicData.clinicName}

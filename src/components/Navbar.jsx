@@ -58,18 +58,20 @@ export default function Navbar({ onOpenBooking }) {
       >
         <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-visible relative">
           
-          {/* Clinic Brand with Distinct Separated Breakout Logo Medallion */}
+          {/* Clinic Brand with Clean Circular White/Cream Backing Badge */}
           <Link
             to="/"
-            className="group flex items-center gap-3 sm:gap-4 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-30 mr-2 sm:mr-4"
+            className="group flex items-center gap-3 sm:gap-4 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 mr-2 sm:mr-4"
           >
-            {/* Standalone Circular Medallion */}
-            <div className="relative w-[78px] h-[78px] sm:w-[92px] sm:h-[92px] md:w-[100px] md:h-[100px] -my-4 rounded-full overflow-hidden border-2 border-brass-400/90 ring-2 ring-brass-500/40 ring-offset-2 ring-offset-forest-950/20 bg-forest-950 shadow-[0_8px_25px_rgba(0,0,0,0.4)] shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_10px_30px_rgba(197,160,89,0.35)]">
-              <img
-                src="/images/logo.png"
-                alt="Sri Krishna Ayurvedic Logo"
-                className="w-full h-full object-cover object-center"
-              />
+            {/* Circular White/Cream Backing Badge with Soft Elegant Shadow & Overlap */}
+            <div className="relative w-[80px] h-[80px] sm:w-[92px] sm:h-[92px] md:w-[100px] md:h-[100px] translate-y-2 sm:translate-y-2.5 rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-white via-cream-50 to-cream-100 border border-brass-400/60 shadow-[0_10px_25px_-4px_rgba(28,59,44,0.18),0_4px_12px_rgba(0,0,0,0.08)] ring-1 ring-earth-200/60 shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_30px_-4px_rgba(197,160,89,0.3),0_6px_16px_rgba(0,0,0,0.12)]">
+              <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-white shadow-xs">
+                <img
+                  src="/images/logo.png"
+                  alt="Sri Krishna Ayurvedic Logo"
+                  className="w-full h-full object-cover object-center"
+                />
+              </div>
             </div>
 
             <div className="flex flex-col justify-center pl-1">
@@ -255,12 +257,14 @@ export default function Navbar({ onOpenBooking }) {
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3"
               >
-                <div className="w-10 h-10 rounded-full overflow-hidden border border-brass-400/40 bg-forest-950 shrink-0">
-                  <img
-                    src="/images/logo.png"
-                    alt="Sri Krishna Ayurvedic Logo"
-                    className="w-full h-full object-cover object-center"
-                  />
+                <div className="w-11 h-11 rounded-full p-0.5 bg-white border border-brass-400/60 shadow-md shrink-0 flex items-center justify-center">
+                  <div className="w-full h-full rounded-full overflow-hidden">
+                    <img
+                      src="/images/logo.png"
+                      alt="Sri Krishna Ayurvedic Logo"
+                      className="w-full h-full object-cover object-center"
+                    />
+                  </div>
                 </div>
                 <span className="font-serif text-lg text-cream-50">{clinicData.clinicName}</span>
               </Link>
