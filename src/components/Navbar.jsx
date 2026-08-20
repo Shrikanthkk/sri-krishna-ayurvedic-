@@ -52,32 +52,34 @@ export default function Navbar({ onOpenBooking }) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 h-16 flex items-center transition-all duration-300 ${
+        className={`fixed top-0 left-0 right-0 z-40 h-[70px] sm:h-[76px] flex items-center transition-all duration-300 overflow-visible ${
           scrolled ? 'glass-nav-scrolled shadow-elevated' : 'glass-nav'
         }`}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
+        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-visible relative">
           
-          {/* Clinic Brand */}
+          {/* Clinic Brand with Breakout Logo */}
           <Link
             to="/"
-            className="group flex items-center gap-2.5 sm:gap-3 focus:outline-none shrink-0 cursor-pointer py-1"
+            className="group flex items-center gap-3 sm:gap-4 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-30"
           >
-            <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-full overflow-hidden border border-brass-500/40 bg-forest-950 shadow-sm shrink-0 flex items-center justify-center">
+            {/* Breakout Logo extending evenly above and below navbar */}
+            <div className="relative w-[78px] h-[78px] sm:w-[94px] sm:h-[94px] md:w-[102px] md:h-[102px] -my-4 rounded-full overflow-hidden border-2 border-brass-400 bg-forest-950 shadow-[0_6px_20px_rgba(0,0,0,0.35)] shrink-0 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
               <img
                 src="/images/logo.jpg"
                 alt="Sri Krishna Ayurvedic Logo"
-                className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-300"
+                className="w-full h-full object-cover object-center"
               />
             </div>
-            <div className="flex flex-col">
-              <span className={`font-serif text-base sm:text-lg font-medium tracking-tight leading-tight transition-colors ${
+
+            <div className="flex flex-col justify-center pl-0.5">
+              <span className={`font-serif text-base sm:text-lg lg:text-xl font-medium tracking-tight leading-tight transition-colors ${
                 scrolled ? 'text-cream-50' : 'text-forest-950'
               }`}>
                 {clinicData.clinicName}
               </span>
               <span className={`text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold transition-colors ${
-                scrolled ? 'text-emerald-300/80' : 'text-forest-700'
+                scrolled ? 'text-emerald-300/90' : 'text-forest-700'
               }`}>
                 KR Puram, Bangalore
               </span>

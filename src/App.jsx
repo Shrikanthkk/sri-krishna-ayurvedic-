@@ -38,7 +38,7 @@ function AppContent() {
       {!isAdmin && <Navbar onOpenBooking={() => setBookingOpen(true)} />}
 
       {/* Multi-Page Routes — animation bar is first child so it scrolls away behind navbar */}
-      <main className={`grow ${isAdmin ? 'pt-0' : 'pt-16'}`}>
+      <main className={`grow ${isAdmin ? 'pt-0' : 'pt-[70px] sm:pt-[76px]'}`}>
         {!isAdmin && <BelowNavbarAnimation />}
         <Routes>
           <Route path="/" element={<Home onOpenBooking={() => setBookingOpen(true)} />} />
