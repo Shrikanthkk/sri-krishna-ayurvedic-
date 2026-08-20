@@ -1,14 +1,53 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, PhoneCall, CheckCircle2, Sparkles, ShieldAlert, HeartPulse, HeartHandshake, Shield, HelpCircle, Activity } from 'lucide-react';
+import { 
+  ArrowLeft, 
+  Calendar, 
+  PhoneCall, 
+  CheckCircle2, 
+  Sparkles, 
+  ShieldAlert, 
+  HeartPulse, 
+  HeartHandshake, 
+  Shield, 
+  HelpCircle, 
+  Activity, 
+  Wind, 
+  Sun,
+  ChevronRight,
+  Info,
+  Stethoscope,
+  Microscope,
+  Pill,
+  Leaf
+} from 'lucide-react';
 import PageHero from '../../components/PageHero';
 import Breadcrumb from '../../components/Breadcrumb';
 import RelatedTreatments from '../../components/RelatedTreatments';
+import CancerDetailModal from '../../components/CancerDetailModal';
+import { majorCancerTypes } from '../../data/cancerData';
 import { clinicData } from '../../data/clinicData';
 
+const iconMap = {
+  Activity,
+  HeartPulse,
+  ShieldAlert,
+  Wind,
+  Shield,
+  Sparkles,
+  Sun
+};
+
 export default function CancerTreatment({ onOpenBooking }) {
+  const [selectedCancer, setSelectedCancer] = useState(null);
+  const [modalOpen, setModalOpen] = useState(false);
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
+
+  const handleOpenDetail = (cancerItem) => {
+    setSelectedCancer(cancerItem);
+    setModalOpen(true);
+  };
 
   const supportAreas = [
     "Digestive & nutritional support during chemotherapy/radiation",
@@ -31,7 +70,7 @@ export default function CancerTreatment({ onOpenBooking }) {
     },
     {
       name: "Digestive Agni & Gut Comfort",
-      desc: "Restoring digestive appetite (*Dipana*) and easing bloating or taste alterations resulting from intensive conventional cancer medications."
+      desc: "Restoring digestive appetite (Dipana) and easing bloating or taste alterations resulting from intensive conventional cancer medications."
     },
     {
       name: "Mind-Body Relaxation & Meditation",
@@ -105,11 +144,90 @@ export default function CancerTreatment({ onOpenBooking }) {
             <span>Compassionate Supportive Care</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-serif text-forest-950 font-light">
-            Ayurvedic Supportive Care for Cancer Patients
+            Ayurvedic Supportive Care for Major Cancer Types
           </h1>
           <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed">
-            Cancer treatment journeys place immense physical, metabolic, and emotional strain on the human body. At Sri Krishna Ayurvedic Clinic, senior physician Dr. Anand Krishna (BAMS) provides empathetic, evidence-respecting Ayurvedic supportive care. Our focus is centered entirely on alleviating treatment side-effects, supporting digestive assimilation (*Agni*), preserving core vitality (*Ojas*), and enhancing overall daily quality of life during and after conventional oncology therapies.
+            Cancer journeys present unique physical, metabolic, and emotional challenges. At Sri Krishna Ayurvedic Clinic, senior physician Dr. Anand Krishna (BAMS) provides empathetic, evidence-respecting supportive consultations. Below, explore evidence-based medical overviews and our tailored Ayurvedic supportive approaches across 8 major cancer types.
           </p>
+        </div>
+
+        {/* 8 MAJOR CANCER TYPES CARDS GRID */}
+        <div className="mb-14 space-y-6">
+          <div className="flex flex-col md:flex-row md:items-end justify-between gap-3">
+            <div className="space-y-1">
+              <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
+                01 • MAJOR CANCER CATEGORIES
+              </span>
+              <h2 className="text-2xl sm:text-3xl font-serif font-light text-forest-950">
+                Major Cancer Types & Supportive Care
+              </h2>
+            </div>
+            <span className="text-xs text-earth-700 font-medium">
+              Click <strong>Learn More</strong> on any card for full medical & Ayurvedic details
+            </span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            {majorCancerTypes.map((cancer) => {
+              const IconComponent = iconMap[cancer.iconName] || Activity;
+              return (
+                <div
+                  key={cancer.id}
+                  className="bg-white rounded-2xl border border-earth-200 shadow-sm hover:shadow-elevated transition-all duration-300 flex flex-col justify-between p-5 sm:p-6 group hover:-translate-y-1"
+                >
+                  <div className="space-y-3.5">
+                    {/* Top Icon & Category Badge */}
+                    <div className="flex items-center justify-between">
+                      <div className="w-10 h-10 rounded-xl bg-cream-100 group-hover:bg-forest-900 text-forest-800 group-hover:text-brass-400 flex items-center justify-center transition-colors">
+                        <IconComponent className="w-5 h-5" />
+                      </div>
+                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${cancer.badgeColor}`}>
+                        {cancer.category.split(' ')[0]}
+                      </span>
+                    </div>
+
+                    {/* Title & Subtitle */}
+                    <div className="space-y-1">
+                      <h3 className="font-serif text-lg sm:text-xl font-medium text-forest-950 group-hover:text-forest-800 transition-colors">
+                        {cancer.title}
+                      </h3>
+                      <p className="text-[11px] text-brass-700 font-medium tracking-wide">
+                        {cancer.subtitle}
+                      </p>
+                    </div>
+
+                    {/* Short Summary */}
+                    <p className="text-xs text-earth-800 font-light leading-relaxed line-clamp-3">
+                      {cancer.shortSummary}
+                    </p>
+
+                    {/* Quick Highlights Preview */}
+                    <div className="pt-2 border-t border-earth-200/60 space-y-1 text-[11px] text-earth-700">
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0" />
+                        <span className="truncate">Evidence-based oncology context</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <span className="w-1.5 h-1.5 rounded-full bg-brass-500 shrink-0" />
+                        <span className="truncate">Rasayana & Agni vitality care</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Learn More Button */}
+                  <div className="pt-4 mt-3 border-t border-earth-200/60">
+                    <button
+                      onClick={() => handleOpenDetail(cancer)}
+                      className="w-full py-2.5 px-4 bg-cream-100 hover:bg-forest-900 text-forest-900 hover:text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-between cursor-pointer group-hover:bg-forest-900 group-hover:text-cream-50"
+                    >
+                      <span>Learn More</span>
+                      <ChevronRight className="w-4 h-4 text-brass-600 group-hover:translate-x-0.5 transition-transform" />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         {/* 2-Column: Support Areas & Classical Ayurvedic Perspective */}
@@ -119,7 +237,7 @@ export default function CancerTreatment({ onOpenBooking }) {
           <div className="lg:col-span-5 bg-cream-100/70 p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-sm flex flex-col justify-between space-y-5">
             <div className="space-y-4">
               <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
-                01 • SUPPORT AREAS
+                02 • SUPPORT AREAS
               </span>
               <h2 className="text-2xl font-serif text-forest-950 font-light">
                 Supportive Care Domains
@@ -143,7 +261,7 @@ export default function CancerTreatment({ onOpenBooking }) {
           <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated space-y-4 flex flex-col justify-between">
             <div className="space-y-4">
               <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
-                02 • CLASSICAL UNDERSTANDING & NON-EQUIVALENCE
+                03 • CLASSICAL UNDERSTANDING & NON-EQUIVALENCE
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif text-forest-950 font-light">
                 Ayurvedic Perspective on Arbuda & Granthi
@@ -154,7 +272,7 @@ export default function CancerTreatment({ onOpenBooking }) {
                   Classical Ayurvedic literature mentions structural tissue growths under terms like <strong>Arbuda</strong> (deep-rooted, broad swelling involving multiple doshas and tissues) and <strong>Granthi</strong> (nodular or glandular swellings).
                 </p>
                 <p className="p-3.5 bg-cream-50 rounded-xl border border-earth-200 text-xs italic text-forest-950">
-                  <strong>Important Scientific Clarification:</strong> Classical Ayurvedic concepts of <em>Arbuda</em> and <em>Granthi</em> were conceptualized historically and are not necessarily direct equivalents of modern medical cancer diagnoses (which involve specific cellular mutations, genetics, metastases, and histopathological classifications).
+                  <strong>Important Scientific Clarification:</strong> Classical Ayurvedic concepts of <em>Arbuda</em> and <em>Granthi</em> were conceptualized historically and are not direct equivalents of modern medical cancer diagnoses (which involve specific cellular mutations, genetics, metastases, and histopathological classifications).
                 </p>
                 <p>
                   In the context of supportive oncology care, Ayurveda focuses on the host rather than the tumor. By nurturing <strong>Dhatu Sarata</strong> (tissue integrity), protecting <strong>Agni</strong> (digestive capability), and rejuvenating <strong>Ojas</strong> (immunity and stamina), complementary Ayurvedic methods seek to enhance patient resilience throughout the healing continuum.
@@ -180,7 +298,7 @@ export default function CancerTreatment({ onOpenBooking }) {
         <div className="bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated mb-10 space-y-6">
           <div className="space-y-2">
             <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
-              03 • COMPLEMENTARY MODALITIES
+              04 • COMPLEMENTARY MODALITIES
             </span>
             <h2 className="text-2xl sm:text-3xl font-serif text-forest-950 font-light">
               Supportive Care Modalities
@@ -263,6 +381,15 @@ export default function CancerTreatment({ onOpenBooking }) {
         <RelatedTreatments currentTreatmentId="cancer-treatment" />
 
       </div>
+
+      {/* Interactive Cancer Type Detail Modal */}
+      <CancerDetailModal
+        cancerItem={selectedCancer}
+        isOpen={modalOpen}
+        onClose={() => setModalOpen(false)}
+        onOpenBooking={onOpenBooking}
+      />
+
     </motion.div>
   );
 }
