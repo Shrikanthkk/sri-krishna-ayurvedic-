@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
-import { Clock, MapPin } from 'lucide-react';
+import { Clock, MapPin, Sparkles } from 'lucide-react';
 
 /*
  * ─────────────────────────────────────────────────────────────
- *  BelowNavbarAnimation — Continuous Clinic Timings Marquee
+ *  BelowNavbarAnimation — Continuous Clinic Announcement Marquee
  *
  *  Displays seamless, continuously moving horizontal ticker
- *  advertising exact clinic timings for Anandapura & KR Puram.
+ *  advertising clinic timings and specialized Ayurvedic cancer care.
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -26,12 +26,12 @@ const MARQUEE_CSS = `
     width: max-content;
     white-space: nowrap;
     will-change: transform;
-    animation: sk_timing_marquee 38s linear infinite;
+    animation: sk_timing_marquee 45s linear infinite;
   }
 
   @media (max-width: 768px) {
     .sk-timing-track {
-      animation-duration: 28s;
+      animation-duration: 35s;
     }
   }
 `;
@@ -63,6 +63,16 @@ export default function BelowNavbarAnimation() {
 
       <span className="text-brass-400/70 select-none shrink-0 font-serif">✦</span>
 
+      {/* Specialized Cancer Care Announcement */}
+      <span className="inline-flex items-center gap-1.5 text-cream-100 shrink-0 whitespace-nowrap">
+        <Sparkles className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+        <span className="text-cream-50 font-medium tracking-normal text-xs sm:text-[13px] whitespace-nowrap">
+          We provide Ayurvedic care for various all types of cancer
+        </span>
+      </span>
+
+      <span className="text-brass-400/70 select-none shrink-0 font-serif">✦</span>
+
       {/* Anandapura Timings */}
       <span className="inline-flex items-center gap-1.5 text-cream-100 shrink-0 whitespace-nowrap">
         <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
@@ -88,7 +98,7 @@ export default function BelowNavbarAnimation() {
   return (
     <div
       role="region"
-      aria-label="Clinic Hours Announcement"
+      aria-label="Clinic Hours & Care Announcement"
       className="w-full bg-forest-950 text-cream-50 border-b border-brass-500/20 overflow-hidden relative z-20 h-10 sm:h-11 flex items-center shadow-sm select-none whitespace-nowrap"
     >
       {/* Background ambient gradient accent */}
