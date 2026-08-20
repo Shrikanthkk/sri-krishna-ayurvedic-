@@ -63,30 +63,25 @@ export default function Navbar({ onOpenBooking }) {
             to="/"
             className="group flex items-center gap-2 sm:gap-3 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 -ml-1 sm:-ml-1.5 mr-1 sm:mr-2"
           >
-            {/* Circular Backing Badge with Ambient Green Shade & Soft Shadow */}
-            <div className="relative shrink-0 translate-y-2 sm:translate-y-2.5">
-              {/* Soft Ambient Green Shade Glow behind logo only */}
-              <div className="absolute inset-0 -m-1.5 sm:-m-2 rounded-full bg-emerald-500/25 blur-md pointer-events-none transition-all duration-300 group-hover:bg-emerald-400/35 group-hover:blur-lg" />
-
-              <div className="relative w-[76px] h-[76px] sm:w-[86px] sm:h-[86px] md:w-[94px] md:h-[94px] rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-forest-900 via-forest-950 to-emerald-950 border border-brass-400/80 shadow-[0_10px_25px_-4px_rgba(16,185,129,0.3),0_4px_12px_rgba(28,59,44,0.35)] ring-1 ring-brass-500/30 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_30px_-4px_rgba(16,185,129,0.45),0_6px_16px_rgba(197,160,89,0.35)]">
-                <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-forest-950 shadow-inner">
-                  <img
-                    src="/images/logo.png"
-                    alt="Sri Krishna Ayurvedic Logo"
-                    className="w-full h-full object-cover object-center"
-                  />
-                </div>
+            {/* Circular White/Cream Backing Badge with Soft Elegant Shadow & Overlap */}
+            <div className="relative w-[76px] h-[76px] sm:w-[86px] sm:h-[86px] md:w-[94px] md:h-[94px] translate-y-2 sm:translate-y-2.5 rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-white via-cream-50 to-cream-100 border border-brass-400/60 shadow-[0_10px_25px_-4px_rgba(28,59,44,0.18),0_4px_12px_rgba(0,0,0,0.08)] ring-1 ring-earth-200/60 shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_30px_-4px_rgba(197,160,89,0.3),0_6px_16px_rgba(0,0,0,0.12)]">
+              <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-white shadow-xs">
+                <img
+                  src="/images/logo.png"
+                  alt="Sri Krishna Ayurvedic Logo"
+                  className="w-full h-full object-cover object-center"
+                />
               </div>
             </div>
 
-            <div className="flex flex-col justify-center pl-0.5">
-              <span className={`font-serif text-sm sm:text-base lg:text-base xl:text-lg font-medium tracking-tight leading-tight transition-colors ${
+            <div className="flex flex-col justify-center pl-1 sm:pl-1.5">
+              <span className={`font-serif text-base sm:text-lg lg:text-xl xl:text-[22px] font-medium tracking-tight leading-snug transition-colors ${
                 scrolled ? 'text-cream-50' : 'text-forest-950'
               }`}>
                 {clinicData.clinicName}
               </span>
-              <span className={`text-[8px] sm:text-[9px] xl:text-[9.5px] tracking-widest uppercase font-semibold transition-colors ${
-                scrolled ? 'text-emerald-300/90' : 'text-forest-700'
+              <span className={`text-[9.5px] sm:text-[10.5px] xl:text-[11.5px] tracking-[0.16em] sm:tracking-[0.2em] uppercase font-bold transition-colors ${
+                scrolled ? 'text-emerald-300' : 'text-forest-800'
               }`}>
                 KR Puram, Bangalore
               </span>
