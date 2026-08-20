@@ -56,12 +56,12 @@ export default function Navbar({ onOpenBooking }) {
           scrolled ? 'glass-nav-scrolled shadow-elevated' : 'glass-nav'
         }`}
       >
-        <div className="w-full px-2 sm:px-4 lg:px-6 xl:px-8 flex items-center justify-between overflow-visible relative">
+        <div className="w-full pl-1 sm:pl-2.5 lg:pl-4 xl:pl-6 pr-3 sm:pr-5 lg:pr-7 xl:pr-10 flex items-center justify-between overflow-visible relative">
           
-          {/* Clinic Brand with Clean Circular White/Cream Backing Badge */}
+          {/* Clinic Brand with Clean Circular White/Cream Backing Badge (Shifted Further Left) */}
           <Link
             to="/"
-            className="group flex items-center gap-2 sm:gap-3 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 mr-1 sm:mr-2"
+            className="group flex items-center gap-2 sm:gap-3 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 -ml-1 sm:-ml-1.5 mr-1 sm:mr-2"
           >
             {/* Circular White/Cream Backing Badge with Soft Elegant Shadow & Overlap */}
             <div className="relative w-[76px] h-[76px] sm:w-[86px] sm:h-[86px] md:w-[94px] md:h-[94px] translate-y-2 sm:translate-y-2.5 rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-white via-cream-50 to-cream-100 border border-brass-400/60 shadow-[0_10px_25px_-4px_rgba(28,59,44,0.18),0_4px_12px_rgba(0,0,0,0.08)] ring-1 ring-earth-200/60 shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_30px_-4px_rgba(197,160,89,0.3),0_6px_16px_rgba(0,0,0,0.12)]">
@@ -205,8 +205,8 @@ export default function Navbar({ onOpenBooking }) {
             })}
           </nav>
 
-          {/* Desktop Right CTA */}
-          <div className="hidden lg:flex items-center shrink-0 ml-1 xl:ml-2">
+          {/* Desktop Right CTA (Moved Inward towards the left with comfortable right padding) */}
+          <div className="hidden lg:flex items-center shrink-0 ml-1 xl:ml-2 mr-2 sm:mr-4 lg:mr-6">
             <Link
               to="/book-appointment"
               className={`h-[38px] xl:h-[40px] px-3 lg:px-3.5 xl:px-5 text-[10.5px] lg:text-[11px] xl:text-xs font-semibold tracking-wider xl:tracking-widest uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shadow-soft ${
