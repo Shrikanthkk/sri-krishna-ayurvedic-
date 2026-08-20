@@ -56,15 +56,15 @@ export default function Navbar({ onOpenBooking }) {
           scrolled ? 'glass-nav-scrolled shadow-elevated' : 'glass-nav'
         }`}
       >
-        <div className="w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between overflow-visible relative">
+        <div className="w-full max-w-[1600px] mx-auto px-3 sm:px-5 lg:px-6 xl:px-8 flex items-center justify-between overflow-visible relative">
           
           {/* Clinic Brand with Clean Circular White/Cream Backing Badge */}
           <Link
             to="/"
-            className="group flex items-center gap-3 sm:gap-4 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 mr-2 sm:mr-4"
+            className="group flex items-center gap-2.5 sm:gap-3.5 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 mr-1 sm:mr-3"
           >
             {/* Circular White/Cream Backing Badge with Soft Elegant Shadow & Overlap */}
-            <div className="relative w-[80px] h-[80px] sm:w-[92px] sm:h-[92px] md:w-[100px] md:h-[100px] translate-y-2 sm:translate-y-2.5 rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-white via-cream-50 to-cream-100 border border-brass-400/60 shadow-[0_10px_25px_-4px_rgba(28,59,44,0.18),0_4px_12px_rgba(0,0,0,0.08)] ring-1 ring-earth-200/60 shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_30px_-4px_rgba(197,160,89,0.3),0_6px_16px_rgba(0,0,0,0.12)]">
+            <div className="relative w-[76px] h-[76px] sm:w-[88px] sm:h-[88px] md:w-[96px] md:h-[96px] translate-y-2 sm:translate-y-2.5 rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-white via-cream-50 to-cream-100 border border-brass-400/60 shadow-[0_10px_25px_-4px_rgba(28,59,44,0.18),0_4px_12px_rgba(0,0,0,0.08)] ring-1 ring-earth-200/60 shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_30px_-4px_rgba(197,160,89,0.3),0_6px_16px_rgba(0,0,0,0.12)]">
               <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-white shadow-xs">
                 <img
                   src="/images/logo.png"
@@ -74,13 +74,13 @@ export default function Navbar({ onOpenBooking }) {
               </div>
             </div>
 
-            <div className="flex flex-col justify-center pl-1">
-              <span className={`font-serif text-base sm:text-lg lg:text-xl font-medium tracking-tight leading-tight transition-colors ${
+            <div className="flex flex-col justify-center pl-0.5">
+              <span className={`font-serif text-sm sm:text-base lg:text-lg xl:text-xl font-medium tracking-tight leading-tight transition-colors ${
                 scrolled ? 'text-cream-50' : 'text-forest-950'
               }`}>
                 {clinicData.clinicName}
               </span>
-              <span className={`text-[9px] sm:text-[10px] tracking-widest uppercase font-semibold transition-colors ${
+              <span className={`text-[8.5px] sm:text-[9.5px] xl:text-[10px] tracking-widest uppercase font-semibold transition-colors ${
                 scrolled ? 'text-emerald-300/90' : 'text-forest-700'
               }`}>
                 KR Puram, Bangalore
@@ -89,17 +89,17 @@ export default function Navbar({ onOpenBooking }) {
           </Link>
 
           {/* Slanted Dual Divider between Brand/Logo & Navigation Links */}
-          <div className="hidden lg:flex items-center gap-1 px-3 sm:px-4 select-none -skew-x-12 shrink-0" aria-hidden="true">
-            <div className={`w-[2.5px] h-8 sm:h-9 rounded-full transition-colors ${
+          <div className="hidden lg:flex items-center gap-1 px-2 xl:px-3.5 select-none -skew-x-12 shrink-0" aria-hidden="true">
+            <div className={`w-[2px] h-7 sm:h-8 rounded-full transition-colors ${
               scrolled ? 'bg-emerald-400/50 shadow-[0_0_8px_rgba(52,211,153,0.35)]' : 'bg-brass-500/60 shadow-[0_0_6px_rgba(197,160,89,0.3)]'
             }`} />
-            <div className={`w-[1.5px] h-7 sm:h-8 rounded-full transition-colors ${
+            <div className={`w-[1.5px] h-6 sm:h-7 rounded-full transition-colors ${
               scrolled ? 'bg-emerald-400/25' : 'bg-brass-500/30'
             }`} />
           </div>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-1.5 xl:gap-2.5">
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-1.5 2xl:gap-2 shrink">
             {navLinks.map((link) => {
               const active = isPathActive(link);
 
@@ -113,7 +113,7 @@ export default function Navbar({ onOpenBooking }) {
                   >
                     <Link
                       to={link.path}
-                      className={`group relative inline-flex items-center justify-center h-[42px] px-3.5 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 cursor-pointer ${
+                      className={`group relative inline-flex items-center justify-center h-[40px] px-2.5 xl:px-3.5 2xl:px-4 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 cursor-pointer ${
                         active || hoveringTreatments
                           ? scrolled
                             ? 'bg-[rgba(16,185,129,0.25)] text-cream-100 font-semibold backdrop-blur-md shadow-[0_4px_15px_rgba(16,185,129,0.25)] scale-[1.01]'
@@ -124,7 +124,7 @@ export default function Navbar({ onOpenBooking }) {
                       }`}
                       style={{ borderRadius: '2px 6px 2px 6px' }}
                     >
-                      <span className="skew-x-12 text-[12px] xl:text-[13px] font-medium tracking-[0.05em] uppercase whitespace-nowrap flex items-center gap-1">
+                      <span className="skew-x-12 text-[11px] xl:text-[12px] 2xl:text-[13px] font-medium tracking-[0.03em] xl:tracking-[0.05em] uppercase whitespace-nowrap flex items-center gap-1">
                         <span>{link.name}</span>
                         <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveringTreatments ? 'rotate-180' : ''}`} />
                       </span>
@@ -184,7 +184,7 @@ export default function Navbar({ onOpenBooking }) {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`group relative inline-flex items-center justify-center h-[42px] px-3.5 xl:px-4 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
+                  className={`group relative inline-flex items-center justify-center h-[40px] px-2.5 xl:px-3.5 2xl:px-4 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
                     active
                       ? scrolled
                         ? 'bg-[rgba(16,185,129,0.25)] text-cream-100 font-semibold backdrop-blur-md shadow-[0_4px_15px_rgba(16,185,129,0.25)] scale-[1.01]'
@@ -197,7 +197,7 @@ export default function Navbar({ onOpenBooking }) {
                     borderRadius: '2px 6px 2px 6px',
                   }}
                 >
-                  <span className="skew-x-12 text-[12px] xl:text-[13px] font-medium tracking-[0.05em] uppercase whitespace-nowrap">
+                  <span className="skew-x-12 text-[11px] xl:text-[12px] 2xl:text-[13px] font-medium tracking-[0.03em] xl:tracking-[0.05em] uppercase whitespace-nowrap">
                     {link.name}
                   </span>
                 </Link>
@@ -206,10 +206,10 @@ export default function Navbar({ onOpenBooking }) {
           </nav>
 
           {/* Desktop Right CTA */}
-          <div className="hidden lg:flex items-center shrink-0">
+          <div className="hidden lg:flex items-center shrink-0 ml-1 xl:ml-3">
             <Link
               to="/book-appointment"
-              className={`h-[42px] px-5 text-xs font-semibold tracking-widest uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shadow-soft ${
+              className={`h-[40px] px-3.5 xl:px-5 text-[11px] xl:text-xs font-semibold tracking-wider xl:tracking-widest uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shadow-soft ${
                 scrolled
                   ? 'bg-emerald-500 text-forest-950 hover:bg-emerald-400 hover:shadow-[0_6px_20px_rgba(16,185,129,0.4)]'
                   : 'bg-forest-900 text-cream-50 hover:bg-forest-800 hover:shadow-elevated'
@@ -217,7 +217,7 @@ export default function Navbar({ onOpenBooking }) {
               style={{ borderRadius: '2px 6px 2px 6px' }}
             >
               <span className="skew-x-12 flex items-center gap-1.5 whitespace-nowrap">
-                <Calendar className="w-3.5 h-3.5 text-brass-400" />
+                <Calendar className="w-3.5 h-3.5 text-brass-400 shrink-0" />
                 <span>Book Consultation</span>
               </span>
             </Link>
