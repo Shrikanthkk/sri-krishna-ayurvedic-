@@ -67,7 +67,7 @@ export default function BelowNavbarAnimation() {
       <span className="inline-flex items-center gap-1.5 text-cream-100 shrink-0 whitespace-nowrap">
         <Sparkles className="w-3.5 h-3.5 text-brass-400 shrink-0" />
         <span className="text-cream-50 font-medium tracking-normal text-xs sm:text-[13px] whitespace-nowrap">
-          We provide Ayurvedic care for various all types of cancer
+          We provide Ayurvedic care for all types of cancer
         </span>
       </span>
 
