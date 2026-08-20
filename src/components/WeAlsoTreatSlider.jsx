@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { 
   Sparkles, 
   Heart, 
@@ -12,9 +12,7 @@ import {
   Droplets,
   Feather, 
   Smile, 
-  HeartHandshake,
-  Pause,
-  Play
+  HeartHandshake
 } from 'lucide-react';
 
 /*
@@ -23,8 +21,7 @@ import {
  *
  *  Row 1: Moves smoothly Right to Left (←)
  *  Row 2: Moves smoothly Left to Right (→)
- *  Clicking anywhere stops / resumes the animation.
- *  All cards (including "And Many More") have clean white styling.
+ *  Hovering pauses the animation instantly; unhovering resumes it.
  * ─────────────────────────────────────────────────────────────
  */
 
@@ -61,9 +58,9 @@ const DUAL_CAROUSEL_CSS = `
     animation: sk_treatments_right 42s linear infinite;
   }
 
-  .sk-treatments-paused .sk-treatments-track-left,
-  .sk-treatments-paused .sk-treatments-track-right {
-    animation-play-state: paused !important;
+  .sk-treatments-slider-container:hover .sk-treatments-track-left,
+  .sk-treatments-slider-container:hover .sk-treatments-track-right {
+    animation-play-state: paused;
   }
 
   @media (max-width: 768px) {
@@ -83,8 +80,6 @@ function injectDualCarouselCSS() {
 }
 
 export default function WeAlsoTreatSlider({ onOpenBooking }) {
-  const [isPaused, setIsPaused] = useState(false);
-
   useEffect(() => {
     injectDualCarouselCSS();
   }, []);
@@ -278,7 +273,7 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
             </span>
           </div>
 
-          {/* Title & Description (Clean White, No Buttons, No + Symbol) */}
+          {/* Title & Description */}
           <div className="space-y-1">
             <h3 className="font-serif text-base sm:text-lg font-medium leading-snug text-forest-950">
               {item.title}
@@ -308,37 +303,13 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
           <p className="text-earth-800 text-xs sm:text-sm font-light leading-relaxed">
             Personalized Ayurvedic support for a wide range of health and wellness concerns.
           </p>
-
-          {/* Click to Pause / Resume Hint Button */}
-          <div className="pt-2">
-            <button
-              onClick={() => setIsPaused(!isPaused)}
-              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white border border-earth-200 text-[11px] font-medium text-forest-800 hover:bg-forest-900 hover:text-cream-50 transition-all shadow-2xs cursor-pointer"
-            >
-              {isPaused ? (
-                <>
-                  <Play className="w-3 h-3 text-emerald-600 fill-emerald-600" />
-                  <span>Paused — Click to Resume Sliding</span>
-                </>
-              ) : (
-                <>
-                  <Pause className="w-3 h-3 text-brass-600 fill-brass-600" />
-                  <span>Click Anywhere on Cards to Pause</span>
-                </>
-              )}
-            </button>
-          </div>
         </div>
 
       </div>
 
-      {/* Dual Opposite-Direction Continuous Marquee Tracks (Click to Toggle Pause) */}
+      {/* Dual Opposite-Direction Continuous Marquee Tracks (Hover to Pause) */}
       <div 
-        onClick={() => setIsPaused(!isPaused)}
-        title={isPaused ? "Click to resume sliding" : "Click to pause sliding"}
-        className={`w-full overflow-hidden relative space-y-3 sm:space-y-4 cursor-pointer ${
-          isPaused ? 'sk-treatments-paused' : ''
-        }`}
+        className="sk-treatments-slider-container w-full overflow-hidden relative space-y-3 sm:space-y-4"
       >
         
         {/* Subtle Edge Vignettes */}
