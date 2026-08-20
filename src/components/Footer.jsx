@@ -16,7 +16,7 @@ export default function Footer({ onOpenBooking }) {
             <Link to="/" className="flex items-center gap-3 group">
               <div className="w-10 h-10 rounded-full overflow-hidden border border-brass-500/40 bg-forest-950 shrink-0">
                 <img
-                  src="/images/logo.jpg"
+                  src="/images/logo.png"
                   alt="Sri Krishna Ayurvedic Logo"
                   className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform"
                 />

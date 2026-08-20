@@ -66,7 +66,7 @@ export default function Navbar({ onOpenBooking }) {
             {/* Standalone Circular Medallion */}
             <div className="relative w-[78px] h-[78px] sm:w-[92px] sm:h-[92px] md:w-[100px] md:h-[100px] -my-4 rounded-full overflow-hidden border-2 border-brass-400/90 ring-2 ring-brass-500/40 ring-offset-2 ring-offset-forest-950/20 bg-forest-950 shadow-[0_8px_25px_rgba(0,0,0,0.4)] shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_10px_30px_rgba(197,160,89,0.35)]">
               <img
-                src="/images/logo.jpg"
+                src="/images/logo.png"
                 alt="Sri Krishna Ayurvedic Logo"
                 className="w-full h-full object-cover object-center"
               />
@@ -257,7 +257,7 @@ export default function Navbar({ onOpenBooking }) {
               >
                 <div className="w-10 h-10 rounded-full overflow-hidden border border-brass-400/40 bg-forest-950 shrink-0">
                   <img
-                    src="/images/logo.jpg"
+                    src="/images/logo.png"
                     alt="Sri Krishna Ayurvedic Logo"
                     className="w-full h-full object-cover object-center"
                   />
