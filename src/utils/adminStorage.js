@@ -302,15 +302,235 @@ export function deleteTreatment(id) {
   }
 }
 
+// Helper functions for Swarnaprashana Schedule Management
+const SWARNAPRASHANA_KEY = 'sk_clinic_swarnaprashana_schedule';
+
+export const defaultSwarnaprashanaSchedule = [
+  { id: 'psh-2026-01', month: 'January', date: '5', year: 2026, full_date: '2026-01-05', status: 'Active', display_order: 1, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-02a', month: 'February', date: '1', year: 2026, full_date: '2026-02-01', status: 'Active', display_order: 2, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-02b', month: 'February', date: '28', year: 2026, full_date: '2026-02-28', status: 'Active', display_order: 3, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-03', month: 'March', date: '28', year: 2026, full_date: '2026-03-28', status: 'Active', display_order: 4, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-04', month: 'April', date: '24', year: 2026, full_date: '2026-04-24', status: 'Active', display_order: 5, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-05', month: 'May', date: '21', year: 2026, full_date: '2026-05-21', status: 'Active', display_order: 6, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-06', month: 'June', date: '18', year: 2026, full_date: '2026-06-18', status: 'Active', display_order: 7, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-07', month: 'July', date: '15', year: 2026, full_date: '2026-07-15', status: 'Active', display_order: 8, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-08', month: 'August', date: '11', year: 2026, full_date: '2026-08-11', status: 'Active', display_order: 9, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-09', month: 'September', date: '8', year: 2026, full_date: '2026-09-08', status: 'Active', display_order: 10, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-10', month: 'October', date: '5', year: 2026, full_date: '2026-10-05', status: 'Active', display_order: 11, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-11a', month: 'November', date: '1', year: 2026, full_date: '2026-11-01', status: 'Active', display_order: 12, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-11b', month: 'November', date: '29', year: 2026, full_date: '2026-11-29', status: 'Active', display_order: 13, created_at: '2026-01-01', updated_at: '2026-01-01' },
+  { id: 'psh-2026-12', month: 'December', date: '26', year: 2026, full_date: '2026-12-26', status: 'Active', display_order: 14, created_at: '2026-01-01', updated_at: '2026-01-01' }
+];
+
+export const MONTH_NAMES = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December'
+];
+
+export function getDaysInMonth(monthName, year = 2026) {
+  const monthMap = {
+    January: 31,
+    February: (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28,
+    March: 31,
+    April: 30,
+    May: 31,
+    June: 30,
+    July: 31,
+    August: 31,
+    September: 30,
+    October: 31,
+    November: 30,
+    December: 31
+  };
+  return monthMap[monthName] || 31;
+}
+
+export function validatePushyaDate({ month, date, year }) {
+  if (!month || !month.trim()) {
+    return { valid: false, message: 'Month is required.' };
+  }
+  if (!MONTH_NAMES.includes(month)) {
+    return { valid: false, message: `Invalid month selected: "${month}".` };
+  }
+  const numericDate = parseInt(date, 10);
+  if (isNaN(numericDate) || numericDate < 1 || numericDate > 31) {
+    return { valid: false, message: 'Date must be a valid number between 1 and 31.' };
+  }
+  const numericYear = parseInt(year, 10) || 2026;
+  const maxDays = getDaysInMonth(month, numericYear);
+  if (numericDate > maxDays) {
+    return { valid: false, message: `${month} ${numericYear} only has ${maxDays} days. Date ${numericDate} is invalid.` };
+  }
+  return { valid: true, message: 'Valid' };
+}
+
+// Fetch all Swarnaprashana dates from storage
+export function getAllSwarnaprashanaDates() {
+  try {
+    const stored = localStorage.getItem(SWARNAPRASHANA_KEY);
+    if (!stored) {
+      localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(defaultSwarnaprashanaSchedule));
+      return defaultSwarnaprashanaSchedule;
+    }
+    const parsed = JSON.parse(stored);
+    return Array.isArray(parsed) ? parsed : defaultSwarnaprashanaSchedule;
+  } catch (err) {
+    console.error('Error reading swarnaprashana schedule:', err);
+    return defaultSwarnaprashanaSchedule;
+  }
+}
+
+// Fetch filtered Swarnaprashana schedule (e.g. For public frontend: activeOnly = true)
+export function getSwarnaprashanaSchedule({ year = null, activeOnly = true } = {}) {
+  const allDates = getAllSwarnaprashanaDates();
+  let filtered = [...allDates];
+
+  if (activeOnly) {
+    filtered = filtered.filter(item => item.status === 'Active');
+  }
+
+  if (year !== null && year !== undefined && year !== 'all') {
+    const targetYear = parseInt(year, 10);
+    filtered = filtered.filter(item => parseInt(item.year, 10) === targetYear);
+  }
+
+  // Sort by year, month index, then date
+  return filtered.sort((a, b) => {
+    const yearDiff = (parseInt(a.year, 10) || 2026) - (parseInt(b.year, 10) || 2026);
+    if (yearDiff !== 0) return yearDiff;
+    
+    const monthA = MONTH_NAMES.indexOf(a.month);
+    const monthB = MONTH_NAMES.indexOf(b.month);
+    if (monthA !== monthB) return monthA - monthB;
+
+    const dateDiff = (parseInt(a.date, 10) || 1) - (parseInt(b.date, 10) || 1);
+    if (dateDiff !== 0) return dateDiff;
+
+    return (a.display_order || 0) - (b.display_order || 0);
+  });
+}
+
+// Get distinct years in the schedule database
+export function getAvailableScheduleYears() {
+  const allDates = getAllSwarnaprashanaDates();
+  const yearsSet = new Set(allDates.map(d => parseInt(d.year, 10) || 2026));
+  yearsSet.add(2026);
+  return Array.from(yearsSet).sort((a, b) => a - b);
+}
+
+// Save (Add / Edit) a Swarnaprashana date entry
+export function saveSwarnaprashanaDate(entry) {
+  try {
+    const validation = validatePushyaDate(entry);
+    if (!validation.valid) {
+      throw new Error(validation.message);
+    }
+
+    const allDates = getAllSwarnaprashanaDates();
+    const numericYear = parseInt(entry.year, 10) || 2026;
+    const numericDate = parseInt(entry.date, 10);
+    const monthIndex = MONTH_NAMES.indexOf(entry.month) + 1;
+    const padMonth = String(monthIndex).padStart(2, '0');
+    const padDate = String(numericDate).padStart(2, '0');
+    const fullDate = entry.full_date || `${numericYear}-${padMonth}-${padDate}`;
+
+    let updated;
+    const existsIndex = allDates.findIndex(d => d.id === entry.id);
+
+    if (existsIndex >= 0) {
+      // Update existing date
+      updated = [...allDates];
+      updated[existsIndex] = {
+        ...updated[existsIndex],
+        month: entry.month,
+        date: String(numericDate),
+        year: numericYear,
+        full_date: fullDate,
+        status: entry.status || 'Active',
+        display_order: parseInt(entry.display_order, 10) || updated[existsIndex].display_order || 1,
+        updated_at: new Date().toISOString()
+      };
+    } else {
+      // Add new date
+      const newEntry = {
+        id: entry.id || 'psh-' + Date.now(),
+        month: entry.month,
+        date: String(numericDate),
+        year: numericYear,
+        full_date: fullDate,
+        status: entry.status || 'Active',
+        display_order: parseInt(entry.display_order, 10) || (allDates.length + 1),
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString()
+      };
+      updated = [...allDates, newEntry];
+    }
+
+    localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(updated));
+    
+    // Broadcast storage event for real-time reactivity
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
+    }
+
+    return { success: true, data: updated, message: 'Swarnaprashana schedule updated successfully.' };
+  } catch (err) {
+    console.error('Error saving swarnaprashana date:', err);
+    return { success: false, error: err.message || 'Failed to save date.' };
+  }
+}
+
+// Toggle date active/inactive status
+export function toggleSwarnaprashanaStatus(id) {
+  try {
+    const allDates = getAllSwarnaprashanaDates();
+    const updated = allDates.map(item => 
+      item.id === id 
+        ? { ...item, status: item.status === 'Active' ? 'Inactive' : 'Active', updated_at: new Date().toISOString() } 
+        : item
+    );
+    localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(updated));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
+    }
+    return updated;
+  } catch (err) {
+    console.error('Error toggling swarnaprashana status:', err);
+    return getAllSwarnaprashanaDates();
+  }
+}
+
+// Delete date
+export function deleteSwarnaprashanaDate(id) {
+  try {
+    const allDates = getAllSwarnaprashanaDates();
+    const updated = allDates.filter(item => item.id !== id);
+    localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(updated));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
+    }
+    return updated;
+  } catch (err) {
+    console.error('Error deleting swarnaprashana date:', err);
+    return getAllSwarnaprashanaDates();
+  }
+}
+
 export function clearAllAdminData() {
   localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(defaultAppointments));
   localStorage.setItem(INQUIRIES_KEY, JSON.stringify(defaultInquiries));
   localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(defaultSettings));
   localStorage.setItem(TREATMENTS_KEY, JSON.stringify(clinicData.treatments));
+  localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(defaultSwarnaprashanaSchedule));
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: defaultSwarnaprashanaSchedule }));
+  }
   return { 
     appointments: defaultAppointments, 
     inquiries: defaultInquiries, 
     settings: defaultSettings,
-    treatments: clinicData.treatments 
+    treatments: clinicData.treatments,
+    swarnaprashana: defaultSwarnaprashanaSchedule
   };
 }
+

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Sparkles, CheckCircle2, Calendar, PhoneCall, Baby, ShieldCheck, ShieldAlert, HeartHandshake, BookOpen, AlertTriangle, ArrowRight, ArrowLeft, Sun, Clock, Award, Star, CalendarDays } from 'lucide-react';
@@ -6,6 +6,7 @@ import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import RelatedTreatments from '../components/RelatedTreatments';
 import { clinicData } from '../data/clinicData';
+import { getSwarnaprashanaSchedule, getAvailableScheduleYears } from '../utils/adminStorage';
 import swarnaImg1 from '../assets/swarnaprashana_1.png';
 import swarnaImg2 from '../assets/swarnaprashana_2.png';
 import swarnaImg3 from '../assets/swarnaprashana_3.png';
@@ -13,22 +14,30 @@ import swarnaImg3 from '../assets/swarnaprashana_3.png';
 export default function Swarnaprashana({ onOpenBooking }) {
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
 
-  const pushyaDates = [
-    { month: "January", date: "5" },
-    { month: "February", date: "1" },
-    { month: "February", date: "28" },
-    { month: "March", date: "28" },
-    { month: "April", date: "24" },
-    { month: "May", date: "21" },
-    { month: "June", date: "18" },
-    { month: "July", date: "15" },
-    { month: "August", date: "11" },
-    { month: "September", date: "8" },
-    { month: "October", date: "5" },
-    { month: "November", date: "1" },
-    { month: "November", date: "29" },
-    { month: "December", date: "26" }
-  ];
+  const [availableYears, setAvailableYears] = useState([2026]);
+  const [selectedYear, setSelectedYear] = useState(2026);
+  const [schedule, setSchedule] = useState([]);
+
+  useEffect(() => {
+    const loadSchedule = () => {
+      const years = getAvailableScheduleYears();
+      setAvailableYears(years);
+      if (!years.includes(selectedYear) && years.length > 0) {
+        setSelectedYear(years[0]);
+      }
+      setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
+    };
+
+    loadSchedule();
+
+    const handleUpdate = () => loadSchedule();
+    window.addEventListener('swarnaprashana_schedule_updated', handleUpdate);
+    window.addEventListener('storage', handleUpdate);
+    return () => {
+      window.removeEventListener('swarnaprashana_schedule_updated', handleUpdate);
+      window.removeEventListener('storage', handleUpdate);
+    };
+  }, [selectedYear]);
 
   const purposePoints = [
     "Supports traditional Ayurvedic child wellness",
@@ -133,29 +142,59 @@ export default function Swarnaprashana({ onOpenBooking }) {
                   </div>
                 </div>
 
-                {/* Schedule Title */}
-                <div className="flex items-center gap-2 text-forest-950 pt-1">
-                  <CalendarDays className="w-4 h-4 text-brass-600" />
-                  <h3 className="font-serif text-lg sm:text-xl font-medium">Pushya Nakshatra Schedule</h3>
+                {/* Schedule Title & Dynamic Year Selector */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pt-1 border-b border-earth-200/60 pb-2">
+                  <div className="flex items-center gap-2 text-forest-950">
+                    <CalendarDays className="w-4 h-4 text-brass-600" />
+                    <h3 className="font-serif text-lg sm:text-xl font-medium">
+                      Pushya Nakshatra Schedule ({selectedYear})
+                    </h3>
+                  </div>
+
+                  {availableYears.length > 1 && (
+                    <div className="flex items-center gap-1.5 bg-white p-1 rounded-xl border border-earth-200 shadow-2xs">
+                      <span className="text-[10px] font-semibold text-earth-700 uppercase px-1.5">Year:</span>
+                      {availableYears.map(yr => (
+                        <button
+                          key={yr}
+                          onClick={() => setSelectedYear(yr)}
+                          className={`px-2.5 py-0.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                            selectedYear === yr
+                              ? 'bg-forest-900 text-cream-50 shadow-xs'
+                              : 'text-forest-900 hover:bg-cream-100'
+                          }`}
+                        >
+                          {yr}
+                        </button>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
                 {/* Two-Column Monthly Schedule Grid */}
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                  {pushyaDates.map((item, idx) => (
-                    <div
-                      key={idx}
-                      className="flex items-center justify-between p-2.5 px-3.5 bg-white rounded-xl border border-earth-200 shadow-2xs hover:border-brass-400 transition-colors"
-                    >
-                      <span className="font-medium text-forest-950 flex items-center gap-2">
-                        <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
-                        <span>{item.month}</span>
-                      </span>
-                      <span className="px-2.5 py-0.5 rounded-md bg-forest-50 text-forest-900 font-mono font-bold text-xs border border-forest-900/10">
-                        {item.date}
-                      </span>
-                    </div>
-                  ))}
-                </div>
+                {schedule.length > 0 ? (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
+                    {schedule.map((item) => (
+                      <div
+                        key={item.id}
+                        className="flex items-center justify-between p-2.5 px-3.5 bg-white rounded-xl border border-earth-200 shadow-2xs hover:border-brass-400 transition-colors"
+                      >
+                        <span className="font-medium text-forest-950 flex items-center gap-2">
+                          <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
+                          <span>{item.month}</span>
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-md bg-forest-50 text-forest-900 font-mono font-bold text-xs border border-forest-900/10">
+                          {item.date}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="p-6 bg-white rounded-2xl border border-earth-200 text-center space-y-1">
+                    <p className="text-xs text-forest-950 font-medium">Pushya Nakshatra dates for {selectedYear} will be announced shortly.</p>
+                    <p className="text-[11px] text-earth-600 font-light">Please contact the clinic reception for upcoming pediatric drop dates.</p>
+                  </div>
+                )}
 
                 {/* Schedule Note */}
                 <p className="text-[11px] text-earth-700 italic font-light pt-1">
