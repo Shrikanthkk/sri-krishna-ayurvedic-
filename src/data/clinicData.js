@@ -292,6 +292,13 @@ export const clinicData = {
       author: "Praveen V.",
       locality: "Ramamurthy Nagar",
       treatment: "General Consultation"
+    },
+    {
+      id: 4,
+      quote: "We are incredibly pleased with the physiotherapy treatment provided by Dr. Sunithi. They treated both my wife and my daughter-in-law with the utmost professionalism and skill. What truly sets them apart is their bedside manner; they are kind, patient and make the recovery process so much easier. It is rare to find a physician who balances technical expertise with such a warm and welcoming personality. They truly care about their patients' well-being and are dedicated to seeing them recover. Highly recommended to anyone looking for effective and compassionate care.",
+      author: "Vijay Kumar",
+      locality: "Google Review • Verified Patient",
+      treatment: "Physiotherapy & Rehab"
     }
   ],
 

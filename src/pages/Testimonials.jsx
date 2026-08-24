@@ -25,7 +25,7 @@ export default function Testimonials() {
         <Breadcrumb items={[{ label: 'Testimonials' }]} />
 
         {/* Testimonials Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-20">
           {clinicData.testimonials.map((item) => (
             <div
               key={item.id}
