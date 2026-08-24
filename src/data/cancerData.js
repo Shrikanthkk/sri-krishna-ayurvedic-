@@ -52,6 +52,7 @@ export const majorCancerTypes = [
     category: "Hepatic Malignancy",
     badgeColor: "bg-amber-900/10 text-amber-800 border-amber-200",
     iconName: "ShieldAlert",
+    image: "/images/liver_cancer.png",
     shortSummary: "Primary liver malignancy commonly associated with chronic hepatic inflammation, viral hepatitis, or cirrhosis.",
     points: {
       whatItIs: "Primary malignant tumor originating in the main functional liver cells (hepatocytes), frequently developing secondary to persistent liver inflammation or chronic parenchymal scarring.",
