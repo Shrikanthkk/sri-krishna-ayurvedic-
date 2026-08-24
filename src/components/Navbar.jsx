@@ -31,6 +31,7 @@ export default function Navbar({ onOpenBooking }) {
   const subLinks = [
     { name: 'Cancer Treatment', path: '/treatments/cancer-treatment' },
     { name: 'Swarnaprashana', path: '/treatments/swarnaprashana' },
+    { name: 'Reduce Obesity (Weight Loss)', path: '/treatments/reduce-obesity' },
     { name: 'Joint Pain & Arthritis', path: '/treatments/joint-pain-arthritis' },
     { name: 'Skin Problems', path: '/treatments/skin-problems' },
     { name: 'Hair Fall Treatment', path: '/treatments/hair-fall' },

@@ -23,6 +23,7 @@ export default function SearchBar({ onOpenBooking }) {
   }, []);
 
   const popularSearches = [
+    { title: "Reduce Obesity (Weight Loss)", path: "/treatments/reduce-obesity" },
     { title: "Nadi Pariksha", sectionId: "treatments" },
     { title: "Panchakarma Detox", sectionId: "treatments" },
     { title: "Swarnaprashana (Suvarnaprashana)", path: "/treatments/swarnaprashana" },
@@ -31,6 +32,8 @@ export default function SearchBar({ onOpenBooking }) {
 
   const commonSpecialities = [
     { title: "Ayurvedic Physician (Dr. Anand Krishna, BAMS)", type: "SPECIALITY", sectionId: "doctor" },
+    { title: "Reduce Obesity & Sthoulya Specialist", type: "SPECIALITY", path: "/treatments/reduce-obesity" },
+    { title: "Udwarthanam Weight Loss Massage", type: "SPECIALITY", path: "/treatments/reduce-obesity" },
     { title: "Nadi Pariksha Specialist", type: "SPECIALITY", sectionId: "treatments" },
     { title: "Panchakarma Detox Therapist", type: "SPECIALITY", sectionId: "treatments" },
     { title: "Spine & Joint Care Specialist", type: "SPECIALITY", sectionId: "treatments" },

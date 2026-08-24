@@ -17,6 +17,7 @@ import SexualDisorders from './pages/treatments/SexualDisorders';
 import DeAddiction from './pages/treatments/DeAddiction';
 import Diabetes from './pages/treatments/Diabetes';
 import CancerTreatment from './pages/treatments/CancerTreatment';
+import ReduceObesity from './pages/treatments/ReduceObesity';
 import Swarnaprashana from './pages/Swarnaprashana';
 
 import Gallery from './pages/Gallery';
@@ -54,7 +55,7 @@ function AppContent() {
           <Route path="/treatments" element={<Treatments onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments." element={<Navigate to="/treatments" replace />} />
           
-          {/* 7 Dedicated Treatment Routes */}
+          {/* Dedicated Treatment Routes */}
           <Route path="/treatments/joint-pain-arthritis" element={<JointPainArthritis onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/skin-problems" element={<SkinProblems onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/hair-fall" element={<HairFall onOpenBooking={() => setBookingOpen(true)} />} />
@@ -62,6 +63,8 @@ function AppContent() {
           <Route path="/treatments/de-addiction" element={<DeAddiction onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/diabetes" element={<Diabetes onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/cancer-treatment" element={<CancerTreatment onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/reduce-obesity" element={<ReduceObesity onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/obesity" element={<Navigate to="/treatments/reduce-obesity" replace />} />
 
           {/* Swarnaprashana Dedicated Page & Compatibility Routes */}
           <Route path="/treatments/swarnaprashana" element={<Swarnaprashana onOpenBooking={() => setBookingOpen(true)} />} />

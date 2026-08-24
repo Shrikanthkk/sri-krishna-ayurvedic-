@@ -236,6 +236,19 @@ export const clinicData = {
       buttonText: "Explore Swarnaprashana",
       benefits: ["For infants & children (0–16 Years)", "Administered on Pushya Nakshatra days", "Nurtures vitality, intellect & wellbeing"],
       duration: "Periodic Administration"
+    },
+    {
+      id: "reduce-obesity",
+      number: "09",
+      title: "Reduce Obesity (Sthoulya & Weight Management)",
+      shortTitle: "Reduce Obesity",
+      subtitle: "Metabolic Fat Loss & Medoroga Care",
+      image: "/images/hero_adobe_4.jpg",
+      description: "Root-cause Ayurvedic weight management combining Udwarthanam herbal scraping, metabolic detoxification, and customized nutrition to burn stubborn fat naturally.",
+      link: "/treatments/reduce-obesity",
+      buttonText: "Explore Obesity Reduction",
+      benefits: ["Udwarthanam herbal powder scraping", "Lekhana Basti visceral detox", "Revitalizes Agni & fat metabolism"],
+      duration: "Personalized Program"
     }
   ],
 

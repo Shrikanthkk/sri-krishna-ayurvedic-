@@ -115,6 +115,11 @@ export default function Footer({ onOpenBooking }) {
                   <span>Diabetes Care</span>
                 </Link>
               </li>
+              <li>
+                <Link to="/treatments/reduce-obesity" className="hover:text-brass-300 transition-colors">
+                  <span>Reduce Obesity (Weight Loss)</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
