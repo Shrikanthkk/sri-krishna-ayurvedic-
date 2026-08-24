@@ -87,7 +87,7 @@ export default function Testimonials() {
             {/* Google Reviews Official Button */}
             <div className="flex items-center gap-3">
               <a
-                href="https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"
+                href={clinicData.contact.googleReviewsUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white hover:bg-forest-900 text-forest-900 hover:text-cream-50 text-xs font-semibold border border-earth-200 shadow-xs transition-colors group"
@@ -143,7 +143,7 @@ export default function Testimonials() {
                           ))}
                         </div>
                         <a
-                          href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                          href={item.googleUrl || clinicData.contact.googleReviewsUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="inline-flex items-center gap-1 text-[9.5px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200 transition-colors"
@@ -163,7 +163,7 @@ export default function Testimonials() {
                       <div className="truncate">
                         <p className="font-semibold text-xs text-forest-950 truncate">{item.author}</p>
                         <a
-                          href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                          href={item.googleUrl || clinicData.contact.googleReviewsUrl}
                           target="_blank"
                           rel="noopener noreferrer"
                           className="text-[10px] text-earth-600 hover:text-forest-900 hover:underline truncate"
@@ -279,7 +279,7 @@ export default function Testimonials() {
                       ))}
                     </div>
                     <a
-                      href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                      href={item.googleUrl || clinicData.contact.googleReviewsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 transition-colors"
@@ -299,7 +299,7 @@ export default function Testimonials() {
                   <div className="truncate">
                     <p className="font-semibold text-xs text-forest-950 truncate">{item.author}</p>
                     <a
-                      href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                      href={item.googleUrl || clinicData.contact.googleReviewsUrl}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-[10.5px] text-earth-600 hover:text-forest-900 hover:underline truncate"

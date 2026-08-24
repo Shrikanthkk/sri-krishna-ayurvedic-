@@ -35,6 +35,7 @@ export const clinicData = {
       { days: "Sunday", hours: "Prior Appointment Only" }
     ],
     googleMapsUrl: "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+No+426+Near+Lakshmi+Super+Speciality+Hospital+3rd+Main+Krishnarajapuram+Bangalore+560036",
+    googleReviewsUrl: "https://www.google.com/search?q=sri+krishna+ayurvedic+clinic+kr+puram&oq=sri+kris&gs_lcrp=EgZjaHJvbWUqCAgBEEUYJxg7MgYIABBFGDkyCAgBEEUYJxg7MggIAhBFGCcYOzIKCAMQABixAxiABDIHCAQQLhiABDIHCAUQLhiABDIHCAYQABiABDIQCAcQLhivARjHARiABBiOBTIKCAgQABixAxiABDIKCAkQABixAxiABNIBCTY1NTFqMGoxNagCCLACAfEFNXVs2nIee_w&sourceid=chrome&source=chrome.rb&ie=UTF-8#sv=CAESzAEKuAEStQEKd0FKaVQ0dEx4Q3VkT3J1Tl81dzQ2dW9uVXRDMzN6WENzTDBqeVdLMGlncmFndVcwUDdQTHdLRFRuem9zemdySnM4RnNEQkRuQWhyeTVWWmtZTThXRmI0RHQ2LWhjM2tndEhNUXYyb05UeDRKR2k0X1Y0eU1GeERnEhYtQS1NYXBVRnlwT3g0d19Fa3J5NUF3GiJBRHNyOWZTZGRNbS13UlYxZ2RadTZUYzRkYnZrYUJPZkpREgQ4MDUxGgEzKgAwADgBQAAYACDEsbH2DkoCEAI",
     mapEmbedSrc: "https://maps.google.com/maps?q=Sri%20Krishna%20Ayurvedic%20Clinic%2C%20No%20426%2C%20Near%20Lakshmi%20Super%20Speciality%20Hospital%2C%203rd%20Main%2C%20Krishnarajapuram%2C%20Bangalore%20560036&t=&z=16&ie=UTF8&iwloc=&output=embed"
   },
 

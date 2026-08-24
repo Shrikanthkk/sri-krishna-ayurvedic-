@@ -66,7 +66,7 @@ export default function Testimonials() {
           {/* Google Reviews Official Link */}
           <div className="shrink-0">
             <a
-              href="https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"
+              href={clinicData.contact.googleReviewsUrl}
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-white hover:bg-forest-900 text-forest-900 hover:text-cream-50 font-semibold text-xs tracking-wider border border-earth-200 shadow-soft transition-all duration-300 group"
@@ -135,7 +135,7 @@ export default function Testimonials() {
 
                       {/* Clickable Google Review Badge/Link */}
                       <a
-                        href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                        href={item.googleUrl || clinicData.contact.googleReviewsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200/80 transition-colors group/link"
@@ -160,7 +160,7 @@ export default function Testimonials() {
                         {item.author}
                       </h4>
                       <a
-                        href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                        href={item.googleUrl || clinicData.contact.googleReviewsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-[10.5px] text-earth-600 hover:text-forest-900 hover:underline truncate flex items-center gap-1"
