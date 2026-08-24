@@ -52,23 +52,39 @@ export default function Treatments({ onOpenBooking }) {
               Treatment Categories
             </h2>
 
-            {/* Two prominent buttons in exact order: 1. Cancer Treatment, 2. Swarnaprashana */}
-            <div className="flex flex-wrap items-center gap-2.5">
+            {/* Prominent Treatment Category Shortcut Buttons */}
+            <div className="flex flex-wrap items-center gap-2">
               <Link
                 to="/treatments/cancer-treatment"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-earth-200 hover:border-brass-400 hover:bg-cream-50 text-forest-950 text-xs font-semibold uppercase tracking-wider transition-all shadow-2xs group"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-earth-200 hover:border-brass-400 hover:bg-cream-50 text-forest-950 text-xs font-semibold uppercase tracking-wider transition-all shadow-2xs group"
               >
                 <span className="w-2 h-2 rounded-full bg-brass-500 shrink-0" />
-                <span>1. Cancer Treatment</span>
-                <ArrowRight className="w-3.5 h-3.5 text-brass-600 group-hover:translate-x-0.5 transition-transform" />
+                <span>1. Cancer Care</span>
+                <ArrowRight className="w-3 h-3 text-brass-600 group-hover:translate-x-0.5 transition-transform" />
               </Link>
               <Link
                 to="/treatments/swarnaprashana"
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-earth-200 hover:border-emerald-500 hover:bg-cream-50 text-forest-950 text-xs font-semibold uppercase tracking-wider transition-all shadow-2xs group"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-earth-200 hover:border-emerald-500 hover:bg-cream-50 text-forest-950 text-xs font-semibold uppercase tracking-wider transition-all shadow-2xs group"
               >
                 <span className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
                 <span>2. Swarnaprashana</span>
-                <ArrowRight className="w-3.5 h-3.5 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+                <ArrowRight className="w-3 h-3 text-emerald-600 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link
+                to="/treatments/vitiligo"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-earth-200 hover:border-amber-500 hover:bg-amber-50/40 text-forest-950 text-xs font-semibold uppercase tracking-wider transition-all shadow-2xs group"
+              >
+                <span className="w-2 h-2 rounded-full bg-amber-500 shrink-0" />
+                <span>3. Vitiligo (White Patches)</span>
+                <ArrowRight className="w-3 h-3 text-amber-600 group-hover:translate-x-0.5 transition-transform" />
+              </Link>
+              <Link
+                to="/treatments/physiotherapy"
+                className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white border border-earth-200 hover:border-blue-500 hover:bg-blue-50/40 text-forest-950 text-xs font-semibold uppercase tracking-wider transition-all shadow-2xs group"
+              >
+                <span className="w-2 h-2 rounded-full bg-blue-500 shrink-0" />
+                <span>4. Physiotherapy</span>
+                <ArrowRight className="w-3 h-3 text-blue-600 group-hover:translate-x-0.5 transition-transform" />
               </Link>
             </div>
           </div>

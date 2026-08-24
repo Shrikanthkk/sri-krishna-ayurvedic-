@@ -18,6 +18,8 @@ import DeAddiction from './pages/treatments/DeAddiction';
 import Diabetes from './pages/treatments/Diabetes';
 import CancerTreatment from './pages/treatments/CancerTreatment';
 import ReduceObesity from './pages/treatments/ReduceObesity';
+import Vitiligo from './pages/treatments/Vitiligo';
+import Physiotherapy from './pages/treatments/Physiotherapy';
 import Swarnaprashana from './pages/Swarnaprashana';
 
 import Gallery from './pages/Gallery';
@@ -43,8 +45,11 @@ function AppContent() {
         {!isAdmin && <BelowNavbarAnimation />}
         <Routes>
           <Route path="/" element={<Home onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/home" element={<Navigate to="/" replace />} />
+          <Route path="/index.html" element={<Navigate to="/" replace />} />
           <Route path="/about" element={<About />} />
           <Route path="/about." element={<Navigate to="/about" replace />} />
+          <Route path="/about-us" element={<Navigate to="/about" replace />} />
           
           {/* Redirects for legacy standalone routes to About section anchors */}
           <Route path="/doctor" element={<Navigate to="/about#doctor" replace />} />
@@ -65,6 +70,11 @@ function AppContent() {
           <Route path="/treatments/cancer-treatment" element={<CancerTreatment onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/reduce-obesity" element={<ReduceObesity onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/obesity" element={<Navigate to="/treatments/reduce-obesity" replace />} />
+          <Route path="/treatments/vitiligo" element={<Vitiligo onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/white-patches" element={<Navigate to="/treatments/vitiligo" replace />} />
+          <Route path="/treatments/shvitra" element={<Navigate to="/treatments/vitiligo" replace />} />
+          <Route path="/treatments/physiotherapy" element={<Physiotherapy onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/rehabilitation" element={<Navigate to="/treatments/physiotherapy" replace />} />
 
           {/* Swarnaprashana Dedicated Page & Compatibility Routes */}
           <Route path="/treatments/swarnaprashana" element={<Swarnaprashana onOpenBooking={() => setBookingOpen(true)} />} />

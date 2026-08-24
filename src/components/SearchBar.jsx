@@ -23,6 +23,8 @@ export default function SearchBar({ onOpenBooking }) {
   }, []);
 
   const popularSearches = [
+    { title: "Vitiligo & White Patches", path: "/treatments/vitiligo" },
+    { title: "Physiotherapy & Rehabilitation", path: "/treatments/physiotherapy" },
     { title: "Reduce Obesity (Weight Loss)", path: "/treatments/reduce-obesity" },
     { title: "Nadi Pariksha", sectionId: "treatments" },
     { title: "Panchakarma Detox", sectionId: "treatments" },
@@ -32,6 +34,10 @@ export default function SearchBar({ onOpenBooking }) {
 
   const commonSpecialities = [
     { title: "Ayurvedic Physician (Dr. Anand Krishna, BAMS)", type: "SPECIALITY", sectionId: "doctor" },
+    { title: "Vitiligo & White Patches Specialist (Shvitra)", type: "SPECIALITY", path: "/treatments/vitiligo" },
+    { title: "Bakuchi Herbal Skin Therapy", type: "SPECIALITY", path: "/treatments/vitiligo" },
+    { title: "Physiotherapy & Rehabilitation Care (Dr. Sunithi)", type: "SPECIALITY", path: "/treatments/physiotherapy" },
+    { title: "Kati Basti & Spinal Decompression", type: "SPECIALITY", path: "/treatments/physiotherapy" },
     { title: "Reduce Obesity & Sthoulya Specialist", type: "SPECIALITY", path: "/treatments/reduce-obesity" },
     { title: "Udwarthanam Weight Loss Massage", type: "SPECIALITY", path: "/treatments/reduce-obesity" },
     { title: "Nadi Pariksha Specialist", type: "SPECIALITY", sectionId: "treatments" },

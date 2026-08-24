@@ -20,83 +20,83 @@ export default function Gallery() {
   const galleryItems = [
     {
       id: 1,
-      title: "Integrative Ayurvedic Clinical Care & Therapies",
+      title: "Classical Nadi Pariksha & Pulse Diagnosis",
       category: "consultation",
-      tag: "Comprehensive Clinical Healing",
-      src: "/images/ayurvedic_integrative_therapy.jpg",
-      description: "Combining classical pulse diagnosis (Nadi Pariksha) and personalized botanical formulations with authentic Panchakarma body therapies."
+      tag: "Ancient Diagnostic Art",
+      src: "/images/hero_stock_1.jpg",
+      description: "Senior physician evaluating radial pulse to diagnose Dosha imbalance, organ health, and unique Prakriti constitution."
     },
     {
       id: 2,
       title: "Panchakarma Detox & Shirodhara Stream",
       category: "panchakarma",
       tag: "Cellular Bio-Purification",
-      src: "/images/shirodhara.jpg",
-      description: "Soothing continuous stream of medicated herbal oils over forehead marma points to relieve chronic stress, insomnia, and nervous system fatigue."
+      src: "/images/panchakarma.png",
+      description: "Soothing flow of warm herbal oil over forehead marma points to alleviate stress, anxiety, migraines, and insomnia."
     },
     {
       id: 3,
-      title: "Traditional Navarakizhi & Herbal Potali Massage",
+      title: "Traditional Navarakizhi & Potali Massage",
       category: "panchakarma",
       tag: "Cellular Bio-Purification",
-      src: "/images/ayurvedic_potli_herbs.jpg",
-      description: "Steam-heated herbal boluses (Kizhi) and warm medicated oils applied across joints and muscles for deep tissue rejuvenation and arthritis relief."
+      src: "/images/hero_adobe_5.jpg",
+      description: "Steam-heated medicinal herb compresses applied across joints and muscles for deep tissue detoxification and pain relief."
     },
     {
       id: 4,
-      title: "Vedic Heritage & Ancient Ayurvedic Acharya Lineage",
-      category: "herbal",
-      tag: "Classical Sanskrit Lineage",
-      src: "/images/ancient_ayurveda_sage.jpg",
-      description: "Time-tested principles preserved from Charaka Samhita and Sushruta Samhita, guiding root-cause formulation and constitutional healing."
+      title: "Targeted Joint & Spine Kati Vasti Care",
+      category: "panchakarma",
+      tag: "Rheumatic & Lumbar Relief",
+      src: "/images/hero_stock_3.jpg",
+      description: "Specialized warm herbal oil pool retained over the lumbar region for spondylosis, sciatica, and chronic joint stiffness."
     },
     {
       id: 5,
-      title: "Stone Mortar Herb Grinding & Classical Formulations",
+      title: "Stone Mortar Herb Grinding & Extraction",
       category: "herbal",
       tag: "Classical Apothecary",
-      src: "/images/ayurvedic_potli_herbs.jpg",
-      description: "Pure botanical roots, therapeutic herbs, and medicinal oils prepared strictly adhering to classical Ayurvedic pharmacopoeia."
+      src: "/images/hero_adobe_1.jpg",
+      description: "Authentic hand-crushed medicinal herbs, roots, and botanical leaves prepared for custom classical formulations."
     },
     {
       id: 6,
-      title: "Pure Medicated Oils, Kizhi Pouches & Kashayams",
+      title: "Pure Medicated Oils & Botanical Kashayams",
       category: "herbal",
       tag: "Herbal Remedies",
-      src: "/images/ayurvedic_potli_herbs.jpg",
-      description: "Slow-brewed botanical decoctions and medicated herbal oils crafted for chronic pain, metabolic disorders, and digestive wellness."
+      src: "/images/hero_adobe_2.jpg",
+      description: "Slow-brewed medicinal decoctions and infused plant oils prepared strictly according to ancient Ayurvedic texts."
     },
     {
       id: 7,
       title: "Swarnaprashana Ayurvedic Pediatric Care",
       category: "consultation",
       tag: "Child Wellness & Vitality",
-      src: "/images/swarnaprashana_1.png",
-      description: "Classical Kashyapa Samhita gold-based pediatric drops administered on Pushya Nakshatra days for cognitive and immunity support."
+      src: "/images/hero_stock_2.jpg",
+      description: "Classical Kashyapa Samhita gold-based pediatric formulation administered under physician guidance for cognitive and vitality support."
     },
     {
       id: 8,
-      title: "Ancient Manuscript Wisdom & Herbal Science",
+      title: "Handcrafted Apothecary & Storage Sanctuary",
       category: "ambiance",
-      tag: "Traditional Wisdom",
-      src: "/images/ancient_ayurveda_sage.jpg",
-      description: "Honoring the ancient sage tradition of herbal formulation, clinical diagnostics, and natural healing methods."
+      tag: "Traditional Atmosphere",
+      src: "/images/hero_adobe_3.jpg",
+      description: "A warm, natural wooden sanctuary holding classical Ayurvedic churnams, tailams, and organic medicinal herbs."
     },
     {
       id: 9,
-      title: "Holistic Physician Care & Consultation Sanctuary",
+      title: "Traditional Teakwood Droni Therapy Room",
       category: "ambiance",
-      tag: "Clinical Excellence",
-      src: "/images/ayurvedic_integrative_therapy.jpg",
-      description: "A serene clinical atmosphere bridging traditional Ayurvedic treatments with thorough medical consultation."
+      tag: "Sanctuary Environment",
+      src: "/images/hero_adobe_4.jpg",
+      description: "Polished wooden treatment couch designed for classical Abhyanga massage and Panchakarma bio-purification therapies."
     },
     {
       id: 10,
-      title: "Traditional Kizhi Potli & Medicated Therapy Herbs",
-      category: "panchakarma",
-      tag: "Deep Rejuvenation",
-      src: "/images/ayurvedic_potli_herbs.jpg",
-      description: "Handcrafted cotton boluses packed with restorative herbs for soothing inflammation and boosting lymphatic circulation."
+      title: "Botanical Skin Radiance & Hair Rejuvenation",
+      category: "herbal",
+      tag: "Rakta Shodhana Care",
+      src: "/images/hero_stock_4.jpg",
+      description: "Purifying herbal oils and organic botanical poultices targeting Eczema, Psoriasis, and natural hair density."
     },
     {
       id: 11,

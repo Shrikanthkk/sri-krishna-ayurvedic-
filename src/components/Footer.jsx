@@ -120,6 +120,16 @@ export default function Footer({ onOpenBooking }) {
                   <span>Reduce Obesity (Weight Loss)</span>
                 </Link>
               </li>
+              <li>
+                <Link to="/treatments/vitiligo" className="hover:text-brass-300 transition-colors">
+                  <span>Vitiligo & White Patches</span>
+                </Link>
+              </li>
+              <li>
+                <Link to="/treatments/physiotherapy" className="hover:text-brass-300 transition-colors">
+                  <span>Physiotherapy & Rehab</span>
+                </Link>
+              </li>
             </ul>
           </div>
 
