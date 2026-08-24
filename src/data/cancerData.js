@@ -106,6 +106,7 @@ export const majorCancerTypes = [
     category: "Gynecologic Malignancy",
     badgeColor: "bg-purple-900/10 text-purple-800 border-purple-200",
     iconName: "Sparkles",
+    image: "/images/cervical_cancer.png",
     shortSummary: "Malignancy of the uterine cervix strongly associated with persistent high-risk Human Papillomavirus (HPV) infection.",
     points: {
       whatItIs: "Malignant growth originating in the cells lining the cervix (the lower part of the uterus connecting to the vagina), predominantly triggered by persistent high-risk Human Papillomavirus (HPV) infection.",
