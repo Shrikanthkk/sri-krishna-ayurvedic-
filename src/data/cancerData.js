@@ -124,6 +124,7 @@ export const majorCancerTypes = [
     category: "Gastrointestinal Malignancy",
     badgeColor: "bg-teal-900/10 text-teal-800 border-teal-200",
     iconName: "HeartPulse",
+    image: "/images/colon_cancer.png",
     shortSummary: "Malignancy originating in the large intestine mucosa, typically developing from pre-cancerous adenomatous polyps.",
     points: {
       whatItIs: "Cancer originating in the epithelial lining of the large intestine (colon or rectum), typically developing gradually over several years from pre-cancerous adenomatous polyps.",
