@@ -61,28 +61,28 @@ export default function CancerTreatment({ onOpenBooking }) {
 
   const modalities = [
     {
-      name: "Nutritional Guidance (Ahara Support)",
-      desc: "Tailoring easily assimilable, soothing, nutrient-dense soups, gruels, and herbal teas to soothe mucosal irritation, combat nausea, and nourish depleted tissues."
+      name: "Nutritional Guidance (Ahara)",
+      desc: "Soothing, easily digestible soups and gruels to ease nausea and nourish depleted tissues."
     },
     {
-      name: "Gentle Rasayana Vitality Care",
-      desc: "Supervised use of mild, non-conflicting classical restorative botanicals (like Amalaki, Guduchi, Ashwagandha, and Shatavari) to support innate vitality and immune equilibrium."
+      name: "Gentle Rasayana Vitality",
+      desc: "Supervised restorative herbs (Amalaki, Guduchi, Ashwagandha) to sustain natural energy and immunity."
     },
     {
-      name: "Digestive Agni & Gut Comfort",
-      desc: "Restoring digestive appetite (Dipana) and easing bloating or taste alterations resulting from intensive conventional cancer medications."
+      name: "Digestive Agni Comfort",
+      desc: "Enhancing natural appetite and relieving bloating or taste changes during medical treatments."
     },
     {
-      name: "Mind-Body Relaxation & Meditation",
-      desc: "Gentle meditation, guided visualizations, and restorative breathwork that down-regulate sympathetic stress hormones and instill deep inner peace."
+      name: "Mind-Body & Meditation",
+      desc: "Restorative breathwork and guided meditation to reduce treatment stress and promote emotional calm."
     },
     {
-      name: "Restorative Sleep & Fatigue Care",
-      desc: "Therapeutic regimens aimed at easing treatment-induced insomnia, physical exhaustion, and restlessness to optimize nighttime cellular repair."
+      name: "Restful Sleep & Fatigue Care",
+      desc: "Soothing nighttime regimens to alleviate physical exhaustion and support deep restorative sleep."
     },
     {
-      name: "Integrative Oncology Coordination",
-      desc: "Open communication encouraging patients to keep their primary oncologists informed of all complementary Ayurvedic lifestyle and wellness measures."
+      name: "Oncology Coordination",
+      desc: "Open, transparent complementary care safely coordinated alongside your primary oncologist's protocols."
     }
   ];
 
@@ -277,34 +277,31 @@ export default function CancerTreatment({ onOpenBooking }) {
 
           {/* Right: Ayurvedic Perspective */}
           <div className="lg:col-span-7 bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated space-y-4 flex flex-col justify-between">
-            <div className="space-y-4">
+            <div className="space-y-3.5">
               <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
-                03 • CLASSICAL UNDERSTANDING & NON-EQUIVALENCE
+                03 • CLASSICAL PERSPECTIVE
               </span>
               <h2 className="text-2xl sm:text-3xl font-serif text-forest-950 font-light">
                 Ayurvedic Perspective on Arbuda & Granthi
               </h2>
               
-              <div className="text-xs sm:text-sm text-earth-800 font-light leading-relaxed space-y-3">
+              <div className="text-xs sm:text-sm text-earth-800 font-light leading-relaxed space-y-2.5">
                 <p>
-                  Classical Ayurvedic literature mentions structural tissue growths under terms like <strong>Arbuda</strong> (deep-rooted, broad swelling involving multiple doshas and tissues) and <strong>Granthi</strong> (nodular or glandular swellings).
+                  Classical Ayurveda historically describes abnormal tissue swellings as <strong>Arbuda</strong> and <strong>Granthi</strong>. While distinct from modern cellular oncology, classical wisdom emphasizes strengthening host resilience rather than targeting tumors alone.
                 </p>
-                <p className="p-3.5 bg-cream-50 rounded-xl border border-earth-200 text-xs italic text-forest-950">
-                  <strong>Important Scientific Clarification:</strong> Classical Ayurvedic concepts of <em>Arbuda</em> and <em>Granthi</em> were conceptualized historically and are not direct equivalents of modern medical cancer diagnoses (which involve specific cellular mutations, genetics, metastases, and histopathological classifications).
-                </p>
-                <p>
-                  In the context of supportive oncology care, Ayurveda focuses on the host rather than the tumor. By nurturing <strong>Dhatu Sarata</strong> (tissue integrity), protecting <strong>Agni</strong> (digestive capability), and rejuvenating <strong>Ojas</strong> (immunity and stamina), complementary Ayurvedic methods seek to enhance patient resilience throughout the healing continuum.
+                <p className="p-3 bg-cream-50 rounded-xl border border-earth-200 text-[11.5px] italic text-forest-950">
+                  <strong>Scientific Note:</strong> Ayurvedic supportive care complements conventional oncology by nurturing tissue strength (<em>Dhatu Sarata</em>), digestive vitality (<em>Agni</em>), and immune resilience (<em>Ojas</em>).
                 </p>
               </div>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2">
-                <div className="p-3.5 bg-cream-50 rounded-2xl border border-earth-200">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
+                <div className="p-3 bg-cream-50/80 rounded-2xl border border-earth-200">
                   <strong className="text-forest-950 text-xs font-serif block">Host Vitality & Ojas</strong>
-                  <p className="text-[11px] text-earth-700 font-light mt-1">Sustaining physiological strength and reducing treatment-related exhaustion.</p>
+                  <p className="text-[11px] text-earth-700 font-light mt-0.5">Combating treatment fatigue and sustaining stamina.</p>
                 </div>
-                <div className="p-3.5 bg-cream-50 rounded-2xl border border-earth-200">
-                  <strong className="text-forest-950 text-xs font-serif block">Agni & Digestive Comfort</strong>
-                  <p className="text-[11px] text-earth-700 font-light mt-1">Ensuring that food is comfortably digested and metabolized into healing energy.</p>
+                <div className="p-3 bg-cream-50/80 rounded-2xl border border-earth-200">
+                  <strong className="text-forest-950 text-xs font-serif block">Agni & Digestion</strong>
+                  <p className="text-[11px] text-earth-700 font-light mt-0.5">Restoring appetite and soothing gut comfort.</p>
                 </div>
               </div>
             </div>
@@ -313,8 +310,8 @@ export default function CancerTreatment({ onOpenBooking }) {
         </div>
 
         {/* Section: Supportive Modalities */}
-        <div className="bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated mb-10 space-y-6">
-          <div className="space-y-2">
+        <div className="bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated mb-10 space-y-5">
+          <div className="space-y-1.5">
             <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
               04 • COMPLEMENTARY MODALITIES
             </span>
@@ -322,7 +319,7 @@ export default function CancerTreatment({ onOpenBooking }) {
               Supportive Care Modalities
             </h2>
             <p className="text-earth-800 text-xs sm:text-sm font-light leading-relaxed">
-              Every regimen is designed to be gentle, supportive, and harmoniously aligned with ongoing medical protocols:
+              Gentle, non-conflicting wellness therapies tailored alongside ongoing oncology protocols:
             </p>
           </div>
 
