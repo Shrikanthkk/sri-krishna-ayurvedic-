@@ -320,6 +320,13 @@ export const clinicData = {
       author: "Vijay Babu",
       locality: "Google Review • Verified Patient",
       treatment: "Spine & Pain Relief"
+    },
+    {
+      id: 8,
+      quote: "We recently visited Sri Krishna Ayurvedic Clinic, my wife had severe back pain and was unable to walk, sit, or do anything. Dr. Anand Krishna sir treated her and within no time she was able to walk, with 50% pain reduced in just a few minutes. Later treatment went on for one month and now she is perfectly alright. I highly recommend this clinic to everyone.",
+      author: "Vishwanath Bhat",
+      locality: "Google Review • Verified Patient",
+      treatment: "Severe Back Pain & Rehab"
     }
   ],
 
