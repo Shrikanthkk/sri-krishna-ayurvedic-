@@ -16,6 +16,7 @@ export const majorCancerTypes = [
     category: "Hematologic Malignancy",
     badgeColor: "bg-red-900/10 text-red-800 border-red-200",
     iconName: "Activity",
+    image: "/images/ayurvedic_cancer_treatment.png",
     shortSummary: "Malignancies of blood-forming tissues and the lymphatic system affecting normal cellular immunity and blood production.",
     points: {
       whatItIs: "Cancers that originate in bone marrow blood-forming tissues (Leukemia), the lymphatic system (Lymphoma), or plasma cells (Multiple Myeloma), leading to abnormal white blood cell proliferation and impaired normal blood function.",

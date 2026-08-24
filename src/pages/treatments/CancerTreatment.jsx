@@ -173,18 +173,36 @@ export default function CancerTreatment({ onOpenBooking }) {
               return (
                 <div
                   key={cancer.id}
-                  className="bg-white rounded-2xl border border-earth-200 shadow-sm hover:shadow-elevated transition-all duration-300 flex flex-col justify-between p-5 sm:p-6 group hover:-translate-y-1"
+                  className="bg-white rounded-2xl border border-earth-200 shadow-sm hover:shadow-elevated transition-all duration-300 flex flex-col justify-between overflow-hidden group hover:-translate-y-1"
                 >
-                  <div className="space-y-3.5">
-                    {/* Top Icon & Category Badge */}
-                    <div className="flex items-center justify-between">
-                      <div className="w-10 h-10 rounded-xl bg-cream-100 group-hover:bg-forest-900 text-forest-800 group-hover:text-brass-400 flex items-center justify-center transition-colors">
-                        <IconComponent className="w-5 h-5" />
+                  {/* Top Image Banner if present */}
+                  {cancer.image ? (
+                    <div className="relative h-44 w-full overflow-hidden bg-cream-100 border-b border-earth-200">
+                      <img
+                        src={cancer.image}
+                        alt={cancer.title}
+                        className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 left-3">
+                        <span className={`text-[10px] font-semibold px-2.5 py-0.5 rounded-full border bg-white/95 backdrop-blur-xs shadow-xs ${cancer.badgeColor}`}>
+                          {cancer.category.split(' ')[0]}
+                        </span>
                       </div>
-                      <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${cancer.badgeColor}`}>
-                        {cancer.category.split(' ')[0]}
-                      </span>
                     </div>
+                  ) : null}
+
+                  <div className="p-5 sm:p-6 flex flex-col justify-between flex-1 space-y-3.5">
+                    {/* Top Icon & Category Badge when no image */}
+                    {!cancer.image && (
+                      <div className="flex items-center justify-between">
+                        <div className="w-10 h-10 rounded-xl bg-cream-100 group-hover:bg-forest-900 text-forest-800 group-hover:text-brass-400 flex items-center justify-center transition-colors">
+                          <IconComponent className="w-5 h-5" />
+                        </div>
+                        <span className={`text-[10px] font-semibold px-2 py-0.5 rounded-full border ${cancer.badgeColor}`}>
+                          {cancer.category.split(' ')[0]}
+                        </span>
+                      </div>
+                    )}
 
                     {/* Title & Subtitle */}
                     <div className="space-y-1">
@@ -212,17 +230,17 @@ export default function CancerTreatment({ onOpenBooking }) {
                         <span className="truncate">Rasayana & Agni vitality care</span>
                       </div>
                     </div>
-                  </div>
 
-                  {/* Learn More Button */}
-                  <div className="pt-4 mt-3 border-t border-earth-200/60">
-                    <button
-                      onClick={() => handleOpenDetail(cancer)}
-                      className="w-full py-2.5 px-4 bg-cream-100 hover:bg-forest-900 text-forest-900 hover:text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-between cursor-pointer group-hover:bg-forest-900 group-hover:text-cream-50"
-                    >
-                      <span>Learn More</span>
-                      <ChevronRight className="w-4 h-4 text-brass-600 group-hover:translate-x-0.5 transition-transform" />
-                    </button>
+                    {/* Learn More Button */}
+                    <div className="pt-4 mt-auto border-t border-earth-200/60">
+                      <button
+                        onClick={() => handleOpenDetail(cancer)}
+                        className="w-full py-2.5 px-4 bg-cream-100 hover:bg-forest-900 text-forest-900 hover:text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-xl transition-all flex items-center justify-between cursor-pointer group-hover:bg-forest-900 group-hover:text-cream-50"
+                      >
+                        <span>Learn More</span>
+                        <ChevronRight className="w-4 h-4 text-brass-600 group-hover:translate-x-0.5 transition-transform" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               );

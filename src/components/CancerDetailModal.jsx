@@ -102,6 +102,22 @@ export default function CancerDetailModal({ cancerItem, isOpen, onClose, onOpenB
             {/* Scrollable Content Body */}
             <div className="p-5 sm:p-8 overflow-y-auto space-y-6 text-earth-900 grow">
               
+              {/* Optional Cancer/Ayurvedic Feature Image Banner */}
+              {cancerItem.image && (
+                <div className="relative h-48 sm:h-64 w-full rounded-2xl overflow-hidden border border-earth-200 shadow-sm bg-cream-100">
+                  <img
+                    src={cancerItem.image}
+                    alt={cancerItem.title}
+                    className="w-full h-full object-cover"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-forest-950/70 via-transparent to-transparent flex items-end p-4">
+                    <span className="text-xs text-cream-100 font-medium tracking-wide">
+                      Ayurvedic Integrative & Supportive Oncology Care
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {/* Medical Notice Banner */}
               <div className="p-4 bg-amber-500/10 border-l-4 border-amber-600 rounded-r-2xl flex items-start gap-3 text-xs text-earth-900">
                 <ShieldAlert className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
