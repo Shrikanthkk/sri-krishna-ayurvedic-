@@ -299,6 +299,13 @@ export const clinicData = {
       author: "Vijay Kumar",
       locality: "Google Review • Verified Patient",
       treatment: "Physiotherapy & Rehab"
+    },
+    {
+      id: 5,
+      quote: "I am so thankful to Dr. Ananda Krishna sir for his effective treatment. 8 years ago I had severe allergy with lot of pain, after taking medicine for 2 months got complete relief. Now recently visited for lower abdominal pain and allergy, feeling much better.",
+      author: "Amaravathi",
+      locality: "Google Review • Verified Patient",
+      treatment: "Allergy & Abdominal Care"
     }
   ],
 
