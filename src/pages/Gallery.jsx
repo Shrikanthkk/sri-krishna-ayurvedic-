@@ -303,12 +303,12 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setSelectedImage(null)}
-            className="fixed inset-0 z-50 bg-forest-950/95 backdrop-blur-xl flex items-center justify-center p-4 sm:p-6"
+            className="fixed inset-0 z-50 bg-forest-950/95 backdrop-blur-xl flex items-center justify-center p-3 sm:p-6 overflow-hidden"
           >
             {/* FLOATING SIDE PREVIOUS BUTTON */}
             <button
               onClick={handlePrevious}
-              className="absolute left-3 sm:left-8 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-forest-900/80 hover:bg-brass-500 text-cream-50 hover:text-forest-950 backdrop-blur-xl border border-white/20 hover:border-brass-400 flex items-center justify-center shadow-elevated transition-all duration-300 cursor-pointer group"
+              className="fixed left-2 sm:left-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-13 sm:h-13 rounded-full bg-forest-900/85 hover:bg-brass-500 text-cream-50 hover:text-forest-950 backdrop-blur-xl border border-white/20 hover:border-brass-400 flex items-center justify-center shadow-elevated transition-all duration-300 cursor-pointer group"
               aria-label="Previous Image"
             >
               <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 transform group-hover:-translate-x-0.5 transition-transform" />
@@ -317,7 +317,7 @@ export default function Gallery() {
             {/* FLOATING SIDE NEXT BUTTON */}
             <button
               onClick={handleNext}
-              className="absolute right-3 sm:right-8 top-1/2 -translate-y-1/2 z-50 w-11 h-11 sm:w-14 sm:h-14 rounded-full bg-forest-900/80 hover:bg-brass-500 text-cream-50 hover:text-forest-950 backdrop-blur-xl border border-white/20 hover:border-brass-400 flex items-center justify-center shadow-elevated transition-all duration-300 cursor-pointer group"
+              className="fixed right-2 sm:right-6 top-1/2 -translate-y-1/2 z-50 w-10 h-10 sm:w-13 sm:h-13 rounded-full bg-forest-900/85 hover:bg-brass-500 text-cream-50 hover:text-forest-950 backdrop-blur-xl border border-white/20 hover:border-brass-400 flex items-center justify-center shadow-elevated transition-all duration-300 cursor-pointer group"
               aria-label="Next Image"
             >
               <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 transform group-hover:translate-x-0.5 transition-transform" />
@@ -326,56 +326,82 @@ export default function Gallery() {
             {/* Modal Card Container */}
             <motion.div
               key={selectedImage.id}
-              initial={{ scale: 0.88, opacity: 0, y: 15 }}
+              initial={{ scale: 0.92, opacity: 0, y: 15 }}
               animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.88, opacity: 0, y: 15 }}
+              exit={{ scale: 0.92, opacity: 0, y: 15 }}
               transition={{ type: 'spring', stiffness: 320, damping: 26 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full bg-white rounded-3xl overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.6)] border border-earth-200"
+              className="relative max-w-4xl w-full max-h-[92vh] bg-white rounded-3xl overflow-hidden shadow-[0_30px_90px_rgba(0,0,0,0.6)] border border-earth-200 flex flex-col lg:grid lg:grid-cols-12"
             >
-              {/* Top Bar with Close Button Only */}
-              <div className="absolute top-4 right-4 z-20">
+              {/* Close Button */}
+              <div className="absolute top-3 right-3 z-30">
                 <button
                   onClick={() => setSelectedImage(null)}
-                  className="w-10 h-10 rounded-full bg-forest-950/80 text-cream-50 flex items-center justify-center hover:bg-forest-900 transition-colors cursor-pointer border-0 shadow-soft"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-forest-950/80 hover:bg-forest-900 text-cream-50 flex items-center justify-center transition-colors cursor-pointer border-0 shadow-soft"
                   aria-label="Close image modal"
                 >
                   <X className="w-5 h-5" />
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-12">
-                {/* Modal Image */}
-                <div className="lg:col-span-7 bg-forest-950 aspect-[4/3] lg:aspect-auto relative min-h-[300px]">
-                  <img
-                    src={selectedImage.src}
-                    alt={selectedImage.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
+              {/* Modal Image Column */}
+              <div className="lg:col-span-7 bg-forest-950 relative flex items-center justify-center overflow-hidden h-[240px] sm:h-[320px] lg:h-[480px]">
+                <img
+                  src={selectedImage.src}
+                  alt={selectedImage.title}
+                  className="w-full h-full object-contain sm:object-cover"
+                />
+              </div>
 
-                {/* Modal Info Column */}
-                <div className="lg:col-span-5 p-6 sm:p-8 flex flex-col justify-between space-y-4">
-                  <div className="space-y-3">
+              {/* Modal Info Column */}
+              <div className="lg:col-span-5 p-5 sm:p-7 flex flex-col justify-between space-y-4 overflow-y-auto max-h-[300px] lg:max-h-[480px] bg-white">
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2">
                     <span className="px-3 py-1 bg-forest-100 text-forest-900 text-[10px] font-bold uppercase tracking-widest rounded-full inline-block">
                       {selectedImage.tag}
                     </span>
-
-                    <h3 className="font-serif text-2xl font-medium text-forest-950 leading-tight">
-                      {selectedImage.title}
-                    </h3>
+                    <span className="text-[11px] text-earth-500 font-medium">
+                      {currentIndex + 1} / {filteredItems.length}
+                    </span>
                   </div>
 
-                  <div className="pt-3 border-t border-earth-200 space-y-2.5">
-                    <Link
-                      to="/book-appointment"
-                      onClick={() => setSelectedImage(null)}
-                      className="w-full py-3 bg-forest-900 hover:bg-forest-800 text-cream-50 font-bold text-xs uppercase tracking-wider rounded-xl shadow-soft flex items-center justify-center gap-2 transition-all"
+                  <h3 className="font-serif text-xl sm:text-2xl font-medium text-forest-950 leading-tight">
+                    {selectedImage.title}
+                  </h3>
+
+                  {selectedImage.description && (
+                    <p className="text-xs sm:text-sm text-earth-800 font-light leading-relaxed">
+                      {selectedImage.description}
+                    </p>
+                  )}
+                </div>
+
+                <div className="pt-4 border-t border-earth-200 space-y-2">
+                  <div className="flex items-center gap-2 sm:hidden pb-2">
+                    <button
+                      onClick={handlePrevious}
+                      className="flex-1 py-2 bg-cream-100 hover:bg-cream-200 text-forest-950 font-semibold text-xs rounded-lg flex items-center justify-center gap-1 cursor-pointer"
                     >
-                      <Calendar className="w-4 h-4 text-brass-400" />
-                      <span>Book Consultation for Therapy</span>
-                    </Link>
+                      <ChevronLeft className="w-4 h-4" />
+                      <span>Prev</span>
+                    </button>
+                    <button
+                      onClick={handleNext}
+                      className="flex-1 py-2 bg-cream-100 hover:bg-cream-200 text-forest-950 font-semibold text-xs rounded-lg flex items-center justify-center gap-1 cursor-pointer"
+                    >
+                      <span>Next</span>
+                      <ChevronRight className="w-4 h-4" />
+                    </button>
                   </div>
+
+                  <Link
+                    to="/book-appointment"
+                    onClick={() => setSelectedImage(null)}
+                    className="w-full py-3 bg-forest-900 hover:bg-forest-800 text-cream-50 font-bold text-xs uppercase tracking-wider rounded-xl shadow-soft flex items-center justify-center gap-2 transition-all text-center"
+                  >
+                    <Calendar className="w-4 h-4 text-brass-400" />
+                    <span>Book Consultation for Therapy</span>
+                  </Link>
                 </div>
               </div>
             </motion.div>
