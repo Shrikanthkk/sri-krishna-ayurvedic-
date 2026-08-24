@@ -142,6 +142,7 @@ export const majorCancerTypes = [
     category: "Dermatologic Malignancy",
     badgeColor: "bg-orange-900/10 text-orange-800 border-orange-200",
     iconName: "Sun",
+    image: "/images/skin_cancer.png",
     shortSummary: "Uncontrolled growth of abnormal cutaneous skin cells triggered primarily by ultraviolet (UV) radiation DNA damage.",
     points: {
       whatItIs: "Uncontrolled proliferation of abnormal cells in the epidermis, broadly classified into Non-Melanoma Skin Cancers (Basal Cell Carcinoma and Squamous Cell Carcinoma) and Melanoma (the most aggressive form originating in melanocytes).",
