@@ -70,6 +70,7 @@ export const majorCancerTypes = [
     category: "Pulmonary Malignancy",
     badgeColor: "bg-cyan-900/10 text-cyan-800 border-cyan-200",
     iconName: "Wind",
+    image: "/images/lung_cancer.png",
     shortSummary: "Malignant growth originating in respiratory bronchial or alveolar tissues, categorized into NSCLC and SCLC.",
     points: {
       whatItIs: "Malignant cellular transformation beginning in the respiratory passages, bronchi, or alveoli of the lungs, primarily divided into Non-Small Cell Lung Cancer (85%) and Small Cell Lung Cancer (15%).",
