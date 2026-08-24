@@ -313,6 +313,13 @@ export const clinicData = {
       author: "Nisba N.",
       locality: "Google Review • Verified Patient",
       treatment: "Acupuncture & Nerve Care"
+    },
+    {
+      id: 7,
+      quote: "Dr. Anand sir is a go-to person for all ailments. Highly knowledgeable and service-oriented doctor. During COVID time he saved my father from his illness, his medicine helped him recover from illness and steroids. Today I got treated for my back and neck pain, the pain improved within a single sitting. Thanks to him.",
+      author: "Vijay Babu",
+      locality: "Google Review • Verified Patient",
+      treatment: "Spine & Pain Relief"
     }
   ],
 
