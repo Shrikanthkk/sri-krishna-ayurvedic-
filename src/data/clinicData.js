@@ -277,56 +277,64 @@ export const clinicData = {
       quote: "Dr. Anand Krishna's Nadi Pariksha diagnosis was remarkably accurate. Within three weeks of following his herbal regimen and diet advice, my chronic digestive issues resolved completely.",
       author: "Ramesh K.",
       locality: "KR Puram, Bangalore",
-      treatment: "Digestive Care"
+      treatment: "Digestive Care",
+      googleUrl: "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"
     },
     {
       id: 2,
       quote: "A compassionate doctor who explains root causes clearly. The Panchakarma treatment plan was exceptionally effective for my chronic knee stiffness.",
       author: "Sunitha N.",
       locality: "T.C. Palya Main Road",
-      treatment: "Joint Care"
+      treatment: "Joint Care",
+      googleUrl: "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"
     },
     {
       id: 3,
       quote: "Authentic Ayurvedic consultation with genuine care. Nominal fee and very effective traditional treatments. Highly recommended clinic in KR Puram.",
       author: "Praveen V.",
       locality: "Ramamurthy Nagar",
-      treatment: "General Consultation"
+      treatment: "General Consultation",
+      googleUrl: "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"
     },
     {
       id: 4,
       quote: "We are incredibly pleased with the physiotherapy treatment provided by Dr. Sunithi. They treated both my wife and my daughter-in-law with the utmost professionalism and skill. What truly sets them apart is their bedside manner; they are kind, patient and make the recovery process so much easier. It is rare to find a physician who balances technical expertise with such a warm and welcoming personality. They truly care about their patients' well-being and are dedicated to seeing them recover. Highly recommended to anyone looking for effective and compassionate care.",
       author: "Vijay Kumar",
       locality: "Google Review • Verified Patient",
-      treatment: "Physiotherapy & Rehab"
+      treatment: "Physiotherapy & Rehab",
+      googleUrl: "https://www.google.com/maps/contrib/101339651009401881583/reviews?hl=en-IN"
     },
     {
       id: 5,
       quote: "I am so thankful to Dr. Ananda Krishna sir for his effective treatment. 8 years ago I had severe allergy with lot of pain, after taking medicine for 2 months got complete relief. Now recently visited for lower abdominal pain and allergy, feeling much better.",
       author: "Amaravathi",
       locality: "Google Review • Verified Patient",
-      treatment: "Allergy & Abdominal Care"
+      treatment: "Allergy & Abdominal Care",
+      googleUrl: "https://www.google.com/maps/contrib/106055851467615165338/reviews?hl=en-IN"
     },
     {
       id: 6,
       quote: "Dr. Anand is a great doctor. My grandfather was suffering from pain due to blockages in nerve, he was under medication for pain for the past 30+ years with no relief. But now after taking acupuncture therapies from Dr. Anand, he's feeling much better and has stopped taking the medicine since then. Nerve blockages seem to be reduced. Thanks Dr. Anand for treating him.",
       author: "Nisba N.",
       locality: "Google Review • Verified Patient",
-      treatment: "Acupuncture & Nerve Care"
+      treatment: "Acupuncture & Nerve Care",
+      googleUrl: "https://www.google.com/maps/contrib/103480488284638752719/reviews?hl=en-IN"
     },
     {
       id: 7,
       quote: "Dr. Anand sir is a go-to person for all ailments. Highly knowledgeable and service-oriented doctor. During COVID time he saved my father from his illness, his medicine helped him recover from illness and steroids. Today I got treated for my back and neck pain, the pain improved within a single sitting. Thanks to him.",
       author: "Vijay Babu",
       locality: "Google Review • Verified Patient",
-      treatment: "Spine & Pain Relief"
+      treatment: "Spine & Pain Relief",
+      googleUrl: "https://www.google.com/maps/contrib/111746533441995792487/reviews?hl=en-IN"
     },
     {
       id: 8,
       quote: "We recently visited Sri Krishna Ayurvedic Clinic, my wife had severe back pain and was unable to walk, sit, or do anything. Dr. Anand Krishna sir treated her and within no time she was able to walk, with 50% pain reduced in just a few minutes. Later treatment went on for one month and now she is perfectly alright. I highly recommend this clinic to everyone.",
       author: "Vishwanath Bhat",
       locality: "Google Review • Verified Patient",
-      treatment: "Severe Back Pain & Rehab"
+      treatment: "Severe Back Pain & Rehab",
+      googleUrl: "https://www.google.com/maps/contrib/111024851553861046804/reviews?hl=en-IN"
     }
   ],
 

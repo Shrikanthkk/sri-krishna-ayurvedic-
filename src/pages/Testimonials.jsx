@@ -84,93 +84,149 @@ export default function Testimonials() {
               </h3>
             </div>
 
-            {/* Slider Controls */}
-            <div className="flex items-center gap-2 self-start sm:self-auto">
-              <span className="text-xs text-earth-700 font-medium mr-2">
-                {isAutoPaused ? 'Paused' : 'Auto-sliding'} ({autoIndex + 1}/{total})
-              </span>
+            {/* Google Reviews Official Button */}
+            <div className="flex items-center gap-3">
+              <a
+                href="https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-1.5 px-4 py-2 rounded-full bg-white hover:bg-forest-900 text-forest-900 hover:text-cream-50 text-xs font-semibold border border-earth-200 shadow-xs transition-colors group"
+              >
+                <Star className="w-3.5 h-3.5 fill-brass-500 text-brass-500" />
+                <span>Google Reviews (4.9★)</span>
+                <span className="text-earth-400 group-hover:text-cream-50">↗</span>
+              </a>
+            </div>
+          </div>
+
+          {/* Carousel with Side Navigation Arrows */}
+          <div className="relative group/carousel">
+            {/* Floating Left Slide Button */}
+            <button
+              onClick={prevAuto}
+              className="absolute -left-3 sm:-left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white border border-earth-200 text-forest-950 shadow-elevated hover:bg-forest-900 hover:text-cream-50 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-110 active:scale-95"
+              aria-label="Slide to previous testimonials"
+              title="Previous"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+
+            {/* Floating Right Slide Button */}
+            <button
+              onClick={nextAuto}
+              className="absolute -right-3 sm:-right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white border border-earth-200 text-forest-950 shadow-elevated hover:bg-forest-900 hover:text-cream-50 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-110 active:scale-95"
+              aria-label="Slide to next testimonials"
+              title="Next"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+
+            {/* Sliding Cards Window */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+              <AnimatePresence mode="popLayout">
+                {slidingCards.map((item, idx) => (
+                  <motion.div
+                    key={`${item.id}-${autoIndex}-${idx}`}
+                    initial={{ opacity: 0, y: 20, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -20, scale: 0.96 }}
+                    transition={{ duration: 0.45, ease: "easeOut", delay: idx * 0.06 }}
+                    className={`bg-white p-7 rounded-2xl border border-earth-200 shadow-soft flex flex-col justify-between relative group hover:border-brass-400 hover:shadow-elevated transition-all duration-300 ${
+                      idx === 1 ? 'md:flex' : idx === 2 ? 'hidden lg:flex' : 'flex'
+                    }`}
+                  >
+                    <div className="space-y-4">
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-1 text-brass-500">
+                          {[...Array(5)].map((_, i) => (
+                            <Star key={i} className="w-3.5 h-3.5 fill-brass-500 text-brass-500" />
+                          ))}
+                        </div>
+                        <a
+                          href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-1 text-[9.5px] font-bold text-emerald-700 hover:text-emerald-900 bg-emerald-50 hover:bg-emerald-100 px-2 py-0.5 rounded-full border border-emerald-200 transition-colors"
+                          title="Click to view verified review on Google"
+                        >
+                          <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                          <span>Google Review ↗</span>
+                        </a>
+                      </div>
+
+                      <p className="text-xs sm:text-[13px] text-earth-900 leading-relaxed font-light italic line-clamp-5">
+                        "{item.quote}"
+                      </p>
+                    </div>
+
+                    <div className="pt-4 mt-5 border-t border-earth-100 flex items-center justify-between gap-2">
+                      <div className="truncate">
+                        <p className="font-semibold text-xs text-forest-950 truncate">{item.author}</p>
+                        <a
+                          href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-[10px] text-earth-600 hover:text-forest-900 hover:underline truncate"
+                        >
+                          {item.locality}
+                        </a>
+                      </div>
+                      <span className="shrink-0 px-2.5 py-0.5 rounded-full bg-cream-100 text-forest-900 text-[9.5px] font-bold uppercase tracking-wider border border-earth-200">
+                        {item.treatment}
+                      </span>
+                    </div>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
+
+          {/* Bottom Slider Navigation Controls & Dots */}
+          <div className="flex items-center justify-between flex-wrap gap-4 pt-8 mt-6 border-t border-earth-200/80">
+            <span className="text-xs text-earth-700 font-medium">
+              {isAutoPaused ? 'Paused (Hovered)' : 'Auto-sliding'} • Card {autoIndex + 1} of {total}
+            </span>
+
+            {/* Dots */}
+            <div className="flex items-center gap-1.5">
+              {clinicData.testimonials.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => setAutoIndex(idx)}
+                  className={`h-2 rounded-full transition-all duration-300 border-0 cursor-pointer ${
+                    autoIndex === idx ? 'bg-forest-900 w-7' : 'bg-earth-300 hover:bg-earth-500 w-2'
+                  }`}
+                  aria-label={`Jump to review ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Previous / Play / Next Controls */}
+            <div className="flex items-center gap-2">
+              <button
+                onClick={prevAuto}
+                className="px-3 py-1.5 rounded-full border border-earth-200 hover:bg-forest-900 hover:text-cream-50 text-forest-900 bg-white shadow-xs transition-colors cursor-pointer flex items-center gap-1 text-xs font-semibold"
+                aria-label="Previous review"
+              >
+                <ChevronLeft className="w-3.5 h-3.5" />
+                <span>Prev</span>
+              </button>
               <button
                 onClick={() => setIsAutoPaused(!isAutoPaused)}
-                className="p-2 rounded-full bg-white border border-earth-200 text-forest-900 hover:bg-forest-900 hover:text-cream-50 transition-colors cursor-pointer shadow-xs"
+                className="p-1.5 rounded-full border border-earth-200 hover:bg-forest-900 hover:text-cream-50 text-forest-900 bg-white shadow-xs transition-colors cursor-pointer"
                 title={isAutoPaused ? "Play" : "Pause"}
               >
                 {isAutoPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
               </button>
               <button
-                onClick={prevAuto}
-                className="p-2 rounded-full bg-white border border-earth-200 text-forest-900 hover:bg-forest-900 hover:text-cream-50 transition-colors cursor-pointer shadow-xs"
-                aria-label="Previous review"
-              >
-                <ChevronLeft className="w-3.5 h-3.5" />
-              </button>
-              <button
                 onClick={nextAuto}
-                className="p-2 rounded-full bg-white border border-earth-200 text-forest-900 hover:bg-forest-900 hover:text-cream-50 transition-colors cursor-pointer shadow-xs"
+                className="px-3 py-1.5 rounded-full border border-earth-200 hover:bg-forest-900 hover:text-cream-50 text-forest-900 bg-white shadow-xs transition-colors cursor-pointer flex items-center gap-1 text-xs font-semibold"
                 aria-label="Next review"
               >
+                <span>Next</span>
                 <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
-          </div>
-
-          {/* Sliding Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
-            <AnimatePresence mode="popLayout">
-              {slidingCards.map((item, idx) => (
-                <motion.div
-                  key={`${item.id}-${autoIndex}-${idx}`}
-                  initial={{ opacity: 0, y: 20, scale: 0.96 }}
-                  animate={{ opacity: 1, y: 0, scale: 1 }}
-                  exit={{ opacity: 0, y: -20, scale: 0.96 }}
-                  transition={{ duration: 0.45, ease: "easeOut", delay: idx * 0.06 }}
-                  className={`bg-white p-7 rounded-2xl border border-earth-200 shadow-soft flex flex-col justify-between relative group hover:border-brass-400 hover:shadow-elevated transition-all duration-300 ${
-                    idx === 1 ? 'md:flex' : idx === 2 ? 'hidden lg:flex' : 'flex'
-                  }`}
-                >
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-1 text-brass-500">
-                        {[...Array(5)].map((_, i) => (
-                          <Star key={i} className="w-3.5 h-3.5 fill-brass-500 text-brass-500" />
-                        ))}
-                      </div>
-                      <span className="inline-flex items-center gap-1 text-[9.5px] font-bold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200">
-                        <ShieldCheck className="w-3 h-3 text-emerald-600" />
-                        <span>Verified Google Review</span>
-                      </span>
-                    </div>
-
-                    <p className="text-xs sm:text-[13px] text-earth-900 leading-relaxed font-light italic line-clamp-5">
-                      "{item.quote}"
-                    </p>
-                  </div>
-
-                  <div className="pt-4 mt-5 border-t border-earth-100 flex items-center justify-between gap-2">
-                    <div className="truncate">
-                      <p className="font-semibold text-xs text-forest-950 truncate">{item.author}</p>
-                      <p className="text-[10px] text-earth-600 truncate">{item.locality}</p>
-                    </div>
-                    <span className="shrink-0 px-2.5 py-0.5 rounded-full bg-cream-100 text-forest-900 text-[9.5px] font-bold uppercase tracking-wider border border-earth-200">
-                      {item.treatment}
-                    </span>
-                  </div>
-                </motion.div>
-              ))}
-            </AnimatePresence>
-          </div>
-
-          {/* Dots Indicator */}
-          <div className="flex items-center justify-center gap-1.5 mt-8">
-            {clinicData.testimonials.map((_, idx) => (
-              <button
-                key={idx}
-                onClick={() => setAutoIndex(idx)}
-                className={`h-2 rounded-full transition-all duration-300 border-0 cursor-pointer ${
-                  autoIndex === idx ? 'bg-forest-900 w-8' : 'bg-earth-300 hover:bg-earth-500 w-2'
-                }`}
-                aria-label={`Jump to review ${idx + 1}`}
-              />
-            ))}
           </div>
         </section>
 
@@ -213,7 +269,7 @@ export default function Testimonials() {
                 initial={{ opacity: 0, y: 15 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.3 }}
-                className="bg-white p-7 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated space-y-5 flex flex-col justify-between hover:border-brass-500 hover:shadow-[0_20px_45px_rgba(28,59,44,0.1)] transition-all duration-300"
+                className="bg-white p-7 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated space-y-5 flex flex-col justify-between hover:border-brass-500 hover:shadow-[0_20px_45px_rgba(28,59,44,0.1)] transition-all duration-300 group"
               >
                 <div className="space-y-4">
                   <div className="flex items-center justify-between">
@@ -222,7 +278,16 @@ export default function Testimonials() {
                         <Star key={i} className="w-4 h-4 fill-brass-500 text-brass-500" />
                       ))}
                     </div>
-                    <MessageSquareQuote className="w-6 h-6 text-brass-400 opacity-60" />
+                    <a
+                      href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1 text-[10px] font-bold text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1 rounded-full border border-emerald-200 transition-colors"
+                      title="Click to view verified review on Google"
+                    >
+                      <ShieldCheck className="w-3 h-3 text-emerald-600" />
+                      <span>Google Review ↗</span>
+                    </a>
                   </div>
 
                   <p className="text-xs sm:text-[13px] text-earth-900 leading-relaxed font-light italic">
@@ -233,7 +298,14 @@ export default function Testimonials() {
                 <div className="pt-4 border-t border-earth-200 flex items-center justify-between gap-2">
                   <div className="truncate">
                     <p className="font-semibold text-xs text-forest-950 truncate">{item.author}</p>
-                    <p className="text-[10.5px] text-earth-600 truncate">{item.locality}</p>
+                    <a
+                      href={item.googleUrl || "https://www.google.com/maps/search/?api=1&query=Sri+Krishna+Ayurvedic+Clinic+KR+Puram+Bangalore"}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-[10.5px] text-earth-600 hover:text-forest-900 hover:underline truncate"
+                    >
+                      {item.locality}
+                    </a>
                   </div>
                   <span className="shrink-0 px-2.5 py-1 rounded-full bg-cream-100 text-brass-700 text-[10px] font-semibold uppercase border border-earth-200/60">
                     {item.treatment}
