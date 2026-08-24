@@ -34,6 +34,7 @@ export const majorCancerTypes = [
     category: "Glandular Malignancy",
     badgeColor: "bg-pink-900/10 text-pink-800 border-pink-200",
     iconName: "HeartPulse",
+    image: "/images/breast_cancer.png",
     shortSummary: "Malignant cellular growth originating in breast ductal or lobular epithelium with hormone receptor variations.",
     points: {
       whatItIs: "Uncontrolled growth of abnormal epithelial cells initiating in the milk ducts (ductal carcinoma) or lobules (lobular carcinoma) of the breast, with potential for localized extension and metastasis.",
