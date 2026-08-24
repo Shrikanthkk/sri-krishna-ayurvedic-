@@ -29,7 +29,7 @@ export default function DoctorSection({ onOpenBooking }) {
                 <img
                   src={clinicData.images.doctor}
                   alt="Dr. Anand Krishna BAMS Senior Ayurvedic Physician"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                  className="w-full h-full object-cover object-top transform group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 editorial-overlay flex flex-col justify-end p-6 text-cream-50">
                   <span className="text-[10px] uppercase tracking-ultra text-brass-400 font-semibold mb-1">
