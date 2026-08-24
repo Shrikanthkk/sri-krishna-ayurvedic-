@@ -88,6 +88,7 @@ export const majorCancerTypes = [
     category: "Urologic Malignancy",
     badgeColor: "bg-emerald-900/10 text-emerald-800 border-emerald-200",
     iconName: "Shield",
+    image: "/images/prostate_cancer.png",
     shortSummary: "Glandular malignancy of the male reproductive prostate gland, varying from indolent to aggressive forms.",
     points: {
       whatItIs: "Malignancy arising from the glandular epithelial cells of the prostate gland in men, ranging from very slow-growing indolent forms to faster-progressing metastatic tumors.",
