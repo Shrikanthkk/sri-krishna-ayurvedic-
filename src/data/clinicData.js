@@ -306,6 +306,13 @@ export const clinicData = {
       author: "Amaravathi",
       locality: "Google Review • Verified Patient",
       treatment: "Allergy & Abdominal Care"
+    },
+    {
+      id: 6,
+      quote: "Dr. Anand is a great doctor. My grandfather was suffering from pain due to blockages in nerve, he was under medication for pain for the past 30+ years with no relief. But now after taking acupuncture therapies from Dr. Anand, he's feeling much better and has stopped taking the medicine since then. Nerve blockages seem to be reduced. Thanks Dr. Anand for treating him.",
+      author: "Nisba N.",
+      locality: "Google Review • Verified Patient",
+      treatment: "Acupuncture & Nerve Care"
     }
   ],
 
