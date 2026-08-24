@@ -50,6 +50,7 @@ export const clinicData = {
     shirodhara: "/images/shirodhara.jpg",
     herbalPrep: "/images/hero_adobe_2.jpg",
     treatmentRoom: "/images/hero_adobe_5.jpg",
+    consultationCorner: "/images/doctor_consultation_corner.jpg",
     swarnaprashana1: "/images/swarnaprashana_1.png",
     swarnaprashana2: "/images/swarnaprashana_2.png",
     swarnaprashana3: "/images/swarnaprashana_3.png"

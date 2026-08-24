@@ -100,11 +100,11 @@ export default function Gallery() {
     },
     {
       id: 11,
-      title: "Senior Physician Consultation Corner",
+      title: "Dr. Anand Krishna - Senior Physician Consultation Corner",
       category: "consultation",
-      tag: "Dr. Anand Krishna BAMS",
-      src: "/images/doctor.jpg",
-      description: "Personalized 1-on-1 consultation with senior physician Dr. Anand Krishna (26+ years clinical experience)."
+      tag: "Dr. Anand Krishna (BAMS)",
+      src: "/images/doctor_consultation_corner.jpg",
+      description: "Senior Physician Dr. Anand Krishna (BAMS) conducting classical pulse diagnosis (Nadi Pariksha) and personalized Ayurvedic consultations in his clinic chamber."
     },
     {
       id: 12,
