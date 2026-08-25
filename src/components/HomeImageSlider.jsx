@@ -7,51 +7,51 @@ const SLIDE_DURATION = 5000; // 5 seconds per slide
 const slidesData = [
   {
     id: 1,
-    badge: 'Traditional Ayurveda',
-    title: 'Nadi Pariksha',
-    subtitle: 'Vedic Pulse Reading & Apothecary Remedies',
-    image: '/images/nadi_pariksha.png',
+    badge: 'Vedic Heritage',
+    title: 'Classical Samhitas',
+    subtitle: 'Vedic Healing Heritage & Sacred Samhitas',
+    image: '/images/home_slider/ayurveda_heritage_dhanvantari.png',
     card1: {
-      title: 'Ancient Diagnostic Art',
-      subtitle: 'Nadi Pariksha Pulse Reading',
+      title: 'Ancient Wisdom',
+      subtitle: 'Charaka & Sushruta Samhita',
       icon: Sparkles,
       color: 'forest'
     },
     card2: {
-      title: 'Classical Remedies',
-      subtitle: 'Handcrafted Botanicals',
+      title: 'Divine Healing',
+      subtitle: 'Classical Formulations',
       icon: Award,
       color: 'brass'
     }
   },
   {
     id: 2,
-    badge: 'Panchakarma Detox',
-    title: 'Cellular Rejuvenation',
-    subtitle: 'Bio-Purification & Detox Therapies',
-    image: '/images/panchakarma.png',
+    badge: 'Tri-Dosha Balance',
+    title: 'Mind-Body Harmony',
+    subtitle: 'Harmonizing Vata, Pitta & Kapha with Pure Herbs',
+    image: '/images/home_slider/herbal_preparation_tridosha.png',
     card1: {
-      title: 'Cellular Detox',
-      subtitle: 'Authentic Panchakarma',
+      title: 'Tri-Dosha Harmony',
+      subtitle: 'Vata • Pitta • Kapha',
       icon: ShieldCheck,
       color: 'brass'
     },
     card2: {
-      title: 'Holistic Wellness',
-      subtitle: 'Mind • Body • Balance',
+      title: 'Pure Botanicals',
+      subtitle: 'Handcrafted Formulations',
       icon: Leaf,
       color: 'forest'
     }
   },
   {
     id: 3,
-    badge: 'Personalized Care',
-    title: 'Root-Cause Healing',
-    subtitle: 'Tailored to Your Prakriti & Health Needs',
-    image: '/images/consultation.png',
+    badge: 'Doctor Consultation',
+    title: 'Personalized Clinical Care',
+    subtitle: '26+ Years Clinical Excellence • Dr. Anand Krishna (BAMS)',
+    image: '/images/home_slider/doctor_patient_consultation.jpg',
     card1: {
       title: 'Personalized Care',
-      subtitle: 'Tailored to your needs',
+      subtitle: 'Comprehensive Nadi Evaluation',
       icon: HeartHandshake,
       color: 'forest'
     },
