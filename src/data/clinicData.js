@@ -4,8 +4,8 @@ export const clinicData = {
   subtitle: "Authentic Ayurvedic healing and personalized pulse diagnosis by senior practitioners in KR Puram.",
   
   contact: {
-    phone: "+91 98450 12345",
-    whatsapp: "+919845012345",
+    phone: "+91 98440 90626",
+    whatsapp: "+919844090626",
     email: "dranandkrishna31@gmail.com",
     consultationFee: "₹50",
     

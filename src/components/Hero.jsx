@@ -1,8 +1,9 @@
 import React, { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Calendar, ArrowRight, Sparkles, ShieldCheck, Award, HeartHandshake } from 'lucide-react';
+import { Calendar, ArrowRight, Sparkles, ShieldCheck, Award, HeartHandshake, Phone } from 'lucide-react';
 import heroChakraVideo from '../assets/Meditating_figure_chakras_glowing_202608181320.mp4';
+import { clinicData } from '../data/clinicData';
 
 export default function Hero({ onOpenBooking }) {
   const videoRef = useRef(null);
@@ -66,11 +67,11 @@ export default function Hero({ onOpenBooking }) {
               initial={{ opacity: 0, y: 14 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3.5 pt-1"
+              className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3 pt-1"
             >
               <button
                 onClick={() => onOpenBooking('General Ayurvedic Consultation')}
-                className="inline-flex items-center justify-center gap-2.5 px-7 py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer group"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0 cursor-pointer group"
               >
                 <Calendar className="w-4 h-4 text-brass-400 group-hover:scale-110 transition-transform" />
                 <span>Book an Appointment</span>
@@ -78,11 +79,19 @@ export default function Hero({ onOpenBooking }) {
 
               <Link
                 to="/treatments"
-                className="inline-flex items-center justify-center gap-2 px-6 py-3.5 bg-white hover:bg-cream-100 text-forest-950 font-semibold text-xs uppercase tracking-wider rounded-full border border-earth-200 shadow-sm transition-all duration-300 transform hover:-translate-y-0.5"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-white hover:bg-cream-100 text-forest-950 font-semibold text-xs uppercase tracking-wider rounded-full border border-earth-200 shadow-sm transition-all duration-300 transform hover:-translate-y-0.5"
               >
                 <span>Explore Treatments</span>
                 <ArrowRight className="w-4 h-4 text-brass-600 transition-transform group-hover:translate-x-1" />
               </Link>
+
+              <a
+                href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`}
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-0.5 group"
+              >
+                <Phone className="w-4 h-4 text-forest-950 group-hover:scale-110 transition-transform" />
+                <span>98440 90626</span>
+              </a>
             </motion.div>
 
             {/* Diagnostic & Feature Highlights Row */}
