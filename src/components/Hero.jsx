@@ -151,14 +151,14 @@ export default function Hero({ onOpenBooking }) {
           </div>
 
           {/* RIGHT SIDE (Mobile: Order 1 on top, Desktop: Order 2): High-Definition Video Visual Container */}
-          <div className="lg:col-span-6 relative flex flex-col items-center order-1 lg:order-2">
-            <div className="relative w-full max-w-[460px] lg:max-w-[490px]">
+          <div className="lg:col-span-6 relative flex flex-col items-center lg:items-end order-1 lg:order-2 w-full">
+            <div className="relative w-full max-w-[560px] lg:max-w-none">
               
               {/* Soft Organic Backing Frame & Glow */}
-              <div className="absolute -inset-3 sm:-inset-4 bg-gradient-to-tr from-brass-400/20 via-forest-800/10 to-transparent rounded-[2.5rem] transform rotate-1 pointer-events-none -z-10" />
+              <div className="absolute -inset-2.5 sm:-inset-4 bg-gradient-to-tr from-brass-400/20 via-forest-800/10 to-transparent rounded-[2.5rem] transform rotate-1 pointer-events-none -z-10" />
 
               {/* Main Video Container */}
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-earth-200/90 aspect-[4/3] sm:aspect-[16/11] lg:aspect-[4/3] bg-forest-950 group">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl border border-earth-200/90 aspect-[16/11] sm:aspect-[16/10] lg:aspect-[16/11] xl:aspect-[4/3] bg-forest-950 group w-full">
                 <video
                   ref={videoRef}
                   autoPlay
