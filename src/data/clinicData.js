@@ -243,7 +243,7 @@ export const clinicData = {
       title: "Reduce Obesity (Sthoulya & Weight Management)",
       shortTitle: "Reduce Obesity",
       subtitle: "Metabolic Fat Loss & Medoroga Care",
-      image: "/images/hero_adobe_4.jpg",
+      image: "/images/reduce_obesity.jpg",
       description: "Root-cause Ayurvedic weight management combining Udwarthanam herbal scraping, metabolic detoxification, and customized nutrition to burn stubborn fat naturally.",
       link: "/treatments/reduce-obesity",
       buttonText: "Explore Obesity Reduction",

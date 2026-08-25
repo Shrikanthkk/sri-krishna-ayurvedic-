@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, PhoneCall, CheckCircle2, Sparkles, ShieldAlert, Scale, Flame, Activity, Zap, Droplet } from 'lucide-react';
@@ -72,7 +72,7 @@ export default function ReduceObesity({ onOpenBooking }) {
         badge="METABOLIC & WEIGHT MANAGEMENT"
         title="Reduce Obesity – Ayurvedic Weight & Fat Loss"
         subtitle="Holistic, root-cause Ayurvedic weight management combining Udwarthanam herbal powder scraping, Panchakarma detox, and metabolic revival for sustainable fat loss."
-        bgImage="/images/hero_adobe_4.jpg"
+        bgImage="/images/reduce_obesity.jpg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
