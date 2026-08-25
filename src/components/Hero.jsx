@@ -30,8 +30,8 @@ export default function Hero({ onOpenBooking }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
           
-          {/* LEFT SIDE: Editorial Authority & Clear Call to Action */}
-          <div className="lg:col-span-6 space-y-4 sm:space-y-5 text-left z-10">
+          {/* LEFT SIDE (Mobile: Order 2, Desktop: Order 1): Editorial Authority & Call to Action */}
+          <div className="lg:col-span-6 space-y-4 sm:space-y-5 text-left z-10 order-2 lg:order-1">
             
             {/* Small Eyebrow Badge */}
             <motion.div
@@ -141,8 +141,8 @@ export default function Hero({ onOpenBooking }) {
 
           </div>
 
-          {/* RIGHT SIDE: High-Definition Video Visual Container */}
-          <div className="lg:col-span-6 relative flex flex-col items-center">
+          {/* RIGHT SIDE (Mobile: Order 1 on top, Desktop: Order 2): High-Definition Video Visual Container */}
+          <div className="lg:col-span-6 relative flex flex-col items-center order-1 lg:order-2">
             <div className="relative w-full max-w-[460px] lg:max-w-[490px]">
               
               {/* Soft Organic Backing Frame & Glow */}
