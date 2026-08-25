@@ -35,8 +35,11 @@ export default {
         }
       },
       fontFamily: {
-        serif: ['Cormorant Garamond', 'Playfair Display', 'Georgia', 'serif'],
-        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        poppins: ['Poppins', 'sans-serif'],
+        roboto: ['Roboto', 'sans-serif'],
+        sans: ['Roboto', 'Plus Jakarta Sans', 'Inter', 'sans-serif'],
+        serif: ['Poppins', 'Cormorant Garamond', 'sans-serif'],
+        heading: ['Poppins', 'sans-serif'],
       },
       letterSpacing: {
         widest: '0.25em',
