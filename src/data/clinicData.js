@@ -164,7 +164,7 @@ export const clinicData = {
       title: "Hair Fall Treatment",
       shortTitle: "Hair Fall Treatment",
       subtitle: "Ayurvedic Hair & Scalp Care",
-      image: "/images/hero_adobe_1.jpg",
+      image: "/images/hair_fall.jpg",
       description: "Ayurvedic hair and scalp care focused on hair fall, scalp nourishment and healthy hair maintenance.",
       link: "/treatments/hair-fall",
       buttonText: "Explore Hair Fall Treatment",

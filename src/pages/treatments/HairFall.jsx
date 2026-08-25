@@ -59,7 +59,7 @@ export default function HairFall({ onOpenBooking }) {
         badge="TRICHOLOGICAL AYURVEDA"
         title="Hair Fall Treatment – Ayurvedic Hair Care"
         subtitle="Holistic Ayurvedic hair and scalp care focused on arresting hair fall, nourishing follicles, and fostering resilient, healthy hair growth."
-        bgImage="/images/hero_adobe_1.jpg"
+        bgImage="/images/hair_fall.jpg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
