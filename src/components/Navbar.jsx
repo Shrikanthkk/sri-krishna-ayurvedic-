@@ -55,56 +55,40 @@ export default function Navbar({ onOpenBooking }) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 h-[68px] sm:h-[74px] flex items-center transition-all duration-300 overflow-visible ${
-          scrolled ? 'glass-nav-scrolled shadow-elevated' : 'glass-nav'
+        className={`fixed top-0 left-0 right-0 z-40 h-[70px] sm:h-[76px] flex items-center transition-all duration-300 overflow-visible ${
+          scrolled ? 'glass-nav-scrolled shadow-elevated' : 'glass-nav bg-white/95 backdrop-blur-md'
         }`}
       >
-        <div className="w-full pl-2 sm:pl-3 md:pl-4 pr-2 sm:pr-3 md:pr-4 flex items-center justify-between gap-1 sm:gap-2 xl:gap-3 overflow-visible relative">
+        <div className="w-full px-3 sm:px-5 lg:px-6 xl:px-8 flex items-center justify-between gap-2 sm:gap-4 xl:gap-6 overflow-visible relative">
           
-          {/* 1. Left Group: Logo & Brand Info (Flush Left) */}
-          <div className="flex items-center gap-1.5 xl:gap-2.5 shrink-0 overflow-visible">
-            <Link
-              to="/"
-              className="group flex items-center gap-1.5 sm:gap-2 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50"
-            >
-              {/* Circular White/Cream Backing Badge with Soft Elegant Shadow */}
-              <div className="relative w-[56px] h-[56px] sm:w-[66px] sm:h-[66px] xl:w-[72px] xl:h-[72px] translate-y-1 sm:translate-y-1.5 rounded-full p-1 bg-gradient-to-b from-white via-cream-50 to-cream-100 border border-brass-400/60 shadow-[0_6px_16px_-3px_rgba(28,59,44,0.18)] ring-1 ring-earth-200/60 shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_10px_20px_-3px_rgba(197,160,89,0.3)]">
-                <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-white shadow-xs">
-                  <img
-                    src="/images/logo.png"
-                    alt="Sri Krishna Ayurvedic Logo"
-                    className="w-full h-full object-cover object-center"
-                  />
-                </div>
+          {/* 1. Left: Clinic Brand (Logo + Bold Name + Location) */}
+          <Link
+            to="/"
+            className="group flex items-center gap-2 sm:gap-2.5 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50"
+          >
+            {/* Circular Logo Badge */}
+            <div className="relative w-[54px] h-[54px] sm:w-[62px] sm:h-[62px] xl:w-[68px] xl:h-[68px] rounded-full p-1 bg-white border border-brass-400/80 shadow-sm shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+              <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-white">
+                <img
+                  src="/images/logo.png"
+                  alt="Sri Krishna Ayurvedic Logo"
+                  className="w-full h-full object-cover object-center"
+                />
               </div>
-
-              <div className="flex flex-col justify-center pl-0.5">
-                <span className={`font-serif text-xs sm:text-sm md:text-base xl:text-lg font-bold tracking-tight leading-tight transition-colors whitespace-nowrap ${
-                  scrolled ? 'text-cream-50' : 'text-forest-950'
-                }`}>
-                  {clinicData.clinicName}
-                </span>
-                <span className={`text-[8px] sm:text-[9px] xl:text-[10px] tracking-[0.10em] sm:tracking-[0.14em] uppercase font-bold transition-colors whitespace-nowrap ${
-                  scrolled ? 'text-emerald-300' : 'text-forest-800'
-                }`}>
-                  KR Puram, Bangalore
-                </span>
-              </div>
-            </Link>
-
-            {/* Slanted Dual Divider between Brand/Logo & Navigation Links */}
-            <div className="hidden 2xl:flex items-center gap-1 select-none -skew-x-12 shrink-0 pl-1" aria-hidden="true">
-              <div className={`w-[2px] h-6 rounded-full transition-colors ${
-                scrolled ? 'bg-emerald-400/50 shadow-[0_0_8px_rgba(52,211,153,0.35)]' : 'bg-brass-500/60 shadow-[0_0_6px_rgba(197,160,89,0.3)]'
-              }`} />
-              <div className={`w-[1.5px] h-5 rounded-full transition-colors ${
-                scrolled ? 'bg-emerald-400/25' : 'bg-brass-500/30'
-              }`} />
             </div>
-          </div>
 
-          {/* 2. Desktop Navigation Links (Responsive, Balanced & Fits All Screens without clipping) */}
-          <nav className="hidden lg:flex items-center gap-0.5 xl:gap-1 shrink-0">
+            <div className="flex flex-col justify-center pl-1">
+              <span className="font-serif text-sm sm:text-base md:text-lg xl:text-xl font-bold tracking-tight leading-tight text-forest-950 whitespace-nowrap">
+                {clinicData.clinicName}
+              </span>
+              <span className="text-[8.5px] sm:text-[9.5px] xl:text-[11px] tracking-[0.14em] uppercase font-bold text-forest-800 whitespace-nowrap">
+                KR PURAM, BANGALORE
+              </span>
+            </div>
+          </Link>
+
+          {/* 2. Middle: Desktop Navigation Links */}
+          <nav className="hidden lg:flex items-center gap-2.5 xl:gap-5 2xl:gap-7 shrink-0">
             {navLinks.map((link) => {
               const active = isPathActive(link);
 
@@ -118,20 +102,16 @@ export default function Navbar({ onOpenBooking }) {
                   >
                     <Link
                       to={link.path}
-                      className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[36px] px-1.5 sm:px-2 xl:px-2.5 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 cursor-pointer ${
+                      className={`group relative inline-flex items-center justify-center h-[36px] xl:h-[40px] px-2.5 xl:px-3.5 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 cursor-pointer ${
                         active || hoveringTreatments
-                          ? scrolled
-                            ? 'bg-[rgba(16,185,129,0.25)] text-cream-100 font-semibold backdrop-blur-md shadow-[0_4px_15px_rgba(16,185,129,0.25)] scale-[1.01]'
-                            : 'bg-[rgba(16,185,129,0.18)] text-forest-950 font-semibold backdrop-blur-md scale-[1.01]'
-                          : scrolled
-                          ? 'bg-transparent text-cream-100 hover:bg-[rgba(16,185,129,0.26)] hover:backdrop-blur-md hover:shadow-[0_4px_18px_rgba(16,185,129,0.3)] hover:-translate-y-[1px] hover:scale-[1.01]'
-                          : 'bg-transparent text-forest-950 hover:bg-[rgba(16,185,129,0.24)] hover:backdrop-blur-md hover:shadow-[0_4px_18px_rgba(16,185,129,0.28)] hover:-translate-y-[1px] hover:scale-[1.01]'
+                          ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
+                          : 'bg-transparent text-forest-950 hover:text-emerald-700 font-bold'
                       }`}
-                      style={{ borderRadius: '2px 6px 2px 6px' }}
+                      style={{ borderRadius: '4px' }}
                     >
-                      <span className="skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-semibold tracking-[0.02em] uppercase whitespace-nowrap flex items-center gap-1">
+                      <span className="skew-x-12 text-[11px] xl:text-[13px] 2xl:text-[14px] font-bold tracking-wide uppercase whitespace-nowrap flex items-center gap-1">
                         <span>{link.name}</span>
-                        <ChevronDown className={`w-3 h-3 transition-transform duration-200 ${hoveringTreatments ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveringTreatments ? 'rotate-180' : ''}`} />
                       </span>
                     </Link>
 
@@ -145,13 +125,7 @@ export default function Navbar({ onOpenBooking }) {
                           transition={{ duration: 0.22, ease: 'easeOut' }}
                           className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 pointer-events-auto min-w-[260px]"
                         >
-                          <div
-                            className={`flex flex-col gap-1.5 p-3 rounded-2xl shadow-elevated border backdrop-blur-xl ${
-                              scrolled
-                                ? 'bg-forest-950/95 border-forest-800/80'
-                                : 'bg-cream-50/95 border-earth-200'
-                            }`}
-                          >
+                          <div className="flex flex-col gap-1.5 p-3.5 rounded-2xl shadow-elevated border bg-cream-50/98 border-earth-200 backdrop-blur-xl">
                             <Link
                               to="/treatments"
                               onClick={() => setHoveringTreatments(false)}
@@ -168,9 +142,7 @@ export default function Navbar({ onOpenBooking }) {
                                 onClick={() => setHoveringTreatments(false)}
                                 className={`px-3.5 py-2 text-[12px] font-medium tracking-[0.03em] rounded-xl transition-all ${
                                   location.pathname === sub.path
-                                    ? 'bg-[rgba(16,185,129,0.35)] text-emerald-300 font-semibold'
-                                    : scrolled
-                                    ? 'text-cream-100 hover:bg-[rgba(16,185,129,0.22)]'
+                                    ? 'bg-[rgba(16,185,129,0.35)] text-emerald-900 font-semibold'
                                     : 'text-forest-950 hover:bg-[rgba(16,185,129,0.18)]'
                                 }`}
                               >
@@ -189,20 +161,16 @@ export default function Navbar({ onOpenBooking }) {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[36px] px-1.5 sm:px-2 xl:px-2.5 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
+                  className={`group relative inline-flex items-center justify-center h-[36px] xl:h-[40px] px-2.5 xl:px-3.5 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
                     active
-                      ? scrolled
-                        ? 'bg-[rgba(16,185,129,0.25)] text-cream-100 font-semibold backdrop-blur-md shadow-[0_4px_15px_rgba(16,185,129,0.25)] scale-[1.01]'
-                        : 'bg-[rgba(16,185,129,0.18)] text-forest-950 font-semibold backdrop-blur-md scale-[1.01]'
-                      : scrolled
-                      ? 'bg-transparent text-cream-100 hover:bg-[rgba(16,185,129,0.26)] hover:backdrop-blur-md hover:shadow-[0_4px_18px_rgba(16,185,129,0.3)] hover:-translate-y-[1px] hover:scale-[1.01]'
-                      : 'bg-transparent text-forest-950 hover:bg-[rgba(16,185,129,0.24)] hover:backdrop-blur-md hover:shadow-[0_4px_18px_rgba(16,185,129,0.28)] hover:-translate-y-[1px] hover:scale-[1.01]'
+                      ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
+                      : 'bg-transparent text-forest-950 hover:text-emerald-700 font-bold'
                   }`}
                   style={{
-                    borderRadius: '2px 6px 2px 6px',
+                    borderRadius: '4px',
                   }}
                 >
-                  <span className="skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-semibold tracking-[0.02em] uppercase whitespace-nowrap">
+                  <span className="skew-x-12 text-[11px] xl:text-[13px] 2xl:text-[14px] font-bold tracking-wide uppercase whitespace-nowrap">
                     {link.name}
                   </span>
                 </Link>
@@ -210,20 +178,16 @@ export default function Navbar({ onOpenBooking }) {
             })}
           </nav>
 
-          {/* 3. Desktop Right CTA (Zero Collision, Compact & Elegant) */}
+          {/* 3. Right: Book Consultation Button */}
           <div className="hidden lg:flex items-center shrink-0">
             <Link
               to="/book-appointment"
-              className={`h-[34px] xl:h-[36px] px-2.5 sm:px-3 xl:px-3.5 text-[9.5px] xl:text-[11px] font-bold tracking-wider uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shrink-0 shadow-soft ${
-                scrolled
-                  ? 'bg-emerald-500 text-forest-950 hover:bg-emerald-400 hover:shadow-[0_6px_20px_rgba(16,185,129,0.4)]'
-                  : 'bg-forest-900 text-cream-50 hover:bg-forest-800 hover:shadow-elevated'
-              } hover:-translate-y-[1px]`}
-              style={{ borderRadius: '2px 6px 2px 6px' }}
+              className="h-[38px] xl:h-[42px] px-3.5 sm:px-4 xl:px-5 bg-[#12281e] text-white hover:bg-[#1a382a] text-[10.5px] xl:text-xs 2xl:text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shrink-0 shadow-md hover:-translate-y-[1px]"
+              style={{ borderRadius: '4px' }}
             >
-              <span className="skew-x-12 flex items-center gap-1.5 whitespace-nowrap">
-                <Calendar className="w-3 h-3 text-brass-400 shrink-0" />
-                <span className="whitespace-nowrap">Book Consultation</span>
+              <span className="skew-x-12 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
+                <Calendar className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                <span>BOOK CONSULTATION</span>
               </span>
             </Link>
           </div>
@@ -231,12 +195,7 @@ export default function Navbar({ onOpenBooking }) {
           {/* 4. Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className={`lg:hidden h-[36px] px-2.5 -skew-x-12 backdrop-blur-md transition-colors flex items-center justify-center shrink-0 ${
-              scrolled
-                ? 'text-cream-100 hover:text-white bg-white/10'
-                : 'text-forest-900 hover:text-forest-700 bg-forest-900/5'
-            }`}
-            style={{ borderRadius: '2px 6px 2px 6px' }}
+            className="lg:hidden h-[38px] px-3 -skew-x-12 backdrop-blur-md transition-colors flex items-center justify-center shrink-0 text-forest-900 hover:text-forest-700 bg-forest-900/5 rounded-md"
             aria-label="Toggle navigation menu"
           >
             <span className="skew-x-12 block">
