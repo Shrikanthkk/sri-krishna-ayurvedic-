@@ -25,7 +25,7 @@ export default function Gallery() {
       tag: "Main Entrance",
       src: "/images/gallery/clinic_exterior_facade.png",
       objectPosition: "center 40%",
-      description: "Illuminated exterior facade and clinic signboard located at No 426/1, Dhanvantari Road, Krishnarajapuram (KR Puram), Bangalore 560036."
+      description: "Illuminated exterior facade and clinic signboard at No 426/1, Dhanvantari Road, KR Puram, Bangalore."
     },
     {
       id: 2,
@@ -34,7 +34,7 @@ export default function Gallery() {
       tag: "26+ Years Clinical Practice",
       src: "/images/gallery/dr_anand_krishna.png",
       objectPosition: "center 12%",
-      description: "Senior Ayurvedic Physician and Medical Director leading holistic healing, classical pulse diagnosis (Nadi Pariksha), and personalized herbal healthcare."
+      description: "Senior Ayurvedic Physician and Medical Director leading classical Nadi Pariksha and personalized herbal care."
     },
     {
       id: 3,
@@ -43,7 +43,7 @@ export default function Gallery() {
       tag: "Pulse Diagnosis & Care",
       src: "/images/gallery/dr_anand_krishna_pediatric_nadi_pariksha.png",
       objectPosition: "center 22%",
-      description: "Senior Physician Dr. Anand Krishna conducting personalized pulse diagnosis (Nadi Pariksha) and wellness examination for infant and family."
+      description: "Dr. Anand Krishna conducting personalized pediatric pulse diagnosis (Nadi Pariksha) and wellness examination."
     },
     {
       id: 4,
@@ -52,7 +52,7 @@ export default function Gallery() {
       tag: "Prestigious Medical Award",
       src: "/images/gallery/dr_anand_krishna_telugu_tejam_award.png",
       objectPosition: "center 15%",
-      description: "Dr. Anand Krishna receiving the distinguished Telugu Tejam Foundation 'Best Service Award' and golden memento for outstanding contributions to Ayurvedic healthcare."
+      description: "Dr. Anand Krishna receiving the Telugu Tejam Foundation 'Best Service Award' for distinguished Ayurvedic healthcare."
     },
     {
       id: 5,
@@ -61,7 +61,7 @@ export default function Gallery() {
       tag: "Medical Honors",
       src: "/images/gallery/dr_anand_krishna_award_felicitation.png",
       objectPosition: "center 12%",
-      description: "Dr. Anand Krishna being felicitated on stage with ceremonial shawls, golden garland, and prestigious Ayurvedic excellence citations."
+      description: "Dr. Anand Krishna felicitated on stage with ceremonial shawls and Ayurvedic excellence awards."
     },
     {
       id: 6,
@@ -70,7 +70,7 @@ export default function Gallery() {
       tag: "Sacred Blessings",
       src: "/images/gallery/swamiji_blessings_ceremony.png",
       objectPosition: "center 18%",
-      description: "Revered Spiritual Guru / Swamiji and community dignitaries bestowing holy blessings on Dr. Anand Krishna at the clinic inauguration."
+      description: "Revered Spiritual Guru / Swamiji bestowing holy blessings on Dr. Anand Krishna at clinic inauguration."
     },
     {
       id: 7,
@@ -79,7 +79,7 @@ export default function Gallery() {
       tag: "Grand Opening",
       src: "/images/gallery/clinic_inauguration_ceremony.png",
       objectPosition: "center 24%",
-      description: "Grand ribbon-cutting and opening ceremony of Sri Krishna Ayurvedic Clinic in the presence of esteemed community elders and well-wishers."
+      description: "Ribbon-cutting opening ceremony of Sri Krishna Ayurvedic Clinic with esteemed community elders."
     },
     {
       id: 8,
@@ -88,7 +88,7 @@ export default function Gallery() {
       tag: "Celebration & Welcoming",
       src: "/images/gallery/clinic_opening_bouquet_greeting.png",
       objectPosition: "center 22%",
-      description: "Dr. Anand Krishna, family, and dignitaries being greeted with floral bouquets in front of the illuminated botanical reception shrine."
+      description: "Dr. Anand Krishna and family greeted with floral bouquets at the illuminated reception shrine."
     },
     {
       id: 9,
@@ -97,7 +97,7 @@ export default function Gallery() {
       tag: "Press & Media Coverage",
       src: "/images/gallery/clinic_opening_media_coverage.png",
       objectPosition: "center 22%",
-      description: "Press and television media capturing the grand launch of Sri Krishna Ayurvedic Clinic's healthcare facilities in KR Puram."
+      description: "Press and television media capturing the grand launch of Sri Krishna Ayurvedic Clinic in KR Puram."
     },
     {
       id: 10,
@@ -106,7 +106,7 @@ export default function Gallery() {
       tag: "Custom Formulations",
       src: "/images/gallery/dr_anand_krishna_preparing_medicine.png",
       objectPosition: "center 18%",
-      description: "Dr. Anand Krishna hand-crafting individualized Ayurvedic botanical medicines, churnams, and therapeutic mixtures in the clinic dispensary."
+      description: "Dr. Anand Krishna hand-crafting individualized botanical churnams and classical medicines in the dispensary."
     },
     {
       id: 11,
@@ -115,7 +115,7 @@ export default function Gallery() {
       tag: "Specialty Departments",
       src: "/images/gallery/swarnaprashana_physiotherapy_cabin.png",
       objectPosition: "center 30%",
-      description: "Dedicated clinical wing for Pushya Nakshatra Swarnaprashana child immunity drops and integrative Ayurvedic physiotherapy care."
+      description: "Clinical department for Pushya Nakshatra Swarnaprashana child immunity drops and physiotherapy."
     },
     {
       id: 12,
@@ -124,7 +124,7 @@ export default function Gallery() {
       tag: "Welcoming Ambiance",
       src: "/images/gallery/clinic_reception_lounge.png",
       objectPosition: "center 35%",
-      description: "Serene patient reception lounge featuring lush green vertical botanical wall, traditional altar shrine, comfortable waiting seating, and consultation check-in desk."
+      description: "Serene patient reception lounge featuring vertical botanical wall, shrine, and consultation desk."
     },
     {
       id: 13,
@@ -133,7 +133,7 @@ export default function Gallery() {
       tag: "Consultation Sanctuary",
       src: "/images/gallery/doctor_consultation_chamber.png",
       objectPosition: "center 35%",
-      description: "Peaceful private consultation chamber designed for confidential pulse diagnosis (Nadi Pariksha), featuring an illuminated sacred Om mandala and spiritual healing decor."
+      description: "Private consultation chamber for pulse diagnosis (Nadi Pariksha) with illuminated Om mandala."
     },
     {
       id: 14,
@@ -142,7 +142,7 @@ export default function Gallery() {
       tag: "Classical Apothecary",
       src: "/images/gallery/ayurvedic_dispensary_cabinets.png",
       objectPosition: "center center",
-      description: "Extensive in-clinic Ayurvedic dispensary holding hundreds of classical herbal powders, decoctions, tablets, and medicated oils."
+      description: "In-clinic Ayurvedic dispensary holding classical botanical churnams, tablets, and medicated oils."
     },
     {
       id: 15,
@@ -151,7 +151,7 @@ export default function Gallery() {
       tag: "Apothecary & Therapy Room",
       src: "/images/gallery/herbal_pharmacy_treatment_room.png",
       objectPosition: "center center",
-      description: "Comprehensive in-clinic Ayurvedic dispensary stocked with classical botanical churnams, medicated oils, herbal formulations, and therapeutic clinical care station."
+      description: "Equipped in-clinic treatment station and classical herbal medicine dispensing facility."
     }
   ];
 

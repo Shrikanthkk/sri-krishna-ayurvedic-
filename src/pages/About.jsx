@@ -60,10 +60,10 @@ export default function About() {
                 Traditional Ayurveda. Root-Cause Healing. Accessible Healthcare.
               </h2>
               <p className="text-earth-800 text-sm sm:text-base leading-relaxed font-light">
-                Located in Krishnarajapuram (KR Puram), Bangalore, <strong>Sri Krishna Ayurvedic Clinic</strong> provides authentic Ayurvedic healthcare through classical pulse diagnosis, time-tested herbal formulations, and personalized therapeutic regimens.
+                Located in KR Puram, Bangalore, <strong>Sri Krishna Ayurvedic Clinic</strong> provides authentic Ayurvedic care through classical pulse diagnosis and time-tested herbal formulations.
               </p>
               <p className="text-earth-800 text-sm sm:text-base leading-relaxed font-light">
-                Rather than treating superficial symptoms, we evaluate your individual constitution (*Prakriti*), digestive vitality (*Agni*), and Dosha balance to establish sustainable root-cause recovery.
+                We evaluate your individual constitution (*Prakriti*), digestive vitality (*Agni*), and Dosha balance to establish sustainable root-cause recovery.
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-1">
@@ -108,7 +108,7 @@ export default function About() {
               Meet Our Doctor: Dr. Anand Krishna (BAMS)
             </h2>
             <p className="text-earth-800 text-sm sm:text-base font-light">
-              Senior Ayurvedic Physician Dr. Anand Krishna brings over 26 years of dedicated clinical practice to patient care in KR Puram.
+              Senior Physician Dr. Anand Krishna brings 26+ years of clinical practice to holistic patient care in KR Puram.
             </p>
           </div>
 

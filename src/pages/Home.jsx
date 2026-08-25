@@ -42,7 +42,7 @@ export default function Home({ onOpenBooking }) {
               </div>
 
               <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed">
-                For over 26 years, Dr. Anand Krishna (BAMS) has provided authentic Ayurvedic care in KR Puram, specializing in pulse diagnosis (Nadi Pariksha), classical Panchakarma detox, and tailored herbal wellness.
+                For over 26 years, Dr. Anand Krishna (BAMS) has provided authentic Ayurvedic care in KR Puram, specializing in Nadi Pariksha, Panchakarma detox, and herbal wellness.
               </p>
 
               <div className="grid grid-cols-2 gap-3 pt-1">
@@ -83,7 +83,7 @@ export default function Home({ onOpenBooking }) {
               Patient-Centric Care
             </h2>
             <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed">
-              Ayurveda restores dynamic balance between your constitution (Prakriti), digestive fire (Agni), and mental wellbeing through personalized evaluation and natural therapies.
+              Ayurveda restores balance between constitution (Prakriti) and digestive fire (Agni) through personalized therapies.
             </p>
           </div>
 
@@ -103,7 +103,7 @@ export default function Home({ onOpenBooking }) {
                 <div>
                   <h3 className="font-serif text-lg font-medium text-forest-950 mb-1.5">Personalised Consultations</h3>
                   <p className="text-xs text-earth-800 leading-relaxed font-light">
-                    Consultations structured around your unique Nadi evaluation, daily lifestyle, and complete medical history.
+                    Structured around your Nadi evaluation, lifestyle, and medical history.
                   </p>
                 </div>
               </div>
@@ -124,7 +124,7 @@ export default function Home({ onOpenBooking }) {
                 <div>
                   <h3 className="font-serif text-lg font-medium text-forest-950 mb-1.5">Classical Formulations</h3>
                   <p className="text-xs text-earth-800 leading-relaxed font-light">
-                    Authentic Ayurvedic herbs and classical preparations crafted according to traditional textual standards.
+                    Authentic herbs crafted according to classical textual standards.
                   </p>
                 </div>
               </div>
@@ -145,7 +145,7 @@ export default function Home({ onOpenBooking }) {
                 <div>
                   <h3 className="font-serif text-lg font-medium text-forest-950 mb-1.5">26+ Years Trust</h3>
                   <p className="text-xs text-earth-800 leading-relaxed font-light">
-                    Guided directly by Dr. Anand Krishna (BAMS), delivering trusted, transparent clinical care in KR Puram.
+                    Directly guided by Dr. Anand Krishna (BAMS), delivering trusted clinical care in KR Puram.
                   </p>
                 </div>
               </div>

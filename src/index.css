@@ -4,6 +4,7 @@
 
 @layer base {
   html {
+    font-size: 110%; /* 10% larger typography across entire website */
     font-family: 'Plus Jakarta Sans', sans-serif;
     color: #0B1711;
     background-color: #FAF8F5;
@@ -13,6 +14,7 @@
 
   h1, h2, h3, h4, h5, h6, .font-serif {
     font-family: 'Cormorant Garamond', Georgia, serif;
+    letter-spacing: -0.01em;
   }
 }
 

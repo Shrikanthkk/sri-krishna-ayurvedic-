@@ -57,7 +57,7 @@ export default function Hero({ onOpenBooking }) {
               </h1>
               
               <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed max-w-xl">
-                Experience authentic Ayurvedic healing guided by Dr. Anand Krishna (BAMS, 26+ yrs exp) in KR Puram. Classical Nadi Pariksha, Panchakarma detox, and tailored botanical regimens.
+                Authentic Ayurvedic healing by Dr. Anand Krishna (BAMS, 26+ yrs exp) in KR Puram. Classical Nadi Pariksha, Panchakarma detox, and tailored herbal regimens.
               </p>
             </motion.div>
 

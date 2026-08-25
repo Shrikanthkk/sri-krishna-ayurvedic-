@@ -41,7 +41,7 @@ export default function Treatments({ onOpenBooking }) {
             All Ayurvedic Treatments
           </h1>
           <p className="text-earth-800 text-sm font-light leading-relaxed">
-            Personalized Ayurvedic care for chronic diseases, skin and hair concerns, wellness, diabetes, supportive cancer care, and pediatric Swarnaprashana. Under the clinical leadership of senior physician Dr. Anand Krishna (BAMS, 26+ years experience), each treatment regimen is customized to your unique constitution (<em>Prakriti</em>) and underlying Dosha balance.
+            Personalized Ayurvedic care led by senior physician Dr. Anand Krishna (BAMS, 26+ yrs exp), customized to your unique constitution (<em>Prakriti</em>) and underlying Dosha balance.
           </p>
         </div>
 

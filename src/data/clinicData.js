@@ -1,7 +1,7 @@
 export const clinicData = {
   clinicName: "Sri Krishna Ayurvedic Clinic",
   tagline: "Traditional Ayurveda. Thoughtful Care. A Healthier You.",
-  subtitle: "Authentic Ayurvedic healing, personalized pulse diagnosis, and root-cause therapies by senior practitioners in KR Puram, Bangalore.",
+  subtitle: "Authentic Ayurvedic healing and personalized pulse diagnosis by senior practitioners in KR Puram.",
   
   contact: {
     phone: "+91 98450 12345",
@@ -64,7 +64,7 @@ export const clinicData = {
       image: "/images/consultation.png",
       tagline: "TRADITIONAL AYURVEDA • MODERN CARE",
       title: "Natural Healing. Personalized Care.",
-      description: "Root-cause healing tailored to your Prakriti, guided by Dr. Anand Krishna with 26+ years of clinical experience in KR Puram.",
+      description: "Root-cause healing tailored to your Prakriti by Dr. Anand Krishna (26+ yrs exp in KR Puram).",
       badge: "Personalized Care",
       highlight: "Pulse Evaluation"
     },
@@ -73,7 +73,7 @@ export const clinicData = {
       image: "/images/shirodhara.jpg",
       tagline: "HOLISTIC BALANCE & WELLNESS",
       title: "Restore Balance. Renew Your Wellbeing.",
-      description: "Harmonize Vata, Pitta, and Kapha through classical Panchakarma detoxification, soothing Shirodhara, and lifestyle guidance.",
+      description: "Harmonize Vata, Pitta, and Kapha through Panchakarma detox and soothing Shirodhara.",
       badge: "Holistic Wellness",
       highlight: "Cellular Detox"
     },
@@ -82,7 +82,7 @@ export const clinicData = {
       image: "/images/nadi_pariksha.png",
       tagline: "ANCIENT WISDOM • THOUGHTFUL CARE",
       title: "Ancient Wisdom. Thoughtful Care.",
-      description: "Classical Nadi Pariksha pulse diagnosis paired with pure botanical formulations crafted for lasting health and vitality.",
+      description: "Classical Nadi Pariksha pulse diagnosis paired with pure botanical formulations.",
       badge: "Nadi Pariksha",
       highlight: "Root-Cause Care"
     }
@@ -93,7 +93,7 @@ export const clinicData = {
     title: "Senior Ayurvedic Physician",
     qualifications: "BAMS (Bachelor of Ayurvedic Medicine & Surgery)",
     experienceYears: "26+ Years of Clinical Practice",
-    bio: "With over 26 years of dedicated Ayurvedic practice, Dr. Anand Krishna specializes in classical Nadi Pariksha (Pulse Diagnosis), holistic Panchakarma therapies, and sustainable lifestyle restoration. His approach combines authentic classical formulations with compassionate, personalized patient care.",
+    bio: "With 26+ years of Ayurvedic practice, Dr. Anand Krishna specializes in Nadi Pariksha, classical Panchakarma detox, and personalized herbal regimens.",
     specialties: [
       "Nadi Pariksha (Pulse Diagnosis)",
       "Panchakarma & Detox Therapy",
@@ -101,33 +101,33 @@ export const clinicData = {
       "Digestive & Metabolic Health",
       "Stress & Lifestyle Wellness"
     ],
-    quote: "True healing restores the natural equilibrium between Vata, Pitta, and Kapha within the individual."
+    quote: "True healing restores the natural equilibrium between Vata, Pitta, and Kapha."
   },
 
   pillars: [
     {
       number: "01",
       title: "Balance",
-      short: "Restoring equilibrium among the three Doshas (Vata, Pitta, Kapha) for lasting vitality.",
-      description: "Restoring harmony among Vata, Pitta, and Kapha to support your body's innate healing ability."
+      short: "Restoring equilibrium among the three Doshas for lasting vitality.",
+      description: "Harmonizing Vata, Pitta, and Kapha for innate healing."
     },
     {
       number: "02",
       title: "Personalised Care",
-      short: "Therapeutic plans tailored specifically to your individual Prakriti (constitution).",
-      description: "Every consultation begins with an evaluation of your unique constitution and daily routine."
+      short: "Therapies tailored to your individual Prakriti constitution.",
+      description: "Evaluation of your unique constitution and daily routine."
     },
     {
       number: "03",
       title: "Natural Wellness",
-      short: "Rooted in authentic herbal formulations and classical Ayurvedic texts.",
-      description: "Using nature's apothecary to promote gentle internal purification and sustained vitality."
+      short: "Rooted in authentic herbal formulations and classical texts.",
+      description: "Pure botanicals for internal purification and sustained vitality."
     },
     {
       number: "04",
       title: "Holistic Living",
-      short: "Integrating nutrition (Ahara) and lifestyle (Vihara) for long-term health.",
-      description: "Practical dietary and lifestyle practices tailored to support sustained daily wellbeing."
+      short: "Integrating nutrition (Ahara) and lifestyle (Vihara) habits.",
+      description: "Mindful dietary and daily routines for long-term health."
     }
   ],
 
@@ -139,10 +139,10 @@ export const clinicData = {
       shortTitle: "Joint Pain & Arthritis",
       subtitle: "Supportive Musculoskeletal Care",
       image: "/images/joint_pain_arthritis.png",
-      description: "Ayurvedic care and supportive wellness approaches for joint pain, stiffness and arthritis-related concerns.",
+      description: "Ayurvedic therapy and herbal poultices for joint stiffness, mobility, and arthritis relief.",
       link: "/treatments/joint-pain-arthritis",
       buttonText: "Explore Joint & Arthritis Care",
-      benefits: ["Relieves joint stiffness & discomfort", "Supports healthy mobility & flexibility", "Classical botanical applications"],
+      benefits: ["Relieves joint stiffness & discomfort", "Supports mobility & flexibility", "Classical botanical applications"],
       duration: "45 - 60 Min Sessions"
     },
     {
@@ -152,10 +152,10 @@ export const clinicData = {
       shortTitle: "Skin Problems",
       subtitle: "Ayurvedic Skin Wellness",
       image: "/images/skin_problems.png",
-      description: "Personalized Ayurvedic skin care for common skin concerns and overall skin wellness.",
+      description: "Personalized herbal Lepas and blood purification for healthy, glowing skin.",
       link: "/treatments/skin-problems",
       buttonText: "Explore Skin Care",
-      benefits: ["Balances Pitta & Rakta Dhatu", "Herbal Lepas & botanical preparations", "Dietary & lifestyle harmonization"],
+      benefits: ["Balances Pitta & Rakta Dhatu", "Herbal Lepas & botanicals", "Dietary harmonization"],
       duration: "Personalized Care"
     },
     {
@@ -165,10 +165,10 @@ export const clinicData = {
       shortTitle: "Hair Fall Treatment",
       subtitle: "Ayurvedic Hair & Scalp Care",
       image: "/images/hair_fall.jpg",
-      description: "Ayurvedic hair and scalp care focused on hair fall, scalp nourishment and healthy hair maintenance.",
+      description: "Ayurvedic scalp oil therapies (Shiro Abhyanga) for hair fall and deep nourishment.",
       link: "/treatments/hair-fall",
       buttonText: "Explore Hair Fall Treatment",
-      benefits: ["Addresses Khalitya & Palitya concerns", "Shiro Abhyanga & botanical oils", "Deep scalp nourishment"],
+      benefits: ["Addresses Khalitya & Palitya", "Shiro Abhyanga & botanical oils", "Deep scalp nourishment"],
       duration: "Therapeutic Regimen"
     },
     {
@@ -178,10 +178,10 @@ export const clinicData = {
       shortTitle: "Sexual Disorders",
       subtitle: "Ayurvedic Wellness Support",
       image: "/images/consultation.png",
-      description: "Personalized Ayurvedic wellness support for sexual and reproductive health concerns.",
+      description: "Personalized Ayurvedic wellness for vitality, reproductive balance, and stress relief.",
       link: "/treatments/sexual-disorders",
       buttonText: "Explore Sexual Wellness",
-      benefits: ["Vajikarana & Shukra Dhatu balance", "Stress management & vitality support", "Private & respectful consultation"],
+      benefits: ["Vajikarana & Shukra balance", "Vitality & stress management", "Confidential consultation"],
       duration: "Private Consultation"
     },
     {
@@ -191,10 +191,10 @@ export const clinicData = {
       shortTitle: "De-addiction",
       subtitle: "Recovery & Wellness Support",
       image: "/images/de_addiction.png",
-      description: "Ayurvedic lifestyle and wellness support as part of a professionally supervised recovery program.",
+      description: "Holistic lifestyle, detoxification, and mind-calming Ayurvedic recovery support.",
       link: "/treatments/de-addiction",
       buttonText: "Explore De-addiction Care",
-      benefits: ["Dinacharya & healthy routine building", "Mind calming yoga & Pranayama", "Nutrition & metabolic restoration"],
+      benefits: ["Dinacharya routine building", "Calming yoga & Pranayama", "Metabolic restoration"],
       duration: "Supportive Program"
     },
     {
@@ -204,10 +204,10 @@ export const clinicData = {
       shortTitle: "Diabetes",
       subtitle: "Metabolic Wellness Support",
       image: "/images/diabetes.jpg",
-      description: "Ayurvedic lifestyle and wellness support for healthy metabolic management alongside appropriate medical care.",
+      description: "Metabolic and lifestyle support for healthy glycemic balance and digestive Agni.",
       link: "/treatments/diabetes",
       buttonText: "Explore Diabetes Care",
-      benefits: ["Madhumeha & Prameha principles", "Optimizes Agni & Meda Dhatu", "Dietary & glycemic lifestyle support"],
+      benefits: ["Madhumeha & Prameha care", "Optimizes Agni & metabolism", "Glycemic lifestyle support"],
       duration: "Long-term Wellness"
     },
     {
@@ -217,10 +217,10 @@ export const clinicData = {
       shortTitle: "Cancer Treatment",
       subtitle: "Supportive & Adjunct Care",
       image: "/images/cancer_treatment.jpg",
-      description: "Ayurvedic supportive care focused on wellbeing and quality of life alongside appropriate cancer treatment.",
+      description: "Supportive Ayurvedic wellness to enhance vitality, comfort, and quality of life.",
       link: "/treatments/cancer-treatment",
       buttonText: "Explore Cancer Support",
-      benefits: ["Quality of life & vitality support", "Nutrition & digestive comfort", "Integrative oncology coordination"],
+      benefits: ["Vitality & comfort support", "Digestive ease & nutrition", "Integrative coordination"],
       duration: "Supportive Consultation"
     },
     {
@@ -231,10 +231,10 @@ export const clinicData = {
       subtitle: "Traditional Ayurvedic Child Wellness",
       image: "/images/swarnaprashana_child.png",
       ageBadge: "Children 0–16 Years",
-      description: "Traditional Ayurvedic wellness practice for children, traditionally associated with Pushya Nakshatra and administered under qualified Ayurvedic guidance.",
+      description: "Traditional child immunity drops administered on Pushya Nakshatra under Ayurvedic guidance.",
       link: "/treatments/swarnaprashana",
       buttonText: "Explore Swarnaprashana",
-      benefits: ["For infants & children (0–16 Years)", "Administered on Pushya Nakshatra days", "Nurtures vitality, intellect & wellbeing"],
+      benefits: ["For children (0–16 Years)", "Given on Pushya Nakshatra", "Nurtures immunity & intellect"],
       duration: "Periodic Administration"
     },
     {
@@ -244,10 +244,10 @@ export const clinicData = {
       shortTitle: "Reduce Obesity",
       subtitle: "Metabolic Fat Loss & Medoroga Care",
       image: "/images/reduce_obesity.jpg",
-      description: "Root-cause Ayurvedic weight management combining Udwarthanam herbal scraping, metabolic detoxification, and customized nutrition to burn stubborn fat naturally.",
+      description: "Ayurvedic weight management with Udwarthanam herbal powder therapies and metabolic detox.",
       link: "/treatments/reduce-obesity",
       buttonText: "Explore Obesity Reduction",
-      benefits: ["Udwarthanam herbal powder scraping", "Lekhana Basti visceral detox", "Revitalizes Agni & fat metabolism"],
+      benefits: ["Udwarthanam herbal scraping", "Visceral metabolic detox", "Revitalizes fat metabolism"],
       duration: "Personalized Program"
     },
     {
@@ -257,10 +257,10 @@ export const clinicData = {
       shortTitle: "Vitiligo (White Patches)",
       subtitle: "Shvitra & Leucoderma • Skin Repigmentation",
       image: "/images/vitiligo_treatment.jpg",
-      description: "Classical Ayurvedic protocol for vitiligo and hypopigmentation (Shvitra) combining Virechana blood purification, Bakuchi herbal lepa application, and natural melanocyte rejuvenation.",
+      description: "Classical Shvitra care with Bakuchi herbal lepams and natural skin re-pigmentation support.",
       link: "/treatments/vitiligo",
       buttonText: "Explore Vitiligo Treatment",
-      benefits: ["Bakuchi & Manjistha herbal formulations", "Virechana & Rakta Shodhana blood detox", "Supports natural skin pigment stimulation"],
+      benefits: ["Bakuchi & Manjistha herbs", "Blood purification detox", "Stimulates natural pigment"],
       duration: "Personalized Protocol"
     },
     {
@@ -270,10 +270,10 @@ export const clinicData = {
       shortTitle: "Physiotherapy",
       subtitle: "Spine, Joint & Neurological Recovery",
       image: "/images/physiotherapy_rehab.jpg",
-      description: "Integrative neuro-musculoskeletal rehabilitation combining modern physical therapy, spine mobilization, and specialized Ayurvedic Kati & Janu Basti for rapid recovery.",
+      description: "Integrated musculoskeletal rehabilitation, spine mobilization, and specialized Basti therapies.",
       link: "/treatments/physiotherapy",
       buttonText: "Explore Physiotherapy",
-      benefits: ["Spine decompression & joint mobilization", "Kati Basti, Janu Basti & Patra Pinda Sweda", "Post-stroke & nerve rehabilitation"],
+      benefits: ["Spine decompression & mobility", "Kati Basti & Janu Basti", "Post-stroke & nerve recovery"],
       duration: "Therapeutic Sessions"
     }
   ],
