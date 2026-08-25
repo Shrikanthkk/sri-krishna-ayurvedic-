@@ -229,7 +229,7 @@ export const clinicData = {
       title: "Swarnaprashana",
       shortTitle: "Swarnaprashana",
       subtitle: "Traditional Ayurvedic Child Wellness",
-      image: "/images/hero_stock_2.jpg",
+      image: "/images/swarnaprashana_child.png",
       ageBadge: "Children 0–16 Years",
       description: "Traditional Ayurvedic wellness practice for children, traditionally associated with Pushya Nakshatra and administered under qualified Ayurvedic guidance.",
       link: "/treatments/swarnaprashana",
