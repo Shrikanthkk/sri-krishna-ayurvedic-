@@ -20,7 +20,7 @@ export default function Hero({ onOpenBooking }) {
   return (
     <section 
       id="hero" 
-      className="relative flex flex-col justify-center py-8 lg:py-12 overflow-hidden bg-gradient-to-b from-cream-50 via-cream-100/40 to-cream-50"
+      className="relative flex flex-col justify-center pt-2 sm:pt-3 pb-6 lg:pt-3 lg:pb-8 overflow-hidden bg-gradient-to-b from-cream-50 via-cream-100/40 to-cream-50"
     >
       {/* Subtle Ambient Organic Glows */}
       <div className="absolute top-1/4 -left-20 w-96 h-96 bg-forest-100/40 rounded-full filter blur-3xl pointer-events-none -z-10" />
@@ -28,30 +28,30 @@ export default function Hero({ onOpenBooking }) {
       <div className="absolute bottom-10 right-10 w-80 h-80 bg-brass-100/30 rounded-full filter blur-3xl pointer-events-none -z-10" />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-center">
           
           {/* LEFT SIDE (Mobile: Order 2, Desktop: Order 1): Editorial Authority & Call to Action */}
-          <div className="lg:col-span-6 space-y-4 sm:space-y-5 text-left z-10 order-2 lg:order-1">
+          <div className="lg:col-span-6 space-y-2.5 sm:space-y-3.5 text-left z-10 order-2 lg:order-1">
             
             {/* Small Eyebrow Badge */}
             <motion.div
-              initial={{ opacity: 0, y: 14 }}
+              initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4 }}
-              className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-forest-900/90 text-brass-400 border border-forest-800/80 text-xs font-semibold uppercase tracking-wider shadow-sm"
+              transition={{ duration: 0.3 }}
+              className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-forest-900/90 text-brass-400 border border-forest-800/80 text-[11px] font-semibold uppercase tracking-wider shadow-sm mb-0.5"
             >
-              <Sparkles className="w-3.5 h-3.5 text-brass-400" />
+              <Sparkles className="w-3 h-3 text-brass-400" />
               <span>TRADITIONAL AYURVEDA • MODERN CARE</span>
             </motion.div>
 
             {/* Main Headline & Supporting Paragraph */}
             <motion.div
-              initial={{ opacity: 0, y: 16 }}
+              initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="space-y-2.5"
+              transition={{ duration: 0.4, delay: 0.05 }}
+              className="space-y-1.5 sm:space-y-2"
             >
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-light text-forest-950 leading-[1.12] tracking-tight">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-serif font-light text-forest-950 leading-[1.08] tracking-tight">
                 Natural Healing. <br className="hidden sm:inline" />
                 <span className="text-forest-900 font-normal">Personalized Care.</span>
               </h1>
