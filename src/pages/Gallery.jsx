@@ -11,10 +11,10 @@ export default function Gallery() {
 
   const categories = [
     { id: 'all', label: 'ALL CLINIC PHOTOS' },
-    { id: 'doctor', label: 'SENIOR PHYSICIAN & HONORS' },
+    { id: 'doctor', label: 'DOCTOR & CONSULTATION' },
     { id: 'clinic', label: 'CLINIC INFRASTRUCTURE' },
     { id: 'pharmacy', label: 'HERBAL DISPENSARY' },
-    { id: 'events', label: 'EVENTS & INAUGURATION' }
+    { id: 'events', label: 'EVENTS, BLESSINGS & AWARDS' }
   ];
 
   const galleryItems = [
@@ -36,14 +36,62 @@ export default function Gallery() {
     },
     {
       id: 3,
-      title: "Dr. Anand Krishna – State Felicitation & Excellence Award",
+      title: "Dr. Anand Krishna – Pediatric Pulse Diagnosis (Nadi Pariksha)",
       category: "doctor",
-      tag: "Medical Honors & Awards",
-      src: "/images/gallery/dr_anand_krishna_award_felicitation.png",
-      description: "Dr. Anand Krishna being felicitated on stage with prestigious Ayurvedic excellence honors and ceremonial awards for distinguished service in holistic community health."
+      tag: "Pulse Diagnosis & Care",
+      src: "/images/gallery/dr_anand_krishna_pediatric_nadi_pariksha.png",
+      description: "Senior Physician Dr. Anand Krishna conducting personalized pulse diagnosis (Nadi Pariksha) and wellness examination for infant and family."
     },
     {
       id: 4,
+      title: "Telugu Tejam Foundation – Best Service Award & Vaidya Ratna Honor",
+      category: "events",
+      tag: "Prestigious Medical Award",
+      src: "/images/gallery/dr_anand_krishna_telugu_tejam_award.png",
+      description: "Dr. Anand Krishna receiving the distinguished Telugu Tejam Foundation 'Best Service Award' and golden memento for outstanding contributions to Ayurvedic healthcare."
+    },
+    {
+      id: 5,
+      title: "State Felicitation & Ayurvedic Excellence Award",
+      category: "events",
+      tag: "Medical Honors",
+      src: "/images/gallery/dr_anand_krishna_award_felicitation.png",
+      description: "Dr. Anand Krishna being felicitated on stage with ceremonial shawls, golden garland, and prestigious Ayurvedic excellence citations."
+    },
+    {
+      id: 6,
+      title: "Revered Swamiji Holy Blessings at Clinic Inauguration",
+      category: "events",
+      tag: "Sacred Blessings",
+      src: "/images/gallery/swamiji_blessings_ceremony.png",
+      description: "Revered Spiritual Guru / Swamiji and community dignitaries bestowing holy blessings on Dr. Anand Krishna at the clinic inauguration."
+    },
+    {
+      id: 7,
+      title: "Sri Krishna Ayurvedic Clinic Inauguration Ceremony",
+      category: "events",
+      tag: "Grand Opening",
+      src: "/images/gallery/clinic_inauguration_ceremony.png",
+      description: "Grand ribbon-cutting and opening ceremony of Sri Krishna Ayurvedic Clinic in the presence of esteemed community elders and well-wishers."
+    },
+    {
+      id: 8,
+      title: "Floral Felicitation & Welcoming at Reception Shrine",
+      category: "events",
+      tag: "Celebration & Welcoming",
+      src: "/images/gallery/clinic_opening_bouquet_greeting.png",
+      description: "Dr. Anand Krishna, family, and dignitaries being greeted with floral bouquets in front of the illuminated botanical reception shrine."
+    },
+    {
+      id: 9,
+      title: "Media Press Interview & Clinic Launch Coverage",
+      category: "events",
+      tag: "Press & Media Coverage",
+      src: "/images/gallery/clinic_opening_media_coverage.png",
+      description: "Press and television media capturing the grand launch of Sri Krishna Ayurvedic Clinic's healthcare facilities in KR Puram."
+    },
+    {
+      id: 10,
       title: "Dr. Anand Krishna Preparing Classical Herbal Formulations",
       category: "pharmacy",
       tag: "Custom Formulations",
@@ -51,7 +99,7 @@ export default function Gallery() {
       description: "Dr. Anand Krishna hand-crafting individualized Ayurvedic botanical medicines, churnams, and therapeutic mixtures in the clinic dispensary."
     },
     {
-      id: 5,
+      id: 11,
       title: "Swarnaprashana & Physiotherapy Clinical Department",
       category: "clinic",
       tag: "Specialty Departments",
@@ -59,7 +107,7 @@ export default function Gallery() {
       description: "Dedicated clinical wing for Pushya Nakshatra Swarnaprashana child immunity drops and integrative Ayurvedic physiotherapy care."
     },
     {
-      id: 6,
+      id: 12,
       title: "Clinic Reception & Patient Waiting Lounge",
       category: "clinic",
       tag: "Welcoming Ambiance",
@@ -67,7 +115,7 @@ export default function Gallery() {
       description: "Serene patient reception lounge featuring lush green vertical botanical wall, traditional altar shrine, comfortable waiting seating, and consultation check-in desk."
     },
     {
-      id: 7,
+      id: 13,
       title: "Doctor Consultation Chamber & Sacred Healing Space",
       category: "clinic",
       tag: "Consultation Sanctuary",
@@ -75,7 +123,7 @@ export default function Gallery() {
       description: "Peaceful private consultation chamber designed for confidential pulse diagnosis (Nadi Pariksha), featuring an illuminated sacred Om mandala and spiritual healing decor."
     },
     {
-      id: 8,
+      id: 14,
       title: "Ayurvedic Dispensary & Comprehensive Medicine Storage",
       category: "pharmacy",
       tag: "Classical Apothecary",
@@ -83,20 +131,12 @@ export default function Gallery() {
       description: "Extensive in-clinic Ayurvedic dispensary holding hundreds of classical herbal powders, decoctions, tablets, and medicated oils."
     },
     {
-      id: 9,
+      id: 15,
       title: "Herbal Pharmacy & In-Clinic Treatment Facility",
       category: "pharmacy",
       tag: "Apothecary & Therapy Room",
       src: "/images/gallery/herbal_pharmacy_treatment_room.png",
       description: "Comprehensive in-clinic Ayurvedic dispensary stocked with classical botanical churnams, medicated oils, herbal formulations, and therapeutic clinical care station."
-    },
-    {
-      id: 10,
-      title: "Sri Krishna Ayurvedic Clinic Inauguration Ceremony",
-      category: "events",
-      tag: "Grand Opening",
-      src: "/images/gallery/clinic_inauguration_ceremony.png",
-      description: "Grand ribbon-cutting and opening ceremony of Sri Krishna Ayurvedic Clinic in the presence of esteemed community elders, patrons, and well-wishers."
     }
   ];
 
