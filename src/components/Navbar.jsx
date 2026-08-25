@@ -59,15 +59,15 @@ export default function Navbar({ onOpenBooking }) {
           scrolled ? 'glass-nav-scrolled shadow-elevated' : 'glass-nav bg-white/95 backdrop-blur-md'
         }`}
       >
-        <div className="w-full px-3 sm:px-5 lg:px-6 xl:px-8 flex items-center justify-between gap-2 sm:gap-4 xl:gap-6 overflow-visible relative">
+        <div className="w-full pl-0 sm:pl-1 pr-2 sm:pr-4 md:pr-6 flex items-center justify-between gap-1.5 sm:gap-2.5 xl:gap-4 overflow-visible relative">
           
-          {/* 1. Left: Clinic Brand (Logo + Bold Name + Location) */}
+          {/* 1. Left: Clinic Brand (Logo Flush Left + 10% Reduced Font Size) */}
           <Link
             to="/"
-            className="group flex items-center gap-2 sm:gap-2.5 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50"
+            className="group flex items-center gap-1.5 sm:gap-2 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 -ml-0.5 sm:ml-0"
           >
             {/* Circular Logo Badge */}
-            <div className="relative w-[54px] h-[54px] sm:w-[62px] sm:h-[62px] xl:w-[68px] xl:h-[68px] rounded-full p-1 bg-white border border-brass-400/80 shadow-sm shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+            <div className="relative w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] xl:w-[64px] xl:h-[64px] rounded-full p-1 bg-white border border-brass-400/80 shadow-sm shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
               <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-white">
                 <img
                   src="/images/logo.png"
@@ -77,18 +77,18 @@ export default function Navbar({ onOpenBooking }) {
               </div>
             </div>
 
-            <div className="flex flex-col justify-center pl-1">
-              <span className="font-serif text-sm sm:text-base md:text-lg xl:text-xl font-bold tracking-tight leading-tight text-forest-950 whitespace-nowrap">
+            <div className="flex flex-col justify-center pl-0.5 sm:pl-1">
+              <span className="font-serif text-xs sm:text-sm md:text-[15px] xl:text-[17px] font-bold tracking-tight leading-tight text-forest-950 whitespace-nowrap">
                 {clinicData.clinicName}
               </span>
-              <span className="text-[8.5px] sm:text-[9.5px] xl:text-[11px] tracking-[0.14em] uppercase font-bold text-forest-800 whitespace-nowrap">
+              <span className="text-[7.5px] sm:text-[8.5px] xl:text-[9.5px] tracking-[0.12em] uppercase font-bold text-forest-800 whitespace-nowrap">
                 KR PURAM, BANGALORE
               </span>
             </div>
           </Link>
 
-          {/* 2. Middle: Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center gap-2.5 xl:gap-5 2xl:gap-7 shrink-0">
+          {/* 2. Middle: Desktop Navigation Links (Compact & Responsive) */}
+          <nav className="hidden lg:flex items-center gap-1 xl:gap-2.5 2xl:gap-4 shrink-0">
             {navLinks.map((link) => {
               const active = isPathActive(link);
 
@@ -102,16 +102,16 @@ export default function Navbar({ onOpenBooking }) {
                   >
                     <Link
                       to={link.path}
-                      className={`group relative inline-flex items-center justify-center h-[36px] xl:h-[40px] px-2.5 xl:px-3.5 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 cursor-pointer ${
+                      className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 cursor-pointer ${
                         active || hoveringTreatments
                           ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
                           : 'bg-transparent text-forest-950 hover:text-emerald-700 font-bold'
                       }`}
                       style={{ borderRadius: '4px' }}
                     >
-                      <span className="skew-x-12 text-[11px] xl:text-[13px] 2xl:text-[14px] font-bold tracking-wide uppercase whitespace-nowrap flex items-center gap-1">
+                      <span className="skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap flex items-center gap-1">
                         <span>{link.name}</span>
-                        <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${hoveringTreatments ? 'rotate-180' : ''}`} />
+                        <ChevronDown className={`w-3 h-3 xl:w-3.5 xl:h-3.5 transition-transform duration-200 ${hoveringTreatments ? 'rotate-180' : ''}`} />
                       </span>
                     </Link>
 
@@ -125,7 +125,7 @@ export default function Navbar({ onOpenBooking }) {
                           transition={{ duration: 0.22, ease: 'easeOut' }}
                           className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 pointer-events-auto min-w-[260px]"
                         >
-                          <div className="flex flex-col gap-1.5 p-3.5 rounded-2xl shadow-elevated border bg-cream-50/98 border-earth-200 backdrop-blur-xl">
+                          <div className="flex flex-col gap-1.5 p-3 rounded-2xl shadow-elevated border bg-cream-50/98 border-earth-200 backdrop-blur-xl">
                             <Link
                               to="/treatments"
                               onClick={() => setHoveringTreatments(false)}
@@ -161,7 +161,7 @@ export default function Navbar({ onOpenBooking }) {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`group relative inline-flex items-center justify-center h-[36px] xl:h-[40px] px-2.5 xl:px-3.5 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
+                  className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
                     active
                       ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
                       : 'bg-transparent text-forest-950 hover:text-emerald-700 font-bold'
@@ -170,7 +170,7 @@ export default function Navbar({ onOpenBooking }) {
                     borderRadius: '4px',
                   }}
                 >
-                  <span className="skew-x-12 text-[11px] xl:text-[13px] 2xl:text-[14px] font-bold tracking-wide uppercase whitespace-nowrap">
+                  <span className="skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap">
                     {link.name}
                   </span>
                 </Link>
@@ -178,16 +178,16 @@ export default function Navbar({ onOpenBooking }) {
             })}
           </nav>
 
-          {/* 3. Right: Book Consultation Button */}
+          {/* 3. Right: Book Consultation Button (Guaranteed Visible on All Screens) */}
           <div className="hidden lg:flex items-center shrink-0">
             <Link
               to="/book-appointment"
-              className="h-[38px] xl:h-[42px] px-3.5 sm:px-4 xl:px-5 bg-[#12281e] text-white hover:bg-[#1a382a] text-[10.5px] xl:text-xs 2xl:text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shrink-0 shadow-md hover:-translate-y-[1px]"
+              className="h-[36px] xl:h-[40px] px-3 sm:px-3.5 xl:px-4 bg-[#12281e] text-white hover:bg-[#1a382a] text-[10px] sm:text-[11px] xl:text-[12px] font-bold tracking-wider uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shrink-0 shadow-md hover:-translate-y-[1px]"
               style={{ borderRadius: '4px' }}
             >
-              <span className="skew-x-12 flex items-center gap-1.5 sm:gap-2 whitespace-nowrap">
+              <span className="skew-x-12 flex items-center gap-1.5 whitespace-nowrap">
                 <Calendar className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-                <span>BOOK CONSULTATION</span>
+                <span>BOOK APPOINTMENT</span>
               </span>
             </Link>
           </div>
@@ -195,7 +195,7 @@ export default function Navbar({ onOpenBooking }) {
           {/* 4. Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden h-[38px] px-3 -skew-x-12 backdrop-blur-md transition-colors flex items-center justify-center shrink-0 text-forest-900 hover:text-forest-700 bg-forest-900/5 rounded-md"
+            className="lg:hidden h-[36px] px-2.5 -skew-x-12 backdrop-blur-md transition-colors flex items-center justify-center shrink-0 text-forest-900 hover:text-forest-700 bg-forest-900/5 rounded-md mr-1"
             aria-label="Toggle navigation menu"
           >
             <span className="skew-x-12 block">
