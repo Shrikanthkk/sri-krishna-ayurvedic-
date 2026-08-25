@@ -203,7 +203,7 @@ export const clinicData = {
       title: "Diabetes",
       shortTitle: "Diabetes",
       subtitle: "Metabolic Wellness Support",
-      image: "/images/hero_adobe_2.jpg",
+      image: "/images/diabetes.jpg",
       description: "Ayurvedic lifestyle and wellness support for healthy metabolic management alongside appropriate medical care.",
       link: "/treatments/diabetes",
       buttonText: "Explore Diabetes Care",

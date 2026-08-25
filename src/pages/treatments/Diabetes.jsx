@@ -59,7 +59,7 @@ export default function Diabetes({ onOpenBooking }) {
         badge="METABOLIC AYURVEDA"
         title="Diabetes – Ayurvedic Metabolic Wellness"
         subtitle="Holistic Ayurvedic supportive care focusing on metabolic balance, healthy Agni, dietary discipline, and long-term vitality alongside medical care."
-        bgImage="/images/hero_adobe_2.jpg"
+        bgImage="/images/diabetes.jpg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
