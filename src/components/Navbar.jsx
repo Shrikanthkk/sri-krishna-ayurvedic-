@@ -59,12 +59,12 @@ export default function Navbar({ onOpenBooking }) {
           scrolled ? 'glass-nav-scrolled shadow-elevated' : 'glass-nav'
         }`}
       >
-        <div className="w-full max-w-[1560px] mx-auto px-3 sm:px-5 lg:px-6 xl:px-8 flex items-center justify-between overflow-visible relative">
+        <div className="w-full max-w-[1560px] mx-auto pl-1 sm:pl-2 md:pl-3 pr-3 sm:pr-5 lg:px-6 xl:px-8 flex items-center justify-between overflow-visible relative">
           
           {/* Clinic Brand with Clean Circular White/Cream Backing Badge */}
           <Link
             to="/"
-            className="group flex items-center gap-2 sm:gap-3 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 mr-1 sm:mr-2 lg:mr-3"
+            className="group flex items-center gap-1.5 sm:gap-2.5 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 mr-1 sm:mr-2 lg:mr-3 -ml-0.5 sm:ml-0"
           >
             {/* Circular White/Cream Backing Badge with Soft Elegant Shadow & Overlap */}
             <div className="relative w-[72px] h-[72px] sm:w-[84px] sm:h-[84px] md:w-[92px] md:h-[92px] translate-y-2 sm:translate-y-2.5 rounded-full p-1 sm:p-1.5 bg-gradient-to-b from-white via-cream-50 to-cream-100 border border-brass-400/60 shadow-[0_10px_25px_-4px_rgba(28,59,44,0.18),0_4px_12px_rgba(0,0,0,0.08)] ring-1 ring-earth-200/60 shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-[0_14px_30px_-4px_rgba(197,160,89,0.3),0_6px_16px_rgba(0,0,0,0.12)]">
