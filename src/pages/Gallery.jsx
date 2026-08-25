@@ -24,6 +24,7 @@ export default function Gallery() {
       category: "clinic",
       tag: "Main Entrance",
       src: "/images/gallery/clinic_exterior_facade.png",
+      objectPosition: "center 40%",
       description: "Illuminated exterior facade and clinic signboard located at No 426/1, Dhanvantari Road, Krishnarajapuram (KR Puram), Bangalore 560036."
     },
     {
@@ -32,6 +33,7 @@ export default function Gallery() {
       category: "doctor",
       tag: "26+ Years Clinical Practice",
       src: "/images/gallery/dr_anand_krishna.png",
+      objectPosition: "center 12%",
       description: "Senior Ayurvedic Physician and Medical Director leading holistic healing, classical pulse diagnosis (Nadi Pariksha), and personalized herbal healthcare."
     },
     {
@@ -40,6 +42,7 @@ export default function Gallery() {
       category: "doctor",
       tag: "Pulse Diagnosis & Care",
       src: "/images/gallery/dr_anand_krishna_pediatric_nadi_pariksha.png",
+      objectPosition: "center 22%",
       description: "Senior Physician Dr. Anand Krishna conducting personalized pulse diagnosis (Nadi Pariksha) and wellness examination for infant and family."
     },
     {
@@ -48,6 +51,7 @@ export default function Gallery() {
       category: "events",
       tag: "Prestigious Medical Award",
       src: "/images/gallery/dr_anand_krishna_telugu_tejam_award.png",
+      objectPosition: "center 15%",
       description: "Dr. Anand Krishna receiving the distinguished Telugu Tejam Foundation 'Best Service Award' and golden memento for outstanding contributions to Ayurvedic healthcare."
     },
     {
@@ -56,6 +60,7 @@ export default function Gallery() {
       category: "events",
       tag: "Medical Honors",
       src: "/images/gallery/dr_anand_krishna_award_felicitation.png",
+      objectPosition: "center 12%",
       description: "Dr. Anand Krishna being felicitated on stage with ceremonial shawls, golden garland, and prestigious Ayurvedic excellence citations."
     },
     {
@@ -64,6 +69,7 @@ export default function Gallery() {
       category: "events",
       tag: "Sacred Blessings",
       src: "/images/gallery/swamiji_blessings_ceremony.png",
+      objectPosition: "center 18%",
       description: "Revered Spiritual Guru / Swamiji and community dignitaries bestowing holy blessings on Dr. Anand Krishna at the clinic inauguration."
     },
     {
@@ -72,6 +78,7 @@ export default function Gallery() {
       category: "events",
       tag: "Grand Opening",
       src: "/images/gallery/clinic_inauguration_ceremony.png",
+      objectPosition: "center 24%",
       description: "Grand ribbon-cutting and opening ceremony of Sri Krishna Ayurvedic Clinic in the presence of esteemed community elders and well-wishers."
     },
     {
@@ -80,6 +87,7 @@ export default function Gallery() {
       category: "events",
       tag: "Celebration & Welcoming",
       src: "/images/gallery/clinic_opening_bouquet_greeting.png",
+      objectPosition: "center 22%",
       description: "Dr. Anand Krishna, family, and dignitaries being greeted with floral bouquets in front of the illuminated botanical reception shrine."
     },
     {
@@ -88,6 +96,7 @@ export default function Gallery() {
       category: "events",
       tag: "Press & Media Coverage",
       src: "/images/gallery/clinic_opening_media_coverage.png",
+      objectPosition: "center 22%",
       description: "Press and television media capturing the grand launch of Sri Krishna Ayurvedic Clinic's healthcare facilities in KR Puram."
     },
     {
@@ -96,6 +105,7 @@ export default function Gallery() {
       category: "pharmacy",
       tag: "Custom Formulations",
       src: "/images/gallery/dr_anand_krishna_preparing_medicine.png",
+      objectPosition: "center 18%",
       description: "Dr. Anand Krishna hand-crafting individualized Ayurvedic botanical medicines, churnams, and therapeutic mixtures in the clinic dispensary."
     },
     {
@@ -104,6 +114,7 @@ export default function Gallery() {
       category: "clinic",
       tag: "Specialty Departments",
       src: "/images/gallery/swarnaprashana_physiotherapy_cabin.png",
+      objectPosition: "center 30%",
       description: "Dedicated clinical wing for Pushya Nakshatra Swarnaprashana child immunity drops and integrative Ayurvedic physiotherapy care."
     },
     {
@@ -112,6 +123,7 @@ export default function Gallery() {
       category: "clinic",
       tag: "Welcoming Ambiance",
       src: "/images/gallery/clinic_reception_lounge.png",
+      objectPosition: "center 35%",
       description: "Serene patient reception lounge featuring lush green vertical botanical wall, traditional altar shrine, comfortable waiting seating, and consultation check-in desk."
     },
     {
@@ -120,6 +132,7 @@ export default function Gallery() {
       category: "clinic",
       tag: "Consultation Sanctuary",
       src: "/images/gallery/doctor_consultation_chamber.png",
+      objectPosition: "center 35%",
       description: "Peaceful private consultation chamber designed for confidential pulse diagnosis (Nadi Pariksha), featuring an illuminated sacred Om mandala and spiritual healing decor."
     },
     {
@@ -128,6 +141,7 @@ export default function Gallery() {
       category: "pharmacy",
       tag: "Classical Apothecary",
       src: "/images/gallery/ayurvedic_dispensary_cabinets.png",
+      objectPosition: "center center",
       description: "Extensive in-clinic Ayurvedic dispensary holding hundreds of classical herbal powders, decoctions, tablets, and medicated oils."
     },
     {
@@ -136,6 +150,7 @@ export default function Gallery() {
       category: "pharmacy",
       tag: "Apothecary & Therapy Room",
       src: "/images/gallery/herbal_pharmacy_treatment_room.png",
+      objectPosition: "center center",
       description: "Comprehensive in-clinic Ayurvedic dispensary stocked with classical botanical churnams, medicated oils, herbal formulations, and therapeutic clinical care station."
     }
   ];
@@ -178,14 +193,22 @@ export default function Gallery() {
     show: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.06
+        staggerChildren: 0.08
       }
     }
   };
 
   const itemVariants = {
-    hidden: { opacity: 0, y: 16, scale: 0.96 },
-    show: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.35, ease: 'easeOut' } }
+    hidden: { opacity: 0, y: 24, scale: 0.95 },
+    show: { 
+      opacity: 1, 
+      y: 0, 
+      scale: 1, 
+      transition: { 
+        duration: 0.45, 
+        ease: [0.22, 1, 0.36, 1] 
+      } 
+    }
   };
 
   return (
@@ -205,15 +228,17 @@ export default function Gallery() {
           {categories.map((cat) => {
             const active = selectedCategory === cat.id;
             return (
-              <button
+              <motion.button
                 key={cat.id}
+                whileHover={{ scale: 1.04, y: -2 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => {
                   setSelectedCategory(cat.id);
                   setSelectedImage(null);
                 }}
-                className={`relative px-4 py-2 text-xs font-semibold uppercase tracking-wider transition-all duration-300 -skew-x-12 cursor-pointer border-0 ${
+                className={`relative px-4 py-2.5 text-xs font-semibold uppercase tracking-wider transition-all duration-300 -skew-x-12 cursor-pointer border-0 ${
                   active
-                    ? 'bg-forest-900 text-cream-50 shadow-elevated scale-[1.02]'
+                    ? 'bg-forest-900 text-cream-50 shadow-elevated'
                     : 'bg-white text-earth-800 hover:bg-cream-100 hover:text-forest-950 border border-earth-200 shadow-sm'
                 }`}
                 style={{ borderRadius: '2px 6px 2px 6px' }}
@@ -222,7 +247,7 @@ export default function Gallery() {
                   {cat.id === 'all' && <Filter className="w-3.5 h-3.5 text-brass-400" />}
                   <span>{cat.label}</span>
                 </span>
-              </button>
+              </motion.button>
             );
           })}
         </div>
@@ -234,7 +259,7 @@ export default function Gallery() {
             variants={containerVariants}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             <AnimatePresence mode="popLayout">
               {filteredItems.map((img) => (
@@ -246,49 +271,51 @@ export default function Gallery() {
                   animate="show"
                   exit={{ opacity: 0, scale: 0.9 }}
                   whileHover={{
-                    scale: 1.08,
-                    y: -6,
-                    zIndex: 40,
-                    transition: { type: "spring", stiffness: 350, damping: 22 }
+                    y: -8,
+                    transition: { type: "spring", stiffness: 300, damping: 20 }
                   }}
                   onClick={() => setSelectedImage(img)}
-                  className="rounded-2xl overflow-hidden shadow-elevated bg-white border-2 border-earth-200 hover:border-brass-500 transition-all duration-300 flex flex-col cursor-pointer group relative hover:shadow-[0_20px_50px_rgba(15,35,25,0.35)]"
+                  className="rounded-2xl overflow-hidden bg-white border-2 border-earth-200 hover:border-brass-500 transition-all duration-300 flex flex-col cursor-pointer group relative shadow-md hover:shadow-[0_20px_45px_rgba(15,35,25,0.22)]"
                 >
-                  {/* Image Container with Glassmorphic Overlays */}
+                  {/* Image Container with Face-Aligned Object Position & Zoom Animation */}
                   <div className="relative aspect-[4/3] bg-forest-950 overflow-hidden">
                     <img
                       src={img.src}
                       alt={img.title}
-                      className="w-full h-full object-cover transform group-hover:scale-115 transition-transform duration-500 ease-out opacity-90 group-hover:opacity-100"
+                      style={{ objectPosition: img.objectPosition || 'center top' }}
+                      className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-out"
                       loading="lazy"
                     />
                     
                     {/* Glassmorphic Category Tag Badge */}
-                    <div className="absolute top-2.5 left-2.5 z-10 max-w-[75%]">
-                      <span className="px-2.5 py-1 bg-forest-950/60 backdrop-blur-xl border border-white/25 text-cream-100 text-[10px] font-bold uppercase tracking-widest rounded-full shadow-soft flex items-center gap-1.5 truncate">
-                        <span className="w-1.5 h-1.5 rounded-full bg-brass-400 shrink-0" />
+                    <div className="absolute top-3 left-3 z-10 max-w-[80%]">
+                      <span className="px-3 py-1 bg-forest-950/75 backdrop-blur-md border border-white/20 text-cream-100 text-[10px] font-bold uppercase tracking-widest rounded-full shadow-md flex items-center gap-1.5 truncate">
+                        <span className="w-1.5 h-1.5 rounded-full bg-brass-400 shrink-0 animate-pulse" />
                         <span className="truncate">{img.tag}</span>
                       </span>
                     </div>
 
                     {/* Glassmorphic Expand Action Badge */}
-                    <div className="absolute top-2.5 right-2.5 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300">
-                      <div className="px-2.5 py-1 bg-brass-500/40 backdrop-blur-xl border border-brass-400/50 text-brass-200 text-[10px] font-bold uppercase tracking-wider rounded-full shadow-soft flex items-center gap-1">
-                        <Maximize2 className="w-3 h-3 text-brass-300 shrink-0" />
-                        <span>Expand</span>
+                    <div className="absolute top-3 right-3 z-10 opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-105">
+                      <div className="px-3 py-1 bg-brass-500/80 backdrop-blur-md border border-brass-300/60 text-forest-950 text-[10px] font-bold uppercase tracking-wider rounded-full shadow-md flex items-center gap-1">
+                        <Maximize2 className="w-3 h-3 text-forest-950 shrink-0" />
+                        <span>View</span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Card Bottom Panel */}
-                  <div className="p-3.5 flex-1 flex flex-col justify-between space-y-1.5 bg-white border-t border-earth-100">
-                    <h3 className="font-serif text-sm sm:text-base text-forest-950 font-medium leading-snug group-hover:text-brass-700 transition-colors">
+                  {/* Card Bottom Panel with Uniform Height & Clean Typography */}
+                  <div className="p-4 flex-1 flex flex-col justify-between space-y-2 bg-white border-t border-earth-100">
+                    <h3 className="font-serif text-base sm:text-lg text-forest-950 font-medium leading-snug group-hover:text-brass-700 transition-colors line-clamp-2">
                       {img.title}
                     </h3>
 
-                    <div className="pt-1.5 border-t border-earth-100/80 flex items-center justify-between text-[10px] sm:text-[11px] text-brass-700 font-semibold uppercase tracking-wider">
-                      <span>Click for Full View</span>
-                      <ChevronRight className="w-3.5 h-3.5 transform group-hover:translate-x-1 transition-transform text-brass-600" />
+                    <div className="pt-2 border-t border-earth-100 flex items-center justify-between text-[11px] text-brass-700 font-semibold uppercase tracking-wider">
+                      <span className="flex items-center gap-1 text-forest-800 font-medium text-xs">
+                        <Eye className="w-3.5 h-3.5 text-brass-600" />
+                        <span>Click for Full View</span>
+                      </span>
+                      <ChevronRight className="w-4 h-4 transform group-hover:translate-x-1.5 transition-transform text-brass-600" />
                     </div>
                   </div>
 
@@ -368,12 +395,12 @@ export default function Gallery() {
                 </button>
               </div>
 
-              {/* Modal Image Column */}
-              <div className="lg:col-span-7 bg-forest-950 relative flex items-center justify-center overflow-hidden h-[240px] sm:h-[320px] lg:h-[480px]">
+              {/* Modal Image Column - Fully Displayed Without Cropping */}
+              <div className="lg:col-span-7 bg-forest-950 relative flex items-center justify-center overflow-hidden h-[260px] sm:h-[360px] lg:h-[480px]">
                 <img
                   src={selectedImage.src}
                   alt={selectedImage.title}
-                  className="w-full h-full object-contain sm:object-cover"
+                  className="w-full h-full object-contain p-2 sm:p-4"
                 />
               </div>
 
