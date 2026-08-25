@@ -1,4 +1,4 @@
-﻿import React from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 import { Phone, MessageCircle } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
@@ -14,7 +14,7 @@ export default function FloatingContactButtons() {
       role="complementary"
       aria-label="Direct Clinic Contact Options"
     >
-      {/* 1. FLOATING WHATSAPP BUTTON */}
+      {/* 1. FLOATING WHATSAPP BUTTON (CIRCULAR) */}
       <motion.a
         href={whatsappUrl}
         target="_blank"
@@ -22,38 +22,32 @@ export default function FloatingContactButtons() {
         initial={{ opacity: 0, x: -30, scale: 0.8 }}
         animate={{ opacity: 1, x: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 350, damping: 22, delay: 0.2 }}
-        whileHover={{ scale: 1.08, x: 3 }}
-        whileTap={{ scale: 0.94 }}
+        whileHover={{ scale: 1.12, y: -2 }}
+        whileTap={{ scale: 0.92 }}
+        title="Chat on WhatsApp"
         aria-label="Chat with Dr. Anand Krishna on WhatsApp"
-        className="group relative flex items-center gap-2.5 px-3 py-3 sm:px-3.5 sm:py-3 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-[0_10px_28px_rgba(37,211,102,0.4)] border border-white/30 transition-all duration-300 cursor-pointer"
+        className="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-[#25D366] hover:bg-[#20bd5a] text-white shadow-[0_10px_28px_rgba(37,211,102,0.45)] border border-white/30 flex items-center justify-center transition-colors duration-300 cursor-pointer"
       >
         <span className="relative flex items-center justify-center">
-          <MessageCircle className="w-5 h-5 sm:w-5 sm:h-5 fill-current" />
+          <MessageCircle className="w-5 h-5 sm:w-6 sm:h-6 fill-current" />
           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-white animate-ping" />
           <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-white" />
         </span>
-        <span className="hidden md:inline-block font-sans text-xs font-bold tracking-wide pr-1.5 whitespace-nowrap">
-          WhatsApp
-        </span>
       </motion.a>
 
-      {/* 2. FLOATING DIRECT CALL BUTTON */}
+      {/* 2. FLOATING DIRECT CALL BUTTON (CIRCULAR) */}
       <motion.a
         href={telUri}
         initial={{ opacity: 0, x: -30, scale: 0.8 }}
         animate={{ opacity: 1, x: 0, scale: 1 }}
         transition={{ type: 'spring', stiffness: 350, damping: 22, delay: 0.3 }}
-        whileHover={{ scale: 1.08, x: 3 }}
-        whileTap={{ scale: 0.94 }}
+        whileHover={{ scale: 1.12, y: -2 }}
+        whileTap={{ scale: 0.92 }}
+        title="Call Clinic"
         aria-label="Call Sri Krishna Ayurvedic Clinic"
-        className="group relative flex items-center gap-2.5 px-3 py-3 sm:px-3.5 sm:py-3 rounded-full bg-forest-900 hover:bg-forest-800 text-cream-50 hover:text-brass-300 shadow-[0_10px_28px_rgba(11,23,17,0.35)] border border-brass-400/40 transition-all duration-300 cursor-pointer"
+        className="group relative w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-forest-900/95 hover:bg-forest-800 text-cream-50 hover:text-brass-300 shadow-[0_10px_28px_rgba(11,23,17,0.38)] border border-brass-400/40 backdrop-blur-md flex items-center justify-center transition-colors duration-300 cursor-pointer"
       >
-        <span className="relative flex items-center justify-center">
-          <Phone className="w-5 h-5 sm:w-5 sm:h-5 text-brass-400 group-hover:scale-110 transition-transform duration-200" />
-        </span>
-        <span className="hidden md:inline-block font-sans text-xs font-bold tracking-wide pr-1.5 whitespace-nowrap text-cream-100 group-hover:text-brass-300">
-          Call Clinic
-        </span>
+        <Phone className="w-5 h-5 sm:w-5 sm:h-5 text-brass-400 group-hover:text-brass-300 group-hover:scale-110 transition-transform duration-200" />
       </motion.a>
     </div>
   );
