@@ -56,7 +56,7 @@ export default function SkinProblems({ onOpenBooking }) {
         badge="DERMATOLOGICAL AYURVEDA"
         title="Skin Problems – Ayurvedic Skin Care"
         subtitle="Personalized Ayurvedic skin care addressing the root causes of skin concerns through blood purification, Dosha balance, and herbal therapy."
-        bgImage="/images/hero_stock_4.jpg"
+        bgImage="/images/skin_problems.png"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

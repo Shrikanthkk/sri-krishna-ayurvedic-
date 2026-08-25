@@ -151,7 +151,7 @@ export const clinicData = {
       title: "Skin Problems",
       shortTitle: "Skin Problems",
       subtitle: "Ayurvedic Skin Wellness",
-      image: "/images/hero_stock_4.jpg",
+      image: "/images/skin_problems.png",
       description: "Personalized Ayurvedic skin care for common skin concerns and overall skin wellness.",
       link: "/treatments/skin-problems",
       buttonText: "Explore Skin Care",
