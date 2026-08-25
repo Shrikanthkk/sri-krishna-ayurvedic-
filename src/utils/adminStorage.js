@@ -243,15 +243,20 @@ export function getStoredTreatments() {
       return clinicData.treatments;
     }
     const parsed = JSON.parse(stored);
-    // If the stored data doesn't match the 7 standard treatment IDs, synchronize with clinicData.treatments
-    const hasCanonicalTreatments = clinicData.treatments.every(canonical => 
-      parsed.some(item => item.id === canonical.id)
-    );
-    if (!hasCanonicalTreatments || parsed.length !== clinicData.treatments.length) {
+    if (!Array.isArray(parsed)) {
       localStorage.setItem(TREATMENTS_KEY, JSON.stringify(clinicData.treatments));
       return clinicData.treatments;
     }
-    return parsed;
+    // Synchronize canonical treatments with latest images, links, and text
+    const merged = clinicData.treatments.map(canonical => {
+      const existing = parsed.find(item => item.id === canonical.id);
+      return existing ? { ...existing, image: canonical.image, link: canonical.link, title: canonical.title, subtitle: canonical.subtitle } : canonical;
+    });
+    // Preserve any custom user-added treatments from admin
+    const custom = parsed.filter(item => !clinicData.treatments.some(c => c.id === item.id));
+    const finalTreatments = [...merged, ...custom];
+    localStorage.setItem(TREATMENTS_KEY, JSON.stringify(finalTreatments));
+    return finalTreatments;
   } catch (err) {
     console.error('Error reading stored treatments:', err);
     return clinicData.treatments;
