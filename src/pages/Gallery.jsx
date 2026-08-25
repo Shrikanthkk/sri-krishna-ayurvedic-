@@ -10,109 +10,53 @@ export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState(null);
 
   const categories = [
-    { id: 'all', label: 'ALL THERAPIES' },
-    { id: 'panchakarma', label: 'PANCHAKARMA & SHIRODHARA' },
-    { id: 'consultation', label: 'NADI PARIKSHA & CONSULTATION' },
-    { id: 'herbal', label: 'HERBAL APOTHECARY' },
-    { id: 'ambiance', label: 'CLINIC SANCTUARY' }
+    { id: 'all', label: 'ALL CLINIC PHOTOS' },
+    { id: 'doctor', label: 'SENIOR PHYSICIAN' },
+    { id: 'clinic', label: 'CLINIC & RECEPTION' },
+    { id: 'consultation', label: 'CONSULTATION CHAMBER' },
+    { id: 'pharmacy', label: 'HERBAL DISPENSARY' }
   ];
 
   const galleryItems = [
     {
       id: 1,
-      title: "Classical Nadi Pariksha & Pulse Diagnosis",
-      category: "consultation",
-      tag: "Ancient Diagnostic Art",
-      src: "/images/hero_stock_1.jpg",
-      description: "Senior physician evaluating radial pulse to diagnose Dosha imbalance, organ health, and unique Prakriti constitution."
+      title: "Sri Krishna Ayurvedic Clinic – Exterior & Illuminated Signboard",
+      category: "clinic",
+      tag: "Main Clinic Entrance",
+      src: "/images/gallery/clinic_exterior_facade.png",
+      description: "Illuminated exterior facade and clinic signboard located at No 426/1, Dhanvantari Road, Krishnarajapuram (KR Puram), Bangalore 560036."
     },
     {
       id: 2,
-      title: "Panchakarma Detox & Shirodhara Stream",
-      category: "panchakarma",
-      tag: "Cellular Bio-Purification",
-      src: "/images/panchakarma.png",
-      description: "Soothing flow of warm herbal oil over forehead marma points to alleviate stress, anxiety, migraines, and insomnia."
+      title: "Senior Physician Dr. Anand Krishna (BAMS)",
+      category: "doctor",
+      tag: "26+ Years Clinical Practice",
+      src: "/images/gallery/dr_anand_krishna.png",
+      description: "Senior Ayurvedic Physician and Medical Director leading holistic healing, classical pulse diagnosis (Nadi Pariksha), and personalized herbal healthcare."
     },
     {
       id: 3,
-      title: "Traditional Navarakizhi & Potali Massage",
-      category: "panchakarma",
-      tag: "Cellular Bio-Purification",
-      src: "/images/hero_adobe_5.jpg",
-      description: "Steam-heated medicinal herb compresses applied across joints and muscles for deep tissue detoxification and pain relief."
+      title: "Clinic Reception & Patient Waiting Lounge",
+      category: "clinic",
+      tag: "Welcoming Ambiance",
+      src: "/images/gallery/clinic_reception_lounge.png",
+      description: "Serene patient reception lounge featuring lush green vertical botanical wall, traditional altar shrine, comfortable waiting seating, and consultation check-in desk."
     },
     {
       id: 4,
-      title: "Targeted Joint & Spine Kati Vasti Care",
-      category: "panchakarma",
-      tag: "Rheumatic & Lumbar Relief",
-      src: "/images/hero_stock_3.jpg",
-      description: "Specialized warm herbal oil pool retained over the lumbar region for spondylosis, sciatica, and chronic joint stiffness."
+      title: "Doctor Consultation Chamber & Sacred Healing Space",
+      category: "consultation",
+      tag: "Consultation Sanctuary",
+      src: "/images/gallery/doctor_consultation_chamber.png",
+      description: "Peaceful private consultation chamber designed for confidential pulse diagnosis (Nadi Pariksha), featuring an illuminated sacred Om mandala and spiritual healing decor."
     },
     {
       id: 5,
-      title: "Stone Mortar Herb Grinding & Extraction",
-      category: "herbal",
-      tag: "Classical Apothecary",
-      src: "/images/hero_adobe_1.jpg",
-      description: "Authentic hand-crushed medicinal herbs, roots, and botanical leaves prepared for custom classical formulations."
-    },
-    {
-      id: 6,
-      title: "Pure Medicated Oils & Botanical Kashayams",
-      category: "herbal",
-      tag: "Herbal Remedies",
-      src: "/images/hero_adobe_2.jpg",
-      description: "Slow-brewed medicinal decoctions and infused plant oils prepared strictly according to ancient Ayurvedic texts."
-    },
-    {
-      id: 7,
-      title: "Swarnaprashana Ayurvedic Pediatric Care",
-      category: "consultation",
-      tag: "Child Wellness & Vitality",
-      src: "/images/hero_stock_2.jpg",
-      description: "Classical Kashyapa Samhita gold-based pediatric formulation administered under physician guidance for cognitive and vitality support."
-    },
-    {
-      id: 8,
-      title: "Handcrafted Apothecary & Storage Sanctuary",
-      category: "ambiance",
-      tag: "Traditional Atmosphere",
-      src: "/images/hero_adobe_3.jpg",
-      description: "A warm, natural wooden sanctuary holding classical Ayurvedic churnams, tailams, and organic medicinal herbs."
-    },
-    {
-      id: 9,
-      title: "Traditional Teakwood Droni Therapy Room",
-      category: "ambiance",
-      tag: "Sanctuary Environment",
-      src: "/images/hero_adobe_4.jpg",
-      description: "Polished wooden treatment couch designed for classical Abhyanga massage and Panchakarma bio-purification therapies."
-    },
-    {
-      id: 10,
-      title: "Botanical Skin Radiance & Hair Rejuvenation",
-      category: "herbal",
-      tag: "Rakta Shodhana Care",
-      src: "/images/hero_stock_4.jpg",
-      description: "Purifying herbal oils and organic botanical poultices targeting Eczema, Psoriasis, and natural hair density."
-    },
-    {
-      id: 11,
-      title: "Dr. Anand Krishna - Senior Physician Consultation Corner",
-      category: "consultation",
-      tag: "Dr. Anand Krishna (BAMS)",
-      src: "/images/doctor_consultation_corner.jpg",
-      description: "Senior Physician Dr. Anand Krishna (BAMS) conducting classical pulse diagnosis (Nadi Pariksha) and personalized Ayurvedic consultations in his clinic chamber."
-    },
-    {
-      id: 12,
-      title: "Sri Krishna Ayurvedic Clinic Exterior Entrance",
-      category: "ambiance",
-      tag: "KR Puram Center",
-      src: "/images/clinic_front.jpg",
-      description: "Illuminated exterior entrance and clinic signboard at Dhanvantari Road, KR Puram, Bangalore."
+      title: "Herbal Pharmacy & In-Clinic Treatment Facility",
+      category: "pharmacy",
+      tag: "Apothecary & Therapy Room",
+      src: "/images/gallery/herbal_pharmacy_treatment_room.png",
+      description: "Comprehensive in-clinic Ayurvedic dispensary stocked with classical botanical churnams, medicated oils, herbal formulations, and therapeutic clinical care station."
     }
   ];
 
@@ -167,10 +111,10 @@ export default function Gallery() {
   return (
     <div className="w-full">
       <PageHero
-        badge="CLINICAL AMBIANCE & THERAPIES"
-        title="Ayurvedic Treatment Gallery"
-        subtitle="Explore our authentic Panchakarma therapies, Nadi Pariksha pulse consultations, herbal apothecary, and calm clinic sanctuary in KR Puram."
-        bgImage="/images/hero_stock_4.jpg"
+        badge="CLINICAL AMBIANCE & FACILITIES"
+        title="Sri Krishna Ayurvedic Clinic Gallery"
+        subtitle="Explore our authentic clinic facilities, senior physician consultation chamber, welcoming patient reception, and in-clinic herbal dispensary in KR Puram, Bangalore."
+        bgImage="/images/gallery/clinic_exterior_facade.png"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -204,13 +148,13 @@ export default function Gallery() {
         </div>
 
         {/* MASONRY GRID */}
-        <div className="p-4 sm:p-5 rounded-3xl bg-cream-100/60 border border-earth-200/80 shadow-inner mb-10">
+        <div className="p-4 sm:p-6 rounded-3xl bg-cream-100/60 border border-earth-200/80 shadow-inner mb-10">
           <motion.div
             layout
             variants={containerVariants}
             initial="hidden"
             animate="show"
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6"
+            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
           >
             <AnimatePresence mode="popLayout">
               {filteredItems.map((img) => (
