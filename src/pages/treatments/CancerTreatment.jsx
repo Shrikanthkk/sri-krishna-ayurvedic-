@@ -98,7 +98,7 @@ export default function CancerTreatment({ onOpenBooking }) {
         badge="INTEGRATIVE ONCOLOGY SUPPORT"
         title="Cancer Treatment – Ayurvedic Supportive Care"
         subtitle="Compassionate, complementary Ayurvedic supportive care focused on enhancing wellbeing, vitality, and quality of life alongside oncology treatment."
-        bgImage="/images/hero_stock_2.jpg"
+        bgImage="/images/cancer_treatment.jpg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

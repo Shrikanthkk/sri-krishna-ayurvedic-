@@ -216,7 +216,7 @@ export const clinicData = {
       title: "Cancer Treatment – All Types of Cancers",
       shortTitle: "Cancer Treatment",
       subtitle: "Supportive & Adjunct Care",
-      image: "/images/hero_stock_2.jpg",
+      image: "/images/cancer_treatment.jpg",
       description: "Ayurvedic supportive care focused on wellbeing and quality of life alongside appropriate cancer treatment.",
       link: "/treatments/cancer-treatment",
       buttonText: "Explore Cancer Support",
