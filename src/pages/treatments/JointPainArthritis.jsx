@@ -59,7 +59,7 @@ export default function JointPainArthritis({ onOpenBooking }) {
         badge="MUSCULOSKELETAL AYURVEDA"
         title="Joint Pain & Arthritis – Ayurvedic Care"
         subtitle="Ayurvedic care focusing on supporting joint mobility, flexibility, cartilage nourishment, and long-term musculoskeletal wellness."
-        bgImage="/images/hero_adobe_5.jpg"
+        bgImage="/images/joint_pain_arthritis.png"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

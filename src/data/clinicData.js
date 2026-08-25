@@ -138,7 +138,7 @@ export const clinicData = {
       title: "Chronic Diseases – Joint Pains (Arthritis)",
       shortTitle: "Joint Pain & Arthritis",
       subtitle: "Supportive Musculoskeletal Care",
-      image: "/images/hero_adobe_5.jpg",
+      image: "/images/joint_pain_arthritis.png",
       description: "Ayurvedic care and supportive wellness approaches for joint pain, stiffness and arthritis-related concerns.",
       link: "/treatments/joint-pain-arthritis",
       buttonText: "Explore Joint & Arthritis Care",
