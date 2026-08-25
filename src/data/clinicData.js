@@ -161,13 +161,13 @@ export const clinicData = {
     {
       id: "hair-fall",
       number: "03",
-      title: "Hair Fall Treatment",
-      shortTitle: "Hair Fall Treatment",
+      title: "Alopecia (Hair Fall)",
+      shortTitle: "Alopecia",
       subtitle: "Ayurvedic Hair & Scalp Care",
       image: "/images/hair_fall.jpg",
-      description: "Ayurvedic scalp oil therapies (Shiro Abhyanga) for hair fall and deep nourishment.",
+      description: "Ayurvedic scalp oil therapies (Shiro Abhyanga) for alopecia, hair fall, and deep nourishment.",
       link: "/treatments/hair-fall",
-      buttonText: "Explore Hair Fall Treatment",
+      buttonText: "Explore Alopecia Treatment",
       benefits: ["Addresses Khalitya & Palitya", "Shiro Abhyanga & botanical oils", "Deep scalp nourishment"],
       duration: "Therapeutic Regimen"
     },

@@ -65,6 +65,8 @@ function AppContent() {
           <Route path="/treatments/joint-pain-arthritis" element={<JointPainArthritis onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/skin-problems" element={<SkinProblems onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/hair-fall" element={<HairFall onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/treatments/alopecia" element={<HairFall onOpenBooking={() => setBookingOpen(true)} />} />
+          <Route path="/alopecia" element={<Navigate to="/treatments/alopecia" replace />} />
           <Route path="/treatments/sexual-disorders" element={<SexualDisorders onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/de-addiction" element={<DeAddiction onOpenBooking={() => setBookingOpen(true)} />} />
           <Route path="/treatments/diabetes" element={<Diabetes onOpenBooking={() => setBookingOpen(true)} />} />

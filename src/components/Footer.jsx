@@ -97,7 +97,7 @@ export default function Footer({ onOpenBooking }) {
               </li>
               <li>
                 <Link to="/treatments/hair-fall" className="hover:text-brass-300 transition-colors">
-                  <span>Hair Fall Treatment</span>
+                  <span>Alopecia (Hair Fall)</span>
                 </Link>
               </li>
               <li>

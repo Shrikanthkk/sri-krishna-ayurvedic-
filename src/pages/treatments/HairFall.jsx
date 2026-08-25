@@ -57,8 +57,8 @@ export default function HairFall({ onOpenBooking }) {
     >
       <PageHero
         badge="TRICHOLOGICAL AYURVEDA"
-        title="Hair Fall Treatment – Ayurvedic Hair Care"
-        subtitle="Holistic Ayurvedic hair and scalp care focused on arresting hair fall, nourishing follicles, and fostering resilient, healthy hair growth."
+        title="Alopecia & Hair Fall Treatment – Ayurvedic Hair Care"
+        subtitle="Holistic Ayurvedic hair and scalp care focused on arresting alopecia, nourishing follicles, and fostering resilient, healthy hair growth."
         bgImage="/images/hair_fall.jpg"
       />
 
@@ -69,7 +69,7 @@ export default function HairFall({ onOpenBooking }) {
           <Breadcrumb
             items={[
               { label: 'All Treatments', link: '/treatments' },
-              { label: 'Hair Fall Treatment' }
+              { label: 'Alopecia (Hair Fall)' }
             ]}
           />
 
@@ -89,7 +89,7 @@ export default function HairFall({ onOpenBooking }) {
             <span>Holistic Scalp & Follicle Rejuvenation</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-serif text-forest-950 font-light">
-            Ayurvedic Hair Fall Treatment
+            Ayurvedic Alopecia & Hair Fall Treatment
           </h1>
           <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed">
             In Ayurvedic medicine, hair (<em>Kesha</em>) is considered a metabolic byproduct (<em>Upadhatu</em>) of <strong>Asthi Dhatu</strong> (bone tissue). Hair fall and thinning are not merely cosmetic problems; they reflect deeper nutritional deficiencies, chronic stress, or internal Dosha vitiation. At Sri Krishna Ayurvedic Clinic, Dr. Anand Krishna (BAMS) provides comprehensive hair care addressing both internal metabolic vitality and topical follicle strength.
@@ -215,11 +215,11 @@ export default function HairFall({ onOpenBooking }) {
 
           <div className="flex flex-col sm:flex-row gap-3.5 shrink-0">
             <button
-              onClick={() => onOpenBooking ? onOpenBooking('Hair Fall Treatment Consultation') : null}
+              onClick={() => onOpenBooking ? onOpenBooking('Alopecia (Hair Fall) Consultation') : null}
               className="px-7 py-3.5 bg-emerald-500 hover:bg-emerald-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-soft transition-all text-center flex items-center justify-center gap-2 cursor-pointer"
             >
               <Calendar className="w-4 h-4" />
-              <span>Book Hair Care Consultation</span>
+              <span>Book Alopecia Consultation</span>
             </button>
             <a
               href={telUri}

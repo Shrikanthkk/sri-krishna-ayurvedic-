@@ -36,7 +36,7 @@ export default function Navbar({ onOpenBooking }) {
     { name: 'Reduce Obesity (Weight Loss)', path: '/treatments/reduce-obesity' },
     { name: 'Joint Pain & Arthritis', path: '/treatments/joint-pain-arthritis' },
     { name: 'Skin Problems', path: '/treatments/skin-problems' },
-    { name: 'Hair Fall Treatment', path: '/treatments/hair-fall' },
+    { name: 'Alopecia (Hair Fall)', path: '/treatments/hair-fall' },
     { name: 'Sexual Disorders', path: '/treatments/sexual-disorders' },
     { name: 'De-addiction', path: '/treatments/de-addiction' },
     { name: 'Diabetes', path: '/treatments/diabetes' }
