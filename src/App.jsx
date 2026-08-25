@@ -6,6 +6,7 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/ScrollToTop';
 import BookingModal from './components/BookingModal';
 import BelowNavbarAnimation from './components/BelowNavbarAnimation';
+import FloatingContactButtons from './components/FloatingContactButtons';
 
 import Home from './pages/Home';
 import About from './pages/About';
@@ -107,6 +108,9 @@ function AppContent() {
 
       {/* Popup Booking Modal */}
       <BookingModal isOpen={bookingOpen} onClose={() => setBookingOpen(false)} />
+
+      {/* Floating WhatsApp and Direct Phone Contact Buttons on Left Hand Side */}
+      {!isAdmin && <FloatingContactButtons />}
 
     </div>
   );
