@@ -59,7 +59,7 @@ export default function DeAddiction({ onOpenBooking }) {
         badge="RECOVERY & WELLNESS SUPPORT"
         title="De-addiction – Ayurvedic Support & Wellness"
         subtitle="Holistic Ayurvedic lifestyle and wellness support designed to nourish the nervous system, reduce stress, and sustain long-term sobriety."
-        bgImage="/images/hero_adobe_3.jpg"
+        bgImage="/images/de_addiction.png"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

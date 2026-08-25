@@ -190,7 +190,7 @@ export const clinicData = {
       title: "De-addiction",
       shortTitle: "De-addiction",
       subtitle: "Recovery & Wellness Support",
-      image: "/images/hero_adobe_3.jpg",
+      image: "/images/de_addiction.png",
       description: "Ayurvedic lifestyle and wellness support as part of a professionally supervised recovery program.",
       link: "/treatments/de-addiction",
       buttonText: "Explore De-addiction Care",
