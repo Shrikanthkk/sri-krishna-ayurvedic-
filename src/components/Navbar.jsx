@@ -78,19 +78,28 @@ export default function Navbar({ onOpenBooking }) {
             </div>
 
             <div className="flex flex-col justify-center pl-0.5 sm:pl-1">
-              <span className="font-serif text-xs sm:text-sm md:text-[15px] xl:text-[17px] font-bold tracking-tight leading-tight text-forest-950 whitespace-nowrap">
+              <span className={`font-serif text-xs sm:text-sm md:text-[15px] xl:text-[17px] font-bold tracking-tight leading-tight whitespace-nowrap transition-colors ${
+                scrolled ? 'text-cream-50' : 'text-forest-950'
+              }`}>
                 {clinicData.clinicName}
               </span>
-              <span className="text-[7.5px] sm:text-[8.5px] xl:text-[9.5px] tracking-[0.12em] uppercase font-bold text-forest-800 whitespace-nowrap">
+              <span className={`text-[7.5px] sm:text-[8.5px] xl:text-[9.5px] tracking-[0.12em] uppercase font-bold whitespace-nowrap transition-colors ${
+                scrolled ? 'text-emerald-300' : 'text-forest-800'
+              }`}>
                 KR PURAM, BANGALORE
               </span>
             </div>
           </Link>
 
-          {/* 2. Middle: Desktop Navigation Links (Compact & Responsive with White Text & No Hover Background) */}
+          {/* 2. Middle: Desktop Navigation Links (Dynamic Text Color: #111111 on Light, #FFFFFF on Dark) */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2.5 2xl:gap-4 shrink-0">
             {navLinks.map((link) => {
               const active = isPathActive(link);
+              const linkTextColor = active
+                ? 'text-forest-950'
+                : scrolled
+                ? 'text-white'
+                : 'text-[#111111]';
 
               if (link.hasDropdown) {
                 return (
@@ -105,13 +114,13 @@ export default function Navbar({ onOpenBooking }) {
                       className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-colors duration-200 border-0 outline-none select-none -skew-x-12 cursor-pointer ${
                         active
                           ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
-                          : 'bg-transparent text-white font-bold hover:bg-transparent hover:text-white'
+                          : 'bg-transparent font-bold hover:bg-transparent'
                       }`}
                       style={{ borderRadius: '4px' }}
                     >
                       <span className="skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap flex items-center gap-1">
-                        <span className={active ? 'text-forest-950' : 'text-white'}>{link.name}</span>
-                        <ChevronDown className={`w-3 h-3 xl:w-3.5 xl:h-3.5 transition-transform duration-200 ${active ? 'text-forest-950' : 'text-white'} ${hoveringTreatments ? 'rotate-180' : ''}`} />
+                        <span className={linkTextColor}>{link.name}</span>
+                        <ChevronDown className={`w-3 h-3 xl:w-3.5 xl:h-3.5 transition-transform duration-200 ${linkTextColor} ${hoveringTreatments ? 'rotate-180' : ''}`} />
                       </span>
                     </Link>
 
@@ -164,13 +173,13 @@ export default function Navbar({ onOpenBooking }) {
                   className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-colors duration-200 border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
                     active
                       ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
-                      : 'bg-transparent text-white font-bold hover:bg-transparent hover:text-white'
+                      : 'bg-transparent font-bold hover:bg-transparent'
                   }`}
                   style={{
                     borderRadius: '4px',
                   }}
                 >
-                  <span className={`skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap ${active ? 'text-forest-950' : 'text-white'}`}>
+                  <span className={`skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap ${linkTextColor}`}>
                     {link.name}
                   </span>
                 </Link>
@@ -195,11 +204,13 @@ export default function Navbar({ onOpenBooking }) {
           {/* 4. Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden h-[36px] px-2.5 -skew-x-12 backdrop-blur-md transition-colors flex items-center justify-center shrink-0 text-white bg-white/10 rounded-md mr-1"
+            className={`lg:hidden h-[36px] px-2.5 -skew-x-12 backdrop-blur-md transition-colors flex items-center justify-center shrink-0 rounded-md mr-1 ${
+              scrolled ? 'text-white bg-white/10' : 'text-[#111111] bg-black/5'
+            }`}
             aria-label="Toggle navigation menu"
           >
-            <span className="skew-x-12 block text-white">
-              {mobileOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
+            <span className="skew-x-12 block">
+              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </span>
           </button>
         </div>
