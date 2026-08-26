@@ -124,21 +124,21 @@ export default function Navbar({ onOpenBooking }) {
                       </span>
                     </Link>
 
-                    {/* Submenu Dropdown Container */}
+                    {/* Submenu Dropdown Container with Frosted Blurred White Background */}
                     <AnimatePresence>
                       {hoveringTreatments && (
                         <motion.div
                           initial={{ opacity: 0, y: 6, scale: 0.98 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                          transition={{ duration: 0.22, ease: 'easeOut' }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 pointer-events-auto min-w-[260px]"
+                          transition={{ duration: 0.2, ease: 'easeOut' }}
+                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 pointer-events-auto min-w-[270px]"
                         >
-                          <div className="flex flex-col gap-1.5 p-3 rounded-2xl shadow-elevated border bg-cream-50/98 border-earth-200 backdrop-blur-xl">
+                          <div className="flex flex-col gap-1 p-3 rounded-2xl shadow-2xl border border-earth-200/90 bg-white/98 backdrop-blur-2xl">
                             <Link
                               to="/treatments"
                               onClick={() => setHoveringTreatments(false)}
-                              className="px-3.5 py-2 text-[11px] font-semibold tracking-wider uppercase rounded-xl transition-all border-b border-earth-200/60 mb-1 text-brass-600 hover:text-brass-700 flex items-center justify-between"
+                              className="px-3.5 py-2 text-[11.5px] font-bold tracking-wider uppercase rounded-xl transition-all border-b border-earth-200/80 mb-1 text-emerald-800 hover:text-emerald-950 hover:bg-emerald-50/80 flex items-center justify-between"
                             >
                               <span>View All Treatments</span>
                               <span>→</span>
@@ -149,10 +149,10 @@ export default function Navbar({ onOpenBooking }) {
                                 key={sub.name}
                                 to={sub.path}
                                 onClick={() => setHoveringTreatments(false)}
-                                className={`px-3.5 py-2 text-[12px] font-medium tracking-[0.03em] rounded-xl transition-all ${
+                                className={`px-3.5 py-2 text-[12px] font-medium tracking-[0.02em] rounded-xl transition-all ${
                                   location.pathname === sub.path
-                                    ? 'bg-[rgba(16,185,129,0.35)] text-emerald-900 font-semibold'
-                                    : 'text-forest-950 hover:bg-[rgba(16,185,129,0.18)]'
+                                    ? 'bg-emerald-100/90 text-forest-950 font-semibold'
+                                    : 'text-forest-950 hover:bg-emerald-50/70 hover:text-forest-900'
                                 }`}
                               >
                                 <span>{sub.name}</span>
