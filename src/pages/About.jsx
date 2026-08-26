@@ -172,24 +172,24 @@ export default function About() {
 
               {/* Quote Card */}
               <div className="p-4 sm:p-5 bg-cream-100 rounded-2xl border border-earth-200 space-y-1.5">
-                <p className="font-serif italic text-sm sm:text-base text-forest-900 leading-relaxed">
+                <p className="font-serif italic text-base sm:text-lg font-medium text-forest-950 leading-relaxed">
                   "{clinicData.doctor.quote}"
                 </p>
-                <p className="text-xs text-brass-600 uppercase tracking-widest font-semibold text-right">
+                <p className="text-xs sm:text-[13px] text-brass-700 uppercase tracking-widest font-bold text-right">
                   — {clinicData.doctor.name}
                 </p>
               </div>
 
               {/* Specialization List */}
               <div className="space-y-2.5">
-                <h4 className="text-xs font-semibold uppercase tracking-widest text-forest-950">
+                <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-widest text-forest-950">
                   Areas of Clinical Expertise:
                 </h4>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs text-earth-800">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs sm:text-sm text-earth-900">
                   {clinicData.doctor.specialties.map((spec, i) => (
                     <div key={i} className="flex items-center gap-2 p-3 bg-white rounded-xl border border-earth-200 shadow-sm">
                       <CheckCircle2 className="w-4 h-4 text-forest-800 shrink-0" />
-                      <span className="font-medium text-forest-900">{spec}</span>
+                      <span className="font-semibold text-forest-950">{spec}</span>
                     </div>
                   ))}
                 </div>
@@ -248,11 +248,11 @@ export default function About() {
                   </div>
                 </div>
 
-                <h3 className="font-serif text-xl text-forest-950 font-light">
+                <h3 className="font-serif text-[22px] text-forest-950 font-semibold">
                   {item.title}
                 </h3>
 
-                <p className="text-xs text-earth-800 leading-relaxed font-light">
+                <p className="text-sm text-earth-900 leading-relaxed font-medium">
                   {item.description}
                 </p>
               </div>
@@ -287,14 +287,14 @@ export default function About() {
 
                 <div className="flex items-center gap-2.5 text-forest-950 font-serif text-lg sm:text-xl font-medium">
                   <Building2 className="w-5 h-5 text-brass-600 shrink-0" />
-                  <h3>Sri Krishna Ayurvedic Clinic</h3>
+                  <h3 className="font-serif text-xl sm:text-[22px] font-semibold text-forest-950">Sri Krishna Ayurvedic Clinic</h3>
                 </div>
 
-                <p className="text-xs sm:text-sm text-earth-800 leading-relaxed font-light pl-3 border-l-2 border-brass-500">
+                <p className="text-sm sm:text-[15.5px] text-earth-900 leading-relaxed font-medium pl-3 border-l-2 border-brass-500">
                   {clinicData.contact.mainAddress.fullText}
                 </p>
 
-                <div className="space-y-1.5 text-xs text-forest-900 font-medium">
+                <div className="space-y-1.5 text-xs sm:text-sm text-forest-950 font-semibold">
                   <p className="flex items-center gap-2">
                     <Mail className="w-4 h-4 text-brass-600 shrink-0" />
                     <a href={`mailto:${clinicData.contact.email}`} className="hover:underline">
@@ -320,14 +320,14 @@ export default function About() {
 
                 <div className="flex items-center gap-2.5 text-forest-950 font-serif text-lg sm:text-xl font-medium">
                   <MapPin className="w-5 h-5 text-emerald-600 shrink-0" />
-                  <h3>Sri Krishna Ayurvedic Clinic</h3>
+                  <h3 className="font-serif text-xl sm:text-[22px] font-semibold text-forest-950">Sri Krishna Ayurvedic Clinic</h3>
                 </div>
 
-                <p className="text-xs sm:text-sm text-earth-800 leading-relaxed font-light pl-3 border-l-2 border-emerald-500">
+                <p className="text-sm sm:text-[15.5px] text-earth-900 leading-relaxed font-medium pl-3 border-l-2 border-emerald-500">
                   {clinicData.contact.branchAddress.fullText}
                 </p>
 
-                <div className="space-y-1.5 text-xs text-forest-900 font-medium">
+                <div className="space-y-1.5 text-xs sm:text-sm text-forest-950 font-semibold">
                   <p className="flex items-center gap-2">
                     <Phone className="w-4 h-4 text-emerald-600 shrink-0" />
                     <a href={telUri} className="hover:underline">

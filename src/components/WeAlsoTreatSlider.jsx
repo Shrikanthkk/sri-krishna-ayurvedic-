@@ -275,10 +275,10 @@ export default function WeAlsoTreatSlider({ onOpenBooking }) {
 
           {/* Title & Description */}
           <div className="space-y-1">
-            <h3 className="font-serif text-base sm:text-lg font-medium leading-snug text-forest-950">
+            <h3 className="font-serif text-[17px] sm:text-[19px] font-semibold leading-snug text-forest-950">
               {item.title}
             </h3>
-            <p className="text-[11px] sm:text-xs font-light leading-relaxed text-earth-800">
+            <p className="text-xs sm:text-[13.5px] font-medium leading-relaxed text-earth-900">
               {item.description}
             </p>
           </div>

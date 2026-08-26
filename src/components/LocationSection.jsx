@@ -36,25 +36,25 @@ export default function LocationSection() {
               MAIN ADDRESS
             </div>
 
-            <div className="flex items-center gap-3 text-forest-950 font-serif text-xl font-medium pt-1">
+            <div className="flex items-center gap-3 text-forest-950 font-serif text-[22px] font-semibold pt-1">
               <div className="w-10 h-10 rounded-full bg-forest-100 text-forest-800 flex items-center justify-center shrink-0">
                 <Building2 className="w-5 h-5" />
               </div>
               <div>
                 <h3>Sri Krishna Ayurvedic Clinic</h3>
-                <span className="text-xs text-brass-600 font-sans uppercase tracking-wider block font-semibold">
+                <span className="text-xs sm:text-[13px] text-brass-700 font-sans uppercase tracking-wider block font-bold">
                   Main Center • KR Puram
                 </span>
               </div>
             </div>
 
-            <p className="text-sm text-earth-800 leading-relaxed font-light pl-2 border-l-2 border-brass-500">
+            <p className="text-sm sm:text-[15.5px] text-earth-900 leading-relaxed font-medium pl-2 border-l-2 border-brass-500">
               {clinicData.contact.mainAddress.fullText}
             </p>
 
-            <div className="pt-2 flex items-center gap-3 text-xs text-forest-900 font-medium">
+            <div className="pt-2 flex items-center gap-3 text-xs sm:text-sm text-forest-950 font-semibold">
               <Mail className="w-4 h-4 text-brass-600 shrink-0" />
-              <a href={`mailto:${clinicData.contact.email}`} className="hover:underline text-forest-900">
+              <a href={`mailto:${clinicData.contact.email}`} className="hover:underline text-forest-950 font-semibold">
                 {clinicData.contact.email}
               </a>
             </div>
@@ -72,25 +72,25 @@ export default function LocationSection() {
               BRANCH ADDRESS
             </div>
 
-            <div className="flex items-center gap-3 text-forest-950 font-serif text-xl font-medium pt-1">
+            <div className="flex items-center gap-3 text-forest-950 font-serif text-[22px] font-semibold pt-1">
               <div className="w-10 h-10 rounded-full bg-emerald-50 text-emerald-800 flex items-center justify-center shrink-0">
                 <MapPin className="w-5 h-5" />
               </div>
               <div>
                 <h3>Sri Krishna Ayurvedic Clinic</h3>
-                <span className="text-xs text-emerald-700 font-sans uppercase tracking-wider block font-semibold">
+                <span className="text-xs sm:text-[13px] text-emerald-800 font-sans uppercase tracking-wider block font-bold">
                   Branch Center • T.C. Palya Main Rd
                 </span>
               </div>
             </div>
 
-            <p className="text-sm text-earth-800 leading-relaxed font-light pl-2 border-l-2 border-emerald-500">
+            <p className="text-sm sm:text-[15.5px] text-earth-900 leading-relaxed font-medium pl-2 border-l-2 border-emerald-500">
               {clinicData.contact.branchAddress.fullText}
             </p>
 
-            <div className="pt-2 flex items-center gap-3 text-xs text-forest-900 font-medium">
+            <div className="pt-2 flex items-center gap-3 text-xs sm:text-sm text-forest-950 font-semibold">
               <Phone className="w-4 h-4 text-emerald-600 shrink-0" />
-              <a href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`} className="hover:underline">
+              <a href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`} className="hover:underline font-semibold">
                 {clinicData.contact.phone}
               </a>
             </div>

@@ -73,3 +73,52 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* ==========================================================================
+   GLOBAL CARD TYPOGRAPHY: 10% Larger & 10% Thicker Wordings (Full Website)
+   ========================================================================== */
+@layer components {
+  main [class*="rounded-2xl"]:not(header *):not(nav *) p,
+  main [class*="rounded-3xl"]:not(header *):not(nav *) p,
+  main [class*="rounded-xl"]:not(header *):not(nav *) p,
+  section [class*="rounded-2xl"]:not(header *):not(nav *) p,
+  section [class*="rounded-3xl"]:not(header *):not(nav *) p,
+  section [class*="rounded-xl"]:not(header *):not(nav *) p,
+  .card p,
+  [class*="card"]:not(header *):not(nav *) p {
+    font-size: 1.08em;
+    font-weight: 480;
+  }
+
+  main [class*="rounded-2xl"]:not(header *):not(nav *) h3,
+  main [class*="rounded-3xl"]:not(header *):not(nav *) h3,
+  main [class*="rounded-xl"]:not(header *):not(nav *) h3,
+  main [class*="rounded-2xl"]:not(header *):not(nav *) h4,
+  main [class*="rounded-3xl"]:not(header *):not(nav *) h4,
+  main [class*="rounded-xl"]:not(header *):not(nav *) h4,
+  section [class*="rounded-2xl"]:not(header *):not(nav *) h3,
+  section [class*="rounded-3xl"]:not(header *):not(nav *) h3,
+  section [class*="rounded-xl"]:not(header *):not(nav *) h3,
+  section [class*="rounded-2xl"]:not(header *):not(nav *) h4,
+  section [class*="rounded-3xl"]:not(header *):not(nav *) h4,
+  section [class*="rounded-xl"]:not(header *):not(nav *) h4,
+  .card h3, .card h4,
+  [class*="card"]:not(header *):not(nav *) h3,
+  [class*="card"]:not(header *):not(nav *) h4 {
+    font-size: 1.08em;
+    font-weight: 650;
+  }
+
+  main [class*="rounded-2xl"]:not(header *):not(nav *) li,
+  main [class*="rounded-3xl"]:not(header *):not(nav *) li,
+  main [class*="rounded-xl"]:not(header *):not(nav *) li,
+  section [class*="rounded-2xl"]:not(header *):not(nav *) li,
+  section [class*="rounded-3xl"]:not(header *):not(nav *) li,
+  section [class*="rounded-xl"]:not(header *):not(nav *) li,
+  .card li,
+  [class*="card"]:not(header *):not(nav *) li {
+    font-size: 1.08em;
+    font-weight: 500;
+  }
+}
+

@@ -148,7 +148,7 @@ export default function Testimonials() {
                     </div>
 
                     {/* Review Quote Text */}
-                    <p className="text-xs sm:text-[13px] text-earth-900 leading-relaxed font-light italic line-clamp-6">
+                    <p className="text-[13.5px] sm:text-[15px] text-earth-900 leading-relaxed font-normal italic line-clamp-6">
                       "{item.quote}"
                     </p>
                   </div>
@@ -156,19 +156,19 @@ export default function Testimonials() {
                   {/* Footer: Author, Locality & Therapy Category */}
                   <div className="pt-5 mt-6 border-t border-earth-100 flex items-center justify-between gap-2">
                     <div className="truncate">
-                      <h4 className="font-serif text-sm font-semibold text-forest-950 truncate">
+                      <h4 className="font-serif text-[15.5px] font-bold text-forest-950 truncate">
                         {item.author}
                       </h4>
                       <a
                         href={item.googleUrl || clinicData.contact.googleReviewsUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-[10.5px] text-earth-600 hover:text-forest-900 hover:underline truncate flex items-center gap-1"
+                        className="text-xs font-medium text-earth-700 hover:text-forest-900 hover:underline truncate flex items-center gap-1"
                       >
                         <span>{item.locality}</span>
                       </a>
                     </div>
-                    <span className="shrink-0 px-2.5 py-1 rounded-full bg-cream-100 text-forest-900 text-[9.5px] font-bold tracking-wider uppercase border border-earth-200/70">
+                    <span className="shrink-0 px-3 py-1 rounded-full bg-cream-100 text-forest-900 text-[10.5px] font-bold tracking-wider uppercase border border-earth-200/70">
                       {item.treatment}
                     </span>
                   </div>
