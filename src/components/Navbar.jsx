@@ -87,7 +87,7 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
-          {/* 2. Middle: Desktop Navigation Links (Compact & Responsive) */}
+          {/* 2. Middle: Desktop Navigation Links (Compact & Responsive with White Text & No Hover Background) */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2.5 2xl:gap-4 shrink-0">
             {navLinks.map((link) => {
               const active = isPathActive(link);
@@ -102,16 +102,16 @@ export default function Navbar({ onOpenBooking }) {
                   >
                     <Link
                       to={link.path}
-                      className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 cursor-pointer ${
-                        active || hoveringTreatments
+                      className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-colors duration-200 border-0 outline-none select-none -skew-x-12 cursor-pointer ${
+                        active
                           ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
-                          : 'bg-transparent text-forest-950 hover:text-emerald-700 font-bold'
+                          : 'bg-transparent text-white font-bold hover:bg-transparent hover:text-white'
                       }`}
                       style={{ borderRadius: '4px' }}
                     >
                       <span className="skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap flex items-center gap-1">
-                        <span>{link.name}</span>
-                        <ChevronDown className={`w-3 h-3 xl:w-3.5 xl:h-3.5 transition-transform duration-200 ${hoveringTreatments ? 'rotate-180' : ''}`} />
+                        <span className={active ? 'text-forest-950' : 'text-white'}>{link.name}</span>
+                        <ChevronDown className={`w-3 h-3 xl:w-3.5 xl:h-3.5 transition-transform duration-200 ${active ? 'text-forest-950' : 'text-white'} ${hoveringTreatments ? 'rotate-180' : ''}`} />
                       </span>
                     </Link>
 
@@ -161,16 +161,16 @@ export default function Navbar({ onOpenBooking }) {
                 <Link
                   key={link.name}
                   to={link.path}
-                  className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-all duration-300 ease-out border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
+                  className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-colors duration-200 border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
                     active
                       ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
-                      : 'bg-transparent text-forest-950 hover:text-emerald-700 font-bold'
+                      : 'bg-transparent text-white font-bold hover:bg-transparent hover:text-white'
                   }`}
                   style={{
                     borderRadius: '4px',
                   }}
                 >
-                  <span className="skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap">
+                  <span className={`skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap ${active ? 'text-forest-950' : 'text-white'}`}>
                     {link.name}
                   </span>
                 </Link>
@@ -195,11 +195,11 @@ export default function Navbar({ onOpenBooking }) {
           {/* 4. Mobile Menu Toggle Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="lg:hidden h-[36px] px-2.5 -skew-x-12 backdrop-blur-md transition-colors flex items-center justify-center shrink-0 text-forest-900 hover:text-forest-700 bg-forest-900/5 rounded-md mr-1"
+            className="lg:hidden h-[36px] px-2.5 -skew-x-12 backdrop-blur-md transition-colors flex items-center justify-center shrink-0 text-white bg-white/10 rounded-md mr-1"
             aria-label="Toggle navigation menu"
           >
-            <span className="skew-x-12 block">
-              {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+            <span className="skew-x-12 block text-white">
+              {mobileOpen ? <X className="w-5 h-5 text-white" /> : <Menu className="w-5 h-5 text-white" />}
             </span>
           </button>
         </div>
@@ -253,21 +253,21 @@ export default function Navbar({ onOpenBooking }) {
                         <Link
                           to={link.path}
                           onClick={() => setMobileOpen(false)}
-                          className={`grow h-[48px] px-5 -skew-x-12 text-base font-medium tracking-wider uppercase backdrop-blur-md transition-all flex items-center justify-between ${
+                          className={`grow h-[48px] px-5 -skew-x-12 text-base font-medium tracking-wider uppercase backdrop-blur-md transition-colors flex items-center justify-between ${
                             active
-                              ? 'bg-[rgba(16,185,129,0.3)] text-cream-100 shadow-[0_4px_18px_rgba(16,185,129,0.3)]'
-                              : 'bg-[rgba(16,185,129,0.14)] text-cream-100'
+                              ? 'bg-[rgba(16,185,129,0.3)] text-white shadow-[0_4px_18px_rgba(16,185,129,0.3)]'
+                              : 'bg-[rgba(16,185,129,0.14)] text-white'
                           }`}
                           style={{ borderRadius: '2px 6px 2px 6px' }}
                         >
-                          <span className="skew-x-12">{link.name}</span>
+                          <span className="skew-x-12 text-white">{link.name}</span>
                         </Link>
                         <button
                           onClick={() => setMobileTreatmentsOpen(!mobileTreatmentsOpen)}
-                          className="h-[48px] px-4 bg-[rgba(16,185,129,0.14)] text-cream-100 -skew-x-12 flex items-center justify-center cursor-pointer"
+                          className="h-[48px] px-4 bg-[rgba(16,185,129,0.14)] text-white -skew-x-12 flex items-center justify-center cursor-pointer"
                           style={{ borderRadius: '2px 6px 2px 6px' }}
                         >
-                          <ChevronDown className={`skew-x-12 w-4 h-4 text-emerald-300 transition-transform ${mobileTreatmentsOpen ? 'rotate-180' : ''}`} />
+                          <ChevronDown className={`skew-x-12 w-4 h-4 text-white transition-transform ${mobileTreatmentsOpen ? 'rotate-180' : ''}`} />
                         </button>
                       </div>
 
@@ -282,11 +282,11 @@ export default function Navbar({ onOpenBooking }) {
                             <Link
                               to="/treatments"
                               onClick={() => setMobileOpen(false)}
-                              className="w-full h-[40px] px-4 -skew-x-12 text-xs font-bold tracking-wider uppercase bg-[rgba(16,185,129,0.3)] text-brass-300 flex items-center justify-between"
+                              className="w-full h-[40px] px-4 -skew-x-12 text-xs font-bold tracking-wider uppercase bg-[rgba(16,185,129,0.3)] text-white flex items-center justify-between"
                               style={{ borderRadius: '2px 6px 2px 6px' }}
                             >
-                              <span className="skew-x-12">All Treatments Directory</span>
-                              <span className="skew-x-12">→</span>
+                              <span className="skew-x-12 text-white">All Treatments Directory</span>
+                              <span className="skew-x-12 text-white">→</span>
                             </Link>
 
                             {subLinks.map((sub) => (
@@ -294,11 +294,11 @@ export default function Navbar({ onOpenBooking }) {
                                 key={sub.name}
                                 to={sub.path}
                                 onClick={() => setMobileOpen(false)}
-                                className="w-full h-[40px] px-4 -skew-x-12 text-xs font-medium tracking-wider uppercase bg-[rgba(16,185,129,0.18)] text-cream-100 flex items-center justify-between"
+                                className="w-full h-[40px] px-4 -skew-x-12 text-xs font-medium tracking-wider uppercase bg-[rgba(16,185,129,0.18)] text-white flex items-center justify-between"
                                 style={{ borderRadius: '2px 6px 2px 6px' }}
                               >
-                                <span className="skew-x-12">{sub.name}</span>
-                                <span className="skew-x-12 text-xs text-emerald-300">→</span>
+                                <span className="skew-x-12 text-white">{sub.name}</span>
+                                <span className="skew-x-12 text-xs text-white">→</span>
                               </Link>
                             ))}
                           </motion.div>
@@ -318,15 +318,15 @@ export default function Navbar({ onOpenBooking }) {
                     <Link
                       to={link.path}
                       onClick={() => setMobileOpen(false)}
-                      className={`h-[48px] px-5 -skew-x-12 text-base font-medium tracking-wider uppercase backdrop-blur-md transition-all flex items-center justify-between cursor-pointer ${
+                      className={`h-[48px] px-5 -skew-x-12 text-base font-medium tracking-wider uppercase backdrop-blur-md transition-colors flex items-center justify-between cursor-pointer ${
                         active
-                          ? 'bg-[rgba(16,185,129,0.3)] text-cream-100 shadow-[0_4px_18px_rgba(16,185,129,0.3)]'
-                          : 'bg-[rgba(16,185,129,0.14)] text-cream-100 hover:bg-[rgba(16,185,129,0.28)]'
+                          ? 'bg-[rgba(16,185,129,0.3)] text-white shadow-[0_4px_18px_rgba(16,185,129,0.3)]'
+                          : 'bg-[rgba(16,185,129,0.14)] text-white'
                       }`}
                       style={{ borderRadius: '2px 6px 2px 6px' }}
                     >
-                      <span className="skew-x-12">{link.name}</span>
-                      <span className="skew-x-12 text-sm text-emerald-300">→</span>
+                      <span className="skew-x-12 text-white">{link.name}</span>
+                      <span className="skew-x-12 text-sm text-white">→</span>
                     </Link>
                   </motion.div>
                 );
