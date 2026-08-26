@@ -124,21 +124,24 @@ export default function Navbar({ onOpenBooking }) {
                       </span>
                     </Link>
 
-                    {/* Submenu Dropdown Container with Frosted Blurred White Background */}
+                    {/* Submenu Dropdown Container with 100% Solid Opaque White Background (Zero Overlap) */}
                     <AnimatePresence>
                       {hoveringTreatments && (
                         <motion.div
                           initial={{ opacity: 0, y: 6, scale: 0.98 }}
                           animate={{ opacity: 1, y: 0, scale: 1 }}
                           exit={{ opacity: 0, y: 6, scale: 0.98 }}
-                          transition={{ duration: 0.2, ease: 'easeOut' }}
-                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2.5 z-50 pointer-events-auto min-w-[270px]"
+                          transition={{ duration: 0.18, ease: 'easeOut' }}
+                          className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 pointer-events-auto min-w-[280px]"
                         >
-                          <div className="flex flex-col gap-1 p-3 rounded-2xl shadow-2xl border border-earth-200/90 bg-white/98 backdrop-blur-2xl">
+                          <div
+                            className="flex flex-col gap-1 p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-earth-300 bg-white"
+                            style={{ backgroundColor: '#ffffff' }}
+                          >
                             <Link
                               to="/treatments"
                               onClick={() => setHoveringTreatments(false)}
-                              className="px-3.5 py-2 text-[11.5px] font-bold tracking-wider uppercase rounded-xl transition-all border-b border-earth-200/80 mb-1 text-emerald-800 hover:text-emerald-950 hover:bg-emerald-50/80 flex items-center justify-between"
+                              className="px-3.5 py-2 text-[11.5px] font-bold tracking-wider uppercase rounded-xl transition-colors border-b border-earth-200 mb-1 text-emerald-800 hover:text-emerald-950 hover:bg-emerald-50 flex items-center justify-between"
                             >
                               <span>View All Treatments</span>
                               <span>→</span>
@@ -149,10 +152,10 @@ export default function Navbar({ onOpenBooking }) {
                                 key={sub.name}
                                 to={sub.path}
                                 onClick={() => setHoveringTreatments(false)}
-                                className={`px-3.5 py-2 text-[12px] font-medium tracking-[0.02em] rounded-xl transition-all ${
+                                className={`px-3.5 py-2 text-[12px] font-medium tracking-[0.02em] rounded-xl transition-colors ${
                                   location.pathname === sub.path
-                                    ? 'bg-emerald-100/90 text-forest-950 font-semibold'
-                                    : 'text-forest-950 hover:bg-emerald-50/70 hover:text-forest-900'
+                                    ? 'bg-emerald-100 text-forest-950 font-semibold'
+                                    : 'text-forest-950 hover:bg-emerald-50 hover:text-forest-900'
                                 }`}
                               >
                                 <span>{sub.name}</span>
