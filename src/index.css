@@ -75,7 +75,7 @@
 }
 
 /* ==========================================================================
-   GLOBAL CARD TYPOGRAPHY: 10% Larger & 10% Thicker Wordings (Full Website)
+   GLOBAL CARD TYPOGRAPHY: Perfectly Balanced (+5% Size & Crisp Medium Weight)
    ========================================================================== */
 @layer components {
   main [class*="rounded-2xl"]:not(header *):not(nav *) p,
@@ -86,8 +86,8 @@
   section [class*="rounded-xl"]:not(header *):not(nav *) p,
   .card p,
   [class*="card"]:not(header *):not(nav *) p {
-    font-size: 1.08em;
-    font-weight: 480;
+    font-size: 1.04em;
+    font-weight: 440;
   }
 
   main [class*="rounded-2xl"]:not(header *):not(nav *) h3,
@@ -105,8 +105,8 @@
   .card h3, .card h4,
   [class*="card"]:not(header *):not(nav *) h3,
   [class*="card"]:not(header *):not(nav *) h4 {
-    font-size: 1.08em;
-    font-weight: 650;
+    font-size: 1.04em;
+    font-weight: 600;
   }
 
   main [class*="rounded-2xl"]:not(header *):not(nav *) li,
@@ -117,8 +117,8 @@
   section [class*="rounded-xl"]:not(header *):not(nav *) li,
   .card li,
   [class*="card"]:not(header *):not(nav *) li {
-    font-size: 1.08em;
-    font-weight: 500;
+    font-size: 1.04em;
+    font-weight: 460;
   }
 }
 
