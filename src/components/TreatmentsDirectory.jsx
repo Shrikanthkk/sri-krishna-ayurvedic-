@@ -201,15 +201,15 @@ export default function TreatmentsDirectory({ onOpenBooking }) {
                           <Stethoscope className="w-5 h-5" />
                         </div>
                         <div>
-                          <span className="text-[11px] uppercase font-bold text-brass-700 tracking-wider">
+                          <span className="text-[10px] uppercase font-semibold text-brass-600 tracking-wider">
                             {item.category}
                           </span>
-                          <h4 className="font-serif text-xl font-semibold text-forest-950 group-hover:text-forest-800 transition-colors">
+                          <h4 className="font-serif text-lg font-medium text-forest-950 group-hover:text-forest-800 transition-colors">
                             {item.name}
                           </h4>
                         </div>
                       </div>
-                      <p className="text-sm text-earth-900 leading-relaxed font-medium">
+                      <p className="text-xs text-earth-800 leading-relaxed font-light">
                         {item.desc}
                       </p>
                     </div>
@@ -217,13 +217,13 @@ export default function TreatmentsDirectory({ onOpenBooking }) {
                     <div className="pt-4 mt-4 border-t border-earth-200/60 flex items-center justify-between">
                       <button
                         onClick={() => onOpenBooking(item.name)}
-                        className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-forest-950 hover:text-brass-700 transition-colors flex items-center gap-1.5"
+                        className="text-xs font-semibold uppercase tracking-wider text-forest-900 hover:text-brass-600 transition-colors flex items-center gap-1.5"
                       >
                         <span>Inquire Treatment</span>
-                        <ChevronRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                        <ChevronRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
                       </button>
                       {item.popular && (
-                        <span className="text-[11px] px-2.5 py-0.5 rounded-full bg-brass-400/20 text-brass-700 font-bold uppercase tracking-wider">
+                        <span className="text-[10px] px-2.5 py-0.5 rounded-full bg-brass-400/20 text-brass-600 font-semibold uppercase tracking-wider">
                           Popular
                         </span>
                       )}

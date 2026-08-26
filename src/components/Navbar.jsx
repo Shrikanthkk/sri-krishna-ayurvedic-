@@ -78,12 +78,12 @@ export default function Navbar({ onOpenBooking }) {
             </div>
 
             <div className="flex flex-col justify-center pl-0.5 sm:pl-1">
-              <span className={`font-serif text-xs sm:text-sm md:text-[15px] xl:text-[17px] font-bold tracking-tight leading-tight whitespace-nowrap transition-colors ${
+              <span className={`font-serif text-[11px] sm:text-[13px] md:text-[14px] xl:text-[16px] font-semibold tracking-tight leading-tight whitespace-nowrap transition-colors ${
                 scrolled ? 'text-cream-50' : 'text-forest-950'
               }`}>
                 {clinicData.clinicName}
               </span>
-              <span className={`text-[7.5px] sm:text-[8.5px] xl:text-[9.5px] tracking-[0.12em] uppercase font-bold whitespace-nowrap transition-colors ${
+              <span className={`text-[7px] sm:text-[8px] xl:text-[9px] tracking-[0.12em] uppercase font-medium whitespace-nowrap transition-colors ${
                 scrolled ? 'text-emerald-300' : 'text-forest-800'
               }`}>
                 KR PURAM, BANGALORE
@@ -91,7 +91,7 @@ export default function Navbar({ onOpenBooking }) {
             </div>
           </Link>
 
-          {/* 2. Middle: Desktop Navigation Links (Dynamic Text Color: #111111 on Light, #FFFFFF on Dark) */}
+          {/* 2. Middle: Desktop Navigation Links (Sleek Typography: 5% Reduced Size & Thickness) */}
           <nav className="hidden lg:flex items-center gap-1 xl:gap-2.5 2xl:gap-4 shrink-0">
             {navLinks.map((link) => {
               const active = isPathActive(link);
@@ -113,12 +113,12 @@ export default function Navbar({ onOpenBooking }) {
                       to={link.path}
                       className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-colors duration-200 border-0 outline-none select-none -skew-x-12 cursor-pointer ${
                         active
-                          ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
-                          : 'bg-transparent font-bold hover:bg-transparent'
+                          ? 'bg-[#d2f4e3] text-forest-950 font-semibold shadow-xs'
+                          : 'bg-transparent font-semibold hover:bg-transparent'
                       }`}
                       style={{ borderRadius: '4px' }}
                     >
-                      <span className="skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap flex items-center gap-1">
+                      <span className="skew-x-12 text-[9.5px] xl:text-[11px] 2xl:text-[12px] font-semibold tracking-wide uppercase whitespace-nowrap flex items-center gap-1">
                         <span className={linkTextColor}>{link.name}</span>
                         <ChevronDown className={`w-3 h-3 xl:w-3.5 xl:h-3.5 transition-transform duration-200 ${linkTextColor} ${hoveringTreatments ? 'rotate-180' : ''}`} />
                       </span>
@@ -138,7 +138,7 @@ export default function Navbar({ onOpenBooking }) {
                             <Link
                               to="/treatments"
                               onClick={() => setHoveringTreatments(false)}
-                              className="px-3.5 py-2 text-[11px] font-bold tracking-wider uppercase rounded-xl transition-all border-b border-earth-200/60 mb-1 text-brass-600 hover:text-brass-700 flex items-center justify-between"
+                              className="px-3.5 py-2 text-[11px] font-semibold tracking-wider uppercase rounded-xl transition-all border-b border-earth-200/60 mb-1 text-brass-600 hover:text-brass-700 flex items-center justify-between"
                             >
                               <span>View All Treatments</span>
                               <span>→</span>
@@ -172,14 +172,14 @@ export default function Navbar({ onOpenBooking }) {
                   to={link.path}
                   className={`group relative inline-flex items-center justify-center h-[34px] xl:h-[38px] px-2 xl:px-3 transition-colors duration-200 border-0 outline-none select-none -skew-x-12 shrink-0 cursor-pointer ${
                     active
-                      ? 'bg-[#d2f4e3] text-forest-950 font-bold shadow-xs'
-                      : 'bg-transparent font-bold hover:bg-transparent'
+                      ? 'bg-[#d2f4e3] text-forest-950 font-semibold shadow-xs'
+                      : 'bg-transparent font-semibold hover:bg-transparent'
                   }`}
                   style={{
                     borderRadius: '4px',
                   }}
                 >
-                  <span className={`skew-x-12 text-[10px] xl:text-[11.5px] 2xl:text-[12.5px] font-bold tracking-wide uppercase whitespace-nowrap ${linkTextColor}`}>
+                  <span className={`skew-x-12 text-[9.5px] xl:text-[11px] 2xl:text-[12px] font-semibold tracking-wide uppercase whitespace-nowrap ${linkTextColor}`}>
                     {link.name}
                   </span>
                 </Link>
@@ -191,7 +191,7 @@ export default function Navbar({ onOpenBooking }) {
           <div className="hidden lg:flex items-center shrink-0">
             <Link
               to="/book-appointment"
-              className="h-[36px] xl:h-[40px] px-3 sm:px-3.5 xl:px-4 bg-[#12281e] text-white hover:bg-[#1a382a] text-[10px] sm:text-[11px] xl:text-[12px] font-bold tracking-wider uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shrink-0 shadow-md hover:-translate-y-[1px]"
+              className="h-[36px] xl:h-[40px] px-3 sm:px-3.5 xl:px-4 bg-[#12281e] text-white hover:bg-[#1a382a] text-[9.5px] sm:text-[10.5px] xl:text-[11.5px] font-semibold tracking-wider uppercase transition-all duration-300 border-0 flex items-center justify-center -skew-x-12 shrink-0 shadow-md hover:-translate-y-[1px]"
               style={{ borderRadius: '4px' }}
             >
               <span className="skew-x-12 flex items-center gap-1.5 whitespace-nowrap">

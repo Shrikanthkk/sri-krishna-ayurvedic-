@@ -202,10 +202,10 @@ export default function HomeImageSlider() {
             <Card1Icon className="w-4 h-4 text-forest-800" />
           </div>
           <div>
-            <p className="text-sm font-serif font-bold text-forest-950 leading-tight">
+            <p className="text-xs font-serif font-bold text-forest-950 leading-tight">
               {activeSlide.card1.title}
             </p>
-            <p className="text-[11.5px] text-earth-800 leading-tight font-medium">
+            <p className="text-[10px] text-earth-700 leading-tight font-light">
               {activeSlide.card1.subtitle}
             </p>
           </div>
@@ -226,10 +226,10 @@ export default function HomeImageSlider() {
             <Card2Icon className="w-4 h-4 text-brass-700" />
           </div>
           <div>
-            <p className="text-sm font-serif font-bold text-forest-950 leading-tight">
+            <p className="text-xs font-serif font-bold text-forest-950 leading-tight">
               {activeSlide.card2.title}
             </p>
-            <p className="text-[11.5px] text-earth-800 leading-tight font-medium">
+            <p className="text-[10px] text-earth-700 leading-tight font-light">
               {activeSlide.card2.subtitle}
             </p>
           </div>

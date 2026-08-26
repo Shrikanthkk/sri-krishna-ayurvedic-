@@ -87,24 +87,24 @@ export default function DoctorSection({ onOpenBooking }) {
 
             {/* Doctor Quote Card */}
             <div className="p-6 bg-cream-50 rounded-2xl border border-earth-200 space-y-2">
-              <p className="font-serif italic text-[17.5px] sm:text-xl font-medium text-forest-950 leading-relaxed">
+              <p className="font-serif italic text-base sm:text-lg text-forest-900 leading-relaxed">
                 "{clinicData.doctor.quote}"
               </p>
-              <p className="text-xs sm:text-[13px] text-brass-700 uppercase tracking-widest font-bold text-right">
+              <p className="text-xs text-brass-600 uppercase tracking-widest font-semibold text-right">
                 — {clinicData.doctor.name}
               </p>
             </div>
 
             {/* Specialization List */}
             <div className="space-y-3">
-              <h4 className="text-xs sm:text-[13px] font-bold uppercase tracking-widest text-forest-950">
+              <h4 className="text-xs font-semibold uppercase tracking-widest text-forest-950">
                 Core Clinical Specializations:
               </h4>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs sm:text-sm text-earth-900">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-earth-800">
                 {clinicData.doctor.specialties.map((spec, i) => (
-                  <div key={i} className="flex items-center gap-2.5 p-3.5 bg-white/90 rounded-xl border border-earth-200 shadow-xs">
+                  <div key={i} className="flex items-center gap-2.5 p-3 bg-white/80 rounded-xl border border-earth-200">
                     <CheckCircle2 className="w-4 h-4 text-forest-800 shrink-0" />
-                    <span className="font-semibold text-forest-950">{spec}</span>
+                    <span className="font-medium text-forest-900">{spec}</span>
                   </div>
                 ))}
               </div>

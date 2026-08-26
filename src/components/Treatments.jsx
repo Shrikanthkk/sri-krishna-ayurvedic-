@@ -37,10 +37,10 @@ export default function Treatments({ onSelectTreatment }) {
               <div className="space-y-6">
                 {/* Top Number & Duration Badge */}
                 <div className="flex items-center justify-between border-b border-earth-200 pb-4">
-                  <span className="font-serif text-3xl font-normal text-forest-800/50 group-hover:text-brass-600 transition-colors">
+                  <span className="font-serif text-3xl font-light text-forest-800/40 group-hover:text-brass-600 transition-colors">
                     {treatment.number}
                   </span>
-                  <div className="flex items-center gap-1.5 text-xs sm:text-[13px] text-earth-900 font-semibold">
+                  <div className="flex items-center gap-1.5 text-xs text-earth-800 font-medium">
                     <Clock className="w-3.5 h-3.5 text-brass-600" />
                     <span>{treatment.duration}</span>
                   </div>
@@ -48,28 +48,28 @@ export default function Treatments({ onSelectTreatment }) {
 
                 {/* Title & Subtitle */}
                 <div className="space-y-2">
-                  <span className="text-xs uppercase tracking-widest text-brass-700 font-bold block">
+                  <span className="text-[11px] uppercase tracking-widest text-brass-600 font-semibold block">
                     {treatment.subtitle}
                   </span>
-                  <h3 className="text-2xl sm:text-[26px] font-serif font-semibold text-forest-950 group-hover:text-forest-800 transition-colors">
+                  <h3 className="text-2xl font-serif font-medium text-forest-950 group-hover:text-forest-800 transition-colors">
                     {treatment.title}
                   </h3>
                 </div>
 
                 {/* Description */}
-                <p className="text-sm sm:text-[15px] text-earth-900 font-medium leading-relaxed">
+                <p className="text-xs sm:text-sm text-earth-800 leading-relaxed">
                   {treatment.description}
                 </p>
 
                 {/* Key Verified Benefits */}
-                <div className="space-y-2.5 pt-2">
-                  <span className="text-[11px] uppercase tracking-wider font-bold text-forest-950 block">
+                <div className="space-y-2 pt-2">
+                  <span className="text-[10px] uppercase tracking-wider font-semibold text-forest-900 block">
                     Key Outcomes:
                   </span>
-                  <ul className="space-y-2">
+                  <ul className="space-y-1.5">
                     {treatment.benefits.map((benefit, i) => (
-                      <li key={i} className="flex items-center gap-2 text-xs sm:text-sm font-medium text-earth-900">
-                        <CheckCircle2 className="w-4 h-4 text-forest-700 shrink-0" />
+                      <li key={i} className="flex items-center gap-2 text-xs text-earth-800">
+                        <CheckCircle2 className="w-3.5 h-3.5 text-forest-700 shrink-0" />
                         <span>{benefit}</span>
                       </li>
                     ))}
@@ -81,12 +81,12 @@ export default function Treatments({ onSelectTreatment }) {
               <div className="pt-8 mt-6 border-t border-earth-200 flex items-center justify-between">
                 <button
                   onClick={() => onSelectTreatment(treatment.title)}
-                  className="text-xs sm:text-[13px] font-bold uppercase tracking-wider text-forest-950 group-hover:text-brass-700 transition-colors flex items-center gap-2"
+                  className="text-xs font-semibold uppercase tracking-wider text-forest-900 group-hover:text-brass-600 transition-colors flex items-center gap-2"
                 >
                   <span>Book This Treatment</span>
                   <ArrowRight className="w-4 h-4 transform group-hover:translate-x-1 transition-transform" />
                 </button>
-                <Sparkles className="w-4 h-4 text-brass-500/60 group-hover:text-brass-600 transition-colors" />
+                <Sparkles className="w-4 h-4 text-brass-500/40 group-hover:text-brass-500 transition-colors" />
               </div>
             </motion.div>
           ))}
