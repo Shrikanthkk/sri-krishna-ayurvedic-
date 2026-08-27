@@ -4,13 +4,18 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles, CheckCircle2, ShieldCheck, HeartHandshake, Baby } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
-import { getStoredTreatments } from '../utils/adminStorage';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../utils/adminStorage';
 
 export default function Treatments({ onOpenBooking }) {
   const [treatmentsList, setTreatmentsList] = useState([]);
 
   useEffect(() => {
     setTreatmentsList(getStoredTreatments());
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setTreatmentsList(data);
+      }
+    }).catch(() => {});
   }, []);
 
   return (

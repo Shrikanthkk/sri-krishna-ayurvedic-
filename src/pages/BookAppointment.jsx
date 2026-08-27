@@ -23,10 +23,19 @@ export default function BookAppointment() {
     setTreatmentsList(getStoredTreatments());
   }, []);
 
-  const handleSubmit = (e) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const saved = saveAppointment(formData);
-    setSubmittedAppointment(saved);
+    setSubmitting(true);
+    try {
+      const saved = await saveAppointment(formData);
+      setSubmittedAppointment(saved);
+    } catch (err) {
+      console.error('Error booking appointment:', err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const whatsappUri = `https://wa.me/${clinicData.contact.whatsapp}?text=Hello%20Sri%20Krishna%20Ayurvedic%20Clinic,%20I%20have%20submitted%20an%20appointment%20request%20for%20${encodeURIComponent(formData.name)}%20on%20${encodeURIComponent(formData.date)}.`;

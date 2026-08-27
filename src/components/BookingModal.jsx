@@ -64,29 +64,31 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     setIsSubmitting(true);
     
-    // Save to Admin Storage
-    const created = saveAppointment({
-      name: formData.fullName,
-      phone: formData.phone,
-      email: formData.email,
-      treatment: formData.treatment,
-      date: formData.preferredDate,
-      timeSlot: formData.preferredTime,
-      notes: formData.notes
-    });
+    try {
+      // Save directly to PostgreSQL via saveAppointment
+      const created = await saveAppointment({
+        name: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        treatment: formData.treatment,
+        date: formData.preferredDate,
+        timeSlot: formData.preferredTime,
+        notes: formData.notes
+      });
 
-    setSavedAppointment(created);
-
-    setTimeout(() => {
-      setIsSubmitting(false);
+      setSavedAppointment(created);
       setIsSubmitted(true);
-    }, 400);
+    } catch (err) {
+      console.error('Error saving appointment:', err);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const resetForm = () => {

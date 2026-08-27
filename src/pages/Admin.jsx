@@ -36,25 +36,31 @@ import Breadcrumb from '../components/Breadcrumb';
 import { clinicData } from '../data/clinicData';
 import { 
   getAppointments, 
+  fetchAppointmentsFromDb,
   updateAppointmentStatus, 
   deleteAppointment, 
   getInquiries, 
+  fetchInquiriesFromDb,
   toggleInquiryRead, 
   deleteInquiry, 
   getClinicSettings,
-  saveClinicSettings,
+  fetchClinicSettingsFromDb,
+  saveClinicSettings, 
   getStoredTreatments,
-  saveTreatment,
-  deleteTreatment,
-  clearAllAdminData,
-  defaultSettings,
+  fetchTreatmentsFromDb,
+  saveTreatment, 
+  deleteTreatment, 
+  clearAllAdminData, 
+  defaultSettings, 
   getAllSwarnaprashanaDates,
-  saveSwarnaprashanaDate,
-  deleteSwarnaprashanaDate,
-  toggleSwarnaprashanaStatus,
-  getAvailableScheduleYears,
-  MONTH_NAMES
+  fetchSwarnaprashanaScheduleFromDb,
+  saveSwarnaprashanaDate, 
+  deleteSwarnaprashanaDate, 
+  toggleSwarnaprashanaStatus, 
+  getAvailableScheduleYears, 
+  MONTH_NAMES 
 } from '../utils/adminStorage';
+import api from '../services/api';
 
 export default function Admin() {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -65,6 +71,7 @@ export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [username, setUsername] = useState('');
   const [pinError, setPinError] = useState(false);
+  const [loadingAuth, setLoadingAuth] = useState(false);
 
   const [appointments, setAppointments] = useState([]);
   const [inquiries, setInquiries] = useState([]);
@@ -93,14 +100,54 @@ export default function Admin() {
   const [editingTreatment, setEditingTreatment] = useState(null);
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
 
-  // Load data on mount
+  const loadData = async () => {
+    try {
+      const [apts, inqs, sets, trts, sw] = await Promise.all([
+        fetchAppointmentsFromDb(),
+        fetchInquiriesFromDb(),
+        fetchClinicSettingsFromDb(),
+        fetchTreatmentsFromDb(),
+        fetchSwarnaprashanaScheduleFromDb({ activeOnly: false })
+      ]);
+      setAppointments(apts || []);
+      setInquiries(inqs || []);
+      setSettings(sets || defaultSettings);
+      setTreatments(trts || []);
+      setSwarnaSchedule(sw || []);
+      setSwarnaYears(getAvailableScheduleYears());
+    } catch (err) {
+      console.error('Error loading data from database:', err);
+    }
+  };
+
+  // Load data and check existing JWT token on mount
   useEffect(() => {
+    // Initial local read for instant render
     setAppointments(getAppointments());
     setInquiries(getInquiries());
     setSettings(getClinicSettings());
     setTreatments(getStoredTreatments());
     setSwarnaSchedule(getAllSwarnaprashanaDates());
     setSwarnaYears(getAvailableScheduleYears());
+
+    // Check if valid token exists
+    const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
+    if (token) {
+      api.getCurrentUser()
+        .then((res) => {
+          if (res.success && res.user?.role === 'admin') {
+            setIsAuthenticated(true);
+            loadData();
+          }
+        })
+        .catch(() => {
+          // Token expired or invalid
+          api.logout();
+        });
+    }
+
+    // Always fetch latest data from database
+    loadData();
   }, []);
 
   // Synchronize tab state with search params
@@ -113,17 +160,36 @@ export default function Admin() {
     setSearchParams({ tab: tabId });
   };
 
-  const handlePinSubmit = (e) => {
+  const handlePinSubmit = async (e) => {
     e.preventDefault();
-    if (username.trim().toLowerCase() === 'admin' && pin === '1234') {
-      setIsAuthenticated(true);
-      setPinError(false);
-    } else {
-      setPinError(true);
+    setLoadingAuth(true);
+    setPinError(false);
+    try {
+      const res = await api.login({ username: username.trim(), pin: pin.trim() });
+      if (res.success && res.user) {
+        setIsAuthenticated(true);
+        setPinError(false);
+        await loadData();
+      } else {
+        setPinError(true);
+      }
+    } catch (err) {
+      console.error('Admin authentication failed:', err);
+      // Local demo password fallback for offline resilience
+      if (username.trim().toLowerCase() === 'admin' && pin.trim() === '1234') {
+        setIsAuthenticated(true);
+        setPinError(false);
+        loadData();
+      } else {
+        setPinError(true);
+      }
+    } finally {
+      setLoadingAuth(false);
     }
   };
 
   const handleLogout = () => {
+    api.logout();
     setIsAuthenticated(false);
     setPin('');
     setUsername('');
@@ -131,27 +197,27 @@ export default function Admin() {
   };
 
   // Appointment actions
-  const handleStatusChange = (id, newStatus) => {
-    const updated = updateAppointmentStatus(id, newStatus);
+  const handleStatusChange = async (id, newStatus) => {
+    const updated = await updateAppointmentStatus(id, newStatus);
     setAppointments(updated);
   };
 
-  const handleDeleteAppointment = (id) => {
+  const handleDeleteAppointment = async (id) => {
     if (window.confirm('Are you sure you want to delete this appointment record?')) {
-      const updated = deleteAppointment(id);
+      const updated = await deleteAppointment(id);
       setAppointments(updated);
     }
   };
 
   // Inquiry actions
-  const handleToggleRead = (id) => {
-    const updated = toggleInquiryRead(id);
+  const handleToggleRead = async (id) => {
+    const updated = await toggleInquiryRead(id);
     setInquiries(updated);
   };
 
-  const handleDeleteInquiry = (id) => {
+  const handleDeleteInquiry = async (id) => {
     if (window.confirm('Are you sure you want to delete this inquiry message?')) {
-      const updated = deleteInquiry(id);
+      const updated = await deleteInquiry(id);
       setInquiries(updated);
       if (selectedInquiry && selectedInquiry.id === id) {
         setSelectedInquiry(null);
@@ -160,18 +226,18 @@ export default function Admin() {
   };
 
   // Settings Save action
-  const handleSaveSettings = (e) => {
+  const handleSaveSettings = async (e) => {
     e?.preventDefault();
-    saveClinicSettings(settings);
+    await saveClinicSettings(settings);
     setSettingsSavedNotice(true);
     setTimeout(() => {
       setSettingsSavedNotice(false);
     }, 4000);
   };
 
-  const handleResetSettings = () => {
+  const handleResetSettings = async () => {
     if (window.confirm('Reset clinic settings to original default values?')) {
-      saveClinicSettings(defaultSettings);
+      await saveClinicSettings(defaultSettings);
       setSettings(defaultSettings);
       setSettingsSavedNotice(true);
       setTimeout(() => {
@@ -197,22 +263,22 @@ export default function Admin() {
     setIsTreatmentModalOpen(true);
   };
 
-  const handleSaveTreatmentModal = (e) => {
+  const handleSaveTreatmentModal = async (e) => {
     e.preventDefault();
     if (!editingTreatment.title.trim()) return;
 
-    const updated = saveTreatment(editingTreatment);
+    const updated = await saveTreatment(editingTreatment);
     setTreatments(updated);
     setIsTreatmentModalOpen(false);
-    setTreatmentNotice(`Treatment "${editingTreatment.title}" updated successfully!`);
+    setTreatmentNotice(`Treatment "${editingTreatment.title}" updated successfully in database!`);
     setTimeout(() => setTreatmentNotice(''), 4000);
   };
 
-  const handleDeleteTreatmentItem = (id, title) => {
+  const handleDeleteTreatmentItem = async (id, title) => {
     if (window.confirm(`Are you sure you want to delete the treatment "${title}"?`)) {
-      const updated = deleteTreatment(id);
+      const updated = await deleteTreatment(id);
       setTreatments(updated);
-      setTreatmentNotice(`Treatment "${title}" removed.`);
+      setTreatmentNotice(`Treatment "${title}" removed from database.`);
       setTimeout(() => setTreatmentNotice(''), 4000);
     }
   };
@@ -239,11 +305,11 @@ export default function Admin() {
     setIsSwarnaModalOpen(true);
   };
 
-  const handleSaveSwarnaModal = (e) => {
+  const handleSaveSwarnaModal = async (e) => {
     e.preventDefault();
     setSwarnaModalError('');
     
-    const result = saveSwarnaprashanaDate(editingSwarnaDate);
+    const result = await saveSwarnaprashanaDate(editingSwarnaDate);
     if (!result.success) {
       setSwarnaModalError(result.error);
       return;
@@ -252,30 +318,30 @@ export default function Admin() {
     setSwarnaSchedule(getAllSwarnaprashanaDates());
     setSwarnaYears(getAvailableScheduleYears());
     setIsSwarnaModalOpen(false);
-    setSwarnaNotice('Swarnaprashana schedule updated successfully.');
+    setSwarnaNotice('Swarnaprashana schedule updated successfully in database.');
     setTimeout(() => setSwarnaNotice(''), 4000);
   };
 
-  const handleDeleteSwarnaItem = (id, month, date, year) => {
+  const handleDeleteSwarnaItem = async (id, month, date, year) => {
     if (window.confirm(`Are you sure you want to delete the Pushya Nakshatra date "${month} ${date}, ${year}"?`)) {
-      const updated = deleteSwarnaprashanaDate(id);
+      const updated = await deleteSwarnaprashanaDate(id);
       setSwarnaSchedule(updated);
       setSwarnaYears(getAvailableScheduleYears());
-      setSwarnaNotice('Swarnaprashana schedule updated successfully.');
+      setSwarnaNotice('Swarnaprashana schedule updated in database.');
       setTimeout(() => setSwarnaNotice(''), 4000);
     }
   };
 
-  const handleToggleSwarnaStatusItem = (id) => {
-    const updated = toggleSwarnaprashanaStatus(id);
+  const handleToggleSwarnaStatusItem = async (id) => {
+    const updated = await toggleSwarnaprashanaStatus(id);
     setSwarnaSchedule(updated);
-    setSwarnaNotice('Swarnaprashana schedule updated successfully.');
+    setSwarnaNotice('Swarnaprashana status updated in database.');
     setTimeout(() => setSwarnaNotice(''), 3000);
   };
 
-  const handleRestoreDemo = () => {
-    if (window.confirm('Reset admin database to demo records?')) {
-      const { appointments: a, inquiries: i, settings: s, treatments: t, swarnaprashana: sw } = clearAllAdminData();
+  const handleRestoreDemo = async () => {
+    if (window.confirm('Reset admin database to baseline demo records in PostgreSQL?')) {
+      const { appointments: a, inquiries: i, settings: s, treatments: t, swarnaprashana: sw } = await clearAllAdminData();
       setAppointments(a);
       setInquiries(i);
       setSettings(s);

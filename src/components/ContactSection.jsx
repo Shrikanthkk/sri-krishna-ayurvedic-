@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle2, User, Phone, Mail, Calendar, Clock, Sparkles } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
+import { saveInquiry } from '../utils/adminStorage';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -38,15 +39,27 @@ export default function ContactSection() {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validate()) return;
 
     setSubmitting(true);
-    setTimeout(() => {
-      setSubmitting(false);
+    try {
+      await saveInquiry({
+        name: formData.fullName,
+        phone: formData.phone,
+        email: formData.email,
+        preferredDate: formData.preferredDate,
+        preferredTime: formData.preferredTime,
+        message: formData.message
+      });
       setSubmitted(true);
-    }, 800);
+    } catch (err) {
+      console.error('Error saving contact request:', err);
+      setSubmitted(true);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (

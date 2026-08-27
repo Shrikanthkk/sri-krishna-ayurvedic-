@@ -6,7 +6,7 @@ import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import RelatedTreatments from '../components/RelatedTreatments';
 import { clinicData } from '../data/clinicData';
-import { getSwarnaprashanaSchedule, getAvailableScheduleYears } from '../utils/adminStorage';
+import { getSwarnaprashanaSchedule, getAvailableScheduleYears, fetchSwarnaprashanaScheduleFromDb } from '../utils/adminStorage';
 import swarnaImg1 from '../assets/swarnaprashana_1.png';
 import swarnaImg2 from '../assets/swarnaprashana_2.png';
 import swarnaImg3 from '../assets/swarnaprashana_3.png';
@@ -19,18 +19,33 @@ export default function Swarnaprashana({ onOpenBooking }) {
   const [schedule, setSchedule] = useState([]);
 
   useEffect(() => {
-    const loadSchedule = () => {
+    const loadSchedule = async () => {
       const years = getAvailableScheduleYears();
       setAvailableYears(years);
       if (!years.includes(selectedYear) && years.length > 0) {
         setSelectedYear(years[0]);
       }
       setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
+
+      // Fetch from PostgreSQL database in background
+      try {
+        await fetchSwarnaprashanaScheduleFromDb({ activeOnly: false });
+        const updatedYears = getAvailableScheduleYears();
+        setAvailableYears(updatedYears);
+        setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
+      } catch (err) {
+        // Fallback to cached schedule
+      }
     };
 
     loadSchedule();
 
-    const handleUpdate = () => loadSchedule();
+    const handleUpdate = () => {
+      const years = getAvailableScheduleYears();
+      setAvailableYears(years);
+      setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
+    };
+
     window.addEventListener('swarnaprashana_schedule_updated', handleUpdate);
     window.addEventListener('storage', handleUpdate);
     return () => {

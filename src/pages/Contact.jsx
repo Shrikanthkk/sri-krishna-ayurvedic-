@@ -17,10 +17,19 @@ export default function Contact() {
   });
   const [submittedInquiry, setSubmittedInquiry] = useState(null);
 
-  const handleSubmit = (e) => {
+  const [submitting, setSubmitting] = useState(false);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const saved = saveInquiry(formData);
-    setSubmittedInquiry(saved);
+    setSubmitting(true);
+    try {
+      const saved = await saveInquiry(formData);
+      setSubmittedInquiry(saved);
+    } catch (err) {
+      console.error('Error saving inquiry:', err);
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const whatsappUri = `https://wa.me/${clinicData.contact.whatsapp}?text=Hello%20Sri%20Krishna%20Ayurvedic%20Clinic,%20I%20would%20like%20to%20enquire%20about%20a%20consultation.`;

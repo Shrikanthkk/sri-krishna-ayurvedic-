@@ -1,0 +1,90 @@
+-- PostgreSQL Schema for Sri Krishna Ayurvedic Clinic
+
+CREATE TABLE IF NOT EXISTS users (
+  id SERIAL PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  phone VARCHAR(50),
+  password_hash VARCHAR(255) NOT NULL,
+  role VARCHAR(50) NOT NULL DEFAULT 'user',
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS appointments (
+  id VARCHAR(100) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  email VARCHAR(255),
+  treatment VARCHAR(255) NOT NULL DEFAULT 'General Consultation',
+  date DATE NOT NULL,
+  time_slot VARCHAR(50) NOT NULL DEFAULT '10:00 AM',
+  status VARCHAR(50) NOT NULL DEFAULT 'Pending',
+  notes TEXT,
+  submitted_at VARCHAR(100),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS inquiries (
+  id VARCHAR(100) PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  email VARCHAR(255),
+  subject VARCHAR(255) NOT NULL DEFAULT 'General Inquiry',
+  message TEXT NOT NULL,
+  is_read BOOLEAN NOT NULL DEFAULT false,
+  submitted_at VARCHAR(100),
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS clinic_settings (
+  id VARCHAR(50) PRIMARY KEY DEFAULT 'default',
+  main_address TEXT NOT NULL,
+  branch_address TEXT NOT NULL,
+  doctor_name VARCHAR(255) NOT NULL,
+  qualifications VARCHAR(255) NOT NULL,
+  registration_no VARCHAR(100) NOT NULL,
+  experience_years VARCHAR(50) NOT NULL,
+  consultation_fee VARCHAR(50) NOT NULL,
+  fee_note VARCHAR(100) NOT NULL,
+  phone VARCHAR(50) NOT NULL,
+  alt_phone VARCHAR(50) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  working_hours VARCHAR(255) NOT NULL,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS treatments (
+  id VARCHAR(100) PRIMARY KEY,
+  number VARCHAR(10),
+  title VARCHAR(255) NOT NULL,
+  subtitle VARCHAR(255),
+  description TEXT,
+  benefits JSONB DEFAULT '[]'::jsonb,
+  duration VARCHAR(100),
+  image VARCHAR(255),
+  link VARCHAR(255),
+  is_active BOOLEAN NOT NULL DEFAULT true,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS swarnaprashana_schedule (
+  id VARCHAR(100) PRIMARY KEY,
+  month VARCHAR(50) NOT NULL,
+  date VARCHAR(10) NOT NULL,
+  year INT NOT NULL DEFAULT 2026,
+  full_date DATE,
+  status VARCHAR(50) NOT NULL DEFAULT 'Active',
+  display_order INT DEFAULT 1,
+  created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments(date);
+CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments(status);
+CREATE INDEX IF NOT EXISTS idx_inquiries_read ON inquiries(is_read);
+CREATE INDEX IF NOT EXISTS idx_swarna_year_status ON swarnaprashana_schedule(year, status);

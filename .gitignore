@@ -36,6 +36,7 @@ logs/
 
 .vercel
 .env*
+!.env.example
 *.zip
 /Meditating_figure_chakras_glowing_202608181320.mp4
 !public/
