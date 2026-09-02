@@ -58,19 +58,19 @@ export default function Navbar({ onOpenBooking }) {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-40 h-[70px] sm:h-[76px] flex items-center transition-all duration-300 overflow-visible ${
+        className={`fixed top-0 left-0 right-0 z-40 h-[78px] sm:h-[88px] xl:h-[94px] flex items-center transition-all duration-300 overflow-visible ${
           scrolled ? 'glass-nav-scrolled shadow-elevated' : 'glass-nav bg-white/95 backdrop-blur-md'
         }`}
       >
         <div className="w-full pl-0 sm:pl-1 pr-2 sm:pr-4 md:pr-6 flex items-center justify-between gap-1.5 sm:gap-2.5 xl:gap-4 overflow-visible relative">
           
-          {/* 1. Left: Clinic Brand (Logo Flush Left + 10% Reduced Font Size) */}
+          {/* 1. Left: Clinic Brand (Logo 40% Larger) */}
           <Link
             to="/"
-            className="group flex items-center gap-1.5 sm:gap-2 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 -ml-0.5 sm:ml-0"
+            className="group flex items-center gap-1.5 sm:gap-2.5 focus:outline-none shrink-0 cursor-pointer overflow-visible relative z-50 -ml-0.5 sm:ml-0"
           >
-            {/* Circular Logo Badge */}
-            <div className="relative w-[52px] h-[52px] sm:w-[60px] sm:h-[60px] xl:w-[64px] xl:h-[64px] rounded-full p-1 bg-white border border-brass-400/80 shadow-sm shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+            {/* Circular Logo Badge (Enlarged by 40%) */}
+            <div className="relative w-[73px] h-[73px] sm:w-[84px] sm:h-[84px] xl:w-[90px] xl:h-[90px] rounded-full p-1 bg-white border border-brass-400/80 shadow-sm shrink-0 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
               <div className="w-full h-full rounded-full overflow-hidden flex items-center justify-center bg-white">
                 <img
                   src="/images/logo.png"
@@ -238,7 +238,7 @@ export default function Navbar({ onOpenBooking }) {
                 onClick={() => setMobileOpen(false)}
                 className="flex items-center gap-3"
               >
-                <div className="w-11 h-11 rounded-full p-0.5 bg-white border border-brass-400/60 shadow-md shrink-0 flex items-center justify-center">
+                <div className="w-[62px] h-[62px] rounded-full p-1 bg-white border border-brass-400/60 shadow-md shrink-0 flex items-center justify-center">
                   <div className="w-full h-full rounded-full overflow-hidden">
                     <img
                       src="/images/logo.png"
