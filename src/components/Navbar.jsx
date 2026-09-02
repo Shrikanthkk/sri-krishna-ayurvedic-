@@ -24,7 +24,7 @@ export default function Navbar({ onOpenBooking }) {
     { name: 'ABOUT US', path: '/about' },
     { name: 'ALL TREATMENTS', path: '/treatments', hasDropdown: true },
     { name: 'GALLERY', path: '/gallery' },
-    { name: 'TESTIMONIALS', path: '/testimonials' },
+    { name: 'REVIEW', path: '/reviews' },
     { name: 'CONTACT US', path: '/contact' }
   ];
 
@@ -48,6 +48,9 @@ export default function Navbar({ onOpenBooking }) {
     }
     if (link.hasDropdown) {
       return location.pathname.startsWith('/treatments');
+    }
+    if (link.path === '/reviews' || link.path === '/testimonials') {
+      return location.pathname === '/reviews' || location.pathname === '/testimonials';
     }
     return location.pathname === link.path;
   };

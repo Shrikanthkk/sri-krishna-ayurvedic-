@@ -91,7 +91,7 @@ export default function Testimonials() {
           <button
             onClick={handlePrev}
             className="absolute -left-3 sm:-left-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white border border-earth-200 text-forest-950 shadow-elevated hover:bg-forest-900 hover:text-cream-50 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-110 active:scale-95"
-            aria-label="Slide to previous testimonials"
+            aria-label="Slide to previous reviews"
             title="Previous"
           >
             <ChevronLeft className="w-5 h-5" />
@@ -101,7 +101,7 @@ export default function Testimonials() {
           <button
             onClick={handleNext}
             className="absolute -right-3 sm:-right-5 top-1/2 -translate-y-1/2 z-30 w-11 h-11 rounded-full bg-white border border-earth-200 text-forest-950 shadow-elevated hover:bg-forest-900 hover:text-cream-50 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-110 active:scale-95"
-            aria-label="Slide to next testimonials"
+            aria-label="Slide to next reviews"
             title="Next"
           >
             <ChevronRight className="w-5 h-5" />
@@ -205,7 +205,7 @@ export default function Testimonials() {
                     ? 'bg-forest-900 w-7'
                     : 'bg-earth-300 hover:bg-earth-500 w-2'
                 }`}
-                aria-label={`Go to testimonial ${idx + 1}`}
+                aria-label={`Go to review ${idx + 1}`}
               />
             ))}
           </div>
@@ -215,7 +215,7 @@ export default function Testimonials() {
             <button
               onClick={handlePrev}
               className="px-3.5 py-2 rounded-full border border-earth-200 hover:bg-forest-900 hover:text-cream-50 text-forest-900 bg-white shadow-xs transition-colors cursor-pointer flex items-center gap-1 text-xs font-semibold"
-              aria-label="Previous testimonials"
+              aria-label="Previous reviews"
             >
               <ChevronLeft className="w-4 h-4" />
               <span className="hidden sm:inline">Previous</span>
@@ -231,7 +231,7 @@ export default function Testimonials() {
             <button
               onClick={handleNext}
               className="px-3.5 py-2 rounded-full border border-earth-200 hover:bg-forest-900 hover:text-cream-50 text-forest-900 bg-white shadow-xs transition-colors cursor-pointer flex items-center gap-1 text-xs font-semibold"
-              aria-label="Next testimonials"
+              aria-label="Next reviews"
             >
               <span className="hidden sm:inline">Next</span>
               <ChevronRight className="w-4 h-4" />

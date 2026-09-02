@@ -59,12 +59,12 @@ export default function Testimonials() {
       <PageHero
         badge="VERIFIED PATIENT REVIEWS"
         title="Patient Feedback & Healing Stories"
-        subtitle="Authentic Google Reviews and heartfelt testimonials from patients treated by Senior Physician Dr. Anand Krishna & clinical team in KR Puram."
+        subtitle="Authentic Google Reviews and heartfelt reviews from patients treated by Senior Physician Dr. Anand Krishna & clinical team in KR Puram."
         bgImage="/images/hero_stock_1.jpg"
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-        <Breadcrumb items={[{ label: 'Testimonials' }]} />
+        <Breadcrumb items={[{ label: 'Reviews' }]} />
 
         {/* 1. AUTO-SLIDING FEATURED CARDS CAROUSEL */}
         <section 
@@ -80,7 +80,7 @@ export default function Testimonials() {
                 <span className="text-[11px] font-bold uppercase tracking-widest text-brass-600">Featured Spotlight Carousel</span>
               </div>
               <h3 className="font-serif text-2xl sm:text-3xl text-forest-950 font-light">
-                Auto-Rotating Patient Testimonials
+                Auto-Rotating Patient Reviews
               </h3>
             </div>
 
@@ -105,7 +105,7 @@ export default function Testimonials() {
             <button
               onClick={prevAuto}
               className="absolute -left-3 sm:-left-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white border border-earth-200 text-forest-950 shadow-elevated hover:bg-forest-900 hover:text-cream-50 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-110 active:scale-95"
-              aria-label="Slide to previous testimonials"
+              aria-label="Slide to previous reviews"
               title="Previous"
             >
               <ChevronLeft className="w-4 h-4" />
@@ -115,7 +115,7 @@ export default function Testimonials() {
             <button
               onClick={nextAuto}
               className="absolute -right-3 sm:-right-4 top-1/2 -translate-y-1/2 z-30 w-10 h-10 rounded-full bg-white border border-earth-200 text-forest-950 shadow-elevated hover:bg-forest-900 hover:text-cream-50 flex items-center justify-center transition-all duration-300 cursor-pointer hover:scale-110 active:scale-95"
-              aria-label="Slide to next testimonials"
+              aria-label="Slide to next reviews"
               title="Next"
             >
               <ChevronRight className="w-4 h-4" />
@@ -238,7 +238,7 @@ export default function Testimonials() {
                 ALL PATIENT REVIEWS
               </span>
               <h3 className="font-serif text-3xl text-forest-950 font-light">
-                Explore All Testimonials
+                Explore All Reviews
               </h3>
             </div>
 

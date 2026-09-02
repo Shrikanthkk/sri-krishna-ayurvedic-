@@ -87,8 +87,10 @@ function AppContent() {
           
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/gallery." element={<Navigate to="/gallery" replace />} />
-          <Route path="/testimonials" element={<Testimonials />} />
-          <Route path="/testimonials." element={<Navigate to="/testimonials" replace />} />
+          <Route path="/reviews" element={<Testimonials />} />
+          <Route path="/reviews." element={<Navigate to="/reviews" replace />} />
+          <Route path="/testimonials" element={<Navigate to="/reviews" replace />} />
+          <Route path="/testimonials." element={<Navigate to="/reviews" replace />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/contact." element={<Navigate to="/contact" replace />} />
           <Route path="/book-appointment" element={<BookAppointment />} />
