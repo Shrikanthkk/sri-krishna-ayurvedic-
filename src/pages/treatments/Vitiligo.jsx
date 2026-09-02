@@ -30,7 +30,7 @@ export default function Vitiligo({ onOpenBooking }) {
     },
     {
       name: "Virechana (Therapeutic Liver & Blood Cleansing)",
-      tag: "Panchakarma Shodhana",
+      tag: "Ayurvedic Shodhana",
       icon: Droplets,
       desc: "A primary classical purification therapy for chronic skin conditions. Virechana eliminates deep-seated toxins (Ama) from the liver, gall bladder, and gastrointestinal tract, clearing the micro-channels (Srotas) of the blood and skin."
     },

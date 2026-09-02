@@ -76,9 +76,9 @@ export const clinicData = {
       image: "/images/shirodhara.jpg",
       tagline: "HOLISTIC BALANCE & WELLNESS",
       title: "Restore Balance. Renew Your Wellbeing.",
-      description: "Harmonize Vata, Pitta, and Kapha through Panchakarma detox and soothing Shirodhara.",
+      description: "Harmonize Vata, Pitta, and Kapha through personalized therapies and soothing Shirodhara.",
       badge: "Holistic Wellness",
-      highlight: "Cellular Detox"
+      highlight: "Natural Healing"
     },
     {
       id: 3,
@@ -96,10 +96,10 @@ export const clinicData = {
     title: "Senior Ayurvedic Physician",
     qualifications: "BAMS (Bachelor of Ayurvedic Medicine & Surgery)",
     experienceYears: "26+ Years of Clinical Practice",
-    bio: "With 26+ years of Ayurvedic practice, Dr. Anand Krishna specializes in Nadi Pariksha, classical Panchakarma detox, and personalized herbal regimens.",
+    bio: "With 26+ years of Ayurvedic practice, Dr. Anand Krishna specializes in Nadi Pariksha, classical herbal care, and personalized wellness regimens.",
     specialties: [
       "Nadi Pariksha (Pulse Diagnosis)",
-      "Panchakarma & Detox Therapy",
+      "Traditional Ayurvedic Therapies",
       "Chronic Joint & Spine Pain Care",
       "Digestive & Metabolic Health",
       "Stress & Lifestyle Wellness"
@@ -325,7 +325,7 @@ export const clinicData = {
     },
     {
       id: 2,
-      quote: "A compassionate doctor who explains root causes clearly. The Panchakarma treatment plan was exceptionally effective for my chronic knee stiffness.",
+      quote: "A compassionate doctor who explains root causes clearly. The personalized treatment plan was exceptionally effective for my chronic knee stiffness.",
       author: "Sunitha N.",
       locality: "T.C. Palya Main Road",
       treatment: "Joint Care",

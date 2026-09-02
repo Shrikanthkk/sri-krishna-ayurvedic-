@@ -42,7 +42,7 @@ export default function Home({ onOpenBooking }) {
               </div>
 
               <p className="text-earth-800 text-sm sm:text-base font-light leading-relaxed">
-                For over 26 years, Dr. Anand Krishna (BAMS) has provided authentic Ayurvedic care in KR Puram, specializing in Nadi Pariksha, Panchakarma detox, and herbal wellness.
+                For over 26 years, Dr. Anand Krishna (BAMS) has provided authentic Ayurvedic care in KR Puram, specializing in Nadi Pariksha, root-cause healing, and herbal wellness.
               </p>
 
               <div className="grid grid-cols-2 gap-3 pt-1">

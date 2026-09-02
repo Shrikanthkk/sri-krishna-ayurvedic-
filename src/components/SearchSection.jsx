@@ -25,7 +25,6 @@ export default function SearchSection({ onOpenBooking }) {
   const popularSearches = [
     { title: "Hysterectomy", sectionId: "treatments" },
     { title: "Normal Delivery", sectionId: "treatments" },
-    { title: "Panchakarma Detox", sectionId: "treatments" },
     { title: "Nadi Pariksha", sectionId: "treatments" }
   ];
 

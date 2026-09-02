@@ -83,11 +83,11 @@ export default function About() {
               <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5] relative group bg-forest-950">
                 <img
                   src={clinicData.images.shirodhara}
-                  alt="Traditional Panchakarma & Shirodhara at Sri Krishna Ayurvedic Clinic"
+                  alt="Traditional Ayurvedic Care & Shirodhara at Sri Krishna Ayurvedic Clinic"
                   className="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700"
                 />
                 <div className="absolute inset-0 editorial-overlay flex flex-col justify-end p-5 text-cream-50">
-                  <span className="text-xs text-brass-400 font-semibold uppercase tracking-wider">Traditional Panchakarma</span>
+                  <span className="text-xs text-brass-400 font-semibold uppercase tracking-wider">Traditional Ayurvedic Therapies</span>
                   <p className="font-serif text-lg font-light text-cream-50">Sri Krishna Ayurvedic Clinic</p>
                   <p className="text-xs text-cream-200/80">KR Puram, Bangalore</p>
                 </div>

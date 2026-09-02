@@ -19,7 +19,7 @@ const defaultAppointments = [
     name: 'Sunitha Narayan',
     phone: '+91 98440 90626',
     email: 'sunitha.n@yahoo.com',
-    treatment: 'Panchakarma Detox Therapy',
+    treatment: 'Integrative Cancer Care',
     date: '2026-08-16',
     timeSlot: '02:00 PM',
     status: 'Pending',
@@ -56,8 +56,8 @@ const defaultInquiries = [
     name: 'Kiran Raj',
     phone: '+91 99002 34567',
     email: 'kiran.raj@gmail.com',
-    subject: 'Panchakarma Package Details',
-    message: 'Could you please provide details about the 7-day Panchakarma detoxification schedule and timings at KR Puram main branch?',
+    subject: 'Ayurvedic Consultation Details',
+    message: 'Could you please provide details about the consultation schedule and timings at KR Puram main branch?',
     read: true,
     submittedAt: '2026-08-11 04:10 PM'
   }
@@ -73,27 +73,16 @@ const defaultSettings = {
   experienceYears: "26+",
   consultationFee: "₹50",
   feeNote: "Fixed Fee at Visit",
-  phone: "+91 98440 90626",
-  altPhone: "+91 98440 90626",
+  phone: "+91 88924 09195",
+  altPhone: "+91 74062 90626",
   email: "dranandkrishna31@gmail.com",
   workingHours: "Mon - Sat: 10:00 AM - 7:00 PM (Sunday Closed)"
 };
 
 const defaultTreatments = [
   {
-    id: "panchakarma",
-    number: "01",
-    title: "Panchakarma Detox Therapy",
-    subtitle: "5-Fold Classical Purification",
-    description: "Authentic cellular detoxification protocol eliminating deep-seated toxins (Ama) through Vamana, Virechana, Basti, Nasya, and Raktamokshana.",
-    benefits: ["Complete cellular detox", "Boosts metabolic immunity", "Restores Dosha harmony"],
-    duration: "7 - 21 Days",
-    image: "/images/panchakarma.png",
-    link: "/treatments/panchakarma"
-  },
-  {
     id: "cancer-treatment",
-    number: "02",
+    number: "01",
     title: "Integrative Cancer Care",
     subtitle: "Rasayana & Symptom Support",
     description: "Holistic herbal Rasayana protocols complementing conventional oncology to enhance immunity, reduce chemo-toxicity, and improve quality of life.",
@@ -104,7 +93,7 @@ const defaultTreatments = [
   },
   {
     id: "swarnaprashana",
-    number: "03",
+    number: "02",
     title: "Swarnaprashana (Gold Drops)",
     subtitle: "Pediatric Brain & Immunity Booster",
     description: "Ancient Rasayana drops prepared with 24k Suvarna Bhasma, Brahmi, Vacha, and organic honey administered on auspicious Pushya Nakshatra days for children aged 0-16.",
@@ -115,7 +104,7 @@ const defaultTreatments = [
   },
   {
     id: "vitiligo",
-    number: "04",
+    number: "03",
     title: "Vitiligo (White Patches / Shwitra)",
     subtitle: "Melanocyte Stimulation Protocol",
     description: "Targeted Ayurvedic herbal formulations, blood purification (Rakta Shodhana), and dietary corrections to stimulate natural skin re-pigmentation.",
@@ -126,7 +115,7 @@ const defaultTreatments = [
   },
   {
     id: "physiotherapy",
-    number: "05",
+    number: "04",
     title: "Physiotherapy & Spine Rehab",
     subtitle: "Kati Basti & Joint Mobilization",
     description: "Integration of classical Marma therapy, herbal potli fomentation (Patra Pinda Sweda), and modern spinal alignment exercises for chronic pain.",
@@ -137,7 +126,7 @@ const defaultTreatments = [
   },
   {
     id: "reduce-obesity",
-    number: "06",
+    number: "05",
     title: "Weight & Metabolism Balance",
     subtitle: "Udvartana Powder Massage & Diet",
     description: "Deep herbal powder lymphatic scrubs (Udvartana) combined with Agni-stimulating medicines to burn stubborn Meda (fat) and normalize lipid profiles.",
@@ -148,7 +137,7 @@ const defaultTreatments = [
   },
   {
     id: "joint-pain-arthritis",
-    number: "07",
+    number: "06",
     title: "Joint Pain & Arthritis (Sandhivata)",
     subtitle: "Janu Basti & Anti-inflammatory Care",
     description: "Specialized warm medicated oil pooling (Janu Basti) and herbal Guggulu compounds that lubricate cartilage, reduce swelling, and eliminate morning stiffness.",
@@ -159,7 +148,7 @@ const defaultTreatments = [
   },
   {
     id: "skin-problems",
-    number: "08",
+    number: "07",
     title: "Chronic Skin Diseases (Kushta)",
     subtitle: "Psoriasis, Eczema & Allergies",
     description: "Comprehensive blood-cleansing herbal decoctions and soothing Lepa therapies addressing root causes of chronic psoriasis, fungal infections, and hives.",
@@ -170,7 +159,7 @@ const defaultTreatments = [
   },
   {
     id: "alopecia",
-    number: "09",
+    number: "08",
     title: "Alopecia (Hair Fall & Scalp Care)",
     subtitle: "Shirodhara & Nasya Protocol",
     description: "Medicated oil drip on forehead (Shirodhara) with customized herbal scalp pastes to nourish dormant follicles, prevent DHT damage, and eliminate dandruff.",
@@ -181,7 +170,7 @@ const defaultTreatments = [
   },
   {
     id: "sexual-disorders",
-    number: "10",
+    number: "09",
     title: "Vajikarana & Reproductive Health",
     subtitle: "Confidential Vitality Restorative",
     description: "Discrete, evidence-backed classical Rasayana & Vajikarana botanical treatments for erectile strength, stamina, oligospermia, and hormonal balance.",
@@ -192,7 +181,7 @@ const defaultTreatments = [
   },
   {
     id: "de-addiction",
-    number: "11",
+    number: "10",
     title: "Herbal De-addiction Support",
     subtitle: "Alcohol & Tobacco Withdrawal Relief",
     description: "Safe Ayurvedic herbal formulations reducing physiological cravings, detoxifying liver enzymes, and calming nervous anxiety during withdrawal.",

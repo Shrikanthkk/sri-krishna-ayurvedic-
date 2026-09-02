@@ -27,7 +27,6 @@ export default function SearchBar({ onOpenBooking }) {
     { title: "Physiotherapy & Rehabilitation", path: "/treatments/physiotherapy" },
     { title: "Reduce Obesity (Weight Loss)", path: "/treatments/reduce-obesity" },
     { title: "Nadi Pariksha", sectionId: "treatments" },
-    { title: "Panchakarma Detox", sectionId: "treatments" },
     { title: "Swarnaprashana (Suvarnaprashana)", path: "/treatments/swarnaprashana" },
     { title: "Integrative Cancer Care", path: "/treatments/cancer-care" }
   ];
@@ -41,7 +40,6 @@ export default function SearchBar({ onOpenBooking }) {
     { title: "Reduce Obesity & Sthoulya Specialist", type: "SPECIALITY", path: "/treatments/reduce-obesity" },
     { title: "Udwarthanam Weight Loss Massage", type: "SPECIALITY", path: "/treatments/reduce-obesity" },
     { title: "Nadi Pariksha Specialist", type: "SPECIALITY", sectionId: "treatments" },
-    { title: "Panchakarma Detox Therapist", type: "SPECIALITY", sectionId: "treatments" },
     { title: "Spine & Joint Care Specialist", type: "SPECIALITY", sectionId: "treatments" },
     { title: "Digestive & IBS Specialist", type: "SPECIALITY", sectionId: "treatments" },
     { title: "Pediatric Swarnaprashana (Suvarnaprashana)", type: "SPECIALITY", path: "/treatments/swarnaprashana" },

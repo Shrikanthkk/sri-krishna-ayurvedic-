@@ -30,7 +30,7 @@ export default function Physiotherapy({ onOpenBooking }) {
     },
     {
       name: "Kati Basti & Janu Basti (Localized Oil Retention)",
-      tag: "Classical Panchakarma",
+      tag: "Classical Oil Therapy",
       icon: Bone,
       desc: "A classical Ayurvedic specialized therapy where a reservoir of medicated dough is placed over the spine (Kati) or knees (Janu) and filled with warm, dosha-specific medicated oils (Mahanarayana, Ksheerabala). Deeply lubricates degenerated discs and nourishes spinal cartilage."
     },

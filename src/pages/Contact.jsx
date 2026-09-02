@@ -45,7 +45,7 @@ export default function Contact() {
       <PageHero
         badge="GET IN TOUCH"
         title="Contact Us"
-        subtitle="Enquire about consultations, Panchakarma therapy schedules, or direct clinic visits in KR Puram."
+        subtitle="Enquire about consultations, personalized therapy schedules, or direct clinic visits in KR Puram."
         bgImage="/images/hero_stock_2.jpg"
       />
 

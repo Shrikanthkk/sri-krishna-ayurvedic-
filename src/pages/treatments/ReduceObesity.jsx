@@ -30,9 +30,9 @@ export default function ReduceObesity({ onOpenBooking }) {
     },
     {
       name: "Lekhana Basti (Medicated Detox Enema)",
-      tag: "Panchakarma Detox",
+      tag: "Ayurvedic Detox",
       icon: Droplet,
-      desc: "A specialized classical Panchakarma therapy utilizing herbal decoctions prepared with Triphala, honey, rock salt, and alkaline herbal extracts. It deeply scrapes visceral toxins (Ama), balances Kapha-Vata, and clears congested fat channels (Medovaha Srotas)."
+      desc: "A specialized classical Ayurvedic therapy utilizing herbal decoctions prepared with Triphala, honey, rock salt, and alkaline herbal extracts. It deeply scrapes visceral toxins (Ama), balances Kapha-Vata, and clears congested fat channels (Medovaha Srotas)."
     },
     {
       name: "Dhatvagni & Metabolic Fire Kindling",
@@ -71,7 +71,7 @@ export default function ReduceObesity({ onOpenBooking }) {
       <PageHero
         badge="METABOLIC & WEIGHT MANAGEMENT"
         title="Reduce Obesity – Ayurvedic Weight & Fat Loss"
-        subtitle="Holistic, root-cause Ayurvedic weight management combining Udwarthanam herbal powder scraping, Panchakarma detox, and metabolic revival for sustainable fat loss."
+        subtitle="Holistic, root-cause Ayurvedic weight management combining Udwarthanam herbal powder scraping, gentle metabolic detox, and metabolic revival for sustainable fat loss."
         bgImage="/images/reduce_obesity.jpg"
       />
 

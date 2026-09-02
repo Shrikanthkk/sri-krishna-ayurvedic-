@@ -61,7 +61,7 @@ router.post('/', async (req, res) => {
         item.description || 'Custom treatment protocol prepared by Dr. Anand Krishna.',
         benefitsJson,
         item.duration || '45 Minutes',
-        item.image || '/images/panchakarma.png',
+        item.image || '/images/hero_adobe_5.jpg',
         item.link || '/treatments/' + id
       ]
     );

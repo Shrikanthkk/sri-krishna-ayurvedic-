@@ -29,7 +29,7 @@ export default function Footer({ onOpenBooking }) {
             </Link>
 
             <p className="text-xs text-cream-200/70 font-light leading-relaxed max-w-sm">
-              Authentic Ayurvedic healthcare, classic Nadi Pariksha, and holistic Panchakarma therapies guided by Dr. Anand Krishna (BAMS) with over 26 years of clinical practice in KR Puram, Bangalore.
+              Authentic Ayurvedic healthcare, classic Nadi Pariksha, and holistic natural therapies guided by Dr. Anand Krishna (BAMS) with over 26 years of clinical practice in KR Puram, Bangalore.
             </p>
           </div>
 

@@ -11,7 +11,6 @@ export default function TreatmentsDirectory({ onOpenBooking }) {
   // Complete Catalog of Ayurvedic Treatments & Speciality Procedures (Practo Inspired Directory)
   const directoryItems = [
     { id: 1, name: "Nadi Pariksha (Pulse Diagnosis)", category: "Ayurveda", desc: "Classical 3-finger pulse assessment for body constitution & Dosha imbalance.", popular: true },
-    { id: 2, name: "Panchakarma Detox Therapy", category: "Ayurveda", desc: "Complete 5-fold bio-purification & toxic waste elimination.", popular: true },
     { id: 3, name: "Shirodhara (Nervous Relaxation)", category: "Ayurveda", desc: "Continuous warm herbal oil pour over forehead marma points.", popular: true },
     { id: 4, name: "Kati Vasti (Lumbar & Spine Care)", category: "Pain Care", desc: "Warm herbal oil reservoir treatment for lower back ache & sciatica.", popular: true },
     { id: 5, name: "Janu Vasti (Knee Joint Therapy)", category: "Pain Care", desc: "Localized knee reservoir therapy for osteoarthritis & joint stiffness.", popular: true },
@@ -248,7 +247,7 @@ export default function TreatmentsDirectory({ onOpenBooking }) {
                   Sri Krishna Ayurvedic Clinic Overview
                 </h3>
                 <p className="text-sm text-earth-800 leading-relaxed">
-                  Sri Krishna Ayurvedic Clinic in KR Puram, Bangalore is a premier traditional healthcare facility offering verified Ayurvedic consultations, pulse diagnoses, and classic Panchakarma therapies led by Dr. Anand Krishna (BAMS).
+                  Sri Krishna Ayurvedic Clinic in KR Puram, Bangalore is a premier traditional healthcare facility offering verified Ayurvedic consultations, pulse diagnoses, and classic Ayurvedic therapies led by Dr. Anand Krishna (BAMS).
                 </p>
               </div>
 
@@ -356,7 +355,7 @@ export default function TreatmentsDirectory({ onOpenBooking }) {
               <div className="rounded-2xl overflow-hidden border border-earth-200 shadow-soft aspect-[4/3] group relative">
                 <img src={clinicData.images.clinic} alt="Therapy Room" className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                 <div className="absolute inset-0 bg-forest-950/30 flex items-end p-4 text-cream-50 font-serif text-sm">
-                  Serene Panchakarma Room
+                  Serene Therapy Room
                 </div>
               </div>
             </motion.div>
