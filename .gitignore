@@ -38,6 +38,8 @@ logs/
 .env*
 !.env.example
 *.zip
+*.rar
+server/scripts/clone_to_supabase.js
 /Meditating_figure_chakras_glowing_202608181320.mp4
 !public/
 !public/**
