@@ -72,12 +72,29 @@ export default function Contact() {
                 <div className="w-9 h-9 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center shrink-0">
                   <Phone className="w-4.5 h-4.5" />
                 </div>
-                <div>
-                  <h3 className="font-semibold text-sm text-forest-950">Phone Call</h3>
-                  <a href={telUri} className="text-brass-700 font-bold hover:underline text-sm">
-                    {clinicData.contact.phone}
-                  </a>
-                  <p className="text-[11px] text-gray-500 mt-0.5">Mon - Sat: 10:00 AM - 7:00 PM</p>
+                <div className="space-y-1">
+                  <h3 className="font-semibold text-sm text-forest-950">Phone Calls & Inquiries</h3>
+                  <div className="flex flex-col gap-0.5 text-xs">
+                    <p className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-brass-100 text-brass-800 px-1.5 py-0.2 rounded">Main</span>
+                      <a href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`} className="text-brass-700 font-bold hover:underline">
+                        {clinicData.contact.phone}
+                      </a>
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-cream-200 text-forest-900 px-1.5 py-0.2 rounded">Alt</span>
+                      <a href="tel:+917406290626" className="text-forest-950 font-semibold hover:underline">
+                        +91 74062 90626
+                      </a>
+                    </p>
+                    <p className="flex items-center gap-1.5">
+                      <span className="text-[10px] font-bold uppercase tracking-wider bg-cream-200 text-forest-900 px-1.5 py-0.2 rounded">Alt</span>
+                      <a href="tel:+919844090626" className="text-forest-950 font-semibold hover:underline">
+                        +91 98440 90626
+                      </a>
+                    </p>
+                  </div>
+                  <p className="text-[11px] text-gray-500 pt-0.5">Mon - Sat: 10:00 AM - 7:00 PM</p>
                 </div>
               </div>
 

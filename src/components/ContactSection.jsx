@@ -101,8 +101,7 @@ export default function ContactSection() {
 
               <div className="space-y-2 text-xs text-earth-800">
                 <p><strong>Clinic Address:</strong> {clinicData.contact.address}</p>
-                <p><strong>Phone:</strong> {clinicData.contact.phone}</p>
-
+                <p><strong>Phone:</strong> {clinicData.contact.phone} <span className="text-gray-400">|</span> +91 74062 90626 <span className="text-gray-400">|</span> +91 98440 90626</p>
               </div>
             </div>
           </motion.div>

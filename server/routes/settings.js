@@ -14,8 +14,8 @@ const defaultSettings = {
   experienceYears: "26+",
   consultationFee: "₹50",
   feeNote: "Fixed Fee at Visit",
-  phone: "+91 98440 90626",
-  altPhone: "+91 98440 90626",
+  phone: "+91 88924 09195",
+  altPhone: "+91 74062 90626",
   email: "dranandkrishna31@gmail.com",
   workingHours: "Mon - Sat: 10:00 AM - 7:00 PM (Sunday Closed)"
 };

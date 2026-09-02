@@ -150,12 +150,25 @@ export default function Footer({ onOpenBooking }) {
                 <span>Branch: No 98, Opp Kanti Sweets, T.C. Palya Main Rd, KR Puram, Bangalore</span>
               </p>
 
-              <p className="flex items-center gap-2">
-                <Phone className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-                <a href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`} className="hover:text-white">
-                  {clinicData.contact.phone}
-                </a>
-              </p>
+              <div className="flex flex-col gap-1">
+                <p className="flex items-center gap-2">
+                  <Phone className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                  <span className="text-[11px] text-cream-200/80">Main:</span>
+                  <a href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`} className="hover:text-white font-medium">
+                    {clinicData.contact.phone}
+                  </a>
+                </p>
+                <p className="flex items-center gap-2 pl-5.5 text-xs text-cream-200/90">
+                  <span className="text-[11px] text-cream-200/80">Alt:</span>
+                  <a href="tel:+917406290626" className="hover:text-white">
+                    +91 74062 90626
+                  </a>
+                  <span className="text-cream-400/40">|</span>
+                  <a href="tel:+919844090626" className="hover:text-white">
+                    +91 98440 90626
+                  </a>
+                </p>
+              </div>
 
               <p className="flex items-center gap-2">
                 <Mail className="w-3.5 h-3.5 text-brass-400 shrink-0" />

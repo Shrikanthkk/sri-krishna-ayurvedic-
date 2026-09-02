@@ -85,11 +85,33 @@ export default function Hero({ onOpenBooking }) {
                 <ArrowRight className="w-4 h-4 text-brass-600 transition-transform group-hover:translate-x-1" />
               </Link>
 
+              {/* Main Clinic Number */}
               <a
                 href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`}
                 className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-0.5 group"
+                title="Call Main Number"
               >
                 <Phone className="w-4 h-4 text-forest-950 group-hover:scale-110 transition-transform" />
+                <span>88924 09195</span>
+              </a>
+
+              {/* Alternate Number 1 */}
+              <a
+                href="tel:+917406290626"
+                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-0.5 group"
+                title="Call Alternate Number"
+              >
+                <Phone className="w-4 h-4 text-forest-950 group-hover:scale-110 transition-transform" />
+                <span>74062 90626</span>
+              </a>
+
+              {/* Additional Number */}
+              <a
+                href="tel:+919844090626"
+                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 bg-white/95 hover:bg-cream-100 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full border border-earth-200 shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 group"
+                title="Call Alternate Number"
+              >
+                <Phone className="w-3.5 h-3.5 text-brass-600 group-hover:scale-110 transition-transform" />
                 <span>98440 90626</span>
               </a>
             </motion.div>
