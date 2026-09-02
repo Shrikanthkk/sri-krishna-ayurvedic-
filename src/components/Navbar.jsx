@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Calendar, MapPin, ChevronDown } from 'lucide-react';
+import { Menu, X, Calendar, MapPin, ChevronDown, ChevronUp } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
 
 export default function Navbar({ onOpenBooking }) {
@@ -10,6 +10,24 @@ export default function Navbar({ onOpenBooking }) {
   const [hoveringTreatments, setHoveringTreatments] = useState(false);
   const [mobileTreatmentsOpen, setMobileTreatmentsOpen] = useState(false);
   const location = useLocation();
+
+  const treatmentsScrollRef = useRef(null);
+  const [canScrollUp, setCanScrollUp] = useState(false);
+  const [canScrollDown, setCanScrollDown] = useState(true);
+
+  const checkScroll = () => {
+    if (treatmentsScrollRef.current) {
+      const { scrollTop, scrollHeight, clientHeight } = treatmentsScrollRef.current;
+      setCanScrollUp(scrollTop > 8);
+      setCanScrollDown(scrollTop + clientHeight < scrollHeight - 8);
+    }
+  };
+
+  const scrollTreatments = (amount) => {
+    if (treatmentsScrollRef.current) {
+      treatmentsScrollRef.current.scrollBy({ top: amount, behavior: 'smooth' });
+    }
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -138,32 +156,85 @@ export default function Navbar({ onOpenBooking }) {
                           className="absolute top-full left-1/2 -translate-x-1/2 pt-2 z-50 pointer-events-auto min-w-[280px]"
                         >
                           <div
-                            className="flex flex-col gap-1 p-3 rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-earth-300 bg-white"
+                            className="flex flex-col rounded-2xl shadow-[0_20px_50px_rgba(0,0,0,0.25)] border border-earth-300 bg-white overflow-hidden min-w-[285px]"
                             style={{ backgroundColor: '#ffffff' }}
                           >
-                            <Link
-                              to="/treatments"
-                              onClick={() => setHoveringTreatments(false)}
-                              className="px-3.5 py-2 text-[11.5px] font-bold tracking-wider uppercase rounded-xl transition-colors border-b border-earth-200 mb-1 text-emerald-800 hover:text-emerald-950 hover:bg-emerald-50 flex items-center justify-between"
-                            >
-                              <span>View All Treatments</span>
-                              <span>→</span>
-                            </Link>
-
-                            {subLinks.map((sub) => (
+                            {/* Pinned Top Link: View All Treatments */}
+                            <div className="p-3 pb-2 border-b border-earth-200 bg-white">
                               <Link
-                                key={sub.name}
-                                to={sub.path}
+                                to="/treatments"
                                 onClick={() => setHoveringTreatments(false)}
-                                className={`px-3.5 py-2 text-[12px] font-medium tracking-[0.02em] rounded-xl transition-colors ${
-                                  location.pathname === sub.path
-                                    ? 'bg-emerald-100 text-forest-950 font-semibold'
-                                    : 'text-forest-950 hover:bg-emerald-50 hover:text-forest-900'
-                                }`}
+                                className="px-3.5 py-2 text-[11.5px] font-bold tracking-wider uppercase rounded-xl transition-colors text-emerald-800 hover:text-emerald-950 hover:bg-emerald-50 flex items-center justify-between"
                               >
-                                <span>{sub.name}</span>
+                                <span>View All Treatments</span>
+                                <span>→</span>
                               </Link>
-                            ))}
+                            </div>
+
+                            {/* Scrollable Treatments Sub-links with clean max height */}
+                            <div
+                              ref={treatmentsScrollRef}
+                              onScroll={checkScroll}
+                              className="max-h-[290px] overflow-y-auto px-3 py-2 flex flex-col gap-1 scroll-smooth"
+                              style={{
+                                scrollbarWidth: 'thin',
+                                scrollbarColor: '#a7d5be #f8faf9'
+                              }}
+                            >
+                              {subLinks.map((sub) => (
+                                <Link
+                                  key={sub.name}
+                                  to={sub.path}
+                                  onClick={() => setHoveringTreatments(false)}
+                                  className={`px-3.5 py-2 text-[12px] font-medium tracking-[0.02em] rounded-xl transition-colors ${
+                                    location.pathname === sub.path
+                                      ? 'bg-emerald-100 text-forest-950 font-semibold'
+                                      : 'text-forest-950 hover:bg-emerald-50 hover:text-forest-900'
+                                  }`}
+                                >
+                                  <span>{sub.name}</span>
+                                </Link>
+                              ))}
+                            </div>
+
+                            {/* Small Scroll Navigation Bar with Buttons */}
+                            <div className="flex items-center justify-between px-3.5 py-2 bg-emerald-50/70 border-t border-earth-200 text-forest-900">
+                              <button
+                                type="button"
+                                onClick={() => scrollTreatments(140)}
+                                className="text-[11px] font-semibold text-emerald-800 hover:text-emerald-950 flex items-center gap-1.5 cursor-pointer"
+                              >
+                                <span>Scroll More</span>
+                                <ChevronDown className="w-3.5 h-3.5 text-emerald-700 animate-bounce" />
+                              </button>
+
+                              <div className="flex items-center gap-1.5">
+                                <button
+                                  type="button"
+                                  onClick={() => scrollTreatments(-120)}
+                                  className={`w-6 h-6 rounded-full bg-white border border-earth-300 flex items-center justify-center transition-all cursor-pointer ${
+                                    canScrollUp ? 'text-forest-950 hover:bg-emerald-100 shadow-xs' : 'text-gray-300 opacity-40 cursor-default'
+                                  }`}
+                                  title="Scroll up"
+                                  disabled={!canScrollUp}
+                                  aria-label="Scroll treatments up"
+                                >
+                                  <ChevronUp className="w-3.5 h-3.5" />
+                                </button>
+                                <button
+                                  type="button"
+                                  onClick={() => scrollTreatments(120)}
+                                  className={`w-6 h-6 rounded-full bg-white border border-earth-300 flex items-center justify-center transition-all cursor-pointer ${
+                                    canScrollDown ? 'text-forest-950 hover:bg-emerald-100 shadow-xs' : 'text-gray-300 opacity-40 cursor-default'
+                                  }`}
+                                  title="Scroll down"
+                                  disabled={!canScrollDown}
+                                  aria-label="Scroll treatments down"
+                                >
+                                  <ChevronDown className="w-3.5 h-3.5" />
+                                </button>
+                              </div>
+                            </div>
                           </div>
                         </motion.div>
                       )}
