@@ -77,7 +77,7 @@ export default function BelowNavbarAnimation() {
       <span className="inline-flex items-center gap-1.5 text-cream-100 shrink-0 whitespace-nowrap">
         <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
         <strong className="text-white font-semibold uppercase tracking-wider text-[11px] sm:text-xs whitespace-nowrap">ANANDAPURA:</strong>
-        <span className="text-brass-300 font-semibold tracking-normal whitespace-nowrap">6:00 PM to 9:30 PM</span>
+        <span className="text-brass-300 font-semibold tracking-normal whitespace-nowrap">6:30 PM to 9:30 PM</span>
       </span>
 
       <span className="text-brass-400/70 select-none shrink-0 font-serif">✦</span>
@@ -86,9 +86,7 @@ export default function BelowNavbarAnimation() {
       <span className="inline-flex items-center gap-1.5 text-cream-100 shrink-0 whitespace-nowrap">
         <MapPin className="w-3.5 h-3.5 text-emerald-400 shrink-0" />
         <strong className="text-white font-semibold uppercase tracking-wider text-[11px] sm:text-xs whitespace-nowrap">KRISHNARAJAPURAM:</strong>
-        <span className="text-brass-300 font-semibold tracking-normal whitespace-nowrap">9:00 AM to 12:30 PM</span>
-        <span className="text-cream-300/40 px-0.5 shrink-0 whitespace-nowrap">|</span>
-        <span className="text-brass-300 font-semibold tracking-normal whitespace-nowrap">5:00 PM to 7:00 PM</span>
+        <span className="text-brass-300 font-semibold tracking-normal whitespace-nowrap">9:00 AM to 10:30 AM</span>
       </span>
 
       <span className="text-brass-400/70 select-none shrink-0 font-serif">✦</span>
