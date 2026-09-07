@@ -275,47 +275,105 @@ export default function Contact() {
 
         </div>
 
-        {/* Practical Google Maps Section with Exact Main Address Banner */}
-        <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white min-h-[380px] flex flex-col mb-10">
-          
-          {/* Header with Exact Main Address */}
-          <div className="p-4 sm:p-5 bg-forest-900 text-cream-50 flex flex-col md:flex-row md:items-center justify-between gap-3 border-b border-forest-800">
-            <div className="space-y-0.5">
-              <span className="text-[10px] font-bold text-brass-400 uppercase tracking-ultra block">
-                MAIN CLINIC LOCATION & MAP
-              </span>
-              <div className="flex items-center gap-2 text-white font-serif text-lg font-medium">
-                <Building2 className="w-4.5 h-4.5 text-brass-400 shrink-0" />
-                <h3>Sri Krishna Ayurvedic Clinic — Main Address</h3>
-              </div>
-              <p className="text-xs text-cream-200/90 font-light flex items-center gap-1.5">
-                <MapPin className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-                <span>{clinicData.contact.mainAddress.fullText}</span>
-              </p>
-            </div>
-
-            <a
-              href={clinicData.contact.googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="px-4 py-2 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-1.5 shrink-0 shadow-soft transition-all"
-            >
-              <span>Open Directions</span>
-              <ExternalLink className="w-3.5 h-3.5" />
-            </a>
+        {/* Practical Google Maps Section: Main Clinic & Branch Clinic */}
+        <div className="space-y-6 mb-10">
+          <div className="space-y-1.5">
+            <span className="text-xs uppercase tracking-ultra font-semibold text-brass-600 block">
+              CLINIC LOCATIONS & DIRECTIONS
+            </span>
+            <h2 className="text-2xl sm:text-3xl font-serif font-light text-forest-950">
+              Find Us on Google Maps
+            </h2>
+            <p className="text-xs text-earth-700 font-light">
+              Visit Dr. Anand Krishna at our Main Clinic or Anandapura Branch in KR Puram, Bangalore.
+            </p>
           </div>
 
-          <iframe
-            src={clinicData.contact.mapEmbedSrc}
-            width="100%"
-            height="340"
-            style={{ border: 0 }}
-            allowFullScreen=""
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            title="Sri Krishna Ayurvedic Clinic Main Address Map - No 426, Near Lakshmi Super Speciality Hospital, 3rd Main, KR Puram, Bangalore 560036"
-            className="w-full grow"
-          />
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            
+            {/* 1. Main Clinic Location & Map */}
+            <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white min-h-[380px] flex flex-col">
+              <div className="p-4 sm:p-5 bg-forest-900 text-cream-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-forest-800">
+                <div className="space-y-0.5 min-w-0">
+                  <span className="text-[10px] font-bold text-brass-400 uppercase tracking-ultra block">
+                    MAIN CLINIC LOCATION & MAP
+                  </span>
+                  <div className="flex items-center gap-2 text-white font-serif text-base sm:text-lg font-medium">
+                    <Building2 className="w-4.5 h-4.5 text-brass-400 shrink-0" />
+                    <h3 className="truncate">Sri Krishna Ayurvedic Clinic — Main Address</h3>
+                  </div>
+                  <p className="text-xs text-cream-200/90 font-light flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                    <span className="line-clamp-2 sm:truncate">{clinicData.contact.mainAddress.fullText}</span>
+                  </p>
+                </div>
+
+                <a
+                  href={clinicData.contact.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-1.5 shrink-0 shadow-soft transition-all cursor-pointer"
+                >
+                  <span>Open Directions</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              <iframe
+                src={clinicData.contact.mapEmbedSrc}
+                width="100%"
+                height="340"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Sri Krishna Ayurvedic Clinic Main Address Map - No 426, Near Lakshmi Super Speciality Hospital, 3rd Main, KR Puram, Bangalore 560036"
+                className="w-full grow min-h-[320px]"
+              />
+            </div>
+
+            {/* 2. Branch Clinic Location & Map */}
+            <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white min-h-[380px] flex flex-col">
+              <div className="p-4 sm:p-5 bg-forest-900 text-cream-50 flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-forest-800">
+                <div className="space-y-0.5 min-w-0">
+                  <span className="text-[10px] font-bold text-brass-400 uppercase tracking-ultra block">
+                    BRANCH CLINIC LOCATION & MAP
+                  </span>
+                  <div className="flex items-center gap-2 text-white font-serif text-base sm:text-lg font-medium">
+                    <Building2 className="w-4.5 h-4.5 text-brass-400 shrink-0" />
+                    <h3 className="truncate">Sri Krishna Ayurvedic Clinic — Branch Address</h3>
+                  </div>
+                  <p className="text-xs text-cream-200/90 font-light flex items-center gap-1.5">
+                    <MapPin className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                    <span className="line-clamp-2 sm:truncate">{clinicData.contact.branchAddress.fullText}</span>
+                  </p>
+                </div>
+
+                <a
+                  href={clinicData.contact.branchGoogleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full flex items-center justify-center gap-1.5 shrink-0 shadow-soft transition-all cursor-pointer"
+                >
+                  <span>Open Directions</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
+              </div>
+
+              <iframe
+                src={clinicData.contact.branchMapEmbedSrc}
+                width="100%"
+                height="340"
+                style={{ border: 0 }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Sri Krishna Ayurvedic Clinic Branch Address Map - No. 98, Opp Kanti Sweets, T. C. Palya Main Road, Anandapura, KR Puram, Bangalore 560036"
+                className="w-full grow min-h-[320px]"
+              />
+            </div>
+
+          </div>
         </div>
 
         {/* Booking CTA Banner */}
