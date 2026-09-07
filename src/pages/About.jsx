@@ -309,6 +309,25 @@ export default function About() {
                   </p>
                 </div>
               </div>
+
+              <div className="pt-3 border-t border-earth-100 flex items-center justify-between gap-2">
+                <a
+                  href={clinicData.contact.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-forest-900 hover:bg-forest-800 text-cream-50 text-[11px] font-semibold uppercase tracking-wider rounded-full transition-colors shadow-sm"
+                >
+                  <Navigation className="w-3.5 h-3.5 text-brass-400" />
+                  <span>Get Directions</span>
+                </a>
+                <a
+                  href={telUri}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-cream-100 hover:bg-cream-200 text-forest-950 text-[11px] font-semibold uppercase tracking-wider rounded-full transition-colors"
+                >
+                  <Phone className="w-3.5 h-3.5 text-forest-800" />
+                  <span>Call Main</span>
+                </a>
+              </div>
             </div>
 
             {/* BRANCH CLINIC CARD */}
@@ -340,25 +359,44 @@ export default function About() {
                   </p>
                 </div>
               </div>
+
+              <div className="pt-3 border-t border-earth-100 flex items-center justify-between gap-2">
+                <a
+                  href={clinicData.contact.branchGoogleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-emerald-700 hover:bg-emerald-600 text-white text-[11px] font-semibold uppercase tracking-wider rounded-full transition-colors shadow-sm"
+                >
+                  <Navigation className="w-3.5 h-3.5 text-cream-100" />
+                  <span>Get Directions</span>
+                </a>
+                <a
+                  href={telUri}
+                  className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-cream-100 hover:bg-cream-200 text-forest-950 text-[11px] font-semibold uppercase tracking-wider rounded-full transition-colors"
+                >
+                  <Phone className="w-3.5 h-3.5 text-emerald-800" />
+                  <span>Call Branch</span>
+                </a>
+              </div>
             </div>
 
           </div>
 
-          {/* CRITICAL 50/50 LAYOUT: GOOGLE MAP (LEFT) + REAL CLINIC IMAGE (RIGHT) */}
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+          {/* GOOGLE MAPS FOR BOTH LOCATIONS: MAIN CLINIC (LEFT) + BRANCH CLINIC (RIGHT) */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-stretch">
             
-            {/* LEFT SIDE (50%): Real Interactive Google Maps Embed */}
-            <div className="lg:col-span-6 rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white min-h-[380px] flex flex-col">
+            {/* LEFT: MAIN CLINIC GOOGLE MAP */}
+            <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white min-h-[380px] flex flex-col">
               <div className="p-3.5 bg-forest-900 text-cream-50 flex items-center justify-between">
                 <span className="text-xs font-semibold tracking-wider uppercase flex items-center gap-2">
                   <Navigation className="w-4 h-4 text-brass-400" />
-                  <span>Google Maps — KR Puram</span>
+                  <span>Main Clinic Map — Near Lakshmi Hospital</span>
                 </span>
                 <a
                   href={clinicData.contact.googleMapsUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[11px] text-brass-400 hover:text-white flex items-center gap-1 uppercase tracking-wider font-semibold"
+                  className="text-[11px] text-brass-400 hover:text-white flex items-center gap-1 uppercase tracking-wider font-semibold shrink-0"
                 >
                   <span>Open Directions</span>
                   <ExternalLink className="w-3.5 h-3.5" />
@@ -373,41 +411,101 @@ export default function About() {
                 allowFullScreen=""
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Sri Krishna Ayurvedic Clinic Google Map Location"
+                title="Sri Krishna Ayurvedic Clinic Main Location Google Map"
                 className="w-full grow"
               />
+
+              <div className="p-2.5 bg-cream-50 border-t border-earth-200 text-[11px] text-earth-800 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-brass-600 shrink-0" />
+                <span className="truncate">{clinicData.contact.mainAddress.fullText}</span>
+              </div>
             </div>
 
-            {/* RIGHT SIDE (50%): Real Existing Clinic Image from Project Assets */}
-            <div className="lg:col-span-6 rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white relative flex flex-col group min-h-[380px]">
-              <div className="p-3.5 bg-forest-950 text-cream-50 flex items-center justify-between">
+            {/* RIGHT: BRANCH CLINIC GOOGLE MAP */}
+            <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white min-h-[380px] flex flex-col">
+              <div className="p-3.5 bg-emerald-800 text-cream-50 flex items-center justify-between">
                 <span className="text-xs font-semibold tracking-wider uppercase flex items-center gap-2">
-                  <Camera className="w-4 h-4 text-brass-400" />
-                  <span>Real Clinic Signboard & Exterior</span>
+                  <Navigation className="w-4 h-4 text-cream-200" />
+                  <span>Branch Clinic Map — TC Palya (Opp Kanti Sweets)</span>
                 </span>
-                <span className="text-[10px] text-brass-400 font-bold uppercase">Reg No: 13199</span>
+                <a
+                  href={clinicData.contact.branchGoogleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[11px] text-cream-200 hover:text-white flex items-center gap-1 uppercase tracking-wider font-semibold shrink-0"
+                >
+                  <span>Open Directions</span>
+                  <ExternalLink className="w-3.5 h-3.5" />
+                </a>
               </div>
 
-              <div className="relative grow overflow-hidden bg-forest-950">
-                <img
-                  src="/images/clinic_front.jpg"
-                  alt="Sri Krishna Ayurvedic Clinic Signboard"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
-                />
-                <div className="absolute inset-0 editorial-overlay flex flex-col justify-end p-5 text-cream-50 pointer-events-none">
-                  <span className="text-[10px] font-bold text-brass-400 uppercase tracking-widest">
-                    Authentic Building Entrance
-                  </span>
-                  <h4 className="font-serif text-lg sm:text-xl font-medium text-cream-50 leading-tight">
-                    Sri Krishna Ayurvedic Clinic
-                  </h4>
-                  <p className="text-xs text-cream-200/80 mt-1">
-                    Dr. Anand Krishna (BAMS) • Dhanvantari Road, KR Puram
-                  </p>
-                </div>
+              <iframe
+                src={clinicData.contact.branchMapEmbedSrc}
+                width="100%"
+                height="100%"
+                style={{ border: 0, minHeight: '340px' }}
+                allowFullScreen=""
+                loading="lazy"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Sri Krishna Ayurvedic Clinic Branch Location Google Map"
+                className="w-full grow"
+              />
+
+              <div className="p-2.5 bg-cream-50 border-t border-earth-200 text-[11px] text-earth-800 flex items-center gap-1.5">
+                <MapPin className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                <span className="truncate">{clinicData.contact.branchAddress.fullText}</span>
               </div>
             </div>
 
+          </div>
+
+          {/* REAL CLINIC PHOTO & VISITING INFORMATION */}
+          <div className="rounded-3xl overflow-hidden shadow-elevated border border-earth-200 bg-white grid grid-cols-1 md:grid-cols-12 items-center">
+            <div className="md:col-span-5 h-60 md:h-64 relative overflow-hidden bg-forest-950">
+              <img
+                src="/images/clinic_front.jpg"
+                alt="Sri Krishna Ayurvedic Clinic Signboard"
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 editorial-overlay flex flex-col justify-end p-5 text-cream-50">
+                <span className="text-[10px] font-bold text-brass-400 uppercase tracking-widest">
+                  Authentic Building Entrance
+                </span>
+                <p className="font-serif text-lg font-medium text-cream-50">Sri Krishna Ayurvedic Clinic</p>
+                <p className="text-xs text-cream-200/80">Reg No: 13199 • KR Puram, Bangalore</p>
+              </div>
+            </div>
+            <div className="md:col-span-7 p-6 sm:p-7 space-y-3">
+              <span className="px-3 py-1 bg-forest-100 text-forest-900 text-[10px] font-bold uppercase tracking-widest rounded-full inline-block">
+                Visit Us In Person
+              </span>
+              <h3 className="font-serif text-xl sm:text-2xl font-light text-forest-950">
+                Accessible Healthcare in KR Puram
+              </h3>
+              <p className="text-earth-800 text-xs sm:text-sm font-light leading-relaxed">
+                Experience authentic pulse diagnosis (Nadi Pariksha) and classical Ayurvedic therapies at both our locations. Dr. Anand Krishna (BAMS) is available Monday through Saturday.
+              </p>
+              <div className="pt-1 flex flex-wrap gap-2.5">
+                <a
+                  href={clinicData.contact.googleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-forest-900 hover:bg-forest-800 text-cream-50 text-[11px] font-semibold uppercase tracking-wider rounded-full flex items-center gap-1.5 transition-colors"
+                >
+                  <Navigation className="w-3 h-3 text-brass-400" />
+                  <span>Main Clinic Map</span>
+                </a>
+                <a
+                  href={clinicData.contact.branchGoogleMapsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-4 py-2 bg-emerald-700 hover:bg-emerald-600 text-white text-[11px] font-semibold uppercase tracking-wider rounded-full flex items-center gap-1.5 transition-colors"
+                >
+                  <Navigation className="w-3 h-3 text-cream-100" />
+                  <span>Branch Clinic Map</span>
+                </a>
+              </div>
+            </div>
           </div>
 
         </section>

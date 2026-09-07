@@ -139,6 +139,63 @@ export const api = {
     return handleResponse(res);
   },
 
+  async updateRunningBarSettings(runningBarData) {
+    const res = await fetch(`${API_BASE_URL}/settings/running-bar`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(runningBarData)
+    });
+    return handleResponse(res);
+  },
+
+  async uploadHeroSliderImage(file, onProgress) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      const formData = new FormData();
+      formData.append('image', file);
+
+      xhr.open('POST', `${API_BASE_URL}/settings/hero-slider/upload`);
+      const token = localStorage.getItem('sk_admin_token');
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      }
+
+      if (xhr.upload && onProgress) {
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percent = Math.round((event.loaded / event.total) * 100);
+            onProgress(percent);
+          }
+        };
+      }
+
+      xhr.onload = () => {
+        try {
+          const response = JSON.parse(xhr.responseText);
+          if (xhr.status >= 200 && xhr.status < 300 && response.success) {
+            resolve(response);
+          } else {
+            reject(new Error(response.error || `Upload failed with status ${xhr.status}`));
+          }
+        } catch (e) {
+          reject(new Error('Failed to parse upload response.'));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Network error during image upload.'));
+      xhr.send(formData);
+    });
+  },
+
+  async updateHeroSliderSettings(heroSliderData) {
+    const res = await fetch(`${API_BASE_URL}/settings/hero-slider`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(heroSliderData)
+    });
+    return handleResponse(res);
+  },
+
   async resetClinicSettings() {
     const res = await fetch(`${API_BASE_URL}/settings/reset`, {
       method: 'POST',

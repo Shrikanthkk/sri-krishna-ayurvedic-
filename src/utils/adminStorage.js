@@ -8,6 +8,97 @@ const CLINIC_SETTINGS_KEY = 'sk_clinic_settings';
 const TREATMENTS_KEY = 'sk_clinic_treatments';
 const SWARNAPRASHANA_KEY = 'sk_clinic_swarnaprashana_schedule';
 
+export const defaultRunningBar = {
+  isPaused: false,
+  speed: 'normal', // 'slow' | 'normal' | 'fast'
+  separator: '✦',
+  items: [
+    { id: 'rb-1', type: 'badge', label: '', text: 'CLINIC TIMINGS', icon: 'Clock', enabled: true },
+    { id: 'rb-2', type: 'announcement', label: '', text: 'We provide Ayurvedic care for all types of cancer', icon: 'Sparkles', enabled: true },
+    { id: 'rb-3', type: 'timing', label: 'ANANDAPURA:', text: '6:30 PM to 9:30 PM', icon: 'MapPin', enabled: true },
+    { id: 'rb-4', type: 'timing', label: 'KRISHNARAJAPURAM:', text: '9:00 AM to 10:30 AM', icon: 'MapPin', enabled: true }
+  ]
+};
+
+export const defaultHeroSlider = {
+  isPaused: false,
+  autoSlideDuration: 5000,
+  slides: [
+    {
+      id: 'hero-1',
+      badge: 'Vedic Heritage',
+      title: 'Classical Samhitas',
+      subtitle: 'Vedic Healing Heritage & Sacred Samhitas',
+      caption: 'Vedic Healing Heritage & Sacred Samhitas • Sri Krishna Ayurvedic Clinic',
+      altText: 'Ayurveda Heritage and Dhanvantari classical scriptures',
+      image: '/images/home_slider/ayurveda_heritage_dhanvantari.png',
+      mobileImage: '',
+      enabled: true,
+      order: 1,
+      card1: {
+        title: 'Ancient Wisdom',
+        subtitle: 'Charaka & Sushruta Samhita',
+        icon: 'Sparkles',
+        color: 'forest'
+      },
+      card2: {
+        title: 'Divine Healing',
+        subtitle: 'Classical Formulations',
+        icon: 'Award',
+        color: 'brass'
+      }
+    },
+    {
+      id: 'hero-2',
+      badge: 'Tri-Dosha Balance',
+      title: 'Mind-Body Harmony',
+      subtitle: 'Harmonizing Vata, Pitta & Kapha with Pure Herbs',
+      caption: 'Harmonizing Vata, Pitta & Kapha with Pure Herbs • Sri Krishna Ayurvedic Clinic',
+      altText: 'Herbal preparation and tri-dosha balance therapies',
+      image: '/images/home_slider/herbal_preparation_tridosha.png',
+      mobileImage: '',
+      enabled: true,
+      order: 2,
+      card1: {
+        title: 'Tri-Dosha Harmony',
+        subtitle: 'Vata • Pitta • Kapha',
+        icon: 'ShieldCheck',
+        color: 'brass'
+      },
+      card2: {
+        title: 'Pure Botanicals',
+        subtitle: 'Handcrafted Formulations',
+        icon: 'Leaf',
+        color: 'forest'
+      }
+    },
+    {
+      id: 'hero-3',
+      badge: 'Doctor Consultation',
+      title: 'Personalized Clinical Care',
+      subtitle: '26+ Years Clinical Excellence • Dr. Anand Krishna (BAMS)',
+      caption: '26+ Years Clinical Excellence • Dr. Anand Krishna (BAMS) • Sri Krishna Ayurvedic Clinic',
+      altText: 'Doctor Anand Krishna consulting patient with pulse diagnosis',
+      image: '/images/home_slider/doctor_patient_consultation.jpg',
+      mobileImage: '',
+      enabled: true,
+      order: 3,
+      card1: {
+        title: 'Personalized Care',
+        subtitle: 'Comprehensive Nadi Evaluation',
+        icon: 'HeartHandshake',
+        color: 'forest'
+      },
+      card2: {
+        title: '26+ Years Trust',
+        subtitle: 'Dr. Anand Krishna (BAMS)',
+        icon: 'Award',
+        color: 'brass'
+      }
+    }
+  ]
+};
+
 export const defaultSettings = {
   id: 'default',
   mainAddress: "No 426, Near Lakshmi Super Speciality Hospital, 3rd Main, Krishnarajapuram, Bangalore 560036",
@@ -21,7 +112,9 @@ export const defaultSettings = {
   phone: "+91 88924 09195",
   altPhone: "+91 74062 90626",
   email: "dranandkrishna31@gmail.com",
-  workingHours: "Mon - Sat: 10:00 AM - 7:00 PM (Sunday Closed)"
+  workingHours: "Mon - Sat: 10:00 AM - 7:00 PM (Sunday Closed)",
+  runningBar: defaultRunningBar,
+  heroSlider: defaultHeroSlider
 };
 
 export const defaultSwarnaprashanaSchedule = [
@@ -276,6 +369,10 @@ export async function saveClinicSettings(newSettings) {
   try {
     await api.saveClinicSettings(newSettings);
     localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(newSettings));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: newSettings.runningBar }));
+      window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: newSettings.heroSlider }));
+    }
     return newSettings;
   } catch (err) {
     console.error('Error saving settings to PostgreSQL:', err);
@@ -284,11 +381,73 @@ export async function saveClinicSettings(newSettings) {
   }
 }
 
+export function getRunningBarSettings() {
+  const currentSettings = getClinicSettings();
+  return currentSettings.runningBar || defaultRunningBar;
+}
+
+export async function saveRunningBarSettings(runningBarData) {
+  try {
+    await api.updateRunningBarSettings(runningBarData);
+    const currentSettings = getClinicSettings();
+    const updatedSettings = { ...currentSettings, runningBar: runningBarData };
+    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(updatedSettings));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: runningBarData }));
+    }
+    return runningBarData;
+  } catch (err) {
+    console.error('Error saving running bar settings:', err);
+    const currentSettings = getClinicSettings();
+    const updatedSettings = { ...currentSettings, runningBar: runningBarData };
+    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(updatedSettings));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: runningBarData }));
+    }
+    return runningBarData;
+  }
+}
+
+export function getHeroSliderSettings() {
+  const currentSettings = getClinicSettings();
+  return currentSettings.heroSlider || defaultHeroSlider;
+}
+
+export async function saveHeroSliderSettings(heroSliderData) {
+  try {
+    await api.updateHeroSliderSettings(heroSliderData);
+    const currentSettings = getClinicSettings();
+    const updatedSettings = { ...currentSettings, heroSlider: heroSliderData };
+    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(updatedSettings));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: heroSliderData }));
+    }
+    return heroSliderData;
+  } catch (err) {
+    console.error('Error saving hero slider settings:', err);
+    const currentSettings = getClinicSettings();
+    const updatedSettings = { ...currentSettings, heroSlider: heroSliderData };
+    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(updatedSettings));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: heroSliderData }));
+    }
+    return heroSliderData;
+  }
+}
+
 // ----------------- Treatments -----------------
 export function getStoredTreatments() {
   try {
     const stored = localStorage.getItem(TREATMENTS_KEY);
-    return stored ? JSON.parse(stored) : clinicData.treatments;
+    if (!stored) return clinicData.treatments;
+    const parsed = JSON.parse(stored);
+    return parsed.map(t => {
+      const match = clinicData.treatments.find(ct => ct.id === t.id);
+      return {
+        ...t,
+        review: t.review || match?.review
+      };
+    });
   } catch (err) {
     return clinicData.treatments;
   }
@@ -298,8 +457,15 @@ export async function fetchTreatmentsFromDb() {
   try {
     const data = await api.getTreatments();
     if (Array.isArray(data) && data.length > 0) {
-      localStorage.setItem(TREATMENTS_KEY, JSON.stringify(data));
-      return data;
+      const merged = data.map(t => {
+        const match = clinicData.treatments.find(ct => ct.id === t.id);
+        return {
+          ...t,
+          review: t.review || match?.review
+        };
+      });
+      localStorage.setItem(TREATMENTS_KEY, JSON.stringify(merged));
+      return merged;
     }
     return getStoredTreatments();
   } catch (err) {

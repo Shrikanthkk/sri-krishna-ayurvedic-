@@ -268,6 +268,27 @@ export default function Home({ onOpenBooking }) {
                     </p>
                   </div>
 
+                  {/* 3-Line Patient Review */}
+                  {item.review && (
+                    <div className="mt-3 pt-3 bg-cream-50/80 p-3 rounded-xl space-y-1.5 border border-earth-200/60 shadow-2xs">
+                      <div className="flex items-center justify-between">
+                        <div className="flex text-amber-500 text-xs tracking-tight">
+                          {"★".repeat(item.review.rating || 5)}
+                        </div>
+                        <span className="text-[10px] text-earth-600 font-semibold uppercase tracking-wider">
+                          Patient Review
+                        </span>
+                      </div>
+                      <p className="text-xs text-earth-800 italic leading-relaxed">
+                        "{item.review.text}"
+                      </p>
+                      <div className="text-[11px] text-forest-950 font-medium flex items-center justify-between pt-1 border-t border-earth-200/50">
+                        <span>— {item.review.author}</span>
+                        <span className="text-[10px] text-earth-600 font-light">{item.review.location}</span>
+                      </div>
+                    </div>
+                  )}
+
                   <div className="pt-4 mt-4 border-t border-earth-200 flex items-center justify-between">
                     <span className="text-[11px] text-gray-500 font-medium">{item.duration}</span>
                     <Link

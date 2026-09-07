@@ -29,10 +29,26 @@ import {
   Stethoscope,
   Sparkles,
   CalendarDays,
-  AlertCircle
+  AlertCircle,
+  ArrowUp,
+  ArrowDown,
+  Play,
+  Pause,
+  Sliders,
+  Star,
+  Heart,
+  Info,
+  Upload,
+  Image as ImageIcon,
+  GripVertical,
+  CheckCircle2,
+  ChevronRight,
+  ChevronLeft
 } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
+import BelowNavbarAnimation, { renderRunningBarIcon } from '../components/BelowNavbarAnimation';
+import HomeImageSlider from '../components/HomeImageSlider';
 import { clinicData } from '../data/clinicData';
 import { 
   getAppointments, 
@@ -52,6 +68,11 @@ import {
   deleteTreatment, 
   clearAllAdminData, 
   defaultSettings, 
+  defaultRunningBar,
+  saveRunningBarSettings,
+  defaultHeroSlider,
+  getHeroSliderSettings,
+  saveHeroSliderSettings,
   getAllSwarnaprashanaDates,
   fetchSwarnaprashanaScheduleFromDb,
   saveSwarnaprashanaDate, 
@@ -92,6 +113,30 @@ export default function Admin() {
   const [settingsSavedNotice, setSettingsSavedNotice] = useState(false);
   const [treatmentNotice, setTreatmentNotice] = useState('');
 
+  // Running Bar Settings State
+  const [runningBar, setRunningBar] = useState(() => defaultSettings.runningBar || defaultRunningBar);
+  const [isSavingRunningBar, setIsSavingRunningBar] = useState(false);
+  const [runningBarNotice, setRunningBarNotice] = useState('');
+  const [runningBarError, setRunningBarError] = useState('');
+  const [editingMessage, setEditingMessage] = useState(null);
+  const [isMessageModalOpen, setIsMessageModalOpen] = useState(false);
+  const [messageModalError, setMessageModalError] = useState('');
+
+  // Hero Slider Settings State
+  const [heroSlider, setHeroSlider] = useState(() => defaultSettings.heroSlider || defaultHeroSlider);
+  const [isSavingHeroSlider, setIsSavingHeroSlider] = useState(false);
+  const [heroSliderNotice, setHeroSliderNotice] = useState('');
+  const [heroSliderError, setHeroSliderError] = useState('');
+  const [editingSlide, setEditingSlide] = useState(null);
+  const [isSlideModalOpen, setIsSlideModalOpen] = useState(false);
+  const [slideModalError, setSlideModalError] = useState('');
+  const [isUploadingDesktop, setIsUploadingDesktop] = useState(false);
+  const [desktopUploadProgress, setDesktopUploadProgress] = useState(0);
+  const [isUploadingMobile, setIsUploadingMobile] = useState(false);
+  const [mobileUploadProgress, setMobileUploadProgress] = useState(0);
+  const [deletingSlideId, setDeletingSlideId] = useState(null);
+  const [draggedSlideIdx, setDraggedSlideIdx] = useState(null);
+
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
   const [selectedInquiry, setSelectedInquiry] = useState(null);
@@ -112,6 +157,12 @@ export default function Admin() {
       setAppointments(apts || []);
       setInquiries(inqs || []);
       setSettings(sets || defaultSettings);
+      if (sets && sets.runningBar) {
+        setRunningBar(sets.runningBar);
+      }
+      if (sets && sets.heroSlider) {
+        setHeroSlider(sets.heroSlider);
+      }
       setTreatments(trts || []);
       setSwarnaSchedule(sw || []);
       setSwarnaYears(getAvailableScheduleYears());
@@ -125,7 +176,14 @@ export default function Admin() {
     // Initial local read for instant render
     setAppointments(getAppointments());
     setInquiries(getInquiries());
-    setSettings(getClinicSettings());
+    const initialSets = getClinicSettings();
+    setSettings(initialSets);
+    if (initialSets && initialSets.runningBar) {
+      setRunningBar(initialSets.runningBar);
+    }
+    if (initialSets && initialSets.heroSlider) {
+      setHeroSlider(initialSets.heroSlider);
+    }
     setTreatments(getStoredTreatments());
     setSwarnaSchedule(getAllSwarnaprashanaDates());
     setSwarnaYears(getAvailableScheduleYears());
@@ -228,7 +286,9 @@ export default function Admin() {
   // Settings Save action
   const handleSaveSettings = async (e) => {
     e?.preventDefault();
-    await saveClinicSettings(settings);
+    const updated = { ...settings, runningBar };
+    await saveClinicSettings(updated);
+    setSettings(updated);
     setSettingsSavedNotice(true);
     setTimeout(() => {
       setSettingsSavedNotice(false);
@@ -239,10 +299,342 @@ export default function Admin() {
     if (window.confirm('Reset clinic settings to original default values?')) {
       await saveClinicSettings(defaultSettings);
       setSettings(defaultSettings);
+      setRunningBar(defaultRunningBar);
       setSettingsSavedNotice(true);
       setTimeout(() => {
         setSettingsSavedNotice(false);
       }, 4000);
+    }
+  };
+
+  // Running Bar Actions
+  const handleOpenAddMessage = () => {
+    setEditingMessage({
+      id: '',
+      type: 'timing',
+      label: '',
+      text: '',
+      icon: 'MapPin',
+      enabled: true
+    });
+    setMessageModalError('');
+    setIsMessageModalOpen(true);
+  };
+
+  const handleOpenEditMessage = (item) => {
+    setEditingMessage({ ...item });
+    setMessageModalError('');
+    setIsMessageModalOpen(true);
+  };
+
+  const handleSaveMessageModal = (e) => {
+    e.preventDefault();
+    if (!editingMessage.text?.trim() && !editingMessage.label?.trim()) {
+      setMessageModalError('Please enter a message text or location label.');
+      return;
+    }
+
+    const currentItems = [...(runningBar?.items || [])];
+    if (editingMessage.id) {
+      const idx = currentItems.findIndex(i => i.id === editingMessage.id);
+      if (idx >= 0) {
+        currentItems[idx] = { ...editingMessage };
+      }
+    } else {
+      currentItems.push({
+        ...editingMessage,
+        id: 'rb-' + Date.now()
+      });
+    }
+
+    setRunningBar(prev => ({ ...prev, items: currentItems }));
+    setIsMessageModalOpen(false);
+    setRunningBarNotice('Message saved in draft. Click "Update Running Bar" below to apply.');
+    setTimeout(() => setRunningBarNotice(''), 4000);
+  };
+
+  const handleDeleteMessage = (id, text) => {
+    if (window.confirm(`Delete message "${text || id}" from running bar?`)) {
+      const currentItems = (runningBar?.items || []).filter(i => i.id !== id);
+      setRunningBar(prev => ({ ...prev, items: currentItems }));
+      setRunningBarNotice('Message deleted from draft. Click "Update Running Bar" to apply.');
+      setTimeout(() => setRunningBarNotice(''), 4000);
+    }
+  };
+
+  const handleToggleMessageStatus = (id) => {
+    const currentItems = (runningBar?.items || []).map(i => i.id === id ? { ...i, enabled: !i.enabled } : i);
+    setRunningBar(prev => ({ ...prev, items: currentItems }));
+  };
+
+  const handleMoveMessage = (index, direction) => {
+    const currentItems = [...(runningBar?.items || [])];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= currentItems.length) return;
+    const temp = currentItems[index];
+    currentItems[index] = currentItems[targetIndex];
+    currentItems[targetIndex] = temp;
+    setRunningBar(prev => ({ ...prev, items: currentItems }));
+  };
+
+  const handleUpdateRunningBar = async (e) => {
+    e?.preventDefault();
+    setIsSavingRunningBar(true);
+    setRunningBarError('');
+    setRunningBarNotice('');
+
+    try {
+      if (!runningBar?.items || runningBar.items.length === 0) {
+        throw new Error('Running bar must contain at least one message item.');
+      }
+
+      await saveRunningBarSettings(runningBar);
+      setSettings(prev => ({ ...prev, runningBar }));
+      setRunningBarNotice('✔ Running bar updated successfully in PostgreSQL database! Live site is updated.');
+      setTimeout(() => setRunningBarNotice(''), 5000);
+    } catch (err) {
+      console.error('Failed to update running bar:', err);
+      setRunningBarError(err.message || 'Failed to update running bar settings.');
+    } finally {
+      setIsSavingRunningBar(false);
+    }
+  };
+
+  // ── Hero Slider Handlers ──
+  const handleOpenAddSlide = () => {
+    const currentSlides = heroSlider?.slides || [];
+    setEditingSlide({
+      id: '',
+      badge: 'Vedic Heritage',
+      title: '',
+      subtitle: '',
+      caption: '',
+      altText: '',
+      image: '',
+      mobileImage: '',
+      enabled: true,
+      order: currentSlides.length + 1,
+      card1: {
+        title: 'Ancient Wisdom',
+        subtitle: 'Charaka Samhita',
+        icon: 'Sparkles',
+        color: 'forest'
+      },
+      card2: {
+        title: 'Authentic Care',
+        subtitle: 'Classical Formulations',
+        icon: 'Award',
+        color: 'brass'
+      }
+    });
+    setSlideModalError('');
+    setIsSlideModalOpen(true);
+  };
+
+  const handleOpenEditSlide = (slide) => {
+    setEditingSlide({
+      ...slide,
+      card1: slide.card1 ? { ...slide.card1 } : { title: '', subtitle: '', icon: 'Sparkles', color: 'forest' },
+      card2: slide.card2 ? { ...slide.card2 } : { title: '', subtitle: '', icon: 'Award', color: 'brass' }
+    });
+    setSlideModalError('');
+    setIsSlideModalOpen(true);
+  };
+
+  const handleDesktopFileSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setSlideModalError('Desktop image size exceeds the 5 MB limit.');
+      return;
+    }
+
+    const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowed.includes(file.type.toLowerCase())) {
+      setSlideModalError('Please upload a JPG, JPEG, PNG, or WebP image file.');
+      return;
+    }
+
+    setIsUploadingDesktop(true);
+    setDesktopUploadProgress(20);
+    setSlideModalError('');
+
+    try {
+      const res = await api.uploadHeroSliderImage(file, (percent) => {
+        setDesktopUploadProgress(percent);
+      });
+      if (res && res.success && res.url) {
+        setEditingSlide(prev => ({
+          ...prev,
+          image: res.url,
+          altText: prev.altText || file.name.replace(/\.[^/.]+$/, '').replace(/[-_]/g, ' ')
+        }));
+      } else {
+        throw new Error(res?.error || 'Failed to upload image.');
+      }
+    } catch (err) {
+      console.error('Desktop image upload failed:', err);
+      setSlideModalError(err.message || 'Image upload failed. Please try again.');
+    } finally {
+      setIsUploadingDesktop(false);
+      setDesktopUploadProgress(0);
+      e.target.value = '';
+    }
+  };
+
+  const handleMobileFileSelect = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setSlideModalError('Mobile image size exceeds the 5 MB limit.');
+      return;
+    }
+
+    const allowed = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+    if (!allowed.includes(file.type.toLowerCase())) {
+      setSlideModalError('Please upload a JPG, JPEG, PNG, or WebP image file.');
+      return;
+    }
+
+    setIsUploadingMobile(true);
+    setMobileUploadProgress(20);
+    setSlideModalError('');
+
+    try {
+      const res = await api.uploadHeroSliderImage(file, (percent) => {
+        setMobileUploadProgress(percent);
+      });
+      if (res && res.success && res.url) {
+        setEditingSlide(prev => ({
+          ...prev,
+          mobileImage: res.url
+        }));
+      } else {
+        throw new Error(res?.error || 'Failed to upload mobile image.');
+      }
+    } catch (err) {
+      console.error('Mobile image upload failed:', err);
+      setSlideModalError(err.message || 'Mobile image upload failed. Please try again.');
+    } finally {
+      setIsUploadingMobile(false);
+      setMobileUploadProgress(0);
+      e.target.value = '';
+    }
+  };
+
+  const handleSaveSlideModal = (e) => {
+    e.preventDefault();
+    if (!editingSlide.image) {
+      setSlideModalError('Desktop image is required. Please upload an image.');
+      return;
+    }
+    if (!editingSlide.title || !editingSlide.title.trim()) {
+      setSlideModalError('Slide title is required.');
+      return;
+    }
+
+    const currentSlides = [...(heroSlider?.slides || [])];
+    const captionText = editingSlide.caption?.trim() || `${editingSlide.subtitle || editingSlide.title} • Sri Krishna Ayurvedic Clinic`;
+
+    if (editingSlide.id) {
+      const idx = currentSlides.findIndex(s => s.id === editingSlide.id);
+      if (idx !== -1) {
+        currentSlides[idx] = {
+          ...editingSlide,
+          caption: captionText
+        };
+      }
+    } else {
+      const newSlide = {
+        ...editingSlide,
+        id: 'hero-' + Date.now(),
+        order: currentSlides.length + 1,
+        caption: captionText
+      };
+      currentSlides.push(newSlide);
+    }
+
+    setHeroSlider(prev => ({ ...prev, slides: currentSlides }));
+    setIsSlideModalOpen(false);
+    setEditingSlide(null);
+    setHeroSliderNotice('Slide updated in draft. Click "Update Hero Slider" below to save to database.');
+    setTimeout(() => setHeroSliderNotice(''), 4000);
+  };
+
+  const handleDeleteSlide = (id) => {
+    const currentSlides = (heroSlider?.slides || []).filter(s => s.id !== id);
+    if (currentSlides.length === 0) {
+      alert('The hero slider must contain at least one slide.');
+      return;
+    }
+    const updated = currentSlides.map((s, idx) => ({ ...s, order: idx + 1 }));
+    setHeroSlider(prev => ({ ...prev, slides: updated }));
+    setDeletingSlideId(null);
+    setHeroSliderNotice('Slide removed. Click "Update Hero Slider" below to apply changes.');
+    setTimeout(() => setHeroSliderNotice(''), 4000);
+  };
+
+  const handleToggleSlideStatus = (id) => {
+    const currentSlides = (heroSlider?.slides || []).map(s => 
+      s.id === id ? { ...s, enabled: s.enabled === false ? true : false } : s
+    );
+    setHeroSlider(prev => ({ ...prev, slides: currentSlides }));
+  };
+
+  const handleSetFirstSlide = (index) => {
+    if (index === 0) return;
+    const currentSlides = [...(heroSlider?.slides || [])];
+    const [selected] = currentSlides.splice(index, 1);
+    currentSlides.unshift(selected);
+    const updated = currentSlides.map((s, idx) => ({ ...s, order: idx + 1 }));
+    setHeroSlider(prev => ({ ...prev, slides: updated }));
+    setHeroSliderNotice(`"${selected.title}" is now set as the First Slide.`);
+    setTimeout(() => setHeroSliderNotice(''), 4000);
+  };
+
+  const handleMoveSlide = (index, direction) => {
+    const currentSlides = [...(heroSlider?.slides || [])];
+    const targetIndex = direction === 'up' ? index - 1 : index + 1;
+    if (targetIndex < 0 || targetIndex >= currentSlides.length) return;
+    const temp = currentSlides[index];
+    currentSlides[index] = currentSlides[targetIndex];
+    currentSlides[targetIndex] = temp;
+    const updated = currentSlides.map((s, idx) => ({ ...s, order: idx + 1 }));
+    setHeroSlider(prev => ({ ...prev, slides: updated }));
+  };
+
+  const handleDragDropSlide = (targetIndex) => {
+    if (draggedSlideIdx === null || draggedSlideIdx === targetIndex) return;
+    const currentSlides = [...(heroSlider?.slides || [])];
+    const [draggedItem] = currentSlides.splice(draggedSlideIdx, 1);
+    currentSlides.splice(targetIndex, 0, draggedItem);
+    const updated = currentSlides.map((s, idx) => ({ ...s, order: idx + 1 }));
+    setHeroSlider(prev => ({ ...prev, slides: updated }));
+    setDraggedSlideIdx(null);
+  };
+
+  const handleUpdateHeroSlider = async (e) => {
+    e?.preventDefault();
+    setIsSavingHeroSlider(true);
+    setHeroSliderError('');
+    setHeroSliderNotice('');
+
+    try {
+      if (!heroSlider?.slides || heroSlider.slides.length === 0) {
+        throw new Error('Hero slider must contain at least one slide.');
+      }
+
+      await saveHeroSliderSettings(heroSlider);
+      setSettings(prev => ({ ...prev, heroSlider }));
+      setHeroSliderNotice('✔ Hero slider settings updated successfully in PostgreSQL database! Live site is updated.');
+      setTimeout(() => setHeroSliderNotice(''), 5000);
+    } catch (err) {
+      console.error('Failed to update hero slider:', err);
+      setHeroSliderError(err.message || 'Failed to update hero slider settings.');
+    } finally {
+      setIsSavingHeroSlider(false);
     }
   };
 
@@ -1765,6 +2157,690 @@ export default function Admin() {
 
                 </div>
 
+                {/* ═══════════════════════════════════════════════════════════════════════ */}
+                {/* SECTION 4: RUNNING BAR SETTINGS (HOMEPAGE ANNOUNCEMENT TICKER)         */}
+                {/* ═══════════════════════════════════════════════════════════════════════ */}
+                <div id="running-bar-settings" className="p-6 sm:p-8 bg-cream-50/70 rounded-3xl border border-earth-200 space-y-6">
+                  
+                  {/* Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-earth-200 pb-5">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <span className="px-2.5 py-0.5 rounded-full bg-forest-900 text-brass-400 text-[10px] font-bold uppercase tracking-widest">
+                          HOMEPAGE TICKER CONTROL
+                        </span>
+                        <span className="text-xs text-earth-700 font-medium">• Live Sync with PostgreSQL</span>
+                      </div>
+                      <h4 className="font-serif text-xl sm:text-2xl text-forest-950 font-bold flex items-center gap-2">
+                        <Sliders className="w-5 h-5 text-brass-600" />
+                        <span>Running Bar Settings</span>
+                      </h4>
+                      <p className="text-xs text-earth-700 leading-relaxed max-w-2xl">
+                        Customize the running announcement bar under the navigation header. Manage messages, timings, specialized care announcements, speed, icons, and separators with live preview.
+                      </p>
+                    </div>
+
+                    <div className="flex items-center gap-2.5 shrink-0">
+                      <button
+                        type="button"
+                        onClick={handleOpenAddMessage}
+                        className="px-4 py-2 bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 transition-all shadow-sm cursor-pointer"
+                      >
+                        <Plus className="w-4 h-4 text-brass-400" />
+                        <span>Add Message</span>
+                      </button>
+
+                      <button
+                        type="button"
+                        onClick={handleUpdateRunningBar}
+                        disabled={isSavingRunningBar}
+                        className="px-5 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white text-xs font-bold uppercase tracking-wider rounded-full flex items-center gap-1.5 transition-all shadow-soft cursor-pointer"
+                      >
+                        {isSavingRunningBar ? (
+                          <RefreshCw className="w-4 h-4 animate-spin" />
+                        ) : (
+                          <Save className="w-4 h-4" />
+                        )}
+                        <span>{isSavingRunningBar ? 'Updating...' : 'Update Running Bar'}</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Feedback Alerts */}
+                  {runningBarNotice && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-3.5 bg-emerald-100 border border-emerald-300 text-emerald-900 rounded-xl text-xs font-semibold flex items-center gap-2"
+                    >
+                      <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>{runningBarNotice}</span>
+                    </motion.div>
+                  )}
+
+                  {runningBarError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-3.5 bg-red-100 border border-red-300 text-red-900 rounded-xl text-xs font-semibold flex items-center gap-2"
+                    >
+                      <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                      <span>{runningBarError}</span>
+                    </motion.div>
+                  )}
+
+                  {/* 1. LIVE PREVIEW */}
+                  <div className="bg-white p-5 rounded-2xl border border-earth-200 shadow-sm space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <Eye className="w-4 h-4 text-forest-800" />
+                        <span className="text-xs font-bold text-forest-950 uppercase tracking-wider">
+                          Live Interactive Preview (Before Saving)
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-[10px] font-mono font-bold uppercase">
+                        <span className={`px-2.5 py-0.5 rounded-full ${runningBar?.isPaused ? 'bg-amber-100 text-amber-800' : 'bg-emerald-100 text-emerald-800'}`}>
+                          {runningBar?.isPaused ? '⏸ Paused' : '▶ Running'}
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-cream-100 text-earth-800 border border-earth-200">
+                          Speed: {runningBar?.speed || 'normal'}
+                        </span>
+                        <span className="px-2.5 py-0.5 rounded-full bg-cream-100 text-earth-800 border border-earth-200">
+                          Separator: "{runningBar?.separator || '✦'}"
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="rounded-xl overflow-hidden border border-brass-500/30 shadow-inner">
+                      <BelowNavbarAnimation previewData={runningBar} />
+                    </div>
+                  </div>
+
+                  {/* 2. CONTROLS: Speed, Pause/Resume, Separator */}
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    
+                    {/* Scrolling Speed */}
+                    <div className="p-4 bg-white rounded-2xl border border-earth-200 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="block text-[11px] font-bold text-forest-950 uppercase tracking-wider">
+                          Scrolling Speed
+                        </label>
+                        <span className="text-[10px] text-earth-600 font-mono">
+                          {runningBar?.speed === 'slow' ? '65s cycle' : runningBar?.speed === 'fast' ? '25s cycle' : '45s cycle'}
+                        </span>
+                      </div>
+                      <div className="grid grid-cols-3 gap-2 pt-1">
+                        {['slow', 'normal', 'fast'].map((spd) => (
+                          <button
+                            key={spd}
+                            type="button"
+                            onClick={() => setRunningBar(prev => ({ ...prev, speed: spd }))}
+                            className={`py-2 px-3 text-xs font-bold uppercase tracking-wider rounded-xl border transition-all cursor-pointer text-center ${
+                              runningBar?.speed === spd
+                                ? 'bg-forest-900 text-brass-400 border-forest-900 shadow-xs'
+                                : 'bg-cream-50 text-earth-800 border-earth-200 hover:bg-cream-100'
+                            }`}
+                          >
+                            {spd}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Pause / Resume Running Bar */}
+                    <div className="p-4 bg-white rounded-2xl border border-earth-200 space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="block text-[11px] font-bold text-forest-950 uppercase tracking-wider">
+                          Ticker Status
+                        </label>
+                        <span className={`text-[10px] font-bold uppercase ${runningBar?.isPaused ? 'text-amber-600' : 'text-emerald-600'}`}>
+                          {runningBar?.isPaused ? 'Currently Paused' : 'Actively Moving'}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setRunningBar(prev => ({ ...prev, isPaused: !prev.isPaused }))}
+                        className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold uppercase tracking-wider flex items-center justify-center gap-2 border transition-all cursor-pointer ${
+                          runningBar?.isPaused
+                            ? 'bg-amber-500 hover:bg-amber-400 text-forest-950 border-amber-600 shadow-xs'
+                            : 'bg-cream-100 hover:bg-cream-200 text-forest-950 border-earth-200'
+                        }`}
+                      >
+                        {runningBar?.isPaused ? (
+                          <>
+                            <Play className="w-4 h-4 fill-current" />
+                            <span>Resume Scrolling</span>
+                          </>
+                        ) : (
+                          <>
+                            <Pause className="w-4 h-4 fill-current" />
+                            <span>Pause Scrolling</span>
+                          </>
+                        )}
+                      </button>
+                    </div>
+
+                    {/* Separator Symbol */}
+                    <div className="p-4 bg-white rounded-2xl border border-earth-200 space-y-2">
+                      <label className="block text-[11px] font-bold text-forest-950 uppercase tracking-wider">
+                        Separator Symbol
+                      </label>
+                      <div className="flex items-center gap-2">
+                        {['✦', '•', '★', '◆', '|'].map((sym) => (
+                          <button
+                            key={sym}
+                            type="button"
+                            onClick={() => setRunningBar(prev => ({ ...prev, separator: sym }))}
+                            className={`w-8 h-8 rounded-lg text-sm font-bold flex items-center justify-center border transition-all cursor-pointer ${
+                              runningBar?.separator === sym
+                                ? 'bg-brass-500 text-forest-950 border-brass-600 shadow-xs'
+                                : 'bg-cream-50 text-earth-800 border-earth-200 hover:bg-cream-100'
+                            }`}
+                          >
+                            {sym}
+                          </button>
+                        ))}
+                        <input
+                          type="text"
+                          maxLength={3}
+                          value={runningBar?.separator || ''}
+                          onChange={(e) => setRunningBar(prev => ({ ...prev, separator: e.target.value }))}
+                          placeholder="Custom"
+                          className="w-16 px-2 py-1.5 bg-cream-50 border border-earth-200 rounded-lg text-center text-xs font-mono font-bold focus:outline-none focus:border-forest-800"
+                        />
+                      </div>
+                    </div>
+
+                  </div>
+
+                  {/* 3. MESSAGES LIST */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <h5 className="font-serif text-base text-forest-950 font-bold flex items-center gap-2">
+                        <span>Messages & Locations ({runningBar?.items?.length || 0})</span>
+                      </h5>
+                      <span className="text-xs text-earth-600">
+                        Use Move Up / Down to reorder items. Drag & drop or toggle active status.
+                      </span>
+                    </div>
+
+                    <div className="space-y-2.5">
+                      {(runningBar?.items || []).map((item, idx) => (
+                        <div
+                          key={item.id || idx}
+                          className={`p-3.5 sm:p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${
+                            item.enabled !== false
+                              ? 'bg-white border-earth-200 shadow-xs'
+                              : 'bg-cream-100/50 border-earth-200/60 opacity-60'
+                          }`}
+                        >
+                          <div className="flex items-center gap-3">
+                            {/* Order Controls */}
+                            <div className="flex items-center gap-1 shrink-0">
+                              <span className="w-6 text-center text-xs font-mono font-bold text-earth-500">
+                                #{idx + 1}
+                              </span>
+                              <div className="flex flex-col gap-0.5">
+                                <button
+                                  type="button"
+                                  disabled={idx === 0}
+                                  onClick={() => handleMoveMessage(idx, 'up')}
+                                  title="Move Up"
+                                  className="p-1 rounded hover:bg-cream-100 disabled:opacity-20 text-forest-950 cursor-pointer disabled:cursor-not-allowed"
+                                >
+                                  <ArrowUp className="w-3 h-3" />
+                                </button>
+                                <button
+                                  type="button"
+                                  disabled={idx === (runningBar.items.length - 1)}
+                                  onClick={() => handleMoveMessage(idx, 'down')}
+                                  title="Move Down"
+                                  className="p-1 rounded hover:bg-cream-100 disabled:opacity-20 text-forest-950 cursor-pointer disabled:cursor-not-allowed"
+                                >
+                                  <ArrowDown className="w-3 h-3" />
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Type & Icon Badges */}
+                            <div className="flex items-center gap-2 shrink-0">
+                              <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider ${
+                                item.type === 'timing'
+                                  ? 'bg-emerald-100 text-emerald-800'
+                                  : item.type === 'badge'
+                                  ? 'bg-brass-100 text-brass-900'
+                                  : 'bg-blue-100 text-blue-800'
+                              }`}>
+                                {item.type || 'announcement'}
+                              </span>
+
+                              <div className="w-7 h-7 rounded-lg bg-forest-900 text-brass-400 flex items-center justify-center shrink-0">
+                                {renderRunningBarIcon(item.icon, "w-3.5 h-3.5 text-brass-400")}
+                              </div>
+                            </div>
+
+                            {/* Message Content */}
+                            <div className="space-y-0.5 min-w-0">
+                              <div className="flex items-center gap-1.5 flex-wrap">
+                                {item.label && (
+                                  <span className="font-bold text-xs uppercase text-forest-950">
+                                    {item.label}
+                                  </span>
+                                )}
+                                <span className="text-xs text-earth-800 font-medium truncate">
+                                  {item.text}
+                                </span>
+                              </div>
+                              <span className="text-[10px] text-earth-500 block">
+                                Icon: {item.icon || 'None'} • Status: {item.enabled !== false ? 'Active (Shown)' : 'Hidden'}
+                              </span>
+                            </div>
+                          </div>
+
+                          {/* Item Actions */}
+                          <div className="flex items-center gap-2 shrink-0 self-end sm:self-center">
+                            {/* Enable/Disable Toggle */}
+                            <button
+                              type="button"
+                              onClick={() => handleToggleMessageStatus(item.id)}
+                              className={`px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                                item.enabled !== false
+                                  ? 'bg-emerald-600 text-white hover:bg-emerald-500'
+                                  : 'bg-earth-200 text-earth-700 hover:bg-earth-300'
+                              }`}
+                            >
+                              {item.enabled !== false ? 'Enabled' : 'Disabled'}
+                            </button>
+
+                            {/* Edit Button */}
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEditMessage(item)}
+                              className="p-1.5 rounded-lg bg-cream-100 hover:bg-earth-200 text-forest-950 transition-colors cursor-pointer"
+                              title="Edit Message"
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+
+                            {/* Delete Button */}
+                            <button
+                              type="button"
+                              onClick={() => handleDeleteMessage(item.id, item.text || item.label)}
+                              className="p-1.5 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
+                              title="Delete Message"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom Update Button */}
+                  <div className="pt-4 border-t border-earth-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <p className="text-xs text-earth-600">
+                      Changes made here will instantly update the ticker across the live public website upon clicking below.
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={handleUpdateRunningBar}
+                      disabled={isSavingRunningBar}
+                      className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-soft flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      {isSavingRunningBar ? (
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Save className="w-4 h-4" />
+                      )}
+                      <span>{isSavingRunningBar ? 'Saving to Database...' : 'Update Running Bar'}</span>
+                    </button>
+                  </div>
+
+                </div>
+
+                {/* ───────────────────────────────────────────────────────────── */}
+                {/* SECTION 5: HERO SLIDER SETTINGS (HOMEPAGE HERO SLIDER)        */}
+                {/* ───────────────────────────────────────────────────────────── */}
+                <div className="bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-soft space-y-6">
+                  
+                  {/* Section Title & Header */}
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-earth-200">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-forest-100 flex items-center justify-center text-forest-900 shrink-0">
+                        <ImageIcon className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h2 className="font-serif text-xl sm:text-2xl text-forest-950 font-light">
+                            Hero Slider Settings
+                          </h2>
+                          <span className="px-2.5 py-0.5 rounded-full bg-forest-100 text-forest-900 text-[10px] font-bold uppercase tracking-wider">
+                            Homepage
+                          </span>
+                        </div>
+                        <p className="text-xs text-earth-700 font-light">
+                          Manage images, titles, subtitles, badges, and captions shown in the homepage Hero Slider.
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      <span className="text-xs font-semibold px-3 py-1.5 bg-cream-100 text-forest-950 rounded-full border border-earth-200">
+                        {heroSlider?.slides?.length || 0} Slides ({heroSlider?.slides?.filter(s => s.enabled !== false).length || 0} Active)
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Feedback Banners */}
+                  {heroSliderNotice && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 bg-emerald-50 border border-emerald-200 text-emerald-900 rounded-2xl text-xs font-semibold flex items-center gap-2"
+                    >
+                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>{heroSliderNotice}</span>
+                    </motion.div>
+                  )}
+
+                  {heroSliderError && (
+                    <motion.div
+                      initial={{ opacity: 0, y: -6 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      className="p-4 bg-red-50 border border-red-200 text-red-900 rounded-2xl text-xs font-semibold flex items-center gap-2"
+                    >
+                      <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                      <span>{heroSliderError}</span>
+                    </motion.div>
+                  )}
+
+                  {/* Image Requirements & Guidelines Card */}
+                  <div className="p-4 sm:p-5 bg-cream-50/90 rounded-2xl border border-brass-200/60 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-1.5 text-xs font-bold uppercase text-forest-900 tracking-wider">
+                        <Info className="w-4 h-4 text-brass-600 shrink-0" />
+                        <span>Recommended Image Sizes & Formats</span>
+                      </div>
+                      <p className="text-xs text-earth-700 leading-relaxed">
+                        • <strong>Desktop View:</strong> 1600 × 1200 px (4:3) or 1920 × 1080 px (16:9)<br className="hidden sm:inline" />
+                        • <strong>Mobile View (Optional):</strong> 1080 × 1350 px (4:5) or 1080 × 1920 px (9:16)<br className="hidden sm:inline" />
+                        • <strong>Accepted Formats:</strong> JPG, JPEG, PNG, WebP • <strong>Max Size:</strong> 5 MB per image<br />
+                        • Automatic responsive cropping (<code>object-fit: cover</code>) ensures images remain crisp without stretching.
+                      </p>
+                    </div>
+
+                    <button
+                      type="button"
+                      onClick={handleOpenAddSlide}
+                      className="px-5 py-2.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-bold text-xs uppercase tracking-wider rounded-full shadow-soft flex items-center justify-center gap-1.5 shrink-0 cursor-pointer"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>Upload & Add Slide</span>
+                    </button>
+                  </div>
+
+                  {/* Interactive Live Preview */}
+                  <div className="space-y-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-bold uppercase tracking-widest text-forest-950">
+                          Interactive Live Preview
+                        </span>
+                        <span className="px-2 py-0.5 rounded-md bg-brass-100 text-brass-900 text-[10px] font-bold">
+                          Real-time Preview
+                        </span>
+                      </div>
+                      <span className="text-[11px] text-earth-600 hidden sm:inline">
+                        Preview matches the public homepage card design & crossfade animation
+                      </span>
+                    </div>
+
+                    <div className="p-6 bg-cream-100/50 rounded-3xl border border-earth-200 flex flex-col items-center justify-center">
+                      <HomeImageSlider previewData={heroSlider} />
+                    </div>
+                  </div>
+
+                  {/* Slider Playback & Speed Controls */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pt-2">
+                    {/* Auto-Slide Pause/Resume */}
+                    <div className="p-4 rounded-2xl bg-cream-50 border border-earth-200 flex items-center justify-between">
+                      <div>
+                        <span className="block text-xs font-bold text-forest-950 uppercase">Slider Playback</span>
+                        <span className="text-[11px] text-earth-700 font-light">
+                          {heroSlider.isPaused ? 'Animation Paused' : 'Auto-advancing slides'}
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setHeroSlider(prev => ({ ...prev, isPaused: !prev.isPaused }))}
+                        className={`px-3.5 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all cursor-pointer ${
+                          heroSlider.isPaused
+                            ? 'bg-amber-100 text-amber-900 border border-amber-300 hover:bg-amber-200'
+                            : 'bg-emerald-100 text-emerald-900 border border-emerald-300 hover:bg-emerald-200'
+                        }`}
+                      >
+                        {heroSlider.isPaused ? <Play className="w-3.5 h-3.5" /> : <Pause className="w-3.5 h-3.5" />}
+                        <span>{heroSlider.isPaused ? 'Resume' : 'Pause'}</span>
+                      </button>
+                    </div>
+
+                    {/* Auto-slide Duration */}
+                    <div className="p-4 rounded-2xl bg-cream-50 border border-earth-200 flex items-center justify-between">
+                      <div>
+                        <span className="block text-xs font-bold text-forest-950 uppercase">Slide Duration</span>
+                        <span className="text-[11px] text-earth-700 font-light">Time per slide transition</span>
+                      </div>
+                      <select
+                        value={heroSlider.autoSlideDuration || 5000}
+                        onChange={(e) => setHeroSlider(prev => ({ ...prev, autoSlideDuration: Number(e.target.value) }))}
+                        className="px-3 py-1.5 bg-white border border-earth-200 rounded-xl text-xs font-bold text-forest-950 focus:outline-none focus:border-forest-800"
+                      >
+                        <option value={3000}>Fast (3 seconds)</option>
+                        <option value={5000}>Normal (5 seconds)</option>
+                        <option value={7000}>Relaxed (7 seconds)</option>
+                        <option value={10000}>Slow (10 seconds)</option>
+                      </select>
+                    </div>
+
+                    {/* Slide Count Summary */}
+                    <div className="p-4 rounded-2xl bg-cream-50 border border-earth-200 flex items-center justify-between sm:col-span-2 lg:col-span-1">
+                      <div>
+                        <span className="block text-xs font-bold text-forest-950 uppercase">Active Slides</span>
+                        <span className="text-[11px] text-earth-700 font-light">
+                          {heroSlider.slides?.filter(s => s.enabled !== false).length || 0} of {heroSlider.slides?.length || 0} enabled
+                        </span>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={handleOpenAddSlide}
+                        className="px-3.5 py-1.5 bg-forest-900 hover:bg-forest-800 text-cream-50 text-xs font-semibold rounded-full flex items-center gap-1 cursor-pointer"
+                      >
+                        <Plus className="w-3.5 h-3.5" />
+                        <span>Add Slide</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Configured Slides List */}
+                  <div className="space-y-3 pt-2">
+                    <div className="flex items-center justify-between">
+                      <span className="text-xs font-bold uppercase tracking-widest text-forest-950">
+                        Slide Order & Images (Drag or use ↑ ↓ buttons to reorder)
+                      </span>
+                      <span className="text-[11px] text-earth-600">
+                        ⭐ Click star to set as First Slide
+                      </span>
+                    </div>
+
+                    <div className="space-y-3">
+                      {heroSlider.slides?.map((slide, idx) => (
+                        <div
+                          key={slide.id || idx}
+                          draggable
+                          onDragStart={() => setDraggedSlideIdx(idx)}
+                          onDragOver={(e) => e.preventDefault()}
+                          onDrop={() => handleDragDropSlide(idx)}
+                          className={`p-4 rounded-2xl border transition-all flex flex-col md:flex-row items-start md:items-center justify-between gap-4 cursor-move ${
+                            slide.enabled === false
+                              ? 'bg-earth-100/60 border-earth-300 opacity-60'
+                              : idx === 0
+                              ? 'bg-amber-50/40 border-amber-300/80 shadow-xs'
+                              : 'bg-cream-50/70 border-earth-200 hover:bg-cream-100/80'
+                          }`}
+                        >
+                          {/* Left: Drag Handle, Number, Thumbnail, Text info */}
+                          <div className="flex items-center gap-3.5 min-w-0 flex-1">
+                            <div className="p-1 text-earth-400 hover:text-forest-900 cursor-grab active:cursor-grabbing">
+                              <GripVertical className="w-5 h-5" />
+                            </div>
+
+                            {/* Order index badge */}
+                            <span className="w-7 h-7 rounded-xl bg-forest-900 text-cream-50 font-mono text-xs font-bold flex items-center justify-center shrink-0">
+                              {idx + 1}
+                            </span>
+
+                            {/* Thumbnail Preview */}
+                            <div className="w-20 h-14 sm:w-24 sm:h-16 rounded-xl overflow-hidden bg-forest-950 border border-earth-200 shrink-0 relative group">
+                              <img
+                                src={slide.image}
+                                alt={slide.altText || slide.title}
+                                className="w-full h-full object-cover object-center"
+                              />
+                              {slide.mobileImage && (
+                                <span className="absolute bottom-1 right-1 px-1 py-0.5 rounded bg-forest-950/80 text-[8px] font-bold text-brass-400">
+                                  +Mob
+                                </span>
+                              )}
+                            </div>
+
+                            {/* Slide Text Metadata */}
+                            <div className="space-y-1 min-w-0">
+                              <div className="flex items-center gap-2 flex-wrap">
+                                {idx === 0 && (
+                                  <span className="px-2 py-0.5 rounded-full bg-amber-500 text-forest-950 text-[10px] font-bold flex items-center gap-1 shadow-xs">
+                                    <Star className="w-3 h-3 fill-forest-950" />
+                                    First Slide
+                                  </span>
+                                )}
+                                {slide.badge && (
+                                  <span className="px-2 py-0.5 rounded-full bg-forest-950 text-brass-400 text-[10px] font-bold">
+                                    {slide.badge}
+                                  </span>
+                                )}
+                                <h4 className="font-serif font-bold text-sm text-forest-950 truncate">
+                                  {slide.title}
+                                </h4>
+                              </div>
+
+                              <p className="text-xs text-earth-700 truncate">
+                                {slide.subtitle || slide.caption}
+                              </p>
+
+                              <p className="text-[10px] text-earth-500">
+                                Alt Text: {slide.altText || 'Not specified'} • Status: {slide.enabled !== false ? 'Active' : 'Disabled'}
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Right: Actions */}
+                          <div className="flex items-center gap-2 shrink-0 self-end md:self-center flex-wrap">
+                            {/* Set As First Slide */}
+                            {idx !== 0 && (
+                              <button
+                                type="button"
+                                onClick={() => handleSetFirstSlide(idx)}
+                                className="px-3 py-1.5 rounded-full bg-amber-100 hover:bg-amber-200 text-amber-900 text-xs font-bold flex items-center gap-1 transition-all cursor-pointer"
+                                title="Make this slide appear first"
+                              >
+                                <Star className="w-3.5 h-3.5" />
+                                <span className="hidden sm:inline">Set First</span>
+                              </button>
+                            )}
+
+                            {/* Move Up / Down */}
+                            <button
+                              type="button"
+                              onClick={() => handleMoveSlide(idx, 'up')}
+                              disabled={idx === 0}
+                              className="p-2 rounded-lg bg-cream-100 hover:bg-earth-200 disabled:opacity-30 text-forest-900 transition-colors cursor-pointer"
+                              title="Move Up"
+                            >
+                              <ArrowUp className="w-4 h-4" />
+                            </button>
+
+                            <button
+                              type="button"
+                              onClick={() => handleMoveSlide(idx, 'down')}
+                              disabled={idx === (heroSlider.slides?.length || 0) - 1}
+                              className="p-2 rounded-lg bg-cream-100 hover:bg-earth-200 disabled:opacity-30 text-forest-900 transition-colors cursor-pointer"
+                              title="Move Down"
+                            >
+                              <ArrowDown className="w-4 h-4" />
+                            </button>
+
+                            {/* Enable/Disable Toggle */}
+                            <button
+                              type="button"
+                              onClick={() => handleToggleSlideStatus(slide.id)}
+                              className={`px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wider transition-all cursor-pointer ${
+                                slide.enabled !== false
+                                  ? 'bg-emerald-600 text-white hover:bg-emerald-500'
+                                  : 'bg-earth-200 text-earth-700 hover:bg-earth-300'
+                              }`}
+                            >
+                              {slide.enabled !== false ? 'Active' : 'Disabled'}
+                            </button>
+
+                            {/* Edit Button */}
+                            <button
+                              type="button"
+                              onClick={() => handleOpenEditSlide(slide)}
+                              className="p-2 rounded-lg bg-cream-100 hover:bg-earth-200 text-forest-950 transition-colors cursor-pointer"
+                              title="Edit Slide & Images"
+                            >
+                              <Edit3 className="w-4 h-4" />
+                            </button>
+
+                            {/* Delete Button */}
+                            <button
+                              type="button"
+                              onClick={() => setDeletingSlideId(slide.id)}
+                              className="p-2 rounded-lg bg-red-50 hover:bg-red-100 text-red-600 transition-colors cursor-pointer"
+                              title="Delete Slide"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Bottom Update Button */}
+                  <div className="pt-4 border-t border-earth-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <p className="text-xs text-earth-600">
+                      Changes made here will instantly update the hero slider across the live public website upon clicking below.
+                    </p>
+
+                    <button
+                      type="button"
+                      onClick={handleUpdateHeroSlider}
+                      disabled={isSavingHeroSlider}
+                      className="px-6 py-3 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white font-bold text-xs uppercase tracking-wider rounded-full shadow-soft flex items-center justify-center gap-2 transition-all cursor-pointer"
+                    >
+                      {isSavingHeroSlider ? (
+                        <RefreshCw className="w-4 h-4 animate-spin" />
+                      ) : (
+                        <Save className="w-4 h-4" />
+                      )}
+                      <span>{isSavingHeroSlider ? 'Saving to Database...' : 'Update Hero Slider'}</span>
+                    </button>
+                  </div>
+
+                </div>
+
                 {/* Bottom Save Action Bar */}
                 <div className="pt-4 border-t border-earth-200 flex items-center justify-end gap-4">
                   <button
@@ -1778,6 +2854,592 @@ export default function Admin() {
 
               </form>
             )}
+
+            {/* ADD / EDIT RUNNING BAR MESSAGE MODAL */}
+            <AnimatePresence>
+              {isMessageModalOpen && editingMessage && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-forest-950/70 backdrop-blur-xs"
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, y: 15 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.95, y: 15 }}
+                    className="bg-white rounded-3xl border border-earth-200 shadow-elevated w-full max-w-lg overflow-hidden flex flex-col"
+                  >
+                    <div className="p-6 bg-forest-950 text-cream-50 flex items-center justify-between border-b border-forest-900">
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] font-bold text-brass-400 uppercase tracking-widest">
+                          RUNNING BAR EDITOR
+                        </span>
+                        <h3 className="font-serif text-xl font-light">
+                          {editingMessage.id ? 'Edit Ticker Message' : 'Add New Ticker Message'}
+                        </h3>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setIsMessageModalOpen(false)}
+                        className="p-1.5 rounded-full hover:bg-forest-900 text-cream-200 cursor-pointer"
+                      >
+                        <XCircle className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleSaveMessageModal} className="p-6 space-y-4 text-xs">
+                      {messageModalError && (
+                        <div className="p-3 bg-red-100 text-red-900 rounded-xl border border-red-200 text-xs font-semibold">
+                          {messageModalError}
+                        </div>
+                      )}
+
+                      {/* Message Type */}
+                      <div>
+                        <label className="block font-bold text-forest-950 uppercase text-[10px] mb-1">
+                          Message Type
+                        </label>
+                        <select
+                          value={editingMessage.type}
+                          onChange={(e) => setEditingMessage({ ...editingMessage, type: e.target.value })}
+                          className="w-full px-3 py-2.5 bg-cream-50 border border-earth-200 rounded-xl font-semibold text-forest-950 focus:outline-none focus:border-forest-800"
+                        >
+                          <option value="timing">Clinic Timing & Location (e.g. ANANDAPURA: 6:30 PM to 9:30 PM)</option>
+                          <option value="announcement">Announcement / Care Highlight</option>
+                          <option value="badge">Badge Pill (e.g. CLINIC TIMINGS)</option>
+                          <option value="custom">Custom Text</option>
+                        </select>
+                      </div>
+
+                      {/* Label (e.g. ANANDAPURA:) */}
+                      <div>
+                        <label className="block font-bold text-forest-950 uppercase text-[10px] mb-1">
+                          Label / Location Prefix (Optional)
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. ANANDAPURA: or KRISHNARAJAPURAM:"
+                          value={editingMessage.label || ''}
+                          onChange={(e) => setEditingMessage({ ...editingMessage, label: e.target.value })}
+                          className="w-full px-3.5 py-2.5 bg-white border border-earth-200 rounded-xl font-semibold text-forest-950 focus:outline-none focus:border-forest-800"
+                        />
+                      </div>
+
+                      {/* Main Text */}
+                      <div>
+                        <label className="block font-bold text-forest-950 uppercase text-[10px] mb-1">
+                          Message Text / Timings <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          required
+                          placeholder="e.g. 6:30 PM to 9:30 PM or We provide Ayurvedic care for all types of cancer"
+                          value={editingMessage.text || ''}
+                          onChange={(e) => setEditingMessage({ ...editingMessage, text: e.target.value })}
+                          className="w-full px-3.5 py-2.5 bg-white border border-earth-200 rounded-xl font-medium text-forest-950 focus:outline-none focus:border-forest-800"
+                        />
+                      </div>
+
+                      {/* Icon Selector */}
+                      <div>
+                        <label className="block font-bold text-forest-950 uppercase text-[10px] mb-2">
+                          Icon
+                        </label>
+                        <div className="grid grid-cols-5 gap-2">
+                          {[
+                            { name: 'Clock', label: 'Clock' },
+                            { name: 'MapPin', label: 'MapPin' },
+                            { name: 'Sparkles', label: 'Sparkles' },
+                            { name: 'Phone', label: 'Phone' },
+                            { name: 'Award', label: 'Award' },
+                            { name: 'Heart', label: 'Heart' },
+                            { name: 'Star', label: 'Star' },
+                            { name: 'Calendar', label: 'Calendar' },
+                            { name: 'Info', label: 'Info' },
+                            { name: 'None', label: 'None' }
+                          ].map((ic) => (
+                            <button
+                              key={ic.name}
+                              type="button"
+                              onClick={() => setEditingMessage({ ...editingMessage, icon: ic.name })}
+                              className={`p-2 rounded-xl border flex flex-col items-center gap-1 transition-all cursor-pointer ${
+                                editingMessage.icon === ic.name
+                                  ? 'bg-forest-900 text-brass-400 border-forest-900 shadow-xs'
+                                  : 'bg-cream-50 text-earth-800 border-earth-200 hover:bg-cream-100'
+                              }`}
+                            >
+                              <div className="w-4 h-4 flex items-center justify-center">
+                                {renderRunningBarIcon(ic.name, "w-4 h-4")}
+                              </div>
+                              <span className="text-[9px] font-bold">{ic.label}</span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Enabled Status */}
+                      <div className="pt-2 flex items-center justify-between border-t border-earth-100">
+                        <span className="text-xs font-semibold text-forest-950">Enable on Website</span>
+                        <label className="inline-flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={editingMessage.enabled !== false}
+                            onChange={(e) => setEditingMessage({ ...editingMessage, enabled: e.target.checked })}
+                            className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                          />
+                          <span className="text-xs text-earth-800">
+                            {editingMessage.enabled !== false ? 'Active' : 'Disabled'}
+                          </span>
+                        </label>
+                      </div>
+
+                      {/* Action Buttons */}
+                      <div className="pt-4 border-t border-earth-200 flex items-center justify-end gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setIsMessageModalOpen(false)}
+                          className="px-5 py-2.5 bg-cream-100 hover:bg-earth-200 text-earth-900 text-xs font-semibold rounded-full cursor-pointer"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase rounded-full shadow-soft flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Save className="w-4 h-4" />
+                          <span>Save Message</span>
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                </motion.div>
+              )}
+
+              {/* ADD / EDIT HERO SLIDE MODAL */}
+              {isSlideModalOpen && editingSlide && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-forest-950/75 backdrop-blur-xs overflow-y-auto"
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, y: 15 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.95, y: 15 }}
+                    className="bg-white rounded-3xl border border-earth-200 shadow-elevated w-full max-w-2xl overflow-hidden flex flex-col my-8 max-h-[90vh]"
+                  >
+                    {/* Modal Header */}
+                    <div className="p-6 bg-forest-950 text-cream-50 flex items-center justify-between border-b border-forest-900 shrink-0">
+                      <div className="space-y-0.5">
+                        <span className="text-[10px] font-bold text-brass-400 uppercase tracking-widest">
+                          HERO SLIDER EDITOR
+                        </span>
+                        <h3 className="font-serif text-xl font-light">
+                          {editingSlide.id ? 'Edit Hero Slide' : 'Add New Hero Slide'}
+                        </h3>
+                      </div>
+                      <button
+                        type="button"
+                        onClick={() => setIsSlideModalOpen(false)}
+                        className="p-1.5 rounded-full hover:bg-forest-900 text-cream-200 cursor-pointer"
+                      >
+                        <XCircle className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    {/* Modal Body / Form */}
+                    <form onSubmit={handleSaveSlideModal} className="p-6 space-y-5 overflow-y-auto text-xs">
+                      {slideModalError && (
+                        <div className="p-3 bg-red-100 text-red-900 rounded-xl border border-red-200 text-xs font-semibold flex items-center gap-2">
+                          <AlertCircle className="w-4 h-4 text-red-600 shrink-0" />
+                          <span>{slideModalError}</span>
+                        </div>
+                      )}
+
+                      {/* 1. Desktop Image Upload & Preview */}
+                      <div className="p-4 bg-cream-50/80 rounded-2xl border border-earth-200 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <label className="block font-bold text-forest-950 uppercase text-[11px]">
+                            Desktop Image <span className="text-red-500">*</span>
+                          </label>
+                          <span className="text-[10px] text-earth-600">
+                            Recommended: 1600 × 1200 px (4:3) or 1920 × 1080 px (16:9) • Max 5 MB
+                          </span>
+                        </div>
+
+                        {editingSlide.image ? (
+                          <div className="relative rounded-2xl overflow-hidden border border-earth-200 aspect-[16/9] bg-forest-950 max-h-48 group">
+                            <img
+                              src={editingSlide.image}
+                              alt="Desktop Preview"
+                              className="w-full h-full object-cover object-center"
+                            />
+                            <div className="absolute inset-0 bg-forest-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                              <label className="px-4 py-2 bg-white/95 hover:bg-white text-forest-950 rounded-full font-bold text-xs uppercase tracking-wider shadow-md cursor-pointer flex items-center gap-1.5">
+                                <Upload className="w-3.5 h-3.5" />
+                                <span>Replace Desktop Image</span>
+                                <input
+                                  type="file"
+                                  accept="image/jpeg,image/png,image/webp,image/jpg"
+                                  onChange={handleDesktopFileSelect}
+                                  className="hidden"
+                                />
+                              </label>
+                            </div>
+                          </div>
+                        ) : (
+                          <label className="border-2 border-dashed border-earth-300 hover:border-forest-800 rounded-2xl p-6 flex flex-col items-center justify-center gap-2 bg-white transition-colors cursor-pointer text-center">
+                            <div className="w-10 h-10 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center">
+                              <Upload className="w-5 h-5" />
+                            </div>
+                            <div>
+                              <span className="text-xs font-bold text-forest-950 block">Click to Upload Desktop Image</span>
+                              <span className="text-[10px] text-earth-600">JPG, JPEG, PNG, or WebP up to 5 MB</span>
+                            </div>
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp,image/jpg"
+                              onChange={handleDesktopFileSelect}
+                              className="hidden"
+                            />
+                          </label>
+                        )}
+
+                        {isUploadingDesktop && (
+                          <div className="space-y-1 pt-1">
+                            <div className="flex items-center justify-between text-[10px] font-semibold text-forest-900">
+                              <span>Uploading & optimizing desktop image...</span>
+                              <span>{desktopUploadProgress}%</span>
+                            </div>
+                            <div className="w-full h-2 bg-earth-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-forest-900 transition-all duration-300"
+                                style={{ width: `${desktopUploadProgress}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* 2. Mobile Image Upload & Preview (Optional) */}
+                      <div className="p-4 bg-cream-50/80 rounded-2xl border border-earth-200 space-y-3">
+                        <div className="flex items-center justify-between">
+                          <label className="block font-bold text-forest-950 uppercase text-[11px]">
+                            Mobile Image (Optional)
+                          </label>
+                          <span className="text-[10px] text-earth-600">
+                            Recommended: 1080 × 1350 px (4:5) • Max 5 MB
+                          </span>
+                        </div>
+
+                        {editingSlide.mobileImage ? (
+                          <div className="relative rounded-2xl overflow-hidden border border-earth-200 aspect-[4/3] bg-forest-950 max-h-40 group flex items-center justify-center">
+                            <img
+                              src={editingSlide.mobileImage}
+                              alt="Mobile Preview"
+                              className="w-full h-full object-cover object-center"
+                            />
+                            <div className="absolute inset-0 bg-forest-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                              <label className="px-3 py-1.5 bg-white/95 hover:bg-white text-forest-950 rounded-full font-bold text-xs uppercase tracking-wider shadow-md cursor-pointer flex items-center gap-1.5">
+                                <Upload className="w-3.5 h-3.5" />
+                                <span>Replace Mobile</span>
+                                <input
+                                  type="file"
+                                  accept="image/jpeg,image/png,image/webp,image/jpg"
+                                  onChange={handleMobileFileSelect}
+                                  className="hidden"
+                                />
+                              </label>
+                              <button
+                                type="button"
+                                onClick={() => setEditingSlide(prev => ({ ...prev, mobileImage: '' }))}
+                                className="px-3 py-1.5 bg-red-600 hover:bg-red-500 text-white rounded-full font-bold text-xs uppercase tracking-wider shadow-md cursor-pointer"
+                              >
+                                Remove
+                              </button>
+                            </div>
+                          </div>
+                        ) : (
+                          <label className="border-2 border-dashed border-earth-300 hover:border-forest-800 rounded-2xl p-4 flex flex-col items-center justify-center gap-1 bg-white transition-colors cursor-pointer text-center">
+                            <div className="w-8 h-8 rounded-full bg-cream-100 text-forest-900 flex items-center justify-center">
+                              <Upload className="w-4 h-4" />
+                            </div>
+                            <span className="text-xs font-semibold text-forest-950">Upload Specific Mobile Image (Optional)</span>
+                            <span className="text-[10px] text-earth-500">If omitted, desktop image will be responsively displayed</span>
+                            <input
+                              type="file"
+                              accept="image/jpeg,image/png,image/webp,image/jpg"
+                              onChange={handleMobileFileSelect}
+                              className="hidden"
+                            />
+                          </label>
+                        )}
+
+                        {isUploadingMobile && (
+                          <div className="space-y-1 pt-1">
+                            <div className="flex items-center justify-between text-[10px] font-semibold text-forest-900">
+                              <span>Uploading & optimizing mobile image...</span>
+                              <span>{mobileUploadProgress}%</span>
+                            </div>
+                            <div className="w-full h-2 bg-earth-200 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-forest-900 transition-all duration-300"
+                                style={{ width: `${mobileUploadProgress}%` }}
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* 3. Typography Fields */}
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block font-bold text-forest-950 uppercase text-[10px] mb-1">
+                            Badge Text (Pill on Top-Left)
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Vedic Heritage"
+                            value={editingSlide.badge || ''}
+                            onChange={(e) => setEditingSlide({ ...editingSlide, badge: e.target.value })}
+                            className="w-full px-3.5 py-2.5 bg-white border border-earth-200 rounded-xl font-medium text-forest-950 focus:outline-none focus:border-forest-800"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-bold text-forest-950 uppercase text-[10px] mb-1">
+                            Slide Title <span className="text-red-500">*</span>
+                          </label>
+                          <input
+                            type="text"
+                            required
+                            placeholder="e.g. Classical Samhitas"
+                            value={editingSlide.title || ''}
+                            onChange={(e) => setEditingSlide({ ...editingSlide, title: e.target.value })}
+                            className="w-full px-3.5 py-2.5 bg-white border border-earth-200 rounded-xl font-bold text-forest-950 focus:outline-none focus:border-forest-800"
+                          />
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block font-bold text-forest-950 uppercase text-[10px] mb-1">
+                          Slide Subtitle
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Vedic Healing Heritage & Sacred Samhitas"
+                          value={editingSlide.subtitle || ''}
+                          onChange={(e) => setEditingSlide({ ...editingSlide, subtitle: e.target.value })}
+                          className="w-full px-3.5 py-2.5 bg-white border border-earth-200 rounded-xl font-medium text-forest-950 focus:outline-none focus:border-forest-800"
+                        />
+                      </div>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                          <label className="block font-bold text-forest-950 uppercase text-[10px] mb-1">
+                            Image Caption (Bottom Pill)
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Vedic Healing Heritage • Sri Krishna Ayurvedic Clinic"
+                            value={editingSlide.caption || ''}
+                            onChange={(e) => setEditingSlide({ ...editingSlide, caption: e.target.value })}
+                            className="w-full px-3.5 py-2.5 bg-white border border-earth-200 rounded-xl font-medium text-forest-950 focus:outline-none focus:border-forest-800"
+                          />
+                        </div>
+
+                        <div>
+                          <label className="block font-bold text-forest-950 uppercase text-[10px] mb-1">
+                            Image Alt Text (SEO & Accessibility)
+                          </label>
+                          <input
+                            type="text"
+                            placeholder="e.g. Ancient Ayurvedic scriptures and herbs"
+                            value={editingSlide.altText || ''}
+                            onChange={(e) => setEditingSlide({ ...editingSlide, altText: e.target.value })}
+                            className="w-full px-3.5 py-2.5 bg-white border border-earth-200 rounded-xl font-medium text-forest-950 focus:outline-none focus:border-forest-800"
+                          />
+                        </div>
+                      </div>
+
+                      {/* 4. Floating Badges / Cards */}
+                      <div className="p-4 bg-cream-50/60 rounded-2xl border border-earth-200 space-y-4">
+                        <span className="block font-bold text-forest-950 uppercase text-[10px]">
+                          Floating Highlights (Attached Badges)
+                        </span>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                          {/* Card 1 */}
+                          <div className="p-3 bg-white rounded-xl border border-earth-200 space-y-2">
+                            <span className="font-bold text-[10px] text-forest-900 block">Top-Left Floating Card</span>
+                            <input
+                              type="text"
+                              placeholder="Title (e.g. Ancient Wisdom)"
+                              value={editingSlide.card1?.title || ''}
+                              onChange={(e) => setEditingSlide({
+                                ...editingSlide,
+                                card1: { ...(editingSlide.card1 || {}), title: e.target.value }
+                              })}
+                              className="w-full px-2.5 py-1.5 bg-cream-50/50 border border-earth-200 rounded-lg text-xs"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Subtitle (e.g. Charaka Samhita)"
+                              value={editingSlide.card1?.subtitle || ''}
+                              onChange={(e) => setEditingSlide({
+                                ...editingSlide,
+                                card1: { ...(editingSlide.card1 || {}), subtitle: e.target.value }
+                              })}
+                              className="w-full px-2.5 py-1.5 bg-cream-50/50 border border-earth-200 rounded-lg text-[11px]"
+                            />
+                            <select
+                              value={editingSlide.card1?.icon || 'Sparkles'}
+                              onChange={(e) => setEditingSlide({
+                                ...editingSlide,
+                                card1: { ...(editingSlide.card1 || {}), icon: e.target.value }
+                              })}
+                              className="w-full px-2.5 py-1.5 bg-white border border-earth-200 rounded-lg text-[11px]"
+                            >
+                              <option value="Sparkles">Sparkles Icon</option>
+                              <option value="Leaf">Leaf Icon</option>
+                              <option value="Award">Award Icon</option>
+                              <option value="ShieldCheck">ShieldCheck Icon</option>
+                              <option value="HeartHandshake">HeartHandshake Icon</option>
+                              <option value="Star">Star Icon</option>
+                            </select>
+                          </div>
+
+                          {/* Card 2 */}
+                          <div className="p-3 bg-white rounded-xl border border-earth-200 space-y-2">
+                            <span className="font-bold text-[10px] text-forest-900 block">Bottom-Right Floating Card</span>
+                            <input
+                              type="text"
+                              placeholder="Title (e.g. Divine Healing)"
+                              value={editingSlide.card2?.title || ''}
+                              onChange={(e) => setEditingSlide({
+                                ...editingSlide,
+                                card2: { ...(editingSlide.card2 || {}), title: e.target.value }
+                              })}
+                              className="w-full px-2.5 py-1.5 bg-cream-50/50 border border-earth-200 rounded-lg text-xs"
+                            />
+                            <input
+                              type="text"
+                              placeholder="Subtitle (e.g. Classical Formulations)"
+                              value={editingSlide.card2?.subtitle || ''}
+                              onChange={(e) => setEditingSlide({
+                                ...editingSlide,
+                                card2: { ...(editingSlide.card2 || {}), subtitle: e.target.value }
+                              })}
+                              className="w-full px-2.5 py-1.5 bg-cream-50/50 border border-earth-200 rounded-lg text-[11px]"
+                            />
+                            <select
+                              value={editingSlide.card2?.icon || 'Award'}
+                              onChange={(e) => setEditingSlide({
+                                ...editingSlide,
+                                card2: { ...(editingSlide.card2 || {}), icon: e.target.value }
+                              })}
+                              className="w-full px-2.5 py-1.5 bg-white border border-earth-200 rounded-lg text-[11px]"
+                            >
+                              <option value="Award">Award Icon</option>
+                              <option value="Leaf">Leaf Icon</option>
+                              <option value="Sparkles">Sparkles Icon</option>
+                              <option value="ShieldCheck">ShieldCheck Icon</option>
+                              <option value="HeartHandshake">HeartHandshake Icon</option>
+                              <option value="Star">Star Icon</option>
+                            </select>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* 5. Enable on Website Toggle */}
+                      <div className="pt-2 flex items-center justify-between border-t border-earth-100">
+                        <span className="text-xs font-semibold text-forest-950">Active on Live Homepage</span>
+                        <label className="inline-flex items-center gap-2 cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={editingSlide.enabled !== false}
+                            onChange={(e) => setEditingSlide({ ...editingSlide, enabled: e.target.checked })}
+                            className="w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500"
+                          />
+                          <span className="text-xs text-earth-800 font-medium">
+                            {editingSlide.enabled !== false ? 'Active (Shown in Slider)' : 'Disabled (Hidden from Slider)'}
+                          </span>
+                        </label>
+                      </div>
+
+                      {/* Modal Action Buttons */}
+                      <div className="pt-4 border-t border-earth-200 flex items-center justify-end gap-3">
+                        <button
+                          type="button"
+                          onClick={() => setIsSlideModalOpen(false)}
+                          className="px-5 py-2.5 bg-cream-100 hover:bg-earth-200 text-earth-900 text-xs font-semibold rounded-full cursor-pointer"
+                        >
+                          Cancel
+                        </button>
+                        <button
+                          type="submit"
+                          className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase rounded-full shadow-soft flex items-center gap-1.5 cursor-pointer"
+                        >
+                          <Save className="w-4 h-4" />
+                          <span>{editingSlide.id ? 'Save Changes to Draft' : 'Add Slide to Draft'}</span>
+                        </button>
+                      </div>
+                    </form>
+                  </motion.div>
+                </motion.div>
+              )}
+
+              {/* DELETE SLIDE CONFIRMATION MODAL */}
+              {deletingSlideId && (
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-forest-950/70 backdrop-blur-xs"
+                >
+                  <motion.div
+                    initial={{ scale: 0.95, y: 15 }}
+                    animate={{ scale: 1, y: 0 }}
+                    exit={{ scale: 0.95, y: 15 }}
+                    className="bg-white rounded-3xl border border-earth-200 shadow-elevated w-full max-w-md p-6 space-y-4"
+                  >
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-full bg-red-100 text-red-600 flex items-center justify-center shrink-0">
+                        <Trash2 className="w-5 h-5" />
+                      </div>
+                      <div>
+                        <h3 className="font-serif text-lg font-bold text-forest-950">Delete Hero Slide</h3>
+                        <p className="text-xs text-earth-600">Are you sure you want to delete this hero slide?</p>
+                      </div>
+                    </div>
+
+                    <p className="text-xs text-earth-700 leading-relaxed bg-cream-50 p-3 rounded-xl border border-earth-200">
+                      This slide will be removed from your slider draft. To apply changes to the live website, make sure to click <strong>"Update Hero Slider"</strong> afterward.
+                    </p>
+
+                    <div className="flex items-center justify-end gap-3 pt-2">
+                      <button
+                        type="button"
+                        onClick={() => setDeletingSlideId(null)}
+                        className="px-5 py-2.5 bg-cream-100 hover:bg-earth-200 text-earth-900 text-xs font-semibold rounded-full cursor-pointer"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => handleDeleteSlide(deletingSlideId)}
+                        className="px-5 py-2.5 bg-red-600 hover:bg-red-500 text-white text-xs font-bold uppercase rounded-full shadow-soft flex items-center gap-1.5 cursor-pointer"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                        <span>Confirm Delete</span>
+                      </button>
+                    </div>
+                  </motion.div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
           </div>
 

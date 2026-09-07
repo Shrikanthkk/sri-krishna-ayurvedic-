@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import path from 'path';
 import authRoutes from './routes/auth.js';
 import appointmentsRoutes from './routes/appointments.js';
 import inquiriesRoutes from './routes/inquiries.js';
@@ -18,6 +19,9 @@ const PORT = process.env.PORT || 5000;
 app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static uploaded media files
+app.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
 
 // Health Check
 app.get('/api/health', (req, res) => {

@@ -1,97 +1,113 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronLeft, ChevronRight, Leaf, Sparkles, HeartHandshake, ShieldCheck, Award } from 'lucide-react';
+import {
+  ChevronLeft,
+  ChevronRight,
+  Leaf,
+  Sparkles,
+  HeartHandshake,
+  ShieldCheck,
+  Award,
+  Calendar,
+  Clock,
+  MapPin,
+  Heart,
+  Star,
+  Info
+} from 'lucide-react';
+import { getHeroSliderSettings, defaultHeroSlider } from '../utils/adminStorage';
 
-const SLIDE_DURATION = 5000; // 5 seconds per slide
+const ICON_MAP = {
+  Sparkles,
+  Award,
+  ShieldCheck,
+  Leaf,
+  HeartHandshake,
+  Calendar,
+  Clock,
+  MapPin,
+  Heart,
+  Star,
+  Info
+};
 
-const slidesData = [
-  {
-    id: 1,
-    badge: 'Vedic Heritage',
-    title: 'Classical Samhitas',
-    subtitle: 'Vedic Healing Heritage & Sacred Samhitas',
-    image: '/images/home_slider/ayurveda_heritage_dhanvantari.png',
-    card1: {
-      title: 'Ancient Wisdom',
-      subtitle: 'Charaka & Sushruta Samhita',
-      icon: Sparkles,
-      color: 'forest'
-    },
-    card2: {
-      title: 'Divine Healing',
-      subtitle: 'Classical Formulations',
-      icon: Award,
-      color: 'brass'
-    }
-  },
-  {
-    id: 2,
-    badge: 'Tri-Dosha Balance',
-    title: 'Mind-Body Harmony',
-    subtitle: 'Harmonizing Vata, Pitta & Kapha with Pure Herbs',
-    image: '/images/home_slider/herbal_preparation_tridosha.png',
-    card1: {
-      title: 'Tri-Dosha Harmony',
-      subtitle: 'Vata • Pitta • Kapha',
-      icon: ShieldCheck,
-      color: 'brass'
-    },
-    card2: {
-      title: 'Pure Botanicals',
-      subtitle: 'Handcrafted Formulations',
-      icon: Leaf,
-      color: 'forest'
-    }
-  },
-  {
-    id: 3,
-    badge: 'Doctor Consultation',
-    title: 'Personalized Clinical Care',
-    subtitle: '26+ Years Clinical Excellence • Dr. Anand Krishna (BAMS)',
-    image: '/images/home_slider/doctor_patient_consultation.jpg',
-    card1: {
-      title: 'Personalized Care',
-      subtitle: 'Comprehensive Nadi Evaluation',
-      icon: HeartHandshake,
-      color: 'forest'
-    },
-    card2: {
-      title: '26+ Years Trust',
-      subtitle: 'Dr. Anand Krishna (BAMS)',
-      icon: Award,
-      color: 'brass'
-    }
-  }
-];
+function resolveIcon(iconName, defaultIcon = Sparkles) {
+  if (!iconName) return defaultIcon;
+  if (typeof iconName === 'function' || typeof iconName === 'object') return iconName;
+  return ICON_MAP[iconName] || defaultIcon;
+}
 
-export default function HomeImageSlider() {
+export default function HomeImageSlider({ previewData = null }) {
+  const [sliderConfig, setSliderConfig] = useState(() => {
+    if (previewData) return previewData;
+    return getHeroSliderSettings() || defaultHeroSlider;
+  });
+
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
+  const [isHoverPaused, setIsHoverPaused] = useState(false);
   const [touchStartX, setTouchStartX] = useState(null);
   const timerRef = useRef(null);
 
+  // Sync with previewData prop
+  useEffect(() => {
+    if (previewData) {
+      setSliderConfig(previewData);
+      setCurrentSlide(0);
+    }
+  }, [previewData]);
+
+  // Listen to live update event on public pages
+  useEffect(() => {
+    if (previewData) return;
+
+    const handleUpdate = (e) => {
+      if (e.detail) {
+        setSliderConfig(e.detail);
+        setCurrentSlide(0);
+      }
+    };
+
+    window.addEventListener('sk_hero_slider_updated', handleUpdate);
+    return () => window.removeEventListener('sk_hero_slider_updated', handleUpdate);
+  }, [previewData]);
+
+  // Extract enabled slides (in preview mode, show all or enabled)
+  const rawSlides = Array.isArray(sliderConfig?.slides) ? sliderConfig.slides : defaultHeroSlider.slides;
+  const slides = previewData
+    ? rawSlides
+    : rawSlides.filter(s => s.enabled !== false);
+
+  const totalSlides = slides.length > 0 ? slides.length : 1;
+  const safeCurrentSlide = currentSlide < totalSlides ? currentSlide : 0;
+  const activeSlide = slides[safeCurrentSlide] || defaultHeroSlider.slides[0];
+
+  const slideDuration = sliderConfig?.autoSlideDuration || 5000;
+  const isGlobalPaused = sliderConfig?.isPaused || false;
+
   const nextSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev + 1) % slidesData.length);
-  }, []);
+    if (slides.length <= 1) return;
+    setCurrentSlide((prev) => (prev + 1) % slides.length);
+  }, [slides.length]);
 
   const prevSlide = useCallback(() => {
-    setCurrentSlide((prev) => (prev - 1 + slidesData.length) % slidesData.length);
-  }, []);
+    if (slides.length <= 1) return;
+    setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+  }, [slides.length]);
 
   useEffect(() => {
-    if (isPaused) {
+    if (isGlobalPaused || isHoverPaused || slides.length <= 1) {
       if (timerRef.current) clearInterval(timerRef.current);
       return;
     }
 
     timerRef.current = setInterval(() => {
       nextSlide();
-    }, SLIDE_DURATION);
+    }, slideDuration);
 
     return () => {
       if (timerRef.current) clearInterval(timerRef.current);
     };
-  }, [currentSlide, isPaused, nextSlide]);
+  }, [safeCurrentSlide, isGlobalPaused, isHoverPaused, nextSlide, slideDuration, slides.length]);
 
   const handleTouchStart = (e) => {
     setTouchStartX(e.touches[0].clientX);
@@ -109,15 +125,14 @@ export default function HomeImageSlider() {
     setTouchStartX(null);
   };
 
-  const activeSlide = slidesData[currentSlide];
-  const Card1Icon = activeSlide.card1.icon;
-  const Card2Icon = activeSlide.card2.icon;
+  const Card1Icon = resolveIcon(activeSlide.card1?.icon, Sparkles);
+  const Card2Icon = resolveIcon(activeSlide.card2?.icon, Award);
 
   return (
     <div 
       className="relative w-full max-w-[500px] mx-auto"
-      onMouseEnter={() => setIsPaused(true)}
-      onMouseLeave={() => setIsPaused(false)}
+      onMouseEnter={() => setIsHoverPaused(true)}
+      onMouseLeave={() => setIsHoverPaused(false)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
@@ -130,18 +145,23 @@ export default function HomeImageSlider() {
         {/* Crossfade Image Transition */}
         <AnimatePresence mode="wait">
           <motion.div
-            key={currentSlide}
+            key={activeSlide.id || safeCurrentSlide}
             initial={{ opacity: 0, scale: 1.04, x: 20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.98, x: -20 }}
             transition={{ duration: 0.6, ease: 'easeOut' }}
             className="absolute inset-0 w-full h-full"
           >
-            <img
-              src={activeSlide.image}
-              alt={activeSlide.title}
-              className="w-full h-full object-cover object-center"
-            />
+            <picture className="w-full h-full">
+              {activeSlide.mobileImage && (
+                <source media="(max-width: 640px)" srcSet={activeSlide.mobileImage} />
+              )}
+              <img
+                src={activeSlide.image || '/images/home_slider/ayurveda_heritage_dhanvantari.png'}
+                alt={activeSlide.altText || activeSlide.title || 'Hero Slider'}
+                className="w-full h-full object-cover object-center"
+              />
+            </picture>
           </motion.div>
         </AnimatePresence>
 
@@ -150,107 +170,121 @@ export default function HomeImageSlider() {
           
           {/* Top Slide Header inside Card */}
           <div className="flex items-center justify-between z-10">
-            <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-forest-950/85 backdrop-blur-md border border-brass-400/35 text-brass-400 text-xs font-semibold tracking-wider shadow-sm">
-              <Leaf className="w-3.5 h-3.5 text-brass-400" />
-              <span>{activeSlide.badge}</span>
-            </div>
+            {activeSlide.badge ? (
+              <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-forest-950/85 backdrop-blur-md border border-brass-400/35 text-brass-400 text-xs font-semibold tracking-wider shadow-sm">
+                <Leaf className="w-3.5 h-3.5 text-brass-400" />
+                <span>{activeSlide.badge}</span>
+              </div>
+            ) : <div />}
 
             <div className="px-3 py-1 rounded-full bg-forest-950/85 backdrop-blur-md border border-white/20 text-cream-50 text-[11px] font-mono tracking-wider">
-              0{currentSlide + 1} / 0{slidesData.length}
+              {safeCurrentSlide + 1 < 10 ? `0${safeCurrentSlide + 1}` : safeCurrentSlide + 1} / {totalSlides < 10 ? `0${totalSlides}` : totalSlides}
             </div>
           </div>
 
           {/* Bottom Caption Pill */}
           <div className="z-10">
             <p className="text-xs text-cream-200/90 font-light drop-shadow">
-              {activeSlide.subtitle} • Sri Krishna Ayurvedic Clinic
+              {activeSlide.caption || activeSlide.subtitle || activeSlide.title}
             </p>
           </div>
         </div>
 
         {/* Minimal Arrow Controls Inside Card */}
-        <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-3 z-20 pointer-events-none">
-          <button
-            onClick={prevSlide}
-            className="p-2.5 rounded-full bg-forest-950/75 hover:bg-forest-900 text-cream-50 backdrop-blur-md border border-white/20 transition-all transform hover:scale-105 active:scale-95 pointer-events-auto shadow-md cursor-pointer"
-            aria-label="Previous Slide"
-          >
-            <ChevronLeft className="w-4 h-4" />
-          </button>
-          <button
-            onClick={nextSlide}
-            className="p-2.5 rounded-full bg-forest-950/75 hover:bg-forest-900 text-cream-50 backdrop-blur-md border border-white/20 transition-all transform hover:scale-105 active:scale-95 pointer-events-auto shadow-md cursor-pointer"
-            aria-label="Next Slide"
-          >
-            <ChevronRight className="w-4 h-4" />
-          </button>
-        </div>
+        {slides.length > 1 && (
+          <div className="absolute inset-y-0 left-0 right-0 flex items-center justify-between px-3 z-20 pointer-events-none">
+            <button
+              onClick={prevSlide}
+              className="p-2.5 rounded-full bg-forest-950/75 hover:bg-forest-900 text-cream-50 backdrop-blur-md border border-white/20 transition-all transform hover:scale-105 active:scale-95 pointer-events-auto shadow-md cursor-pointer"
+              aria-label="Previous Slide"
+            >
+              <ChevronLeft className="w-4 h-4" />
+            </button>
+            <button
+              onClick={nextSlide}
+              className="p-2.5 rounded-full bg-forest-950/75 hover:bg-forest-900 text-cream-50 backdrop-blur-md border border-white/20 transition-all transform hover:scale-105 active:scale-95 pointer-events-auto shadow-md cursor-pointer"
+              aria-label="Next Slide"
+            >
+              <ChevronRight className="w-4 h-4" />
+            </button>
+          </div>
+        )}
 
       </div>
 
       {/* FLOATING CARD 1: (Top-Left attached to card) */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`card1-${currentSlide}`}
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 10 }}
-          transition={{ duration: 0.4 }}
-          className="absolute -top-5 -left-3 sm:-left-6 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-earth-200 shadow-elevated z-30 flex items-center gap-2.5 max-w-[205px] pointer-events-none hidden sm:flex"
-        >
-          <div className="w-8 h-8 rounded-full bg-forest-100 text-forest-900 flex items-center justify-center shrink-0">
-            <Card1Icon className="w-4 h-4 text-forest-800" />
-          </div>
-          <div>
-            <p className="text-xs font-serif font-bold text-forest-950 leading-tight">
-              {activeSlide.card1.title}
-            </p>
-            <p className="text-[10px] text-earth-700 leading-tight font-light">
-              {activeSlide.card1.subtitle}
-            </p>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+      {activeSlide.card1?.title && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`card1-${activeSlide.id || safeCurrentSlide}`}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.4 }}
+            className="absolute -top-5 -left-3 sm:-left-6 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-earth-200 shadow-elevated z-30 flex items-center gap-2.5 max-w-[205px] pointer-events-none hidden sm:flex"
+          >
+            <div className={`w-8 h-8 rounded-full ${activeSlide.card1.color === 'brass' ? 'bg-brass-100 text-brass-900' : 'bg-forest-100 text-forest-900'} flex items-center justify-center shrink-0`}>
+              <Card1Icon className={`w-4 h-4 ${activeSlide.card1.color === 'brass' ? 'text-brass-700' : 'text-forest-800'}`} />
+            </div>
+            <div>
+              <p className="text-xs font-serif font-bold text-forest-950 leading-tight">
+                {activeSlide.card1.title}
+              </p>
+              {activeSlide.card1.subtitle && (
+                <p className="text-[10px] text-earth-700 leading-tight font-light">
+                  {activeSlide.card1.subtitle}
+                </p>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {/* FLOATING CARD 2: (Bottom-Right attached to card) */}
-      <AnimatePresence mode="wait">
-        <motion.div
-          key={`card2-${currentSlide}`}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.4 }}
-          className="absolute -bottom-5 -right-3 sm:-right-6 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-earth-200 shadow-elevated z-30 flex items-center gap-2.5 max-w-[210px] pointer-events-none hidden sm:flex"
-        >
-          <div className="w-8 h-8 rounded-full bg-brass-100 text-brass-900 flex items-center justify-center shrink-0">
-            <Card2Icon className="w-4 h-4 text-brass-700" />
-          </div>
-          <div>
-            <p className="text-xs font-serif font-bold text-forest-950 leading-tight">
-              {activeSlide.card2.title}
-            </p>
-            <p className="text-[10px] text-earth-700 leading-tight font-light">
-              {activeSlide.card2.subtitle}
-            </p>
-          </div>
-        </motion.div>
-      </AnimatePresence>
+      {activeSlide.card2?.title && (
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={`card2-${activeSlide.id || safeCurrentSlide}`}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.4 }}
+            className="absolute -bottom-5 -right-3 sm:-right-6 bg-white/95 backdrop-blur-md p-3 sm:p-3.5 rounded-2xl border border-earth-200 shadow-elevated z-30 flex items-center gap-2.5 max-w-[210px] pointer-events-none hidden sm:flex"
+          >
+            <div className={`w-8 h-8 rounded-full ${activeSlide.card2.color === 'forest' ? 'bg-forest-100 text-forest-900' : 'bg-brass-100 text-brass-900'} flex items-center justify-center shrink-0`}>
+              <Card2Icon className={`w-4 h-4 ${activeSlide.card2.color === 'forest' ? 'text-forest-800' : 'text-brass-700'}`} />
+            </div>
+            <div>
+              <p className="text-xs font-serif font-bold text-forest-950 leading-tight">
+                {activeSlide.card2.title}
+              </p>
+              {activeSlide.card2.subtitle && (
+                <p className="text-[10px] text-earth-700 leading-tight font-light">
+                  {activeSlide.card2.subtitle}
+                </p>
+              )}
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      )}
 
       {/* Progress Dots Indicator */}
-      <div className="flex items-center justify-center gap-2 pt-6">
-        {slidesData.map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrentSlide(idx)}
-            className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
-              currentSlide === idx 
-                ? 'w-8 bg-forest-900' 
-                : 'w-2 bg-earth-300 hover:bg-earth-400'
-            }`}
-            aria-label={`Go to slide ${idx + 1}`}
-          />
-        ))}
-      </div>
+      {slides.length > 1 && (
+        <div className="flex items-center justify-center gap-2 pt-6">
+          {slides.map((_, idx) => (
+            <button
+              key={idx}
+              onClick={() => setCurrentSlide(idx)}
+              className={`h-2 rounded-full transition-all duration-300 cursor-pointer ${
+                safeCurrentSlide === idx 
+                  ? 'w-8 bg-forest-900' 
+                  : 'w-2 bg-earth-300 hover:bg-earth-400'
+              }`}
+              aria-label={`Go to slide ${idx + 1}`}
+            />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

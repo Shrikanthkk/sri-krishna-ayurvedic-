@@ -54,6 +54,8 @@ CREATE TABLE IF NOT EXISTS clinic_settings (
   alt_phone VARCHAR(50) NOT NULL,
   email VARCHAR(255) NOT NULL,
   working_hours VARCHAR(255) NOT NULL,
+  running_bar JSONB,
+  hero_slider JSONB,
   updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
