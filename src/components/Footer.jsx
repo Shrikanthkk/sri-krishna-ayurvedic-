@@ -1,9 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock, Calendar, ArrowUpRight, Shield } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
+import { getClinicSettings } from '../utils/adminStorage';
 
 export default function Footer({ onOpenBooking }) {
+  const [settings, setSettings] = useState(getClinicSettings());
+
+  useEffect(() => {
+    const handleSettingsUpdated = (e) => {
+      if (e.detail) setSettings(e.detail);
+      else setSettings(getClinicSettings());
+    };
+    window.addEventListener('sk_clinic_settings_updated', handleSettingsUpdated);
+    return () => window.removeEventListener('sk_clinic_settings_updated', handleSettingsUpdated);
+  }, []);
   return (
     <footer className="bg-forest-950 text-cream-50 pt-12 pb-6 border-t border-forest-900 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -151,23 +162,33 @@ export default function Footer({ onOpenBooking }) {
               </p>
 
               <div className="flex flex-col gap-1">
-                <p className="flex items-center gap-2">
-                  <Phone className="w-3.5 h-3.5 text-brass-400 shrink-0" />
-                  <span className="text-[11px] text-cream-200/80">Main:</span>
-                  <a href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`} className="hover:text-white font-medium">
-                    {clinicData.contact.phone}
-                  </a>
-                </p>
-                <p className="flex items-center gap-2 pl-5.5 text-xs text-cream-200/90">
-                  <span className="text-[11px] text-cream-200/80">Alt:</span>
-                  <a href="tel:+917406290626" className="hover:text-white">
-                    +91 74062 90626
-                  </a>
-                  <span className="text-cream-400/40">|</span>
-                  <a href="tel:+919844090626" className="hover:text-white">
-                    +91 98440 90626
-                  </a>
-                </p>
+                {settings.phone && (
+                  <p className="flex items-center gap-2">
+                    <Phone className="w-3.5 h-3.5 text-brass-400 shrink-0" />
+                    <span className="text-[11px] text-cream-200/80">Main:</span>
+                    <a href={`tel:${settings.phone.replace(/[^+\d]/g, '')}`} className="hover:text-white font-medium">
+                      {settings.phone}
+                    </a>
+                  </p>
+                )}
+                {(settings.altPhone || settings.secondaryPhone) && (
+                  <p className="flex items-center gap-2 pl-5.5 text-xs text-cream-200/90">
+                    <span className="text-[11px] text-cream-200/80">Alt:</span>
+                    {settings.altPhone && (
+                      <a href={`tel:${settings.altPhone.replace(/[^+\d]/g, '')}`} className="hover:text-white">
+                        {settings.altPhone}
+                      </a>
+                    )}
+                    {settings.altPhone && settings.secondaryPhone && (
+                      <span className="text-cream-400/40">|</span>
+                    )}
+                    {settings.secondaryPhone && (
+                      <a href={`tel:${settings.secondaryPhone.replace(/[^+\d]/g, '')}`} className="hover:text-white">
+                        {settings.secondaryPhone}
+                      </a>
+                    )}
+                  </p>
+                )}
               </div>
 
               <p className="flex items-center gap-2">

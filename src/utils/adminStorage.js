@@ -111,6 +111,7 @@ export const defaultSettings = {
   feeNote: "Fixed Fee at Visit",
   phone: "+91 88924 09195",
   altPhone: "+91 74062 90626",
+  secondaryPhone: "+91 98440 90626",
   email: "dranandkrishna31@gmail.com",
   workingHours: "Mon - Sat: 10:00 AM - 7:00 PM (Sunday Closed)",
   runningBar: defaultRunningBar,
@@ -370,6 +371,7 @@ export async function saveClinicSettings(newSettings) {
     await api.saveClinicSettings(newSettings);
     localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(newSettings));
     if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('sk_clinic_settings_updated', { detail: newSettings }));
       window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: newSettings.runningBar }));
       window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: newSettings.heroSlider }));
     }
@@ -377,6 +379,9 @@ export async function saveClinicSettings(newSettings) {
   } catch (err) {
     console.error('Error saving settings to PostgreSQL:', err);
     localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(newSettings));
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('sk_clinic_settings_updated', { detail: newSettings }));
+    }
     return newSettings;
   }
 }

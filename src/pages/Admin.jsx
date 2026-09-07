@@ -2118,21 +2118,40 @@ export default function Admin() {
                     />
                   </div>
 
-                  <div className="p-5 bg-cream-50 rounded-2xl border border-earth-200 space-y-2">
-                    <label className="block font-bold text-forest-950 uppercase text-[10px]">Primary Contact Phone</label>
-                    <input
-                      type="text"
-                      value={settings.phone}
-                      onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
-                      className="w-full px-3 py-2 bg-white border border-earth-200 rounded-xl font-bold text-forest-950 text-sm focus:outline-none focus:border-forest-800"
-                    />
-                    <input
-                      type="text"
-                      value={settings.altPhone}
-                      onChange={(e) => setSettings({ ...settings, altPhone: e.target.value })}
-                      placeholder="Alt Phone Number"
-                      className="w-full px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-[11px] text-brass-700 font-semibold focus:outline-none"
-                    />
+                  <div className="p-5 bg-cream-50 rounded-2xl border border-earth-200 space-y-3">
+                    <label className="block font-bold text-forest-950 uppercase text-[10px] tracking-wider">Clinic Phone Numbers (3 Lines)</label>
+                    <div className="space-y-2">
+                      <div>
+                        <span className="text-[10px] font-bold text-brass-800 uppercase block mb-0.5">Primary Phone</span>
+                        <input
+                          type="text"
+                          value={settings.phone || ''}
+                          onChange={(e) => setSettings({ ...settings, phone: e.target.value })}
+                          placeholder="+91 88924 09195"
+                          className="w-full px-3 py-2 bg-white border border-earth-200 rounded-xl font-bold text-forest-950 text-sm focus:outline-none focus:border-forest-800"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-forest-800 uppercase block mb-0.5">Alternate Phone 1</span>
+                        <input
+                          type="text"
+                          value={settings.altPhone || ''}
+                          onChange={(e) => setSettings({ ...settings, altPhone: e.target.value })}
+                          placeholder="+91 74062 90626"
+                          className="w-full px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-xs text-forest-900 font-semibold focus:outline-none focus:border-forest-800"
+                        />
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-bold text-forest-800 uppercase block mb-0.5">Alternate Phone 2</span>
+                        <input
+                          type="text"
+                          value={settings.secondaryPhone || ''}
+                          onChange={(e) => setSettings({ ...settings, secondaryPhone: e.target.value })}
+                          placeholder="+91 98440 90626"
+                          className="w-full px-3 py-1.5 bg-white border border-earth-200 rounded-lg text-xs text-forest-900 font-semibold focus:outline-none focus:border-forest-800"
+                        />
+                      </div>
+                    </div>
                   </div>
 
                   <div className="p-5 bg-cream-50 rounded-2xl border border-earth-200 space-y-2">

@@ -52,6 +52,7 @@ CREATE TABLE IF NOT EXISTS clinic_settings (
   fee_note VARCHAR(100) NOT NULL,
   phone VARCHAR(50) NOT NULL,
   alt_phone VARCHAR(50) NOT NULL,
+  secondary_phone VARCHAR(50) DEFAULT '+91 98440 90626',
   email VARCHAR(255) NOT NULL,
   working_hours VARCHAR(255) NOT NULL,
   running_bar JSONB,

@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Navigation, AlertCircle, Calendar, ExternalLink, Building2, CheckCircle, ShieldCheck, HeartHandshake } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import { clinicData } from '../data/clinicData';
-import { saveInquiry } from '../utils/adminStorage';
+import { saveInquiry, getClinicSettings } from '../utils/adminStorage';
 
 export default function Contact() {
+  const [settings, setSettings] = useState(getClinicSettings());
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -15,6 +16,15 @@ export default function Contact() {
     subject: '',
     message: ''
   });
+
+  useEffect(() => {
+    const handleSettingsUpdated = (e) => {
+      if (e.detail) setSettings(e.detail);
+      else setSettings(getClinicSettings());
+    };
+    window.addEventListener('sk_clinic_settings_updated', handleSettingsUpdated);
+    return () => window.removeEventListener('sk_clinic_settings_updated', handleSettingsUpdated);
+  }, []);
   const [submittedInquiry, setSubmittedInquiry] = useState(null);
 
   const [submitting, setSubmitting] = useState(false);
@@ -74,27 +84,33 @@ export default function Contact() {
                 </div>
                 <div className="space-y-1">
                   <h3 className="font-semibold text-sm text-forest-950">Phone Calls & Inquiries</h3>
-                  <div className="flex flex-col gap-0.5 text-xs">
-                    <p className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-brass-100 text-brass-800 px-1.5 py-0.2 rounded">Main</span>
-                      <a href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`} className="text-brass-700 font-bold hover:underline">
-                        {clinicData.contact.phone}
-                      </a>
-                    </p>
-                    <p className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-cream-200 text-forest-900 px-1.5 py-0.2 rounded">Alt</span>
-                      <a href="tel:+917406290626" className="text-forest-950 font-semibold hover:underline">
-                        +91 74062 90626
-                      </a>
-                    </p>
-                    <p className="flex items-center gap-1.5">
-                      <span className="text-[10px] font-bold uppercase tracking-wider bg-cream-200 text-forest-900 px-1.5 py-0.2 rounded">Alt</span>
-                      <a href="tel:+919844090626" className="text-forest-950 font-semibold hover:underline">
-                        +91 98440 90626
-                      </a>
-                    </p>
+                  <div className="flex flex-col gap-1 text-xs">
+                    {settings.phone && (
+                      <p className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-brass-100 text-brass-800 px-1.5 py-0.2 rounded">Main</span>
+                        <a href={`tel:${settings.phone.replace(/[^+\d]/g, '')}`} className="text-brass-700 font-bold hover:underline">
+                          {settings.phone}
+                        </a>
+                      </p>
+                    )}
+                    {settings.altPhone && (
+                      <p className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-cream-200 text-forest-900 px-1.5 py-0.2 rounded">Alt 1</span>
+                        <a href={`tel:${settings.altPhone.replace(/[^+\d]/g, '')}`} className="text-forest-950 font-semibold hover:underline">
+                          {settings.altPhone}
+                        </a>
+                      </p>
+                    )}
+                    {settings.secondaryPhone && (
+                      <p className="flex items-center gap-1.5">
+                        <span className="text-[10px] font-bold uppercase tracking-wider bg-cream-200 text-forest-900 px-1.5 py-0.2 rounded">Alt 2</span>
+                        <a href={`tel:${settings.secondaryPhone.replace(/[^+\d]/g, '')}`} className="text-forest-950 font-semibold hover:underline">
+                          {settings.secondaryPhone}
+                        </a>
+                      </p>
+                    )}
                   </div>
-                  <p className="text-[11px] text-gray-500 pt-0.5">Mon - Sat: 10:00 AM - 7:00 PM</p>
+                  <p className="text-[11px] text-gray-500 pt-0.5">{settings.workingHours || "Mon - Sat: 10:00 AM - 7:00 PM"}</p>
                 </div>
               </div>
 

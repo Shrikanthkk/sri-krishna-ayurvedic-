@@ -1,12 +1,23 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Sparkles, ShieldCheck, Award, HeartHandshake, Phone } from 'lucide-react';
 import heroChakraVideo from '../assets/Meditating_figure_chakras_glowing_202608181320.mp4';
 import { clinicData } from '../data/clinicData';
+import { getClinicSettings } from '../utils/adminStorage';
 
 export default function Hero({ onOpenBooking }) {
   const videoRef = useRef(null);
+  const [settings, setSettings] = useState(getClinicSettings());
+
+  useEffect(() => {
+    const handleSettingsUpdated = (e) => {
+      if (e.detail) setSettings(e.detail);
+      else setSettings(getClinicSettings());
+    };
+    window.addEventListener('sk_clinic_settings_updated', handleSettingsUpdated);
+    return () => window.removeEventListener('sk_clinic_settings_updated', handleSettingsUpdated);
+  }, []);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -86,34 +97,40 @@ export default function Hero({ onOpenBooking }) {
               </Link>
 
               {/* Main Clinic Number */}
-              <a
-                href={`tel:${clinicData.contact.phone.replace(/\s+/g, '')}`}
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-0.5 group"
-                title="Call Main Number"
-              >
-                <Phone className="w-4 h-4 text-forest-950 group-hover:scale-110 transition-transform" />
-                <span>88924 09195</span>
-              </a>
+              {settings.phone && (
+                <a
+                  href={`tel:${settings.phone.replace(/[^+\d]/g, '')}`}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-0.5 group"
+                  title="Call Main Number"
+                >
+                  <Phone className="w-4 h-4 text-forest-950 group-hover:scale-110 transition-transform" />
+                  <span>{settings.phone.replace(/^\+91\s*/, '').trim()}</span>
+                </a>
+              )}
 
               {/* Alternate Number 1 */}
-              <a
-                href="tel:+917406290626"
-                className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-0.5 group"
-                title="Call Alternate Number"
-              >
-                <Phone className="w-4 h-4 text-forest-950 group-hover:scale-110 transition-transform" />
-                <span>74062 90626</span>
-              </a>
+              {settings.altPhone && (
+                <a
+                  href={`tel:${settings.altPhone.replace(/[^+\d]/g, '')}`}
+                  className="inline-flex items-center justify-center gap-2 px-5 py-3 bg-brass-500 hover:bg-brass-400 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full shadow-md transition-all duration-300 transform hover:-translate-y-0.5 group"
+                  title="Call Alternate Number 1"
+                >
+                  <Phone className="w-4 h-4 text-forest-950 group-hover:scale-110 transition-transform" />
+                  <span>{settings.altPhone.replace(/^\+91\s*/, '').trim()}</span>
+                </a>
+              )}
 
-              {/* Additional Number */}
-              <a
-                href="tel:+919844090626"
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-3 bg-white/95 hover:bg-cream-100 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full border border-earth-200 shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 group"
-                title="Call Alternate Number"
-              >
-                <Phone className="w-3.5 h-3.5 text-brass-600 group-hover:scale-110 transition-transform" />
-                <span>98440 90626</span>
-              </a>
+              {/* Alternate Number 2 */}
+              {settings.secondaryPhone && (
+                <a
+                  href={`tel:${settings.secondaryPhone.replace(/[^+\d]/g, '')}`}
+                  className="inline-flex items-center justify-center gap-1.5 px-4 py-3 bg-white/95 hover:bg-cream-100 text-forest-950 font-bold text-xs uppercase tracking-wider rounded-full border border-earth-200 shadow-sm transition-all duration-300 transform hover:-translate-y-0.5 group"
+                  title="Call Alternate Number 2"
+                >
+                  <Phone className="w-3.5 h-3.5 text-brass-600 group-hover:scale-110 transition-transform" />
+                  <span>{settings.secondaryPhone.replace(/^\+91\s*/, '').trim()}</span>
+                </a>
+              )}
             </motion.div>
 
             {/* Diagnostic & Feature Highlights Row */}

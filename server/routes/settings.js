@@ -142,6 +142,7 @@ const defaultSettings = {
   feeNote: "Fixed Fee at Visit",
   phone: "+91 88924 09195",
   altPhone: "+91 74062 90626",
+  secondaryPhone: "+91 98440 90626",
   email: "dranandkrishna31@gmail.com",
   workingHours: "Mon - Sat: 10:00 AM - 7:00 PM (Sunday Closed)",
   runningBar: defaultRunningBar,
@@ -176,6 +177,7 @@ router.get('/', async (req, res) => {
       feeNote: row.fee_note,
       phone: row.phone,
       altPhone: row.alt_phone,
+      secondaryPhone: row.secondary_phone || defaultSettings.secondaryPhone,
       email: row.email,
       workingHours: row.working_hours,
       runningBar: parsedRunningBar,
@@ -199,8 +201,8 @@ router.put('/', async (req, res) => {
       `INSERT INTO clinic_settings (
         id, main_address, branch_address, doctor_name, qualifications,
         registration_no, experience_years, consultation_fee, fee_note,
-        phone, alt_phone, email, working_hours, running_bar, hero_slider, updated_at
-      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13::jsonb, $14::jsonb, CURRENT_TIMESTAMP)
+        phone, alt_phone, secondary_phone, email, working_hours, running_bar, hero_slider, updated_at
+      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14::jsonb, $15::jsonb, CURRENT_TIMESTAMP)
       ON CONFLICT (id) DO UPDATE SET
         main_address = EXCLUDED.main_address,
         branch_address = EXCLUDED.branch_address,
@@ -212,6 +214,7 @@ router.put('/', async (req, res) => {
         fee_note = EXCLUDED.fee_note,
         phone = EXCLUDED.phone,
         alt_phone = EXCLUDED.alt_phone,
+        secondary_phone = EXCLUDED.secondary_phone,
         email = EXCLUDED.email,
         working_hours = EXCLUDED.working_hours,
         running_bar = COALESCE(EXCLUDED.running_bar, clinic_settings.running_bar),
@@ -228,6 +231,7 @@ router.put('/', async (req, res) => {
         s.feeNote || defaultSettings.feeNote,
         s.phone || defaultSettings.phone,
         s.altPhone || defaultSettings.altPhone,
+        s.secondaryPhone || defaultSettings.secondaryPhone,
         s.email || defaultSettings.email,
         s.workingHours || defaultSettings.workingHours,
         runningBarJson,
@@ -284,10 +288,10 @@ router.put('/hero-slider', async (req, res) => {
       `INSERT INTO clinic_settings (
         id, main_address, branch_address, doctor_name, qualifications,
         registration_no, experience_years, consultation_fee, fee_note,
-        phone, alt_phone, email, working_hours, running_bar, hero_slider, updated_at
-      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13::jsonb, $14::jsonb, CURRENT_TIMESTAMP)
+        phone, alt_phone, secondary_phone, email, working_hours, running_bar, hero_slider, updated_at
+      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14::jsonb, $15::jsonb, CURRENT_TIMESTAMP)
       ON CONFLICT (id) DO UPDATE SET
-        hero_slider = $14::jsonb,
+        hero_slider = $15::jsonb,
         updated_at = CURRENT_TIMESTAMP;`,
       [
         defaultSettings.mainAddress,
@@ -300,6 +304,7 @@ router.put('/hero-slider', async (req, res) => {
         defaultSettings.feeNote,
         defaultSettings.phone,
         defaultSettings.altPhone,
+        defaultSettings.secondaryPhone,
         defaultSettings.email,
         defaultSettings.workingHours,
         JSON.stringify(defaultRunningBar),
@@ -332,10 +337,10 @@ router.put('/running-bar', async (req, res) => {
       `INSERT INTO clinic_settings (
         id, main_address, branch_address, doctor_name, qualifications,
         registration_no, experience_years, consultation_fee, fee_note,
-        phone, alt_phone, email, working_hours, running_bar, updated_at
-      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13::jsonb, CURRENT_TIMESTAMP)
+        phone, alt_phone, secondary_phone, email, working_hours, running_bar, updated_at
+      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14::jsonb, CURRENT_TIMESTAMP)
       ON CONFLICT (id) DO UPDATE SET
-        running_bar = $13::jsonb,
+        running_bar = $14::jsonb,
         updated_at = CURRENT_TIMESTAMP;`,
       [
         defaultSettings.mainAddress,
@@ -348,6 +353,7 @@ router.put('/running-bar', async (req, res) => {
         defaultSettings.feeNote,
         defaultSettings.phone,
         defaultSettings.altPhone,
+        defaultSettings.secondaryPhone,
         defaultSettings.email,
         defaultSettings.workingHours,
         jsonStr
@@ -374,8 +380,8 @@ router.post('/reset', async (req, res) => {
       `INSERT INTO clinic_settings (
         id, main_address, branch_address, doctor_name, qualifications,
         registration_no, experience_years, consultation_fee, fee_note,
-        phone, alt_phone, email, working_hours, running_bar, hero_slider, updated_at
-      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13::jsonb, $14::jsonb, CURRENT_TIMESTAMP)
+        phone, alt_phone, secondary_phone, email, working_hours, running_bar, hero_slider, updated_at
+      ) VALUES ('default', $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14::jsonb, $15::jsonb, CURRENT_TIMESTAMP)
       ON CONFLICT (id) DO UPDATE SET
         main_address = EXCLUDED.main_address,
         branch_address = EXCLUDED.branch_address,
@@ -387,6 +393,7 @@ router.post('/reset', async (req, res) => {
         fee_note = EXCLUDED.fee_note,
         phone = EXCLUDED.phone,
         alt_phone = EXCLUDED.alt_phone,
+        secondary_phone = EXCLUDED.secondary_phone,
         email = EXCLUDED.email,
         working_hours = EXCLUDED.working_hours,
         running_bar = EXCLUDED.running_bar,
@@ -403,6 +410,7 @@ router.post('/reset', async (req, res) => {
         defaultSettings.feeNote,
         defaultSettings.phone,
         defaultSettings.altPhone,
+        defaultSettings.secondaryPhone,
         defaultSettings.email,
         defaultSettings.workingHours,
         runningBarJson,
