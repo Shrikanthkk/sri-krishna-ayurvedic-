@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Send, CheckCircle2, User, Phone, Mail, Calendar, Clock, Sparkles } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
-import { saveInquiry } from '../utils/adminStorage';
+import { saveInquiry, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
 
 export default function ContactSection() {
   const [formData, setFormData] = useState({
@@ -20,6 +20,18 @@ export default function ContactSection() {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    if (name === 'phone') {
+      const cleaned = cleanTenDigitPhone(value);
+      setFormData((prev) => ({ ...prev, phone: cleaned }));
+      if (cleaned.length === 10) {
+        const valRes = validateTenDigitPhone(cleaned);
+        setErrors((prev) => ({ ...prev, phone: valRes.isValid ? '' : valRes.message }));
+      } else if (errors.phone) {
+        setErrors((prev) => ({ ...prev, phone: '' }));
+      }
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
@@ -29,11 +41,12 @@ export default function ContactSection() {
   const validate = () => {
     const newErrors = {};
     if (!formData.fullName.trim()) newErrors.fullName = 'Full Name is required';
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required';
-    } else if (!/^[0-9+\-\s]{10,14}$/.test(formData.phone.trim())) {
-      newErrors.phone = 'Please enter a valid 10-digit mobile number';
+    
+    const phoneRes = validateTenDigitPhone(formData.phone);
+    if (!phoneRes.isValid) {
+      newErrors.phone = phoneRes.message;
     }
+
     if (!formData.preferredDate) newErrors.preferredDate = 'Preferred Date is required';
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -172,20 +185,27 @@ export default function ContactSection() {
 
                   {/* Phone */}
                   <div>
-                    <label className="block text-xs font-semibold text-forest-950 uppercase tracking-wider mb-2">
-                      Phone Number *
-                    </label>
+                    <div className="flex items-center justify-between mb-2">
+                      <label className="block text-xs font-semibold text-forest-950 uppercase tracking-wider">
+                        Phone Number *
+                      </label>
+                      <span className="text-[10px] text-earth-500 font-mono">
+                        {formData.phone ? `${formData.phone.length}/10` : '10 digits'}
+                      </span>
+                    </div>
                     <div className="relative">
                       <Phone className="absolute left-3.5 top-3.5 w-4 h-4 text-forest-700/60" />
                       <input
                         type="tel"
                         name="phone"
+                        maxLength={10}
+                        inputMode="numeric"
                         value={formData.phone}
                         onChange={handleChange}
-                        placeholder="10-digit mobile number"
+                        placeholder="e.g. 9845012345"
                         className={`w-full pl-10 pr-4 py-3 bg-white border ${
                           errors.phone ? 'border-red-500' : 'border-earth-200'
-                        } rounded-xl text-sm focus:outline-none focus:border-forest-800 text-forest-950 placeholder:text-gray-400`}
+                        } rounded-xl text-sm focus:outline-none focus:border-forest-800 text-forest-950 placeholder:text-gray-400 font-mono`}
                       />
                     </div>
                     {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}

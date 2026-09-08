@@ -31,11 +31,18 @@ router.post('/', async (req, res) => {
   try {
     const { name, fullName, phone, email, subject, message, preferredDate, preferredTime } = req.body;
     const visitorName = (name || fullName || '').trim();
-    const visitorPhone = (phone || '').trim();
+    const cleanPhone = String(phone || '').replace(/\D/g, '');
+    const tenDigits = cleanPhone.length === 12 && cleanPhone.startsWith('91')
+      ? cleanPhone.slice(2)
+      : cleanPhone.length === 11 && cleanPhone.startsWith('0')
+      ? cleanPhone.slice(1)
+      : cleanPhone;
 
-    if (!visitorName || !visitorPhone) {
-      return res.status(400).json({ success: false, error: 'Name and Phone number are required.' });
+    if (!/^[6-9]\d{9}$/.test(tenDigits)) {
+      return res.status(400).json({ success: false, error: 'Please provide a valid 10-digit mobile number (starts with 6, 7, 8, or 9).' });
     }
+
+    const visitorPhone = tenDigits;
 
     const id = 'inq-' + Date.now();
     const inquirySubject = subject || (preferredDate ? `Consultation Request for ${preferredDate} (${preferredTime || 'Standard'})` : 'General Inquiry');

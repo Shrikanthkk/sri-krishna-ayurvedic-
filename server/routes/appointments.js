@@ -60,6 +60,17 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Full Name and Phone Number are required.' });
     }
 
+    const cleanPhone = String(phone).replace(/\D/g, '');
+    const tenDigits = cleanPhone.length === 12 && cleanPhone.startsWith('91')
+      ? cleanPhone.slice(2)
+      : cleanPhone.length === 11 && cleanPhone.startsWith('0')
+      ? cleanPhone.slice(1)
+      : cleanPhone;
+
+    if (!/^[6-9]\d{9}$/.test(tenDigits)) {
+      return res.status(400).json({ success: false, error: 'Please provide a valid 10-digit mobile number (starts with 6, 7, 8, or 9).' });
+    }
+
     const id = 'apt-' + Date.now();
     const formattedDate = date || new Date().toISOString().split('T')[0];
     const formattedTimeSlot = timeSlot || '10:00 AM';

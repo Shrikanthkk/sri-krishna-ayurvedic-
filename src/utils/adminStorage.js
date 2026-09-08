@@ -658,3 +658,43 @@ export async function clearAllAdminData() {
     };
   }
 }
+
+// ----------------- Phone Validation & Formatting -----------------
+/**
+ * Strips all non-digit characters and ensures maximum 10 digits.
+ * Automatically strips country code if pasted (e.g. +91 9845012345 -> 9845012345).
+ */
+export function cleanTenDigitPhone(val = '') {
+  if (!val) return '';
+  const digits = String(val).replace(/\D/g, '');
+  if (digits.length === 12 && digits.startsWith('91')) {
+    return digits.slice(2, 12);
+  }
+  if (digits.length === 11 && digits.startsWith('0')) {
+    return digits.slice(1, 11);
+  }
+  return digits.slice(0, 10);
+}
+
+/**
+ * Validates whether the given string is a valid 10-digit mobile number.
+ */
+export function validateTenDigitPhone(val = '') {
+  const cleaned = cleanTenDigitPhone(val);
+  if (!cleaned) {
+    return { isValid: false, message: 'Phone number is required.' };
+  }
+  if (cleaned.length < 10) {
+    return {
+      isValid: false,
+      message: `Phone number must be exactly 10 digits (currently ${cleaned.length} digits).`
+    };
+  }
+  if (!/^[6-9]\d{9}$/.test(cleaned)) {
+    return {
+      isValid: false,
+      message: 'Please enter a valid 10-digit mobile number (starts with 6, 7, 8, or 9).'
+    };
+  }
+  return { isValid: true, message: '', cleaned };
+}

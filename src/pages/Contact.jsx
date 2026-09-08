@@ -5,7 +5,7 @@ import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Navigation, AlertCircl
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import { clinicData } from '../data/clinicData';
-import { saveInquiry, getClinicSettings } from '../utils/adminStorage';
+import { saveInquiry, getClinicSettings, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
 
 export default function Contact() {
   const [settings, setSettings] = useState(getClinicSettings());
@@ -16,6 +16,7 @@ export default function Contact() {
     subject: '',
     message: ''
   });
+  const [phoneError, setPhoneError] = useState('');
 
   useEffect(() => {
     const handleSettingsUpdated = (e) => {
@@ -29,8 +30,25 @@ export default function Contact() {
 
   const [submitting, setSubmitting] = useState(false);
 
+  const handlePhoneChange = (e) => {
+    const cleaned = cleanTenDigitPhone(e.target.value);
+    setFormData((prev) => ({ ...prev, phone: cleaned }));
+    if (cleaned.length === 10) {
+      const valRes = validateTenDigitPhone(cleaned);
+      setPhoneError(valRes.isValid ? '' : valRes.message);
+    } else if (phoneError) {
+      setPhoneError('');
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const phoneRes = validateTenDigitPhone(formData.phone);
+    if (!phoneRes.isValid) {
+      setPhoneError(phoneRes.message);
+      return;
+    }
+
     setSubmitting(true);
     try {
       const saved = await saveInquiry(formData);
@@ -230,15 +248,25 @@ export default function Contact() {
                   </div>
 
                   <div>
-                    <label className="block font-semibold text-forest-950 uppercase mb-1">Phone Number *</label>
+                    <div className="flex items-center justify-between mb-1">
+                      <label className="block font-semibold text-forest-950 uppercase">Phone Number *</label>
+                      <span className="text-[10px] text-earth-500 font-mono">
+                        {formData.phone ? `${formData.phone.length}/10` : '10 digits'}
+                      </span>
+                    </div>
                     <input
                       type="tel"
                       required
+                      maxLength={10}
+                      inputMode="numeric"
                       value={formData.phone}
-                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="e.g. +91 98450 12345"
-                      className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      onChange={handlePhoneChange}
+                      placeholder="e.g. 9845012345"
+                      className={`w-full px-3.5 py-2.5 rounded-xl border ${
+                        phoneError ? 'border-red-500' : 'border-earth-200'
+                      } focus:outline-none focus:border-forest-800 text-sm font-mono`}
                     />
+                    {phoneError && <p className="text-red-500 text-xs mt-1">{phoneError}</p>}
                   </div>
                 </div>
 
