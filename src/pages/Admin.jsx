@@ -1578,32 +1578,36 @@ export default function Admin() {
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
                       onClick={() => setIsTreatmentModalOpen(false)}
-                      className="fixed inset-0 z-50 bg-forest-950/80 backdrop-blur-md flex items-center justify-center p-4"
+                      className="fixed inset-0 z-50 bg-forest-950/80 backdrop-blur-sm flex items-center justify-center p-3 sm:p-4 overflow-y-auto"
                     >
                       <motion.div
-                        initial={{ scale: 0.95, opacity: 0 }}
-                        animate={{ scale: 1, opacity: 1 }}
-                        exit={{ scale: 0.95, opacity: 0 }}
+                        initial={{ scale: 0.95, opacity: 0, y: 15 }}
+                        animate={{ scale: 1, opacity: 1, y: 0 }}
+                        exit={{ scale: 0.95, opacity: 0, y: 15 }}
                         onClick={(e) => e.stopPropagation()}
-                        className="bg-white rounded-3xl max-w-lg w-full p-8 border border-earth-200 shadow-elevated space-y-6 relative"
+                        className="bg-white rounded-3xl max-w-lg w-full border border-earth-200 shadow-elevated overflow-hidden flex flex-col my-auto max-h-[92vh]"
                       >
-                        <button
-                          onClick={() => setIsTreatmentModalOpen(false)}
-                          className="absolute top-6 right-6 p-2 text-gray-400 hover:text-forest-950 rounded-full hover:bg-earth-100 transition-colors"
-                        >
-                          <XCircle className="w-5 h-5" />
-                        </button>
-
-                        <div className="space-y-1 border-b border-earth-200 pb-4">
-                          <span className="text-[10px] font-bold uppercase text-brass-600 tracking-wider">
-                            {editingTreatment.id ? 'EDIT EXISTING TREATMENT' : 'ADD NEW CLINICAL SERVICE'}
-                          </span>
-                          <h3 className="font-serif text-2xl text-forest-950 font-medium">
-                            {editingTreatment.id ? 'Update Treatment Details' : 'Create Treatment Service'}
-                          </h3>
+                        {/* Modal Header */}
+                        <div className="px-6 py-4 bg-white border-b border-earth-200 flex items-center justify-between shrink-0">
+                          <div>
+                            <span className="text-[10px] font-bold uppercase text-brass-600 tracking-wider">
+                              {editingTreatment.id ? 'EDIT EXISTING TREATMENT' : 'ADD NEW CLINICAL SERVICE'}
+                            </span>
+                            <h3 className="font-serif text-xl sm:text-2xl text-forest-950 font-medium leading-tight">
+                              {editingTreatment.id ? 'Update Treatment Details' : 'Create Treatment Service'}
+                            </h3>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => setIsTreatmentModalOpen(false)}
+                            className="p-1.5 text-gray-400 hover:text-forest-950 rounded-full hover:bg-earth-100 transition-colors cursor-pointer shrink-0"
+                          >
+                            <XCircle className="w-6 h-6" />
+                          </button>
                         </div>
 
-                        <form onSubmit={handleSaveTreatmentModal} className="space-y-4 text-xs">
+                        {/* Modal Scrollable Body */}
+                        <form id="treatment-modal-form" onSubmit={handleSaveTreatmentModal} className="p-6 space-y-4 text-xs overflow-y-auto flex-1">
                           <div>
                             <label className="block font-bold text-forest-950 uppercase mb-1">Treatment Title *</label>
                             <input
@@ -1612,11 +1616,11 @@ export default function Admin() {
                               value={editingTreatment.title}
                               onChange={(e) => setEditingTreatment({ ...editingTreatment, title: e.target.value })}
                               placeholder="e.g. Classical Shirodhara Stream"
-                              className="w-full px-4 py-2.5 rounded-xl border border-earth-200 text-sm font-serif font-medium text-forest-950 focus:outline-none focus:border-forest-800"
+                              className="w-full px-3.5 py-2 rounded-xl border border-earth-200 text-sm font-serif font-medium text-forest-950 focus:outline-none focus:border-forest-800"
                             />
                           </div>
 
-                          <div className="grid grid-cols-2 gap-4">
+                          <div className="grid grid-cols-2 gap-3">
                             <div>
                               <label className="block font-bold text-forest-950 uppercase mb-1">Subtitle / Category</label>
                               <input
@@ -1624,7 +1628,7 @@ export default function Admin() {
                                 value={editingTreatment.subtitle}
                                 onChange={(e) => setEditingTreatment({ ...editingTreatment, subtitle: e.target.value })}
                                 placeholder="e.g. Mind Relaxation"
-                                className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 text-xs font-semibold focus:outline-none focus:border-forest-800"
+                                className="w-full px-3 py-2 rounded-xl border border-earth-200 text-xs font-semibold focus:outline-none focus:border-forest-800"
                               />
                             </div>
 
@@ -1635,23 +1639,23 @@ export default function Admin() {
                                 value={editingTreatment.duration}
                                 onChange={(e) => setEditingTreatment({ ...editingTreatment, duration: e.target.value })}
                                 placeholder="e.g. 45 Minutes"
-                                className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 text-xs font-semibold focus:outline-none focus:border-forest-800"
+                                className="w-full px-3 py-2 rounded-xl border border-earth-200 text-xs font-semibold focus:outline-none focus:border-forest-800"
                               />
                             </div>
                           </div>
 
                           {/* Treatment Image Upload & Preview Section */}
-                          <div className="p-4 bg-cream-50 rounded-2xl border border-earth-200 space-y-3">
+                          <div className="p-3.5 bg-cream-50 rounded-2xl border border-earth-200 space-y-2.5">
                             <div className="flex items-center justify-between">
-                              <label className="block font-bold text-forest-950 uppercase text-[11px] tracking-wider">
+                              <label className="block font-bold text-forest-950 uppercase text-[10px] tracking-wider">
                                 Treatment Image
                               </label>
                               <span className="text-[10px] text-earth-500 font-medium">Max 5 MB (JPG, PNG, WebP)</span>
                             </div>
 
                             {/* Image Preview & Actions */}
-                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4">
-                              <div className="relative w-28 h-20 rounded-xl overflow-hidden bg-earth-200 border border-earth-300 shrink-0 shadow-inner flex items-center justify-center">
+                            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+                              <div className="relative w-24 h-18 sm:w-28 sm:h-20 rounded-xl overflow-hidden bg-earth-200 border border-earth-300 shrink-0 shadow-inner flex items-center justify-center">
                                 {editingTreatment.image ? (
                                   <img
                                     src={editingTreatment.image}
@@ -1660,15 +1664,15 @@ export default function Admin() {
                                   />
                                 ) : (
                                   <div className="flex flex-col items-center justify-center text-earth-500 gap-1">
-                                    <ImageIcon className="w-6 h-6 stroke-1" />
+                                    <ImageIcon className="w-5 h-5 stroke-1" />
                                     <span className="text-[9px]">No image</span>
                                   </div>
                                 )}
                               </div>
 
-                              <div className="flex-1 space-y-2 w-full">
+                              <div className="flex-1 space-y-1.5 w-full">
                                 <div className="flex items-center gap-2 flex-wrap">
-                                  <label className="px-3.5 py-2 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer shadow-soft transition-colors">
+                                  <label className="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 text-white rounded-xl text-xs font-bold uppercase tracking-wider flex items-center gap-1.5 cursor-pointer shadow-soft transition-colors">
                                     <Upload className="w-3.5 h-3.5" />
                                     <span>{isUploadingTreatmentImage ? 'Uploading...' : 'Upload Image'}</span>
                                     <input
@@ -1684,7 +1688,7 @@ export default function Admin() {
                                     <button
                                       type="button"
                                       onClick={() => setEditingTreatment(prev => ({ ...prev, image: '' }))}
-                                      className="px-3 py-2 bg-white hover:bg-red-50 text-red-600 border border-earth-200 rounded-xl text-xs font-semibold cursor-pointer transition-colors"
+                                      className="px-2.5 py-1.5 bg-white hover:bg-red-50 text-red-600 border border-earth-200 rounded-xl text-xs font-semibold cursor-pointer transition-colors"
                                     >
                                       Remove
                                     </button>
@@ -1696,7 +1700,7 @@ export default function Admin() {
                                   value={editingTreatment.image || ''}
                                   onChange={(e) => setEditingTreatment({ ...editingTreatment, image: e.target.value })}
                                   placeholder="Or paste image URL (e.g. /images/...)"
-                                  className="w-full px-3 py-1.5 rounded-lg border border-earth-200 text-xs font-mono text-earth-800 focus:outline-none focus:border-forest-800 bg-white"
+                                  className="w-full px-2.5 py-1.5 rounded-lg border border-earth-200 text-xs font-mono text-earth-800 focus:outline-none focus:border-forest-800 bg-white"
                                 />
                               </div>
                             </div>
@@ -1729,33 +1733,34 @@ export default function Admin() {
                           <div>
                             <label className="block font-bold text-forest-950 uppercase mb-1">Treatment Description *</label>
                             <textarea
-                              rows={4}
+                              rows={3}
                               required
                               value={editingTreatment.description}
                               onChange={(e) => setEditingTreatment({ ...editingTreatment, description: e.target.value })}
                               placeholder="Describe the clinical protocol, benefits, and Ayurvedic procedure..."
-                              className="w-full p-3.5 rounded-xl border border-earth-200 text-xs font-light text-earth-900 leading-relaxed focus:outline-none focus:border-forest-800"
+                              className="w-full p-3 rounded-xl border border-earth-200 text-xs font-light text-earth-900 leading-relaxed focus:outline-none focus:border-forest-800"
                             />
-                          </div>
-
-                          <div className="pt-4 border-t border-earth-200 flex items-center justify-end gap-3">
-                            <button
-                              type="button"
-                              onClick={() => setIsTreatmentModalOpen(false)}
-                              className="px-5 py-2.5 bg-cream-100 hover:bg-earth-200 text-earth-900 text-xs font-semibold rounded-full"
-                            >
-                              Cancel
-                            </button>
-                            <button
-                              type="submit"
-                              className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase rounded-full shadow-soft flex items-center gap-1.5 cursor-pointer"
-                            >
-                              <Save className="w-4 h-4" />
-                              <span>Save Treatment</span>
-                            </button>
                           </div>
                         </form>
 
+                        {/* Modal Sticky Footer Action Bar */}
+                        <div className="px-6 py-3.5 bg-cream-50/90 border-t border-earth-200 flex items-center justify-end gap-3 shrink-0">
+                          <button
+                            type="button"
+                            onClick={() => setIsTreatmentModalOpen(false)}
+                            className="px-5 py-2.5 bg-white hover:bg-earth-100 border border-earth-200 text-earth-900 text-xs font-semibold rounded-full cursor-pointer transition-colors"
+                          >
+                            Cancel
+                          </button>
+                          <button
+                            type="submit"
+                            form="treatment-modal-form"
+                            className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase rounded-full shadow-soft flex items-center gap-1.5 cursor-pointer transition-colors"
+                          >
+                            <Save className="w-4 h-4" />
+                            <span>Save Treatment</span>
+                          </button>
+                        </div>
                       </motion.div>
                     </motion.div>
                   )}
