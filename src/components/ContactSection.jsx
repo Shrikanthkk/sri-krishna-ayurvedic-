@@ -23,6 +23,12 @@ export default function ContactSection() {
     if (name === 'phone') {
       const cleaned = cleanTenDigitPhone(value);
       setFormData((prev) => ({ ...prev, phone: cleaned }));
+
+      if (cleaned.length >= 3 && /^(\d)\1+$/.test(cleaned)) {
+        setErrors((prev) => ({ ...prev, phone: 'Repeated digits are not allowed. Please enter a genuine mobile number.' }));
+        return;
+      }
+
       if (cleaned.length === 10) {
         const valRes = validateTenDigitPhone(cleaned);
         setErrors((prev) => ({ ...prev, phone: valRes.isValid ? '' : valRes.message }));

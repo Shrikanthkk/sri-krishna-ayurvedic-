@@ -33,6 +33,12 @@ export default function Contact() {
   const handlePhoneChange = (e) => {
     const cleaned = cleanTenDigitPhone(e.target.value);
     setFormData((prev) => ({ ...prev, phone: cleaned }));
+
+    if (cleaned.length >= 3 && /^(\d)\1+$/.test(cleaned)) {
+      setPhoneError('Repeated digits are not allowed. Please enter a genuine mobile number.');
+      return;
+    }
+
     if (cleaned.length === 10) {
       const valRes = validateTenDigitPhone(cleaned);
       setPhoneError(valRes.isValid ? '' : valRes.message);

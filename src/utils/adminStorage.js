@@ -696,5 +696,44 @@ export function validateTenDigitPhone(val = '') {
       message: 'Please enter a valid 10-digit mobile number (starts with 6, 7, 8, or 9).'
     };
   }
+
+  // Reject all identical digits (e.g., 7777777777, 9999999999, 8888888888)
+  if (/^(\d)\1{9}$/.test(cleaned)) {
+    return {
+      isValid: false,
+      message: 'Repeated digits (e.g. 7777777777) are not allowed. Please enter a genuine mobile number.'
+    };
+  }
+
+  // Reject 6 or more identical consecutive digits (e.g. 9777777123, 7777771234)
+  if (/(\d)\1{5,}/.test(cleaned)) {
+    return {
+      isValid: false,
+      message: 'Consecutive repeated digits are not allowed. Please enter a genuine mobile number.'
+    };
+  }
+
+  // Reject numbers with only 1 or 2 distinct digits (e.g. 9898989898, 7777777778)
+  const uniqueDigits = new Set(cleaned.split(''));
+  if (uniqueDigits.size <= 2) {
+    return {
+      isValid: false,
+      message: 'Invalid phone pattern. Please enter a genuine 10-digit mobile number.'
+    };
+  }
+
+  // Reject common dummy / sequential sequences
+  const dummyNumbers = [
+    '1234567890', '9876543210', '0123456789', '9898989898',
+    '9000000000', '8000000000', '7000000000', '6000000000',
+    '9123456789', '8123456789', '7123456789'
+  ];
+  if (dummyNumbers.includes(cleaned)) {
+    return {
+      isValid: false,
+      message: 'Dummy or test numbers are not allowed. Please enter a genuine mobile number.'
+    };
+  }
+
   return { isValid: true, message: '', cleaned };
 }

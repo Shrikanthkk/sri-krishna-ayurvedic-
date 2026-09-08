@@ -67,8 +67,23 @@ router.post('/', async (req, res) => {
       ? cleanPhone.slice(1)
       : cleanPhone;
 
-    if (!/^[6-9]\d{9}$/.test(tenDigits)) {
-      return res.status(400).json({ success: false, error: 'Please provide a valid 10-digit mobile number (starts with 6, 7, 8, or 9).' });
+    const dummyNumbers = [
+      '1234567890', '9876543210', '0123456789', '9898989898',
+      '9000000000', '8000000000', '7000000000', '6000000000',
+      '9123456789', '8123456789', '7123456789'
+    ];
+
+    if (
+      !/^[6-9]\d{9}$/.test(tenDigits) ||
+      /^(\d)\1{9}$/.test(tenDigits) ||
+      /(\d)\1{5,}/.test(tenDigits) ||
+      new Set(tenDigits.split('')).size <= 2 ||
+      dummyNumbers.includes(tenDigits)
+    ) {
+      return res.status(400).json({
+        success: false,
+        error: 'Please provide a genuine, valid 10-digit mobile number.'
+      });
     }
 
     const id = 'apt-' + Date.now();
