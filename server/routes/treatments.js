@@ -1,8 +1,71 @@
 import { Router } from 'express';
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 import { query } from '../db.js';
 import { verifyToken, requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
+
+// Configure Multer Storage for Treatment Images
+const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'treatments');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    const ext = path.extname(file.originalname).toLowerCase();
+    cb(null, `treatment-${uniqueSuffix}${ext}`);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  if (allowedTypes.includes(file.mimetype.toLowerCase())) {
+    cb(null, true);
+  } else {
+    cb(new Error('Only JPG, JPEG, PNG, and WebP image files are allowed.'));
+  }
+};
+
+const upload = multer({
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB maximum
+  fileFilter
+});
+
+// POST /api/treatments/upload (Upload Treatment Image)
+router.post('/upload', (req, res) => {
+  upload.single('image')(req, res, (err) => {
+    if (err instanceof multer.MulterError) {
+      if (err.code === 'LIMIT_FILE_SIZE') {
+        return res.status(400).json({ success: false, error: 'Image size exceeds 5 MB limit.' });
+      }
+      return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
+    } else if (err) {
+      return res.status(400).json({ success: false, error: err.message || 'Invalid file uploaded.' });
+    }
+
+    if (!req.file) {
+      return res.status(400).json({ success: false, error: 'No image file provided.' });
+    }
+
+    const imageUrl = `/uploads/treatments/${req.file.filename}`;
+    return res.json({
+      success: true,
+      url: imageUrl,
+      filename: req.file.filename,
+      size: req.file.size,
+      mimetype: req.file.mimetype,
+      message: 'Treatment image uploaded successfully.'
+    });
+  });
+});
 
 // GET /api/treatments
 router.get('/', async (req, res) => {
@@ -49,7 +112,10 @@ router.post('/', async (req, res) => {
           description = EXCLUDED.description,
           benefits = EXCLUDED.benefits,
           duration = EXCLUDED.duration,
-          image = COALESCE(EXCLUDED.image, treatments.image),
+          image = CASE 
+            WHEN EXCLUDED.image IS NOT NULL AND EXCLUDED.image != '' THEN EXCLUDED.image 
+            ELSE treatments.image 
+          END,
           link = COALESCE(EXCLUDED.link, treatments.link),
           updated_at = CURRENT_TIMESTAMP
         RETURNING *`,

@@ -211,6 +211,45 @@ export const api = {
     return data.data || [];
   },
 
+  async uploadTreatmentImage(file, onProgress) {
+    return new Promise((resolve, reject) => {
+      const xhr = new XMLHttpRequest();
+      const formData = new FormData();
+      formData.append('image', file);
+
+      xhr.open('POST', `${API_BASE_URL}/treatments/upload`);
+      const token = localStorage.getItem('sk_admin_token');
+      if (token) {
+        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
+      }
+
+      if (xhr.upload && typeof onProgress === 'function') {
+        xhr.upload.onprogress = (event) => {
+          if (event.lengthComputable) {
+            const percentComplete = Math.round((event.loaded / event.total) * 100);
+            onProgress(percentComplete);
+          }
+        };
+      }
+
+      xhr.onload = () => {
+        try {
+          const response = JSON.parse(xhr.responseText);
+          if (xhr.status >= 200 && xhr.status < 300 && response.success) {
+            resolve(response);
+          } else {
+            reject(new Error(response.error || `Upload failed with status ${xhr.status}`));
+          }
+        } catch (e) {
+          reject(new Error('Failed to parse upload response.'));
+        }
+      };
+
+      xhr.onerror = () => reject(new Error('Network error during image upload.'));
+      xhr.send(formData);
+    });
+  },
+
   async saveTreatment(treatmentItem) {
     const res = await fetch(`${API_BASE_URL}/treatments`, {
       method: 'POST',
