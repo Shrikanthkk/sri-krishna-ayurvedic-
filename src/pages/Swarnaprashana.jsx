@@ -54,11 +54,13 @@ export default function Swarnaprashana({ onOpenBooking }) {
     };
   }, [selectedYear]);
 
-  const purposePoints = [
-    "Supports traditional Ayurvedic child wellness",
-    "Traditionally associated with strength and vitality",
-    "Traditionally described in relation to healthy development",
-    "Supports a holistic approach to children's wellbeing"
+  const benefitsList = [
+    { title: "Strong immunity enhancer", tag: "#strong immunity enhancer" },
+    { title: "Physical development", tag: "#physical development" },
+    { title: "Memory booster", tag: "#memory booster" },
+    { title: "Active and intellect", tag: "#active and intellect" },
+    { title: "Digestive power", tag: "#digestive power" },
+    { title: "Tones up skin colour", tag: "#tones up skin colour" }
   ];
 
   return (
@@ -229,52 +231,81 @@ export default function Swarnaprashana({ onOpenBooking }) {
                   Traditional Ayurvedic Purpose
                 </h3>
 
-                <p className="text-xs text-earth-800 font-light leading-relaxed">
-                  In classical Ayurvedic literature (*Kaumarabhritya*), Swarnaprashana is described with the following traditional wellness intentions:
-                </p>
+                {/* Classical Sanskrit Shloka Box */}
+                <div className="p-4 bg-forest-950 text-cream-50 rounded-2xl border border-brass-500/30 space-y-2 shadow-xs">
+                  <div className="flex items-center gap-1.5 text-[10px] font-bold text-brass-400 uppercase tracking-widest">
+                    <BookOpen className="w-3.5 h-3.5 text-brass-400" />
+                    <span>Kaumarabhritya Shloka</span>
+                  </div>
+                  <div className="font-serif text-sm sm:text-base text-brass-200 leading-relaxed space-y-0.5 border-l-2 border-brass-400 pl-2.5">
+                    <p>सुवर्णप्राशनं हि एतत् मेधाग्निबलवर्धनम् |</p>
+                    <p>आयुष्यं मंगलं पुण्यं विषयं वर्ण्यं गृहपहम् ||</p>
+                  </div>
+                </div>
 
-                <motion.ul
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-40px" }}
-                  variants={{
-                    hidden: { opacity: 0 },
-                    visible: {
-                      opacity: 1,
-                      transition: {
-                        staggerChildren: 0.12,
-                        delayChildren: 0.05
-                      }
-                    }
-                  }}
-                  className="space-y-2.5 text-xs text-earth-900 font-medium"
-                >
-                  {purposePoints.map((point, idx) => (
-                    <motion.li
-                      key={idx}
-                      variants={{
-                        hidden: { opacity: 0, y: 14, scale: 0.98 },
-                        visible: {
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                          transition: { duration: 0.45, ease: [0.25, 0.1, 0.25, 1.0] }
+                {/* Boost Immunity Badge & Intro */}
+                <div className="p-4 bg-cream-100/90 rounded-2xl border border-brass-500/40 space-y-2.5">
+                  <div className="inline-flex items-center gap-1.5 px-4 py-1.5 bg-amber-400 text-forest-950 font-extrabold text-xs sm:text-sm rounded-full tracking-wide shadow-md border border-amber-500">
+                    <span className="text-forest-950 text-base">⚡</span>
+                    <span className="font-black text-forest-950 tracking-wider">BOOST THE IMMUNITY OF YOUR CHILD !!</span>
+                  </div>
+                  <p className="text-xs sm:text-sm text-forest-950 font-medium leading-relaxed">
+                    Swarna Prashana is ayurvedic natural way to build immunity which is beneficial for the growth and development of children.
+                  </p>
+                </div>
+
+                {/* Benefits List */}
+                <div className="space-y-2.5">
+                  <span className="text-xs font-bold uppercase tracking-wider text-forest-950 block">
+                    Benefits:
+                  </span>
+                  <motion.ul
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-40px" }}
+                    variants={{
+                      hidden: { opacity: 0 },
+                      visible: {
+                        opacity: 1,
+                        transition: {
+                          staggerChildren: 0.08,
+                          delayChildren: 0.05
                         }
-                      }}
-                      whileHover={{
-                        y: -3,
-                        scale: 1.015,
-                        boxShadow: "0 10px 25px -5px rgba(28, 59, 44, 0.08), 0 8px 10px -6px rgba(28, 59, 44, 0.04)",
-                        borderColor: "rgba(197, 160, 89, 0.45)"
-                      }}
-                      transition={{ duration: 0.25, ease: "easeOut" }}
-                      className="flex items-start gap-2.5 p-3 bg-cream-50/90 rounded-xl border border-earth-200/80 cursor-default transition-colors"
-                    >
-                      <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0 mt-0.5" />
-                      <span className="leading-relaxed">{point}</span>
-                    </motion.li>
-                  ))}
-                </motion.ul>
+                      }
+                    }}
+                    className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 gap-2 text-xs text-earth-900 font-medium"
+                  >
+                    {benefitsList.map((item, idx) => (
+                      <motion.li
+                        key={idx}
+                        variants={{
+                          hidden: { opacity: 0, y: 10, scale: 0.98 },
+                          visible: {
+                            opacity: 1,
+                            y: 0,
+                            scale: 1,
+                            transition: { duration: 0.35, ease: [0.25, 0.1, 0.25, 1.0] }
+                          }
+                        }}
+                        whileHover={{
+                          y: -2,
+                          scale: 1.01,
+                          borderColor: "rgba(197, 160, 89, 0.5)",
+                          boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)"
+                        }}
+                        className="flex items-center justify-between p-2.5 px-3 bg-cream-50/90 rounded-xl border border-earth-200/80 transition-colors"
+                      >
+                        <div className="flex items-center gap-2">
+                          <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+                          <span className="capitalize font-semibold text-forest-950">{item.title}</span>
+                        </div>
+                        <span className="text-[10px] font-mono text-brass-700 bg-brass-500/10 px-2 py-0.5 rounded-md font-medium">
+                          {item.tag}
+                        </span>
+                      </motion.li>
+                    ))}
+                  </motion.ul>
+                </div>
 
                 {/* Specific Medical Safety Box */}
                 <div className="p-3.5 bg-amber-500/10 border-l-3 border-amber-600 rounded-r-xl text-[11px] text-earth-900 leading-relaxed space-y-1">
@@ -428,10 +459,10 @@ export default function Swarnaprashana({ onOpenBooking }) {
 
                 <div className="space-y-1.5 font-serif text-base text-brass-200 italic leading-relaxed pl-3 border-l-2 border-brass-400">
                   <p>
-                    "सुवर्णप्राशनं ह्येतन्मेधाग्निबलवर्धनम् ।"
+                    "सुवर्णप्राशनं हि एतत् मेधाग्निबलवर्धनम् |"
                   </p>
                   <p>
-                    "आयुष्यं मङ्गलं पुण्यं वृष्यं ग्रहपहम् ॥"
+                    "आयुष्यं मंगलं पुण्यं विषयं वर्ण्यं गृहपहम् ||"
                   </p>
                 </div>
 
