@@ -11,7 +11,7 @@ const connectionConfig = process.env.DATABASE_URL
       ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
     }
   : {
-      host: process.env.DB_HOST || '168.119.64.101',
+      host: process.env.DB_HOST || '127.0.0.1',
       port: parseInt(process.env.DB_PORT || '5432', 10),
       database: process.env.DB_NAME || '+krish966',
       user: process.env.DB_USER || '+krish966',
