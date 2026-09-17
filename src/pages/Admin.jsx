@@ -32,6 +32,7 @@ import {
   AlertCircle,
   ArrowUp,
   ArrowDown,
+  ArrowRight,
   Play,
   Pause,
   Sliders,
@@ -1885,7 +1886,7 @@ export default function Admin() {
                     <table className="w-full text-left text-xs">
                       <thead className="bg-forest-950 text-cream-50 uppercase tracking-wider font-semibold text-[11px]">
                         <tr>
-                          <th className="py-4 px-6 text-center text-brass-400 font-bold text-sm">→</th>
+                          <th className="py-4 px-6 text-center w-12"><ArrowRight className="w-4 h-4 text-brass-400 mx-auto" /></th>
                           <th className="py-4 px-6">Month</th>
                           <th className="py-4 px-6">Date</th>
                           <th className="py-4 px-6">Year</th>
@@ -1918,8 +1919,8 @@ export default function Admin() {
                           })
                           .map((item) => (
                             <tr key={item.id} className="hover:bg-cream-50/80 transition-colors">
-                              <td className="py-3.5 px-6 text-center text-forest-900 font-bold text-base">
-                                →
+                              <td className="py-3.5 px-6 text-center w-12">
+                                <ArrowRight className="w-4 h-4 text-forest-900 mx-auto" />
                               </td>
                               <td className="py-3.5 px-6 font-semibold text-forest-950 text-sm">
                                 {item.month}
