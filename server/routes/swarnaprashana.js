@@ -50,7 +50,23 @@ router.get('/', async (req, res) => {
       sql += ' WHERE ' + conditions.join(' AND ');
     }
 
-    sql += ' ORDER BY year ASC, display_order ASC, full_date ASC';
+    sql += ` ORDER BY year ASC,
+      CASE LOWER(month)
+        WHEN 'january' THEN 1
+        WHEN 'february' THEN 2
+        WHEN 'march' THEN 3
+        WHEN 'april' THEN 4
+        WHEN 'may' THEN 5
+        WHEN 'june' THEN 6
+        WHEN 'july' THEN 7
+        WHEN 'august' THEN 8
+        WHEN 'september' THEN 9
+        WHEN 'october' THEN 10
+        WHEN 'november' THEN 11
+        WHEN 'december' THEN 12
+        ELSE display_order
+      END ASC,
+      CAST(date AS INTEGER) ASC`;
 
     const result = await query(sql, params);
     const mapped = result.rows.map(formatRow);
