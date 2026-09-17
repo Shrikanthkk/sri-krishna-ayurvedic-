@@ -1,6 +1,6 @@
 const API_BASE_URL = typeof window !== 'undefined' && window.location.origin
   ? '/api'
-  : 'http://localhost:5000/api';
+  : 'http://127.0.0.1:5000/api';
 
 function getAuthHeaders() {
   const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;

@@ -62,7 +62,7 @@ app.use((err, req, res, next) => {
 // Start listening if executed directly
 if (process.argv[1] && process.argv[1].includes('index.js')) {
   app.listen(PORT, () => {
-    console.log(`🌿 Sri Krishna Ayurvedic Clinic Backend running on http://localhost:${PORT}`);
+    console.log(`🌿 Sri Krishna Ayurvedic Clinic Backend running on http://127.0.0.1:${PORT}`);
     console.log(`📊 PostgreSQL database connected.`);
   });
 }
