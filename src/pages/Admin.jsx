@@ -20,6 +20,7 @@ import {
   MapPin, 
   Check, 
   Eye, 
+  EyeOff,
   ExternalLink,
   Shield,
   Save,
@@ -94,6 +95,7 @@ export default function Admin() {
   const [username, setUsername] = useState('');
   const [pinError, setPinError] = useState(false);
   const [loadingAuth, setLoadingAuth] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
   const [appointments, setAppointments] = useState([]);
   const [inquiries, setInquiries] = useState([]);
@@ -882,15 +884,28 @@ export default function Admin() {
                   <div className="relative">
                     <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-cream-200/30 pointer-events-none" />
                     <input
-                      type="password"
+                      type={showPassword ? "text" : "password"}
                       autoComplete="current-password"
-                      maxLength={12}
+                      maxLength={64}
                       value={pin}
                       onChange={(e) => setPin(e.target.value)}
                       placeholder="••••••••"
                       required
-                      className="w-full pl-10 pr-4 py-3 bg-forest-950/60 border border-forest-700 rounded-xl text-cream-50 text-sm font-mono tracking-widest placeholder-cream-200/20 focus:outline-none focus:border-brass-500 transition-colors"
+                      className="w-full pl-10 pr-11 py-3 bg-forest-950/60 border border-forest-700 rounded-xl text-cream-50 text-sm font-mono tracking-widest placeholder-cream-200/20 focus:outline-none focus:border-brass-500 transition-colors"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(!showPassword)}
+                      className="absolute right-3.5 top-1/2 -translate-y-1/2 text-brass-400 hover:text-brass-300 p-1 rounded-md focus:outline-none transition-colors cursor-pointer"
+                      title={showPassword ? "Hide password" : "Show password"}
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? (
+                        <EyeOff className="w-4.5 h-4.5" />
+                      ) : (
+                        <Eye className="w-4.5 h-4.5" />
+                      )}
+                    </button>
                   </div>
                 </div>
 
