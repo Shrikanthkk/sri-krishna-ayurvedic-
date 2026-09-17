@@ -211,21 +211,22 @@ export async function seedDatabase(options = { closePool: true }) {
   console.log('Seeding PostgreSQL database with canonical clinic records...');
   try {
     // 1. Seed Admin User
-    const adminPasswordHash = await bcrypt.hash('1234', 10);
+    const adminPasswordHash = await bcrypt.hash('Srikrishna@321', 10);
     await query(`
       INSERT INTO users (name, email, phone, password_hash, role, is_active)
       VALUES ($1, $2, $3, $4, $5, $6)
       ON CONFLICT (email) DO UPDATE 
       SET password_hash = EXCLUDED.password_hash, role = EXCLUDED.role, is_active = true;
-    `, ['Dr. Anand Krishna Admin', 'admin@srikrishnaayurveda.com', '+91 98440 90626', adminPasswordHash, 'admin', true]);
+    `, ['srikrishna', 'srikrishna@srikrishnaayurveda.com', '+91 98440 90626', adminPasswordHash, 'admin', true]);
 
     await query(`
       INSERT INTO users (name, email, phone, password_hash, role, is_active)
       VALUES ($1, $2, $3, $4, $5, $6)
-      ON CONFLICT (email) DO NOTHING;
-    `, ['Clinic Administrator', 'admin', '+91 98440 90626', adminPasswordHash, 'admin', true]);
+      ON CONFLICT (email) DO UPDATE 
+      SET password_hash = EXCLUDED.password_hash, role = EXCLUDED.role, is_active = true;
+    `, ['srikrishna', 'srikrishna', '+91 98440 90626', adminPasswordHash, 'admin', true]);
 
-    console.log('✔ Admin user seeded (username: admin / email: admin@srikrishnaayurveda.com, PIN/password: 1234)');
+    console.log('✔ Admin user seeded (username: srikrishna / email: srikrishna@srikrishnaayurveda.com, password: Srikrishna@321)');
 
     // 2. Seed Clinic Settings
     await query(`

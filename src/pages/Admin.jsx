@@ -238,7 +238,7 @@ export default function Admin() {
     } catch (err) {
       console.error('Admin authentication failed:', err);
       // Local demo password fallback for offline resilience
-      if (username.trim().toLowerCase() === 'admin' && pin.trim() === '1234') {
+      if ((username.trim().toLowerCase() === 'srikrishna' || username.trim().toLowerCase() === 'admin') && pin.trim() === 'Srikrishna@321') {
         setIsAuthenticated(true);
         setPinError(false);
         loadData();
@@ -927,7 +927,7 @@ export default function Admin() {
 
           {/* Hint */}
           <p className="text-center text-[10px] text-cream-200/20 mt-4">
-            Default: username <span className="font-mono text-brass-500/50">admin</span> • password <span className="font-mono text-brass-500/50">1234</span>
+            Default: username <span className="font-mono text-brass-500/50">srikrishna</span> • password <span className="font-mono text-brass-500/50">Srikrishna@321</span>
           </p>
         </motion.div>
       </div>
