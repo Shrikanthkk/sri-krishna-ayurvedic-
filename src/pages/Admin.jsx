@@ -1885,7 +1885,7 @@ export default function Admin() {
                     <table className="w-full text-left text-xs">
                       <thead className="bg-forest-950 text-cream-50 uppercase tracking-wider font-semibold text-[11px]">
                         <tr>
-                          <th className="py-4 px-6">Order</th>
+                          <th className="py-4 px-6 text-center text-brass-400 font-bold text-sm">→</th>
                           <th className="py-4 px-6">Month</th>
                           <th className="py-4 px-6">Date</th>
                           <th className="py-4 px-6">Year</th>
@@ -1916,10 +1916,10 @@ export default function Admin() {
                             if (dA !== dB) return dA - dB;
                             return (a.display_order || 0) - (b.display_order || 0);
                           })
-                          .map((item, idx) => (
+                          .map((item) => (
                             <tr key={item.id} className="hover:bg-cream-50/80 transition-colors">
-                              <td className="py-3.5 px-6 font-mono font-bold text-gray-500">
-                                {item.display_order || idx + 1}
+                              <td className="py-3.5 px-6 text-center text-forest-900 font-bold text-base">
+                                →
                               </td>
                               <td className="py-3.5 px-6 font-semibold text-forest-950 text-sm">
                                 {item.month}
