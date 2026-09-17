@@ -752,7 +752,8 @@ export default function Admin() {
       return;
     }
 
-    setSwarnaSchedule(getAllSwarnaprashanaDates());
+    const refreshed = await fetchSwarnaprashanaScheduleFromDb({ activeOnly: false });
+    setSwarnaSchedule(refreshed || []);
     setSwarnaYears(getAvailableScheduleYears());
     setIsSwarnaModalOpen(false);
     setSwarnaNotice('Swarnaprashana schedule updated successfully in database.');
@@ -760,18 +761,18 @@ export default function Admin() {
   };
 
   const handleDeleteSwarnaItem = async (id, month, date, year) => {
-    if (window.confirm(`Are you sure you want to delete the Pushya Nakshatra date "${month} ${date}, ${year}"?`)) {
+    if (window.confirm(`Are you sure you want to delete the Pushya Nakshatra date "${month} ${date}, ${year}" permanently from database?`)) {
       const updated = await deleteSwarnaprashanaDate(id);
-      setSwarnaSchedule(updated);
+      setSwarnaSchedule(updated || []);
       setSwarnaYears(getAvailableScheduleYears());
-      setSwarnaNotice('Swarnaprashana schedule updated in database.');
+      setSwarnaNotice('Swarnaprashana date deleted permanently from database.');
       setTimeout(() => setSwarnaNotice(''), 4000);
     }
   };
 
-  const handleToggleSwarnaStatusItem = async (id) => {
-    const updated = await toggleSwarnaprashanaStatus(id);
-    setSwarnaSchedule(updated);
+  const handleToggleSwarnaStatusItem = async (id, currentStatus) => {
+    const updated = await toggleSwarnaprashanaStatus(id, currentStatus === 'Active' ? 'Inactive' : 'Active');
+    setSwarnaSchedule(updated || []);
     setSwarnaNotice('Swarnaprashana status updated in database.');
     setTimeout(() => setSwarnaNotice(''), 3000);
   };
@@ -1945,7 +1946,7 @@ export default function Admin() {
                               <td className="py-3.5 px-6 text-right">
                                 <div className="flex items-center justify-end gap-1.5">
                                   <button
-                                    onClick={() => handleToggleSwarnaStatusItem(item.id)}
+                                    onClick={() => handleToggleSwarnaStatusItem(item.id, item.status)}
                                     className={`px-2.5 py-1 rounded-lg text-[11px] font-semibold border transition-colors cursor-pointer ${
                                       item.status === 'Active'
                                         ? 'bg-cream-100 text-earth-800 hover:bg-earth-200 border-earth-300'

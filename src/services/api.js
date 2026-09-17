@@ -280,18 +280,21 @@ export const api = {
   },
 
   async saveSwarnaprashanaDate(entry) {
-    const res = await fetch(`${API_BASE_URL}/swarnaprashana`, {
-      method: 'POST',
+    const url = entry.id ? `${API_BASE_URL}/swarnaprashana/${entry.id}` : `${API_BASE_URL}/swarnaprashana`;
+    const method = entry.id ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method,
       headers: getAuthHeaders(),
       body: JSON.stringify(entry)
     });
     return handleResponse(res);
   },
 
-  async toggleSwarnaprashanaStatus(id) {
+  async toggleSwarnaprashanaStatus(id, status = null) {
     const res = await fetch(`${API_BASE_URL}/swarnaprashana/${id}/status`, {
       method: 'PATCH',
-      headers: getAuthHeaders()
+      headers: getAuthHeaders(),
+      body: status ? JSON.stringify({ status }) : undefined
     });
     return handleResponse(res);
   },

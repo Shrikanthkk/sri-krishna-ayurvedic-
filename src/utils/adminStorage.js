@@ -120,9 +120,8 @@ export const defaultSettings = {
 
 export const defaultSwarnaprashanaSchedule = [
   { id: 'psh-2026-01', month: 'January', date: '5', year: 2026, full_date: '2026-01-05', status: 'Active', display_order: 1 },
-  { id: 'psh-2026-02a', month: 'February', date: '1', year: 2026, full_date: '2026-02-01', status: 'Active', display_order: 2 },
-  { id: 'psh-2026-02b', month: 'February', date: '28', year: 2026, full_date: '2026-02-28', status: 'Active', display_order: 3 },
-  { id: 'psh-2026-03', month: 'March', date: '28', year: 2026, full_date: '2026-03-28', status: 'Active', display_order: 4 },
+  { id: 'psh-2026-02', month: 'February', date: '1', year: 2026, full_date: '2026-02-01', status: 'Active', display_order: 2 },
+  { id: 'psh-2026-03', month: 'March', date: '27', year: 2026, full_date: '2026-03-27', status: 'Active', display_order: 4 },
   { id: 'psh-2026-04', month: 'April', date: '24', year: 2026, full_date: '2026-04-24', status: 'Active', display_order: 5 },
   { id: 'psh-2026-05', month: 'May', date: '21', year: 2026, full_date: '2026-05-21', status: 'Active', display_order: 6 },
   { id: 'psh-2026-06', month: 'June', date: '18', year: 2026, full_date: '2026-06-18', status: 'Active', display_order: 7 },
@@ -130,8 +129,7 @@ export const defaultSwarnaprashanaSchedule = [
   { id: 'psh-2026-08', month: 'August', date: '11', year: 2026, full_date: '2026-08-11', status: 'Active', display_order: 9 },
   { id: 'psh-2026-09', month: 'September', date: '8', year: 2026, full_date: '2026-09-08', status: 'Active', display_order: 10 },
   { id: 'psh-2026-10', month: 'October', date: '5', year: 2026, full_date: '2026-10-05', status: 'Active', display_order: 11 },
-  { id: 'psh-2026-11a', month: 'November', date: '1', year: 2026, full_date: '2026-11-01', status: 'Active', display_order: 12 },
-  { id: 'psh-2026-11b', month: 'November', date: '29', year: 2026, full_date: '2026-11-29', status: 'Active', display_order: 13 },
+  { id: 'psh-2026-11', month: 'November', date: '2', year: 2026, full_date: '2026-11-02', status: 'Active', display_order: 13 },
   { id: 'psh-2026-12', month: 'December', date: '26', year: 2026, full_date: '2026-12-26', status: 'Active', display_order: 14 }
 ];
 
@@ -530,7 +528,7 @@ export function getAllSwarnaprashanaDates() {
 export async function fetchSwarnaprashanaScheduleFromDb(params = {}) {
   try {
     const data = await api.getSwarnaprashanaSchedule(params);
-    if (Array.isArray(data) && data.length > 0) {
+    if (Array.isArray(data)) {
       localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(data));
       return data;
     }
@@ -555,14 +553,17 @@ export function getSwarnaprashanaSchedule({ year = null, activeOnly = true } = {
   }
 
   return filtered.sort((a, b) => {
-    const yearDiff = (parseInt(a.year, 10) || 2026) - (parseInt(b.year, 10) || 2026);
-    if (yearDiff !== 0) return yearDiff;
+    const yrA = parseInt(a.year, 10) || 2026;
+    const yrB = parseInt(b.year, 10) || 2026;
+    if (yrA !== yrB) return yrA - yrB;
+    const orderA = parseInt(a.display_order, 10) || 1;
+    const orderB = parseInt(b.display_order, 10) || 1;
+    if (orderA !== orderB) return orderA - orderB;
     const monthA = MONTH_NAMES.indexOf(a.month);
     const monthB = MONTH_NAMES.indexOf(b.month);
     if (monthA !== monthB) return monthA - monthB;
     const dateDiff = (parseInt(a.date, 10) || 1) - (parseInt(b.date, 10) || 1);
-    if (dateDiff !== 0) return dateDiff;
-    return (a.display_order || 0) - (b.display_order || 0);
+    return dateDiff;
   });
 }
 
@@ -579,9 +580,14 @@ export async function saveSwarnaprashanaDate(entry) {
     if (!validation.valid) {
       return { success: false, error: validation.message };
     }
-    await api.saveSwarnaprashanaDate(entry);
+    const apiRes = await api.saveSwarnaprashanaDate(entry);
+    if (apiRes && apiRes.success === false) {
+      return { success: false, error: apiRes.error || 'Failed to save date.' };
+    }
     const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-    localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
+    if (Array.isArray(refreshed)) {
+      localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
+    }
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
     }
@@ -592,11 +598,16 @@ export async function saveSwarnaprashanaDate(entry) {
   }
 }
 
-export async function toggleSwarnaprashanaStatus(id) {
+export async function toggleSwarnaprashanaStatus(id, status = null) {
   try {
-    await api.toggleSwarnaprashanaStatus(id);
+    const apiRes = await api.toggleSwarnaprashanaStatus(id, status);
+    if (apiRes && apiRes.success === false) {
+      console.error('API Error toggling status:', apiRes.error);
+    }
     const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-    localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
+    if (Array.isArray(refreshed)) {
+      localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
+    }
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
     }
@@ -609,9 +620,14 @@ export async function toggleSwarnaprashanaStatus(id) {
 
 export async function deleteSwarnaprashanaDate(id) {
   try {
-    await api.deleteSwarnaprashanaDate(id);
+    const apiRes = await api.deleteSwarnaprashanaDate(id);
+    if (apiRes && apiRes.success === false) {
+      console.error('API Error deleting date:', apiRes.error);
+    }
     const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-    localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
+    if (Array.isArray(refreshed)) {
+      localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
+    }
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
     }

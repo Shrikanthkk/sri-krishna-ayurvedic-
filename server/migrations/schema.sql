@@ -84,10 +84,12 @@ CREATE TABLE IF NOT EXISTS swarnaprashana_schedule (
   status VARCHAR(50) NOT NULL DEFAULT 'Active',
   display_order INT DEFAULT 1,
   created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT swarnaprashana_year_month_unique UNIQUE (year, month)
 );
 
 CREATE INDEX IF NOT EXISTS idx_appointments_date ON appointments(date);
 CREATE INDEX IF NOT EXISTS idx_appointments_status ON appointments(status);
 CREATE INDEX IF NOT EXISTS idx_inquiries_read ON inquiries(is_read);
 CREATE INDEX IF NOT EXISTS idx_swarna_year_status ON swarnaprashana_schedule(year, status);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_swarna_year_month ON swarnaprashana_schedule(year, month);

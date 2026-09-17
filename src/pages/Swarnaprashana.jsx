@@ -20,22 +20,17 @@ export default function Swarnaprashana({ onOpenBooking }) {
 
   useEffect(() => {
     const loadSchedule = async () => {
+      try {
+        await fetchSwarnaprashanaScheduleFromDb({ activeOnly: false });
+      } catch (err) {
+        // Fallback to cache if offline
+      }
       const years = getAvailableScheduleYears();
       setAvailableYears(years);
       if (!years.includes(selectedYear) && years.length > 0) {
         setSelectedYear(years[0]);
       }
       setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
-
-      // Fetch from PostgreSQL database in background
-      try {
-        await fetchSwarnaprashanaScheduleFromDb({ activeOnly: false });
-        const updatedYears = getAvailableScheduleYears();
-        setAvailableYears(updatedYears);
-        setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
-      } catch (err) {
-        // Fallback to cached schedule
-      }
     };
 
     loadSchedule();
