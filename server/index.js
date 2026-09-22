@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import path from 'path';
+import fs from 'fs';
 import authRoutes from './routes/auth.js';
 import appointmentsRoutes from './routes/appointments.js';
 import inquiriesRoutes from './routes/inquiries.js';
@@ -42,10 +43,19 @@ app.use('/api/treatments', treatmentsRoutes);
 app.use('/api/swarnaprashana', swarnaRoutes);
 app.use('/api/admin', adminRoutes);
 
+// Serve production static frontend build if dist/ exists
+const distPath = path.join(process.cwd(), 'dist');
+if (fs.existsSync(distPath)) {
+  app.use(express.static(distPath));
+}
+
 // Centralized 404 handler for unknown APIs
 app.use((req, res, next) => {
   if (req.path.startsWith('/api')) {
     return res.status(404).json({ success: false, error: 'API endpoint not found.' });
+  }
+  if (fs.existsSync(distPath)) {
+    return res.sendFile(path.join(distPath, 'index.html'));
   }
   next();
 });

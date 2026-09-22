@@ -5,19 +5,15 @@ dotenv.config();
 
 const { Pool } = pg;
 
-const connectionConfig = process.env.DATABASE_URL
-  ? {
-      connectionString: process.env.DATABASE_URL,
-      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
-    }
-  : {
-      host: process.env.DB_HOST || '127.0.0.1',
-      port: parseInt(process.env.DB_PORT || '5432', 10),
-      database: process.env.DB_NAME || 'krish966',
-      user: process.env.DB_USER || 'krish966',
-      password: process.env.DB_PASSWORD || '2aG1YDSxSYQv1sBkubBhbe790',
-      ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
-    };
+let dbUrl = process.env.DATABASE_URL;
+if (!dbUrl || dbUrl.includes('127.0.0.1') || dbUrl.includes('localhost')) {
+  dbUrl = 'postgresql://krish966:2aG1YDSxSYQv1sBkubBhbe790@168.119.64.101:5432/krish966';
+}
+
+const connectionConfig = {
+  connectionString: dbUrl,
+  ssl: process.env.DB_SSL === 'true' ? { rejectUnauthorized: false } : false
+};
 
 export const pool = new Pool({
   ...connectionConfig,
