@@ -191,7 +191,7 @@ export async function fetchAppointmentsFromDb(filters = {}) {
     localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(data));
     return data;
   } catch (err) {
-    console.error('Error fetching appointments from PostgreSQL:', err);
+    console.warn('Using local cache for appointments:', err.message || err);
     return getAppointments();
   }
 }
@@ -276,7 +276,7 @@ export async function fetchInquiriesFromDb() {
     localStorage.setItem(INQUIRIES_KEY, JSON.stringify(data));
     return data;
   } catch (err) {
-    console.error('Error fetching inquiries from PostgreSQL:', err);
+    console.warn('Using local cache for inquiries:', err.message || err);
     return getInquiries();
   }
 }
@@ -359,7 +359,7 @@ export async function fetchClinicSettingsFromDb() {
     localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(result));
     return result;
   } catch (err) {
-    console.error('Error fetching settings from PostgreSQL:', err);
+    console.warn('Using default settings:', err.message || err);
     return getClinicSettings();
   }
 }
@@ -472,7 +472,7 @@ export async function fetchTreatmentsFromDb() {
     }
     return getStoredTreatments();
   } catch (err) {
-    console.error('Error fetching treatments from PostgreSQL:', err);
+    console.warn('Using stored treatments:', err.message || err);
     return getStoredTreatments();
   }
 }
@@ -534,7 +534,7 @@ export async function fetchSwarnaprashanaScheduleFromDb(params = {}) {
     }
     return getAllSwarnaprashanaDates();
   } catch (err) {
-    console.error('Error fetching schedule from PostgreSQL:', err);
+    console.warn('Using stored schedule:', err.message || err);
     return getAllSwarnaprashanaDates();
   }
 }
