@@ -51,16 +51,21 @@ export const api = {
 
   // Appointments
   async getAppointments(filters = {}) {
-    const params = new URLSearchParams();
-    if (filters.status && filters.status !== 'all') params.append('status', filters.status);
-    if (filters.search) params.append('search', filters.search);
+    try {
+      const params = new URLSearchParams();
+      if (filters.status && filters.status !== 'all') params.append('status', filters.status);
+      if (filters.search) params.append('search', filters.search);
 
-    const queryString = params.toString() ? `?${params.toString()}` : '';
-    const res = await fetch(`${API_BASE_URL}/appointments${queryString}`, {
-      headers: getAuthHeaders()
-    });
-    const data = await handleResponse(res);
-    return data.data || [];
+      const queryString = params.toString() ? `?${params.toString()}` : '';
+      const res = await fetch(`${API_BASE_URL}/appointments${queryString}`, {
+        headers: getAuthHeaders()
+      });
+      if (!res.ok) return [];
+      const data = await res.json().catch(() => ({}));
+      return data.data || [];
+    } catch (err) {
+      return [];
+    }
   },
 
   async createAppointment(appointmentData) {
@@ -91,11 +96,16 @@ export const api = {
 
   // Inquiries
   async getInquiries() {
-    const res = await fetch(`${API_BASE_URL}/inquiries`, {
-      headers: getAuthHeaders()
-    });
-    const data = await handleResponse(res);
-    return data.data || [];
+    try {
+      const res = await fetch(`${API_BASE_URL}/inquiries`, {
+        headers: getAuthHeaders()
+      });
+      if (!res.ok) return [];
+      const data = await res.json().catch(() => ({}));
+      return data.data || [];
+    } catch (err) {
+      return [];
+    }
   },
 
   async createInquiry(inquiryData) {
@@ -125,9 +135,14 @@ export const api = {
 
   // Clinic Settings
   async getClinicSettings() {
-    const res = await fetch(`${API_BASE_URL}/settings`);
-    const data = await handleResponse(res);
-    return data.data;
+    try {
+      const res = await fetch(`${API_BASE_URL}/settings`);
+      if (!res.ok) return null;
+      const data = await res.json().catch(() => ({}));
+      return data.data || null;
+    } catch (err) {
+      return null;
+    }
   },
 
   async saveClinicSettings(settingsData) {
@@ -206,9 +221,14 @@ export const api = {
 
   // Treatments
   async getTreatments() {
-    const res = await fetch(`${API_BASE_URL}/treatments`);
-    const data = await handleResponse(res);
-    return data.data || [];
+    try {
+      const res = await fetch(`${API_BASE_URL}/treatments`);
+      if (!res.ok) return [];
+      const data = await res.json().catch(() => ({}));
+      return data.data || [];
+    } catch (err) {
+      return [];
+    }
   },
 
   async uploadTreatmentImage(file, onProgress) {
@@ -269,14 +289,19 @@ export const api = {
 
   // Swarnaprashana Schedule
   async getSwarnaprashanaSchedule({ year = null, activeOnly = false } = {}) {
-    const params = new URLSearchParams();
-    if (year && year !== 'all') params.append('year', year);
-    if (activeOnly) params.append('activeOnly', 'true');
+    try {
+      const params = new URLSearchParams();
+      if (year && year !== 'all') params.append('year', year);
+      if (activeOnly) params.append('activeOnly', 'true');
 
-    const queryString = params.toString() ? `?${params.toString()}` : '';
-    const res = await fetch(`${API_BASE_URL}/swarnaprashana${queryString}`);
-    const data = await handleResponse(res);
-    return data.data || [];
+      const queryString = params.toString() ? `?${params.toString()}` : '';
+      const res = await fetch(`${API_BASE_URL}/swarnaprashana${queryString}`);
+      if (!res.ok) return [];
+      const data = await res.json().catch(() => ({}));
+      return data.data || [];
+    } catch (err) {
+      return [];
+    }
   },
 
   async saveSwarnaprashanaDate(entry) {
