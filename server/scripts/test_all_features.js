@@ -4,7 +4,7 @@ import bcrypt from 'bcryptjs';
 async function runFullTestSuite() {
   console.log('===========================================================');
   console.log('  Testing Sri Krishna Ayurvedic Clinic PostgreSQL Database');
-  console.log('  Target Host: 168.119.64.101:5432 / DB: krish966');
+  console.log(`  Target Host: ${process.env.DB_HOST || '127.0.0.1'}:5432 / DB: ${process.env.DB_NAME || 'krish966'}`);
   console.log('===========================================================\n');
 
   const errors = [];
