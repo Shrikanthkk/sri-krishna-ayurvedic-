@@ -3,6 +3,17 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "installCommand": "npm install",
+  "env": {
+    "DATABASE_URL": "postgresql://krish966:2aG1YDSxSYQv1sBkubBhbe790@168.119.64.101:5432/krish966",
+    "DB_HOST": "168.119.64.101",
+    "DB_PORT": "5432",
+    "DB_NAME": "krish966",
+    "DB_USER": "krish966",
+    "DB_PASSWORD": "2aG1YDSxSYQv1sBkubBhbe790",
+    "DB_SSL": "false",
+    "JWT_SECRET": "sri_krishna_ayurvedic_super_secure_jwt_secret_key_2026",
+    "NODE_ENV": "production"
+  },
   "functions": {
     "api/index.js": {
       "memory": 512,
