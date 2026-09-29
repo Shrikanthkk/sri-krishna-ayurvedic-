@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { MapPin, Phone, Mail, Clock, Calendar, ArrowUpRight, Shield } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
-import { getClinicSettings } from '../utils/adminStorage';
+import { getClinicSettings, fetchClinicSettingsFromDb } from '../utils/adminStorage';
 
 export default function Footer({ onOpenBooking }) {
   const [settings, setSettings] = useState(getClinicSettings());
 
   useEffect(() => {
+    fetchClinicSettingsFromDb().then(data => {
+      if (data) setSettings(data);
+    }).catch(() => {});
+
     const handleSettingsUpdated = (e) => {
       if (e.detail) setSettings(e.detail);
       else setSettings(getClinicSettings());

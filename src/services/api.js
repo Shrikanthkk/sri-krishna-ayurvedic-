@@ -170,7 +170,7 @@ export const api = {
       formData.append('image', file);
 
       xhr.open('POST', `${API_BASE_URL}/settings/hero-slider/upload`);
-      const token = localStorage.getItem('sk_admin_token');
+      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
       if (token) {
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       }
@@ -238,7 +238,7 @@ export const api = {
       formData.append('image', file);
 
       xhr.open('POST', `${API_BASE_URL}/treatments/upload`);
-      const token = localStorage.getItem('sk_admin_token');
+      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
       if (token) {
         xhr.setRequestHeader('Authorization', `Bearer ${token}`);
       }

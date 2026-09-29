@@ -6,13 +6,19 @@ import Hero from '../components/Hero';
 import HomeImageSlider from '../components/HomeImageSlider';
 import WeAlsoTreatSlider from '../components/WeAlsoTreatSlider';
 import { clinicData } from '../data/clinicData';
-import { getStoredTreatments } from '../utils/adminStorage';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../utils/adminStorage';
 
 export default function Home({ onOpenBooking }) {
   const [treatmentsList, setTreatmentsList] = useState([]);
 
   useEffect(() => {
-    setTreatmentsList(getStoredTreatments());
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data)) {
+        setTreatmentsList(data);
+      }
+    }).catch(() => {
+      setTreatmentsList(getStoredTreatments());
+    });
   }, []);
 
   return (

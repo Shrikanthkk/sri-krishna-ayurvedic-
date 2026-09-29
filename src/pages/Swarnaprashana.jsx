@@ -21,24 +21,24 @@ export default function Swarnaprashana({ onOpenBooking }) {
   useEffect(() => {
     const loadSchedule = async () => {
       try {
-        await fetchSwarnaprashanaScheduleFromDb({ activeOnly: false });
+        const dbData = await fetchSwarnaprashanaScheduleFromDb({ activeOnly: false });
+        const years = getAvailableScheduleYears();
+        setAvailableYears(years);
+        if (!years.includes(selectedYear) && years.length > 0) {
+          setSelectedYear(years[0]);
+        }
+        setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
       } catch (err) {
-        // Fallback to cache if offline
+        const years = getAvailableScheduleYears();
+        setAvailableYears(years);
+        setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
       }
-      const years = getAvailableScheduleYears();
-      setAvailableYears(years);
-      if (!years.includes(selectedYear) && years.length > 0) {
-        setSelectedYear(years[0]);
-      }
-      setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
     };
 
     loadSchedule();
 
     const handleUpdate = () => {
-      const years = getAvailableScheduleYears();
-      setAvailableYears(years);
-      setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
+      loadSchedule();
     };
 
     window.addEventListener('swarnaprashana_schedule_updated', handleUpdate);

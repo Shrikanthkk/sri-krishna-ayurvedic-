@@ -8,21 +8,7 @@ import { verifyToken, requireAdmin } from '../middleware/auth.js';
 const router = Router();
 
 // Configure Multer Storage for Hero Slider Images
-const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'hero');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `hero-${uniqueSuffix}${ext}`);
-  }
-});
+const memoryStorage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
   const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
@@ -34,7 +20,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage,
+  storage: memoryStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB maximum
   fileFilter
 });
@@ -249,12 +235,13 @@ router.put('/', async (req, res) => {
 // POST /api/settings/hero-slider/upload (Upload hero image)
 router.post('/hero-slider/upload', (req, res) => {
   upload.single('image')(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.status(400).json({ success: false, error: 'Image size exceeds the maximum allowed limit of 5 MB.' });
+    if (err) {
+      if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ success: false, error: 'Image size exceeds the maximum allowed limit of 5 MB.' });
+        }
+        return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
       }
-      return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
-    } else if (err) {
       return res.status(400).json({ success: false, error: err.message || 'Invalid file uploaded.' });
     }
 
@@ -262,15 +249,22 @@ router.post('/hero-slider/upload', (req, res) => {
       return res.status(400).json({ success: false, error: 'No image file uploaded.' });
     }
 
-    const imageUrl = `/uploads/hero/${req.file.filename}`;
-    return res.json({
-      success: true,
-      url: imageUrl,
-      filename: req.file.filename,
-      size: req.file.size,
-      mimetype: req.file.mimetype,
-      message: 'Image uploaded successfully.'
-    });
+    try {
+      const base64 = req.file.buffer.toString('base64');
+      const imageUrl = `data:${req.file.mimetype};base64,${base64}`;
+
+      return res.json({
+        success: true,
+        url: imageUrl,
+        filename: req.file.originalname,
+        size: req.file.size,
+        mimetype: req.file.mimetype,
+        message: 'Image processed successfully.'
+      });
+    } catch (processErr) {
+      console.error('Error processing hero image upload:', processErr);
+      return res.status(500).json({ success: false, error: 'Failed to process image upload.' });
+    }
   });
 });
 

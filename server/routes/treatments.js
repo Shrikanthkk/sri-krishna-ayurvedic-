@@ -8,14 +8,15 @@ import { verifyToken, requireAdmin } from '../middleware/auth.js';
 const router = Router();
 
 // Configure Multer Storage for Treatment Images
-const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'treatments');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
+const memoryStorage = multer.memoryStorage();
 
-const storage = multer.diskStorage({
+const diskStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, uploadDir);
+    const tmpDir = process.env.VERCEL ? '/tmp' : path.join(process.cwd(), 'public', 'uploads', 'treatments');
+    if (!fs.existsSync(tmpDir)) {
+      try { fs.mkdirSync(tmpDir, { recursive: true }); } catch (e) {}
+    }
+    cb(null, tmpDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
@@ -34,7 +35,7 @@ const fileFilter = (req, file, cb) => {
 };
 
 const upload = multer({
-  storage,
+  storage: process.env.VERCEL ? memoryStorage : memoryStorage,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB maximum
   fileFilter
 });
@@ -42,28 +43,57 @@ const upload = multer({
 // POST /api/treatments/upload (Upload Treatment Image)
 router.post('/upload', (req, res) => {
   upload.single('image')(req, res, (err) => {
-    if (err instanceof multer.MulterError) {
-      if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.status(400).json({ success: false, error: 'Image size exceeds 5 MB limit.' });
+    if (err) {
+      // If serverless read-only filesystem error or multer error
+      if (err.code === 'EROFS' || err.message?.includes('read-only')) {
+        // Fallback: parse form-data memory buffer if read-only
+      } else if (err instanceof multer.MulterError) {
+        if (err.code === 'LIMIT_FILE_SIZE') {
+          return res.status(400).json({ success: false, error: 'Image size exceeds 5 MB limit.' });
+        }
+        return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
+      } else {
+        return res.status(400).json({ success: false, error: err.message || 'Invalid file uploaded.' });
       }
-      return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
-    } else if (err) {
-      return res.status(400).json({ success: false, error: err.message || 'Invalid file uploaded.' });
     }
 
     if (!req.file) {
       return res.status(400).json({ success: false, error: 'No image file provided.' });
     }
 
-    const imageUrl = `/uploads/treatments/${req.file.filename}`;
-    return res.json({
-      success: true,
-      url: imageUrl,
-      filename: req.file.filename,
-      size: req.file.size,
-      mimetype: req.file.mimetype,
-      message: 'Treatment image uploaded successfully.'
-    });
+    try {
+      let imageUrl;
+      if (req.file.buffer) {
+        // Memory storage fallback (Serverless Vercel)
+        const base64 = req.file.buffer.toString('base64');
+        imageUrl = `data:${req.file.mimetype};base64,${base64}`;
+      } else if (req.file.path && fs.existsSync(req.file.path)) {
+        // Local server filesystem
+        try {
+          const fileBuffer = fs.readFileSync(req.file.path);
+          const base64 = fileBuffer.toString('base64');
+          imageUrl = `data:${req.file.mimetype};base64,${base64}`;
+          // Clean up temp file
+          fs.unlinkSync(req.file.path);
+        } catch (readErr) {
+          imageUrl = `/uploads/treatments/${req.file.filename}`;
+        }
+      } else {
+        imageUrl = `/uploads/treatments/${req.file.filename}`;
+      }
+
+      return res.json({
+        success: true,
+        url: imageUrl,
+        filename: req.file.filename,
+        size: req.file.size,
+        mimetype: req.file.mimetype,
+        message: 'Treatment image processed successfully.'
+      });
+    } catch (processErr) {
+      console.error('Error processing treatment upload:', processErr);
+      return res.status(500).json({ success: false, error: 'Failed to process image upload.' });
+    }
   });
 });
 

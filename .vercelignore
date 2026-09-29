@@ -4,6 +4,8 @@ node_modules
 dist
 .vercel
 *.zip
+*.rar
+Royal_Dental_React.rar
 /Meditating_figure_chakras_glowing_202608181320.mp4
 animation
 !public/**
