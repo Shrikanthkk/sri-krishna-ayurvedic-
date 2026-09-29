@@ -61,6 +61,23 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
+// URL Normalization Middleware (Fixes serverless route path stripping)
+app.use((req, res, next) => {
+  if (!req.url.startsWith('/api') && (
+    req.url.startsWith('/auth') ||
+    req.url.startsWith('/appointments') ||
+    req.url.startsWith('/inquiries') ||
+    req.url.startsWith('/settings') ||
+    req.url.startsWith('/treatments') ||
+    req.url.startsWith('/swarnaprashana') ||
+    req.url.startsWith('/admin') ||
+    req.url.startsWith('/health')
+  )) {
+    req.url = '/api' + req.url;
+  }
+  next();
+});
+
 // API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentsRoutes);
