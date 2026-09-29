@@ -276,22 +276,36 @@ export function getStoredTreatments() {
 
 export async function fetchTreatmentsFromDb() {
   const data = await api.getTreatments(); // throws on error
-  if (Array.isArray(data) && data.length > 0) {
-    const merged = data.map(t => {
-      const match = clinicData.treatments.find(ct => ct.id === t.id);
-      return { ...t, review: t.review || match?.review };
-    });
-    writeCache(TREATMENTS_KEY, merged);
-    return merged;
+  if (Array.isArray(data)) {
+    if (data.length > 0) {
+      const merged = data.map(t => {
+        const match = clinicData.treatments.find(ct => ct.id === t.id);
+        return { ...t, review: t.review || match?.review };
+      });
+      writeCache(TREATMENTS_KEY, merged);
+      return merged;
+    }
+    // DB returned empty array — clear cache so we don't show stale data
+    writeCache(TREATMENTS_KEY, []);
+    return [];
   }
-  return getStoredTreatments();
+  return getStoredTreatments(); // truly null/undefined response only
 }
 
 export async function saveTreatment(treatmentItem) {
-  await api.saveTreatment(treatmentItem); // throws on error — saves to PostgreSQL
-  const refreshed = await api.getTreatments(); // always fetch fresh from DB
-  writeCache(TREATMENTS_KEY, refreshed);
-  return refreshed;
+  // Step 1: Save to PostgreSQL (throws on any error)
+  const saveResult = await api.saveTreatment(treatmentItem);
+  if (!saveResult || saveResult.success === false) {
+    throw new Error(saveResult?.error || 'Failed to save treatment to database.');
+  }
+  // Step 2: Re-fetch the full list from DB to confirm and update cache
+  const refreshed = await api.getTreatments();
+  if (Array.isArray(refreshed)) {
+    writeCache(TREATMENTS_KEY, refreshed);
+    return refreshed;
+  }
+  // Worst case: return at least the saved item wrapped in an array
+  return saveResult.data ? [saveResult.data] : [];
 }
 
 export async function deleteTreatment(id) {

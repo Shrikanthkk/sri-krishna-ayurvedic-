@@ -698,21 +698,42 @@ export default function Admin() {
 
   const handleSaveTreatmentModal = async (e) => {
     e.preventDefault();
-    if (!editingTreatment.title.trim()) return;
-
-    const updated = await saveTreatment(editingTreatment);
-    setTreatments(updated);
-    setIsTreatmentModalOpen(false);
-    setTreatmentNotice(`Treatment "${editingTreatment.title}" updated successfully in database!`);
-    setTimeout(() => setTreatmentNotice(''), 4000);
+    setTreatmentModalError('');
+    if (!editingTreatment.title.trim()) {
+      setTreatmentModalError('Treatment title is required.');
+      return;
+    }
+    try {
+      const updated = await saveTreatment(editingTreatment);
+      setTreatments(Array.isArray(updated) ? updated : treatments);
+      setIsTreatmentModalOpen(false);
+      setTreatmentNotice(`Treatment "${editingTreatment.title}" saved successfully in database!`);
+      setTimeout(() => setTreatmentNotice(''), 4000);
+      // Refresh from DB to be sure
+      fetchTreatmentsFromDb().then(fresh => { if (Array.isArray(fresh)) setTreatments(fresh); }).catch(() => {});
+    } catch (err) {
+      console.error('Failed to save treatment:', err);
+      setTreatmentModalError(
+        err.message && err.message.length < 200
+          ? `Database error: ${err.message}`
+          : 'Failed to save treatment to database. Please check your connection and try again.'
+      );
+    }
   };
 
   const handleDeleteTreatmentItem = async (id, title) => {
     if (window.confirm(`Are you sure you want to delete the treatment "${title}"?`)) {
-      const updated = await deleteTreatment(id);
-      setTreatments(updated);
-      setTreatmentNotice(`Treatment "${title}" removed from database.`);
-      setTimeout(() => setTreatmentNotice(''), 4000);
+      try {
+        const updated = await deleteTreatment(id);
+        setTreatments(Array.isArray(updated) ? updated : treatments.filter(t => t.id !== id));
+        setTreatmentNotice(`Treatment "${title}" removed from database.`);
+        setTimeout(() => setTreatmentNotice(''), 4000);
+        // Refresh from DB to be sure
+        fetchTreatmentsFromDb().then(fresh => { if (Array.isArray(fresh)) setTreatments(fresh); }).catch(() => {});
+      } catch (err) {
+        console.error('Failed to delete treatment:', err);
+        alert(`Failed to delete treatment from database: ${err.message || 'Unknown error'}`);
+      }
     }
   };
 
