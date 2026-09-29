@@ -9,9 +9,14 @@ const router = Router();
 // POST /api/auth/login
 router.post('/login', async (req, res) => {
   try {
-    const { username, email, password, pin } = req.body;
+    const body = req.body || {};
+    const username = body.username || body.name || '';
+    const email = body.email || '';
+    const password = body.password || '';
+    const pin = body.pin || '';
+
     const loginIdentifier = (email || username || '').trim().toLowerCase();
-    const loginSecret = password || pin || '';
+    const loginSecret = (password || pin || '').trim();
 
     if (!loginIdentifier || !loginSecret) {
       return res.status(400).json({ success: false, error: 'Username/Email and Password/PIN are required.' });
@@ -32,7 +37,9 @@ router.post('/login', async (req, res) => {
 
       if (result.rows.length > 0) {
         user = result.rows[0];
-        isMatch = await bcrypt.compare(loginSecret, user.password_hash);
+        if (user && user.password_hash && typeof user.password_hash === 'string') {
+          isMatch = await bcrypt.compare(loginSecret, user.password_hash).catch(() => false);
+        }
       }
     } catch (dbErr) {
       console.warn('Database query during login failed, checking fallback credentials:', dbErr.message);
@@ -77,7 +84,7 @@ router.post('/login', async (req, res) => {
     });
   } catch (err) {
     console.error('Login error:', err);
-    return res.status(500).json({ success: false, error: 'Internal server error during authentication.' });
+    return res.status(500).json({ success: false, error: err.message || 'Internal server error during authentication.' });
   }
 });
 
