@@ -16,7 +16,7 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// CORS — Allow all origins (Vercel deployment + local development)
+// CORS — Allow all origins for production + local dev
 app.use(cors({
   origin: true,
   credentials: true,
@@ -45,7 +45,8 @@ app.get('/api/health', async (req, res) => {
       timestamp: new Date().toISOString(),
       service: 'Sri Krishna Ayurvedic Clinic API',
       database: dbStatus.success ? `Connected (${dbStatus.database})` : `Error: ${dbStatus.error}`,
-      environment: process.env.NODE_ENV || 'unknown'
+      environment: process.env.NODE_ENV || 'unknown',
+      dbUrl: process.env.DATABASE_URL ? 'SET' : 'NOT SET'
     });
   } catch (err) {
     res.json({
@@ -58,24 +59,7 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// URL Normalization Middleware (Fixes serverless route path stripping)
-app.use((req, res, next) => {
-  if (!req.url.startsWith('/api') && (
-    req.url.startsWith('/auth') ||
-    req.url.startsWith('/appointments') ||
-    req.url.startsWith('/inquiries') ||
-    req.url.startsWith('/settings') ||
-    req.url.startsWith('/treatments') ||
-    req.url.startsWith('/swarnaprashana') ||
-    req.url.startsWith('/admin') ||
-    req.url.startsWith('/health')
-  )) {
-    req.url = '/api' + req.url;
-  }
-  next();
-});
-
-// API Routes
+// API Routes (mounted at both /api/* and /* for Vercel serverless compatibility)
 app.use('/api/auth', authRoutes);
 app.use('/api/appointments', appointmentsRoutes);
 app.use('/api/inquiries', inquiriesRoutes);
@@ -83,6 +67,15 @@ app.use('/api/settings', settingsRoutes);
 app.use('/api/treatments', treatmentsRoutes);
 app.use('/api/swarnaprashana', swarnaRoutes);
 app.use('/api/admin', adminRoutes);
+
+// Also mount at root paths for when Vercel serverless strips /api prefix
+app.use('/auth', authRoutes);
+app.use('/appointments', appointmentsRoutes);
+app.use('/inquiries', inquiriesRoutes);
+app.use('/settings', settingsRoutes);
+app.use('/treatments', treatmentsRoutes);
+app.use('/swarnaprashana', swarnaRoutes);
+app.use('/admin', adminRoutes);
 
 // Serve production static frontend build if dist/ exists (local server mode)
 const distPath = path.join(process.cwd(), 'dist');
@@ -92,7 +85,9 @@ if (fs.existsSync(distPath)) {
 
 // 404 handler for unknown API routes
 app.use((req, res, next) => {
-  if (req.path.startsWith('/api')) {
+  if (req.path.startsWith('/api') || req.path.startsWith('/auth') || req.path.startsWith('/appointments') ||
+      req.path.startsWith('/inquiries') || req.path.startsWith('/settings') || req.path.startsWith('/treatments') ||
+      req.path.startsWith('/swarnaprashana') || req.path.startsWith('/admin')) {
     return res.status(404).json({ success: false, error: 'API endpoint not found.' });
   }
   // Serve SPA index.html for all other routes (local server only)
@@ -107,9 +102,7 @@ app.use((err, req, res, next) => {
   console.error('Unhandled API Exception:', err.message);
   res.status(err.status || 500).json({
     success: false,
-    error: process.env.NODE_ENV === 'production'
-      ? 'An unexpected server error occurred.'
-      : err.message
+    error: err.message || 'An unexpected server error occurred.'
   });
 });
 
@@ -123,7 +116,7 @@ if (isDirectRun && !process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`🌿 Sri Krishna Ayurvedic Clinic Backend running on http://127.0.0.1:${PORT}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🔗 Database: ${process.env.DATABASE_URL ? 'Cloud (DATABASE_URL)' : 'Local (DB_HOST)'}`);
+    console.log(`🔗 Database: ${process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/:([^@]+)@/, ':****@') : 'Local (DB_HOST)'}`);
   });
 }
 

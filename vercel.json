@@ -2,8 +2,18 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "rewrites": [
-    { "source": "/api/:path*", "destination": "/api/index.js" },
-    { "source": "/:path*", "destination": "/index.html" }
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/index.js"
+    },
+    {
+      "src": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|webp|mp4|woff|woff2|ttf|eot))",
+      "dest": "/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
   ]
 }
