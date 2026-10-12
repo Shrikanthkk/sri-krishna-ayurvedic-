@@ -2,12 +2,24 @@
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
   "framework": "vite",
-  "rewrites": [
-    { "source": "/api/(.*)", "destination": "/api" },
-    { "source": "/((?!assets/|images/|videos/|favicon.svg|.*\\..*).*)", "destination": "/index.html" }
-  ],
   "env": {
     "DATABASE_URL": "postgresql://krish966:2aG1YDSxSYQv1sBkubBhbe790@168.119.64.101:5432/krish966",
     "DB_SSL": "false"
-  }
+  },
+  "functions": {
+    "api/index.js": {
+      "memory": 512,
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/:path*",
+      "destination": "/index.html"
+    }
+  ]
 }
