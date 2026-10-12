@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Calendar, Clock, User, Phone, Mail, CheckCircle, Sparkles, HeartHandshake } from 'lucide-react';
-import { clinicData } from '../data/clinicData';
-import { saveAppointment, getStoredTreatments, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
+import { saveAppointment, getStoredTreatments, fetchTreatmentsFromDb, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
 
 export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }) {
   const [formData, setFormData] = useState({
@@ -23,6 +22,11 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
 
   useEffect(() => {
     setTreatmentsList(getStoredTreatments());
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setTreatmentsList(data);
+      }
+    });
   }, []);
 
   useEffect(() => {

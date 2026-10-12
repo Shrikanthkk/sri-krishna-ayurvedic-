@@ -6,13 +6,29 @@ import Hero from '../components/Hero';
 import HomeImageSlider from '../components/HomeImageSlider';
 import WeAlsoTreatSlider from '../components/WeAlsoTreatSlider';
 import { clinicData } from '../data/clinicData';
-import { getStoredTreatments } from '../utils/adminStorage';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../utils/adminStorage';
 
 export default function Home({ onOpenBooking }) {
   const [treatmentsList, setTreatmentsList] = useState([]);
 
   useEffect(() => {
+    // Initial fast load
     setTreatmentsList(getStoredTreatments());
+
+    // Fetch latest live treatments from PostgreSQL database
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setTreatmentsList(data);
+      }
+    });
+
+    const handleUpdate = (e) => {
+      if (e.detail && Array.isArray(e.detail)) {
+        setTreatmentsList(e.detail);
+      }
+    };
+    window.addEventListener('treatments_updated', handleUpdate);
+    return () => window.removeEventListener('treatments_updated', handleUpdate);
   }, []);
 
   return (

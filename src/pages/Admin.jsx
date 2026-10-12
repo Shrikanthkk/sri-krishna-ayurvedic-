@@ -104,8 +104,8 @@ export default function Admin() {
 
   // Swarnaprashana Schedule State
   const [swarnaSchedule, setSwarnaSchedule] = useState([]);
-  const [swarnaYears, setSwarnaYears] = useState([2026]);
-  const [swarnaFilterYear, setSwarnaFilterYear] = useState('2026');
+  const [swarnaYears, setSwarnaYears] = useState([2027]);
+  const [swarnaFilterYear, setSwarnaFilterYear] = useState('2027');
   const [swarnaStatusFilter, setSwarnaStatusFilter] = useState('all');
   const [swarnaSearchQuery, setSwarnaSearchQuery] = useState('');
   const [swarnaNotice, setSwarnaNotice] = useState('');
@@ -147,6 +147,7 @@ export default function Admin() {
   // Treatment Modal State (Add / Edit)
   const [editingTreatment, setEditingTreatment] = useState(null);
   const [isTreatmentModalOpen, setIsTreatmentModalOpen] = useState(false);
+  const [isSavingTreatment, setIsSavingTreatment] = useState(false);
   const [isUploadingTreatmentImage, setIsUploadingTreatmentImage] = useState(false);
   const [treatmentImageProgress, setTreatmentImageProgress] = useState(0);
   const [treatmentModalError, setTreatmentModalError] = useState('');
@@ -705,13 +706,23 @@ export default function Admin() {
 
   const handleSaveTreatmentModal = async (e) => {
     e.preventDefault();
-    if (!editingTreatment.title.trim()) return;
+    if (!editingTreatment?.title?.trim()) return;
+    if (isSavingTreatment) return;
 
-    const updated = await saveTreatment(editingTreatment);
-    setTreatments(updated);
-    setIsTreatmentModalOpen(false);
-    setTreatmentNotice(`Treatment "${editingTreatment.title}" updated successfully in database!`);
-    setTimeout(() => setTreatmentNotice(''), 4000);
+    setIsSavingTreatment(true);
+    setTreatmentModalError('');
+    try {
+      const updated = await saveTreatment(editingTreatment);
+      setTreatments(updated);
+      setIsTreatmentModalOpen(false);
+      setTreatmentNotice(`Treatment "${editingTreatment.title}" updated successfully in database!`);
+      setTimeout(() => setTreatmentNotice(''), 4000);
+    } catch (err) {
+      console.error('Failed to save treatment:', err);
+      setTreatmentModalError(err.message || 'Failed to save treatment.');
+    } finally {
+      setIsSavingTreatment(false);
+    }
   };
 
   const handleDeleteTreatmentItem = async (id, title) => {
@@ -725,7 +736,7 @@ export default function Admin() {
 
   // Swarnaprashana Schedule actions
   const handleOpenAddSwarnaDate = () => {
-    const currentYr = swarnaFilterYear === 'all' ? 2026 : parseInt(swarnaFilterYear, 10) || 2026;
+    const currentYr = swarnaFilterYear === 'all' ? 2027 : parseInt(swarnaFilterYear, 10) || 2027;
     setEditingSwarnaDate({
       id: '',
       month: 'January',
@@ -1772,10 +1783,11 @@ export default function Admin() {
                           <button
                             type="submit"
                             form="treatment-modal-form"
-                            className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold uppercase rounded-full shadow-soft flex items-center gap-1.5 cursor-pointer transition-colors"
+                            disabled={isSavingTreatment}
+                            className="px-6 py-2.5 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed text-white text-xs font-bold uppercase rounded-full shadow-soft flex items-center gap-1.5 cursor-pointer transition-colors"
                           >
-                            <Save className="w-4 h-4" />
-                            <span>Save Treatment</span>
+                            <Save className={`w-4 h-4 ${isSavingTreatment ? 'animate-spin' : ''}`} />
+                            <span>{isSavingTreatment ? 'Saving...' : 'Save Treatment'}</span>
                           </button>
                         </div>
                       </motion.div>

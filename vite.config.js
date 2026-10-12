@@ -10,7 +10,7 @@ export default defineConfig({
     hmr: false,
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:5000',
+        target: 'http://127.0.0.1:5002',
         changeOrigin: true,
         secure: false
       }
@@ -21,7 +21,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
       '/api': {
-        target: 'http://127.0.0.1:5000',
+        target: 'http://127.0.0.1:5002',
         changeOrigin: true,
         secure: false
       }

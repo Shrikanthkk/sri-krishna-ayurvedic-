@@ -7,35 +7,21 @@ import { verifyToken, requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
-// Configure Multer Storage for Treatment Images
-const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'treatments');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `treatment-${uniqueSuffix}${ext}`);
-  }
-});
+// Configure Multer in-memory storage for Serverless & Vercel compatibility
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
   if (allowedTypes.includes(file.mimetype.toLowerCase())) {
     cb(null, true);
   } else {
-    cb(new Error('Only JPG, JPEG, PNG, and WebP image files are allowed.'));
+    cb(new Error('Only JPG, JPEG, PNG, GIF, SVG, and WebP image files are allowed.'));
   }
 };
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB maximum
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB maximum
   fileFilter
 });
 
@@ -44,7 +30,7 @@ router.post('/upload', (req, res) => {
   upload.single('image')(req, res, (err) => {
     if (err instanceof multer.MulterError) {
       if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.status(400).json({ success: false, error: 'Image size exceeds 5 MB limit.' });
+        return res.status(400).json({ success: false, error: 'Image size exceeds 10 MB limit.' });
       }
       return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
     } else if (err) {
@@ -55,14 +41,17 @@ router.post('/upload', (req, res) => {
       return res.status(400).json({ success: false, error: 'No image file provided.' });
     }
 
-    const imageUrl = `/uploads/treatments/${req.file.filename}`;
+    // Convert buffer to Base64 Data URL for serverless resilience
+    const base64 = req.file.buffer.toString('base64');
+    const imageUrl = `data:${req.file.mimetype};base64,${base64}`;
+
     return res.json({
       success: true,
       url: imageUrl,
-      filename: req.file.filename,
+      filename: req.file.originalname,
       size: req.file.size,
       mimetype: req.file.mimetype,
-      message: 'Treatment image uploaded successfully.'
+      message: 'Treatment image processed successfully.'
     });
   });
 });
@@ -71,21 +60,37 @@ router.post('/upload', (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const result = await query('SELECT * FROM treatments WHERE is_active = true ORDER BY number ASC, created_at ASC');
-    const mapped = result.rows.map(row => ({
-      id: row.id,
-      number: row.number,
-      title: row.title,
-      subtitle: row.subtitle,
-      description: row.description,
-      benefits: typeof row.benefits === 'string' ? JSON.parse(row.benefits) : row.benefits || [],
-      duration: row.duration,
-      image: row.image,
-      link: row.link
-    }));
+    const mapped = result.rows.map(row => {
+      let parsedBenefits = [];
+      if (Array.isArray(row.benefits)) {
+        parsedBenefits = row.benefits;
+      } else if (row.benefits && typeof row.benefits === 'object') {
+        parsedBenefits = Array.isArray(row.benefits) ? row.benefits : Object.values(row.benefits);
+      } else if (typeof row.benefits === 'string') {
+        try {
+          const p = JSON.parse(row.benefits);
+          parsedBenefits = Array.isArray(p) ? p : [p];
+        } catch {
+          parsedBenefits = [row.benefits];
+        }
+      }
+
+      return {
+        id: row.id,
+        number: row.number,
+        title: row.title,
+        subtitle: row.subtitle,
+        description: row.description,
+        benefits: parsedBenefits,
+        duration: row.duration,
+        image: row.image,
+        link: row.link
+      };
+    });
     return res.json({ success: true, data: mapped });
   } catch (err) {
-    console.warn('Error fetching treatments from PostgreSQL, using fallback:', err.message);
-    return res.json({ success: true, data: [] });
+    console.error('Error fetching treatments from PostgreSQL:', err);
+    return res.status(500).json({ success: false, error: err.message, data: [] });
   }
 });
 

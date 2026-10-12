@@ -10,12 +10,13 @@ export default function Treatments({ onOpenBooking }) {
   const [treatmentsList, setTreatmentsList] = useState([]);
 
   useEffect(() => {
-    setTreatmentsList(getStoredTreatments());
     fetchTreatmentsFromDb().then(data => {
-      if (Array.isArray(data) && data.length > 0) {
+      if (Array.isArray(data)) {
         setTreatmentsList(data);
       }
-    }).catch(() => {});
+    }).catch(() => {
+      setTreatmentsList(getStoredTreatments());
+    });
   }, []);
 
   return (

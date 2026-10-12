@@ -7,35 +7,21 @@ import { verifyToken, requireAdmin } from '../middleware/auth.js';
 
 const router = Router();
 
-// Configure Multer Storage for Hero Slider Images
-const uploadDir = path.join(process.cwd(), 'public', 'uploads', 'hero');
-if (!fs.existsSync(uploadDir)) {
-  fs.mkdirSync(uploadDir, { recursive: true });
-}
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname).toLowerCase();
-    cb(null, `hero-${uniqueSuffix}${ext}`);
-  }
-});
+// Configure Multer in-memory storage for Serverless & Vercel compatibility
+const storage = multer.memoryStorage();
 
 const fileFilter = (req, file, cb) => {
-  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
+  const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif', 'image/svg+xml'];
   if (allowedTypes.includes(file.mimetype.toLowerCase())) {
     cb(null, true);
   } else {
-    cb(new Error('Only JPG, JPEG, PNG, and WebP image files are allowed.'));
+    cb(new Error('Only JPG, JPEG, PNG, GIF, SVG, and WebP image files are allowed.'));
   }
 };
 
 const upload = multer({
   storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB maximum
+  limits: { fileSize: 10 * 1024 * 1024 }, // 10 MB maximum
   fileFilter
 });
 
@@ -251,7 +237,7 @@ router.post('/hero-slider/upload', (req, res) => {
   upload.single('image')(req, res, (err) => {
     if (err instanceof multer.MulterError) {
       if (err.code === 'LIMIT_FILE_SIZE') {
-        return res.status(400).json({ success: false, error: 'Image size exceeds the maximum allowed limit of 5 MB.' });
+        return res.status(400).json({ success: false, error: 'Image size exceeds the maximum allowed limit of 10 MB.' });
       }
       return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
     } else if (err) {
@@ -262,11 +248,13 @@ router.post('/hero-slider/upload', (req, res) => {
       return res.status(400).json({ success: false, error: 'No image file uploaded.' });
     }
 
-    const imageUrl = `/uploads/hero/${req.file.filename}`;
+    const base64 = req.file.buffer.toString('base64');
+    const imageUrl = `data:${req.file.mimetype};base64,${base64}`;
+
     return res.json({
       success: true,
       url: imageUrl,
-      filename: req.file.filename,
+      filename: req.file.originalname,
       size: req.file.size,
       mimetype: req.file.mimetype,
       message: 'Image uploaded successfully.'

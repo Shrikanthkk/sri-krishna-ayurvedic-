@@ -3,8 +3,7 @@ import { motion } from 'framer-motion';
 import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, ShieldCheck, HeartHandshake } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
-import { clinicData } from '../data/clinicData';
-import { saveAppointment, getStoredTreatments, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
+import { saveAppointment, getStoredTreatments, fetchTreatmentsFromDb, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
 
 export default function BookAppointment() {
   const [formData, setFormData] = useState({
@@ -22,6 +21,11 @@ export default function BookAppointment() {
 
   useEffect(() => {
     setTreatmentsList(getStoredTreatments());
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setTreatmentsList(data);
+      }
+    });
   }, []);
 
   const [submitting, setSubmitting] = useState(false);

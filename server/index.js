@@ -11,6 +11,8 @@ import treatmentsRoutes from './routes/treatments.js';
 import swarnaRoutes from './routes/swarnaprashana.js';
 import adminRoutes from './routes/admin.js';
 
+import db, { testDatabaseConnection } from './db.js';
+
 dotenv.config();
 
 const app = express();
@@ -18,19 +20,24 @@ const PORT = process.env.PORT || 5000;
 
 // Global Middleware
 app.use(cors({ origin: true, credentials: true }));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: '50mb' }));
+app.use(express.urlencoded({ extended: true, limit: '50mb' }));
 
 // Serve static uploaded media files
 app.use('/uploads', express.static(path.join(process.cwd(), 'public', 'uploads')));
 
 // Health Check
-app.get('/api/health', (req, res) => {
+app.get('/api/health', async (req, res) => {
+  const dbHealth = await testDatabaseConnection();
   res.json({
-    status: 'ok',
+    status: dbHealth.success ? 'ok' : 'degraded',
     timestamp: new Date().toISOString(),
     service: 'Sri Krishna Ayurvedic Clinic API',
-    database: 'PostgreSQL'
+    database: dbHealth.database || 'PostgreSQL',
+    dbConnected: dbHealth.success,
+    serverTime: dbHealth.serverTime,
+    pgVersion: dbHealth.version,
+    error: dbHealth.error
   });
 });
 

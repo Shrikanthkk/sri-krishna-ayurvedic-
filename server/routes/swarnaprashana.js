@@ -10,7 +10,10 @@ function formatRow(row) {
   let fullDateStr = '';
   if (row.full_date) {
     if (row.full_date instanceof Date) {
-      fullDateStr = row.full_date.toISOString().split('T')[0];
+      const yr = row.full_date.getFullYear();
+      const mo = String(row.full_date.getMonth() + 1).padStart(2, '0');
+      const da = String(row.full_date.getDate()).padStart(2, '0');
+      fullDateStr = `${yr}-${mo}-${da}`;
     } else {
       fullDateStr = String(row.full_date).split('T')[0];
     }
@@ -66,15 +69,15 @@ router.get('/', async (req, res) => {
         WHEN 'december' THEN 12
         ELSE display_order
       END ASC,
-      CAST(date AS INTEGER) ASC`;
+      display_order ASC`;
 
     const result = await query(sql, params);
     const mapped = result.rows.map(formatRow);
 
     return res.status(200).json({ success: true, data: mapped });
   } catch (err) {
-    console.warn('Error fetching swarnaprashana schedule from PostgreSQL, using fallback:', err.message);
-    return res.json({ success: true, data: [] });
+    console.error('Error fetching swarnaprashana schedule from PostgreSQL:', err);
+    return res.status(500).json({ success: false, error: err.message, data: [] });
   }
 });
 
@@ -97,19 +100,18 @@ router.post('/', async (req, res) => {
     const canonicalMonth = MONTHS[monthIndex - 1];
     const padMonth = String(monthIndex).padStart(2, '0');
     const padDate = String(numericDate).padStart(2, '0');
-    const fullDate = entry.full_date || `${numericYear}-${padMonth}-${padDate}`;
-    const id = entry.id || `psh-${numericYear}-${padMonth}`;
+    const id = entry.id || `psh-${numericYear}-${padMonth}-${padDate}`;
 
-    // Duplicate Check: Verify whether that month/year already has a schedule entry under a different ID
+    // Duplicate Check: Verify whether that exact date already exists under a different ID
     const dupCheck = await query(
-      `SELECT id FROM swarnaprashana_schedule WHERE year = $1 AND LOWER(month) = LOWER($2) AND id != $3`,
-      [numericYear, canonicalMonth, id]
+      `SELECT id FROM swarnaprashana_schedule WHERE year = $1 AND LOWER(month) = LOWER($2) AND date = $3 AND id != $4`,
+      [numericYear, canonicalMonth, String(numericDate), id]
     );
 
     if (dupCheck.rows.length > 0) {
       return res.status(409).json({
         success: false,
-        error: `A schedule entry for ${canonicalMonth} ${numericYear} already exists in database.`
+        error: `A schedule entry for ${canonicalMonth} ${numericDate}, ${numericYear} already exists in database.`
       });
     }
 
@@ -179,14 +181,14 @@ router.put('/:id', async (req, res) => {
 
     // Check duplicate
     const dupCheck = await query(
-      `SELECT id FROM swarnaprashana_schedule WHERE year = $1 AND LOWER(month) = LOWER($2) AND id != $3`,
-      [numericYear, canonicalMonth, id]
+      `SELECT id FROM swarnaprashana_schedule WHERE year = $1 AND LOWER(month) = LOWER($2) AND date = $3 AND id != $4`,
+      [numericYear, canonicalMonth, String(numericDate), id]
     );
 
     if (dupCheck.rows.length > 0) {
       return res.status(409).json({
         success: false,
-        error: `A schedule entry for ${canonicalMonth} ${numericYear} already exists in database.`
+        error: `A schedule entry for ${canonicalMonth} ${numericDate}, ${numericYear} already exists in database.`
       });
     }
 

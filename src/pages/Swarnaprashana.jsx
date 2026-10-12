@@ -14,31 +14,47 @@ import swarnaImg3 from '../assets/swarnaprashana_3.png';
 export default function Swarnaprashana({ onOpenBooking }) {
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
 
-  const [availableYears, setAvailableYears] = useState([2026]);
-  const [selectedYear, setSelectedYear] = useState(2026);
+  const [availableYears, setAvailableYears] = useState([2027]);
+  const [selectedYear, setSelectedYear] = useState(2027);
   const [schedule, setSchedule] = useState([]);
+
+  const getWeekday = (item) => {
+    const y = parseInt(item.year, 10);
+    const mNames = [
+      'January', 'February', 'March', 'April', 'May', 'June',
+      'July', 'August', 'September', 'October', 'November', 'December'
+    ];
+    const mIndex = mNames.findIndex(m => m.toLowerCase() === String(item.month).trim().toLowerCase());
+    const d = parseInt(item.date, 10);
+    if (y && mIndex >= 0 && d) {
+      const dt = new Date(y, mIndex, d);
+      return dt.toLocaleDateString('en-US', { weekday: 'long' });
+    }
+    return '';
+  };
 
   useEffect(() => {
     const loadSchedule = async () => {
       try {
         await fetchSwarnaprashanaScheduleFromDb({ activeOnly: false });
+        const years = getAvailableScheduleYears().filter(y => y !== 2026);
+        setAvailableYears(years.length > 0 ? years : [2027]);
+        const targetYear = years.includes(selectedYear) ? selectedYear : 2027;
+        setSelectedYear(targetYear);
+        setSchedule(getSwarnaprashanaSchedule({ year: targetYear, activeOnly: true }));
       } catch (err) {
-        // Fallback to cache if offline
+        const years = getAvailableScheduleYears().filter(y => y !== 2026);
+        setAvailableYears(years.length > 0 ? years : [2027]);
+        const targetYear = years.includes(selectedYear) ? selectedYear : 2027;
+        setSelectedYear(targetYear);
+        setSchedule(getSwarnaprashanaSchedule({ year: targetYear, activeOnly: true }));
       }
-      const years = getAvailableScheduleYears();
-      setAvailableYears(years);
-      if (!years.includes(selectedYear) && years.length > 0) {
-        setSelectedYear(years[0]);
-      }
-      setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
     };
 
     loadSchedule();
 
     const handleUpdate = () => {
-      const years = getAvailableScheduleYears();
-      setAvailableYears(years);
-      setSchedule(getSwarnaprashanaSchedule({ year: selectedYear, activeOnly: true }));
+      loadSchedule();
     };
 
     window.addEventListener('swarnaprashana_schedule_updated', handleUpdate);
@@ -186,20 +202,30 @@ export default function Swarnaprashana({ onOpenBooking }) {
                 {/* Two-Column Monthly Schedule Grid */}
                 {schedule.length > 0 ? (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 text-xs">
-                    {schedule.map((item) => (
-                      <div
-                        key={item.id}
-                        className="flex items-center justify-between p-2.5 px-3.5 bg-white rounded-xl border border-earth-200 shadow-2xs hover:border-brass-400 transition-colors"
-                      >
-                        <span className="font-medium text-forest-950 flex items-center gap-2">
-                          <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
-                          <span>{item.month}</span>
-                        </span>
-                        <span className="px-2.5 py-0.5 rounded-md bg-forest-50 text-forest-900 font-mono font-bold text-xs border border-forest-900/10">
-                          {item.date}
-                        </span>
-                      </div>
-                    ))}
+                    {schedule.map((item) => {
+                      const weekday = getWeekday(item);
+                      return (
+                        <div
+                          key={item.id}
+                          className="flex items-center justify-between p-2.5 px-3.5 bg-white rounded-xl border border-earth-200 shadow-2xs hover:border-brass-400 transition-colors"
+                        >
+                          <div className="flex flex-col">
+                            <span className="font-medium text-forest-950 flex items-center gap-2">
+                              <span className="w-1.5 h-1.5 rounded-full bg-brass-500" />
+                              <span>{item.month}</span>
+                            </span>
+                            {weekday && (
+                              <span className="text-[10px] text-earth-600 pl-3.5 font-light">
+                                {weekday}
+                              </span>
+                            )}
+                          </div>
+                          <span className="px-2.5 py-0.5 rounded-md bg-forest-50 text-forest-900 font-mono font-bold text-xs border border-forest-900/10">
+                            {item.date}
+                          </span>
+                        </div>
+                      );
+                    })}
                   </div>
                 ) : (
                   <div className="p-6 bg-white rounded-2xl border border-earth-200 text-center space-y-1">

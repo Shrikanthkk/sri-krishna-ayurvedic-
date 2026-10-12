@@ -17,11 +17,11 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Username/Email and Password/PIN are required.' });
     }
 
-    // Exact match lookup by email or username
+    // Match by email or username ignoring whitespace and case
     const result = await query(
       `SELECT id, name, email, phone, password_hash, role, is_active 
         FROM users 
-        WHERE (LOWER(email) = LOWER($1) OR LOWER(name) = LOWER($1)) AND is_active = true 
+        WHERE (LOWER(TRIM(email)) = LOWER($1) OR LOWER(TRIM(name)) = LOWER($1)) AND is_active = true 
         LIMIT 1`,
       [loginIdentifier]
     );

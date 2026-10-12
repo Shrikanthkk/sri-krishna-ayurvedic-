@@ -193,18 +193,20 @@ const defaultTreatments = [
 ];
 
 const defaultSwarnaprashanaSchedule = [
-  { id: 'psh-2026-01', month: 'January', date: '5', year: 2026, full_date: '2026-01-05', status: 'Active', display_order: 1 },
-  { id: 'psh-2026-02', month: 'February', date: '1', year: 2026, full_date: '2026-02-01', status: 'Active', display_order: 2 },
-  { id: 'psh-2026-03', month: 'March', date: '27', year: 2026, full_date: '2026-03-27', status: 'Active', display_order: 4 },
-  { id: 'psh-2026-04', month: 'April', date: '24', year: 2026, full_date: '2026-04-24', status: 'Active', display_order: 5 },
-  { id: 'psh-2026-05', month: 'May', date: '21', year: 2026, full_date: '2026-05-21', status: 'Active', display_order: 6 },
-  { id: 'psh-2026-06', month: 'June', date: '18', year: 2026, full_date: '2026-06-18', status: 'Active', display_order: 7 },
-  { id: 'psh-2026-07', month: 'July', date: '15', year: 2026, full_date: '2026-07-15', status: 'Active', display_order: 8 },
-  { id: 'psh-2026-08', month: 'August', date: '11', year: 2026, full_date: '2026-08-11', status: 'Active', display_order: 9 },
-  { id: 'psh-2026-09', month: 'September', date: '8', year: 2026, full_date: '2026-09-08', status: 'Active', display_order: 10 },
-  { id: 'psh-2026-10', month: 'October', date: '5', year: 2026, full_date: '2026-10-05', status: 'Active', display_order: 11 },
-  { id: 'psh-2026-11', month: 'November', date: '2', year: 2026, full_date: '2026-11-02', status: 'Active', display_order: 13 },
-  { id: 'psh-2026-12', month: 'December', date: '26', year: 2026, full_date: '2026-12-26', status: 'Active', display_order: 14 }
+  // 2027 Schedule (Pushya Nakshatra)
+  { id: 'psh-2027-01', month: 'January', date: '22', year: 2027, full_date: '2027-01-22', status: 'Active', display_order: 1 },
+  { id: 'psh-2027-02', month: 'February', date: '19', year: 2027, full_date: '2027-02-19', status: 'Active', display_order: 2 },
+  { id: 'psh-2027-03', month: 'March', date: '18', year: 2027, full_date: '2027-03-18', status: 'Active', display_order: 3 },
+  { id: 'psh-2027-04', month: 'April', date: '15', year: 2027, full_date: '2027-04-15', status: 'Active', display_order: 4 },
+  { id: 'psh-2027-05', month: 'May', date: '12', year: 2027, full_date: '2027-05-12', status: 'Active', display_order: 5 },
+  { id: 'psh-2027-06', month: 'June', date: '8', year: 2027, full_date: '2027-06-08', status: 'Active', display_order: 6 },
+  { id: 'psh-2027-07', month: 'July', date: '6', year: 2027, full_date: '2027-07-06', status: 'Active', display_order: 7 },
+  { id: 'psh-2027-08-01', month: 'August', date: '2', year: 2027, full_date: '2027-08-02', status: 'Active', display_order: 8 },
+  { id: 'psh-2027-08-02', month: 'August', date: '30', year: 2027, full_date: '2027-08-30', status: 'Active', display_order: 9 },
+  { id: 'psh-2027-09', month: 'September', date: '26', year: 2027, full_date: '2027-09-26', status: 'Active', display_order: 10 },
+  { id: 'psh-2027-10', month: 'October', date: '23', year: 2027, full_date: '2027-10-23', status: 'Active', display_order: 11 },
+  { id: 'psh-2027-11', month: 'November', date: '19', year: 2027, full_date: '2027-11-19', status: 'Active', display_order: 12 },
+  { id: 'psh-2027-12', month: 'December', date: '17', year: 2027, full_date: '2027-12-17', status: 'Active', display_order: 13 }
 ];
 
 export async function seedDatabase(options = { closePool: true }) {

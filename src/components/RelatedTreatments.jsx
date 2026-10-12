@@ -1,10 +1,20 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Sparkles } from 'lucide-react';
-import { clinicData } from '../data/clinicData';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../utils/adminStorage';
 
 export default function RelatedTreatments({ currentTreatmentId, count = 3 }) {
-  const otherTreatments = clinicData.treatments
+  const [treatmentsList, setTreatmentsList] = useState(getStoredTreatments());
+
+  useEffect(() => {
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setTreatmentsList(data);
+      }
+    });
+  }, []);
+
+  const otherTreatments = treatmentsList
     .filter((t) => t.id !== currentTreatmentId)
     .slice(0, count);
 
