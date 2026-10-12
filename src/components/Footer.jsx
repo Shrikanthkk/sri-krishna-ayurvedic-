@@ -213,10 +213,25 @@ export default function Footer({ onOpenBooking }) {
         </div>
 
         {/* Bottom Disclaimer & Copyright */}
-        <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-[11px] text-cream-200/50 gap-2">
-          <p>© {new Date().getFullYear()} Sri Krishna Ayurvedic Clinic. All Rights Reserved.</p>
+        <div className="pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-cream-200/50 gap-3">
+          <p className="text-center md:text-left">© {new Date().getFullYear()} Sri Krishna Ayurvedic Clinic. All Rights Reserved.</p>
+          
+          <a
+            href="https://wa.me/919945379333"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-center group flex flex-col items-center justify-center transition-all hover:text-brass-300 cursor-pointer py-1"
+          >
+            <span className="text-[10px] tracking-wider uppercase text-cream-200/60 group-hover:text-cream-200">
+              Developed By
+            </span>
+            <span className="font-semibold text-brass-400 group-hover:text-brass-300 group-hover:underline">
+              ROI Infrotech Solutions
+            </span>
+          </a>
+
           <div className="flex items-center gap-4">
-            <p className="text-center sm:text-right">
+            <p className="text-center md:text-right">
               Medical Disclaimer: Ayurvedic consultations provide complementary wellness support.
             </p>
           </div>
