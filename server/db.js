@@ -5,18 +5,17 @@ dotenv.config();
 
 const { Pool } = pg;
 
-const SUPABASE_DB_URL = 'postgresql://postgres.yohzqktgzesenbwxvyld:Pramod%400605@aws-1-ap-south-1.pooler.supabase.com:5432/postgres';
+const DEFAULT_POSTGRES_URL = 'postgresql://krish966:2aG1YDSxSYQv1sBkubBhbe790@168.119.64.101:5432/krish966';
 
 function createPool() {
   let connectionString =
     process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.POSTGRESQL_URL;
 
-  if (!connectionString || connectionString.includes('localhost') || connectionString.includes('127.0.0.1') || connectionString.includes('168.119.64.101')) {
-    connectionString = SUPABASE_DB_URL;
+  if (!connectionString || connectionString.includes('localhost') || connectionString.includes('127.0.0.1')) {
+    connectionString = DEFAULT_POSTGRES_URL;
   }
 
-  const isSupabase = connectionString.includes('supabase.co') || connectionString.includes('supabase.com');
-  const sslEnabled = isSupabase || process.env.DB_SSL === 'true' || process.env.PGSSL === 'true';
+  const sslEnabled = process.env.DB_SSL === 'true' || process.env.PGSSL === 'true';
 
   const poolConfig = {
     connectionString,
