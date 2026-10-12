@@ -1,21 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, ShieldCheck, HeartHandshake } from 'lucide-react';
+import { Calendar, Clock, User, Phone, Mail, FileText, CheckCircle2, ShieldCheck, HeartHandshake, AlertCircle } from 'lucide-react';
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
+import { clinicData } from '../data/clinicData';
 import { saveAppointment, getStoredTreatments, fetchTreatmentsFromDb, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
 
+const TIME_SLOTS = [
+  { value: '10:00 AM', label: 'Morning 10:00 AM', hour: 10, minute: 0 },
+  { value: '11:30 AM', label: 'Morning 11:30 AM', hour: 11, minute: 30 },
+  { value: '02:00 PM', label: 'Afternoon 02:00 PM', hour: 14, minute: 0 },
+  { value: '04:00 PM', label: 'Evening 04:00 PM', hour: 16, minute: 0 },
+  { value: '06:00 PM', label: 'Evening 06:00 PM', hour: 18, minute: 0 }
+];
+
+export const getTodayDateString = () => {
+  const now = new Date();
+  const yr = now.getFullYear();
+  const mo = String(now.getMonth() + 1).padStart(2, '0');
+  const da = String(now.getDate()).padStart(2, '0');
+  return `${yr}-${mo}-${da}`;
+};
+
+export const isSlotPassed = (slot, selectedDate) => {
+  if (!selectedDate) return false;
+  const todayStr = getTodayDateString();
+  if (selectedDate < todayStr) return true; // Past date
+  if (selectedDate > todayStr) return false; // Future date
+  
+  // Selected date is today: compare against current time
+  const now = new Date();
+  const curHour = now.getHours();
+  const curMin = now.getMinutes();
+  if (curHour > slot.hour) return true;
+  if (curHour === slot.hour && curMin >= slot.minute) return true;
+  return false;
+};
+
 export default function BookAppointment() {
+  const todayStr = getTodayDateString();
+  const initialAvailableSlot = TIME_SLOTS.find(s => !isSlotPassed(s, todayStr))?.value || TIME_SLOTS[0].value;
+
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
-    date: '',
-    timeSlot: '10:00 AM',
+    date: todayStr,
+    timeSlot: initialAvailableSlot,
     treatment: 'Chronic Diseases – Joint Pains (Arthritis)',
     notes: ''
   });
   const [phoneError, setPhoneError] = useState('');
+  const [dateError, setDateError] = useState('');
+  const [timeError, setTimeError] = useState('');
   const [submittedAppointment, setSubmittedAppointment] = useState(null);
   const [treatmentsList, setTreatmentsList] = useState([]);
 
@@ -47,17 +84,61 @@ export default function BookAppointment() {
     }
   };
 
+  const handleDateChange = (e) => {
+    const newDate = e.target.value;
+    setDateError('');
+    setTimeError('');
+
+    if (newDate < todayStr) {
+      setDateError('Past dates cannot be selected. Please choose today or a future date.');
+    }
+
+    // Check if current slot is passed for this newly selected date
+    const currentSlotObj = TIME_SLOTS.find(s => s.value === formData.timeSlot);
+    let nextSlot = formData.timeSlot;
+    if (currentSlotObj && isSlotPassed(currentSlotObj, newDate)) {
+      const available = TIME_SLOTS.find(s => !isSlotPassed(s, newDate));
+      if (available) {
+        nextSlot = available.value;
+      }
+    }
+
+    setFormData(prev => ({ ...prev, date: newDate, timeSlot: nextSlot }));
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setDateError('');
+    setTimeError('');
+
     const phoneRes = validateTenDigitPhone(formData.phone);
     if (!phoneRes.isValid) {
       setPhoneError(phoneRes.message);
       return;
     }
 
+    if (!formData.date || formData.date < todayStr) {
+      setDateError('Past dates cannot be booked. Please select today or a future date.');
+      return;
+    }
+
+    const selectedSlotObj = TIME_SLOTS.find(s => s.value === formData.timeSlot);
+    if (selectedSlotObj && isSlotPassed(selectedSlotObj, formData.date)) {
+      setTimeError('The selected time slot has already passed for today. Please select an upcoming slot.');
+      return;
+    }
+
     setSubmitting(true);
     try {
-      const saved = await saveAppointment(formData);
+      const now = new Date();
+      const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+      const currentFormattedDate = getTodayDateString();
+      const submittedAtStr = `${currentFormattedDate} ${currentFormattedTime}`;
+
+      const saved = await saveAppointment({
+        ...formData,
+        submittedAt: submittedAtStr
+      });
       setSubmittedAppointment(saved);
     } catch (err) {
       console.error('Error booking appointment:', err);
@@ -234,33 +315,54 @@ export default function BookAppointment() {
                     <input
                       type="date"
                       required
+                      min={todayStr}
                       value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
+                      onChange={handleDateChange}
+                      className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl border ${dateError ? 'border-red-500' : 'border-earth-200'} focus:outline-none focus:border-forest-800 text-sm`}
                     />
                   </div>
+                  {dateError && <p className="text-red-500 text-xs mt-1 font-medium">{dateError}</p>}
                 </div>
 
                 <div>
                   <label className="block font-semibold text-forest-950 uppercase mb-1">
-                    Preferred Time Slot
+                    Preferred Time Slot *
                   </label>
                   <div className="relative">
                     <Clock className="w-4 h-4 text-gray-400 absolute left-3.5 top-3" />
                     <select
                       value={formData.timeSlot}
-                      onChange={(e) => setFormData({ ...formData, timeSlot: e.target.value })}
-                      className="w-full pl-10 pr-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm bg-white"
+                      onChange={(e) => {
+                        setFormData({ ...formData, timeSlot: e.target.value });
+                        setTimeError('');
+                      }}
+                      className={`w-full pl-10 pr-3.5 py-2.5 rounded-xl border ${timeError ? 'border-red-500' : 'border-earth-200'} focus:outline-none focus:border-forest-800 text-sm bg-white`}
                     >
-                      <option value="10:00 AM">Morning 10:00 AM</option>
-                      <option value="11:30 AM">Morning 11:30 AM</option>
-                      <option value="02:00 PM">Afternoon 02:00 PM</option>
-                      <option value="04:00 PM">Evening 04:00 PM</option>
-                      <option value="06:00 PM">Evening 06:00 PM</option>
+                      {TIME_SLOTS.map((slot) => {
+                        const passed = isSlotPassed(slot, formData.date);
+                        return (
+                          <option
+                            key={slot.value}
+                            value={slot.value}
+                            disabled={passed}
+                            className={passed ? 'text-gray-400 bg-gray-100 italic' : 'text-forest-950'}
+                          >
+                            {slot.label} {passed ? '— (Passed / Unavailable)' : ''}
+                          </option>
+                        );
+                      })}
                     </select>
                   </div>
+                  {timeError && <p className="text-red-500 text-xs mt-1 font-medium">{timeError}</p>}
                 </div>
               </div>
+
+              {formData.date === todayStr && TIME_SLOTS.every(s => isSlotPassed(s, formData.date)) && (
+                <div className="p-3 bg-amber-500/10 border border-amber-600/40 rounded-xl flex items-center gap-2.5 text-xs text-amber-900">
+                  <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
+                  <span>All consultation slots for today have completed. Please pick tomorrow or an upcoming date.</span>
+                </div>
+              )}
 
               <div>
                 <label className="block font-semibold text-forest-950 uppercase mb-1">

@@ -1,16 +1,47 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Calendar, Clock, User, Phone, Mail, CheckCircle, Sparkles, HeartHandshake } from 'lucide-react';
+import { X, Calendar, Clock, User, Phone, Mail, CheckCircle, Sparkles, HeartHandshake, AlertCircle } from 'lucide-react';
 import { saveAppointment, getStoredTreatments, fetchTreatmentsFromDb, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
 
+const MODAL_TIME_SLOTS = [
+  { value: '10:30 AM', label: 'Morning 10:30 AM (10:00 AM – 1:00 PM)', hour: 10, minute: 30 },
+  { value: '03:00 PM', label: 'Afternoon 03:00 PM (2:00 PM – 4:30 PM)', hour: 15, minute: 0 },
+  { value: '05:30 PM', label: 'Evening 05:30 PM (5:00 PM – 7:00 PM)', hour: 17, minute: 30 }
+];
+
+export const getModalTodayDateString = () => {
+  const now = new Date();
+  const yr = now.getFullYear();
+  const mo = String(now.getMonth() + 1).padStart(2, '0');
+  const da = String(now.getDate()).padStart(2, '0');
+  return `${yr}-${mo}-${da}`;
+};
+
+export const isModalSlotPassed = (slot, selectedDate) => {
+  if (!selectedDate) return false;
+  const todayStr = getModalTodayDateString();
+  if (selectedDate < todayStr) return true;
+  if (selectedDate > todayStr) return false;
+
+  const now = new Date();
+  const curHour = now.getHours();
+  const curMin = now.getMinutes();
+  if (curHour > slot.hour) return true;
+  if (curHour === slot.hour && curMin >= slot.minute) return true;
+  return false;
+};
+
 export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }) {
+  const todayStr = getModalTodayDateString();
+  const initialAvailableSlot = MODAL_TIME_SLOTS.find(s => !isModalSlotPassed(s, todayStr))?.value || MODAL_TIME_SLOTS[0].value;
+
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
     email: '',
     treatment: selectedTreatment || 'General Consultation',
-    preferredDate: '',
-    preferredTime: '10:30 AM',
+    preferredDate: todayStr,
+    preferredTime: initialAvailableSlot,
     notes: ''
   });
 
@@ -67,6 +98,24 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
       return;
     }
 
+    if (name === 'preferredDate') {
+      const currentSlotObj = MODAL_TIME_SLOTS.find(s => s.value === formData.preferredTime);
+      let nextSlot = formData.preferredTime;
+      if (currentSlotObj && isModalSlotPassed(currentSlotObj, value)) {
+        const available = MODAL_TIME_SLOTS.find(s => !isModalSlotPassed(s, value));
+        if (available) {
+          nextSlot = available.value;
+        }
+      }
+      setFormData((prev) => ({ ...prev, preferredDate: value, preferredTime: nextSlot }));
+      if (value < todayStr) {
+        setErrors((prev) => ({ ...prev, preferredDate: 'Past dates cannot be selected. Please choose today or a future date.' }));
+      } else {
+        setErrors((prev) => ({ ...prev, preferredDate: '', preferredTime: '' }));
+      }
+      return;
+    }
+
     setFormData((prev) => ({ ...prev, [name]: value }));
     if (errors[name]) {
       setErrors((prev) => ({ ...prev, [name]: '' }));
@@ -82,7 +131,15 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
       newErrors.phone = phoneRes.message;
     }
 
-    if (!formData.preferredDate) newErrors.preferredDate = 'Preferred date is required';
+    if (!formData.preferredDate || formData.preferredDate < todayStr) {
+      newErrors.preferredDate = 'Please select today or a future date. Past dates are not allowed.';
+    }
+
+    const selectedSlotObj = MODAL_TIME_SLOTS.find(s => s.value === formData.preferredTime);
+    if (selectedSlotObj && isModalSlotPassed(selectedSlotObj, formData.preferredDate)) {
+      newErrors.preferredTime = 'The selected time slot has already passed for today. Please select an upcoming slot.';
+    }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -94,6 +151,10 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
     setIsSubmitting(true);
     
     try {
+      const now = new Date();
+      const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+      const submittedAtStr = `${todayStr} ${currentFormattedTime}`;
+
       // Save directly to PostgreSQL via saveAppointment
       const created = await saveAppointment({
         name: formData.fullName,
@@ -102,7 +163,8 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
         treatment: formData.treatment,
         date: formData.preferredDate,
         timeSlot: formData.preferredTime,
-        notes: formData.notes
+        notes: formData.notes,
+        submittedAt: submittedAtStr
       });
 
       setSavedAppointment(created);
@@ -122,8 +184,8 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
       phone: '',
       email: '',
       treatment: 'General Consultation',
-      preferredDate: '',
-      preferredTime: '10:30 AM',
+      preferredDate: todayStr,
+      preferredTime: initialAvailableSlot,
       notes: ''
     });
     onClose();
@@ -313,7 +375,7 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
                       <input
                         type="date"
                         name="preferredDate"
-                        min={new Date().toISOString().split('T')[0]}
+                        min={todayStr}
                         value={formData.preferredDate}
                         onChange={handleChange}
                         className={`w-full pl-10 pr-4 py-2.5 bg-white border ${
@@ -321,13 +383,13 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
                         } rounded-xl text-sm focus:outline-none focus:border-forest-800 text-forest-950`}
                       />
                     </div>
-                    {errors.preferredDate && <p className="text-red-500 text-xs mt-1">{errors.preferredDate}</p>}
+                    {errors.preferredDate && <p className="text-red-500 text-xs mt-1 font-medium">{errors.preferredDate}</p>}
                   </div>
 
                   {/* Preferred Time */}
                   <div>
                     <label className="block text-xs font-semibold text-forest-900 uppercase tracking-wider mb-1">
-                      Preferred Time Slot
+                      Preferred Time Slot *
                     </label>
                     <div className="relative">
                       <Clock className="absolute left-3 top-3 w-4 h-4 text-forest-700/60" />
@@ -335,15 +397,35 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
                         name="preferredTime"
                         value={formData.preferredTime}
                         onChange={handleChange}
-                        className="w-full pl-10 pr-4 py-2.5 bg-white border border-earth-200 rounded-xl text-sm focus:outline-none focus:border-forest-800 text-forest-950"
+                        className={`w-full pl-10 pr-4 py-2.5 bg-white border ${
+                          errors.preferredTime ? 'border-red-500' : 'border-earth-200'
+                        } rounded-xl text-sm focus:outline-none focus:border-forest-800 text-forest-950`}
                       >
-                        <option value="10:30 AM">Morning (10:00 AM – 1:00 PM)</option>
-                        <option value="03:00 PM">Afternoon (2:00 PM – 4:30 PM)</option>
-                        <option value="05:30 PM">Evening (5:00 PM – 7:00 PM)</option>
+                        {MODAL_TIME_SLOTS.map((slot) => {
+                          const passed = isModalSlotPassed(slot, formData.preferredDate);
+                          return (
+                            <option
+                              key={slot.value}
+                              value={slot.value}
+                              disabled={passed}
+                              className={passed ? 'text-gray-400 bg-gray-100 italic' : 'text-forest-950'}
+                            >
+                              {slot.label} {passed ? '— (Passed / Unavailable)' : ''}
+                            </option>
+                          );
+                        })}
                       </select>
                     </div>
+                    {errors.preferredTime && <p className="text-red-500 text-xs mt-1 font-medium">{errors.preferredTime}</p>}
                   </div>
                 </div>
+
+                {formData.preferredDate === todayStr && MODAL_TIME_SLOTS.every(s => isModalSlotPassed(s, formData.preferredDate)) && (
+                  <div className="p-3 bg-amber-500/10 border border-amber-600/40 rounded-xl flex items-center gap-2.5 text-xs text-amber-900">
+                    <AlertCircle className="w-4 h-4 text-amber-700 shrink-0" />
+                    <span>All consultation slots for today have completed. Please pick tomorrow or an upcoming date.</span>
+                  </div>
+                )}
 
                 {/* Message */}
                 <div>

@@ -127,7 +127,7 @@ export function validatePushyaDate({ month, date, year }) {
   if (!MONTH_NAMES.includes(month)) return { valid: false, message: `Invalid month selected: "${month}".` };
   const numericDate = parseInt(date, 10);
   if (isNaN(numericDate) || numericDate < 1 || numericDate > 31) return { valid: false, message: 'Date must be a valid number between 1 and 31.' };
-  const numericYear = parseInt(year, 10) || 2026;
+  const numericYear = parseInt(year, 10) || 2027;
   const maxDays = getDaysInMonth(month, numericYear);
   if (numericDate > maxDays) return { valid: false, message: `${month} ${numericYear} only has ${maxDays} days. Date ${numericDate} is invalid.` };
   return { valid: true, message: 'Valid' };
@@ -157,6 +157,9 @@ export async function saveAppointment(appointmentData) {
   if (result.data) {
     const existing = readCache(APPOINTMENTS_KEY) || [];
     writeCache(APPOINTMENTS_KEY, [result.data, ...existing.filter(a => a.id !== result.data.id)]);
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('appointments_updated', { detail: result.data }));
+    }
     return result.data;
   }
   return null;
@@ -345,20 +348,27 @@ export async function deleteTreatment(id) {
 
 // ----------------- Swarnaprashana -----------------
 export function getAllSwarnaprashanaDates() {
-  return readCache(SWARNAPRASHANA_KEY) || defaultSwarnaprashanaSchedule;
+  const cached = readCache(SWARNAPRASHANA_KEY);
+  const rawList = Array.isArray(cached) && cached.length > 0 ? cached : defaultSwarnaprashanaSchedule;
+  const filtered = rawList.filter(item => parseInt(item.year, 10) !== 2026);
+  if (Array.isArray(cached) && cached.some(item => parseInt(item.year, 10) === 2026)) {
+    writeCache(SWARNAPRASHANA_KEY, filtered);
+  }
+  return filtered;
 }
 
 export async function fetchSwarnaprashanaScheduleFromDb(params = {}) {
   const data = await api.getSwarnaprashanaSchedule(params); // throws on error
   if (Array.isArray(data)) {
-    writeCache(SWARNAPRASHANA_KEY, data);
-    return data;
+    const cleaned = data.filter(item => parseInt(item.year, 10) !== 2026);
+    writeCache(SWARNAPRASHANA_KEY, cleaned);
+    return cleaned;
   }
   return getAllSwarnaprashanaDates();
 }
 
 export function getSwarnaprashanaSchedule({ year = null, activeOnly = true } = {}) {
-  const allDates = getAllSwarnaprashanaDates();
+  const allDates = getAllSwarnaprashanaDates().filter(item => parseInt(item.year, 10) !== 2026);
   let filtered = [...allDates];
   if (activeOnly) filtered = filtered.filter(item => item.status === 'Active');
   if (year !== null && year !== undefined && year !== 'all') {
@@ -366,8 +376,8 @@ export function getSwarnaprashanaSchedule({ year = null, activeOnly = true } = {
     filtered = filtered.filter(item => parseInt(item.year, 10) === targetYear);
   }
   return filtered.sort((a, b) => {
-    const yrA = parseInt(a.year, 10) || 2026;
-    const yrB = parseInt(b.year, 10) || 2026;
+    const yrA = parseInt(a.year, 10) || 2027;
+    const yrB = parseInt(b.year, 10) || 2027;
     if (yrA !== yrB) return yrA - yrB;
     const monthA = MONTH_NAMES.indexOf(a.month);
     const monthB = MONTH_NAMES.indexOf(b.month);
@@ -377,8 +387,9 @@ export function getSwarnaprashanaSchedule({ year = null, activeOnly = true } = {
 }
 
 export function getAvailableScheduleYears() {
-  const allDates = getAllSwarnaprashanaDates();
+  const allDates = getAllSwarnaprashanaDates().filter(item => parseInt(item.year, 10) !== 2026);
   const yearsSet = new Set(allDates.map(d => parseInt(d.year, 10) || 2027));
+  yearsSet.delete(2026);
   if (yearsSet.size === 0) {
     yearsSet.add(2027);
   }

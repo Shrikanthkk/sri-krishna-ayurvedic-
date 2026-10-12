@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS swarnaprashana_schedule (
   id VARCHAR(100) PRIMARY KEY,
   month VARCHAR(50) NOT NULL,
   date VARCHAR(10) NOT NULL,
-  year INT NOT NULL DEFAULT 2026,
+  year INT NOT NULL DEFAULT 2027,
   full_date DATE,
   status VARCHAR(50) NOT NULL DEFAULT 'Active',
   display_order INT DEFAULT 1,

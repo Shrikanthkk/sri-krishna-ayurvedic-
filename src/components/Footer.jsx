@@ -217,28 +217,33 @@ export default function Footer({ onOpenBooking }) {
         </div>
 
         {/* Bottom Disclaimer & Copyright */}
-        <div className="pt-6 flex flex-col md:flex-row items-center justify-between text-[11px] text-cream-200/50 gap-3">
+        <div className="pt-6 border-t border-forest-900 flex flex-col md:flex-row items-center justify-between text-[11px] text-cream-200/60 gap-3">
           <p className="text-center md:text-left">© {new Date().getFullYear()} Sri Krishna Ayurvedic Clinic. All Rights Reserved.</p>
           
+          <p className="text-center md:text-right text-[11px] text-cream-200/50">
+            Medical Disclaimer: Ayurvedic consultations provide complementary wellness support.
+          </p>
+        </div>
+
+        {/* Dedicated Highly Visible Developer Attribution Bar */}
+        <div className="mt-5 pt-4 pb-2 border-t border-forest-800/60 flex flex-col items-center justify-center text-center">
           <a
             href="https://wa.me/919945379333"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-center group flex flex-col items-center justify-center transition-all hover:text-brass-300 cursor-pointer py-1"
+            className="inline-flex flex-col sm:flex-row items-center justify-center gap-1.5 sm:gap-2 px-6 py-2.5 rounded-full bg-forest-900 border-2 border-brass-500/60 hover:border-brass-400 hover:bg-forest-850 shadow-lg group transition-all transform hover:scale-105 cursor-pointer no-underline"
+            title="Contact ROI Infrotech Solutions on WhatsApp"
           >
-            <span className="text-[10px] tracking-wider uppercase text-cream-200/60 group-hover:text-cream-200">
+            <span className="text-xs uppercase tracking-widest text-cream-100 font-semibold">
               Developed By
             </span>
-            <span className="font-semibold text-brass-400 group-hover:text-brass-300 group-hover:underline">
+            <span className="text-sm font-bold text-brass-300 group-hover:text-brass-200 flex items-center gap-2 underline decoration-brass-400 underline-offset-4">
               ROI Infrotech Solutions
+              <span className="inline-flex items-center gap-1 text-[11px] bg-emerald-600 hover:bg-emerald-500 text-white px-2.5 py-0.5 rounded-full font-sans font-bold tracking-normal no-underline shadow-xs">
+                WhatsApp: 9945379333
+              </span>
             </span>
           </a>
-
-          <div className="flex items-center gap-4">
-            <p className="text-center md:text-right">
-              Medical Disclaimer: Ayurvedic consultations provide complementary wellness support.
-            </p>
-          </div>
         </div>
 
       </div>

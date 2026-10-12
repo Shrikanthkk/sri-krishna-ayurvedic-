@@ -86,11 +86,21 @@ router.post('/', async (req, res) => {
       });
     }
 
+    const now = new Date();
+    const todayStr = now.toISOString().split('T')[0];
+    if (date && date < todayStr) {
+      return res.status(400).json({
+        success: false,
+        error: 'Appointment date cannot be in the past. Please select today or a future date.'
+      });
+    }
+
     const id = 'apt-' + Date.now();
-    const formattedDate = date || new Date().toISOString().split('T')[0];
+    const formattedDate = date || todayStr;
     const formattedTimeSlot = timeSlot || '10:00 AM';
     const appointmentNotes = notes || message || 'Online consultation booking';
-    const submittedAt = new Date().toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' });
+    const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
+    const submittedAt = req.body.submittedAt || `${todayStr} ${currentFormattedTime}`;
 
     const result = await query(
       `INSERT INTO appointments (id, name, phone, email, treatment, date, time_slot, status, notes, submitted_at)

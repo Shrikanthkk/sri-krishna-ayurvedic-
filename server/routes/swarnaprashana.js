@@ -23,7 +23,7 @@ function formatRow(row) {
     id: row.id,
     month: row.month,
     date: String(row.date),
-    year: parseInt(row.year, 10) || 2026,
+    year: parseInt(row.year, 10) || 2027,
     full_date: fullDateStr,
     status: row.status,
     display_order: parseInt(row.display_order, 10) || 1,
@@ -38,7 +38,7 @@ router.get('/', async (req, res) => {
     const { year, activeOnly } = req.query;
     let sql = 'SELECT * FROM swarnaprashana_schedule';
     const params = [];
-    const conditions = [];
+    const conditions = ["year != 2026"];
 
     if (activeOnly === 'true') {
       conditions.push("status = 'Active'");
@@ -89,7 +89,7 @@ router.post('/', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Month and Date are required.' });
     }
 
-    const numericYear = parseInt(entry.year, 10) || 2026;
+    const numericYear = parseInt(entry.year, 10) || 2027;
     const numericDate = parseInt(entry.date, 10);
     const monthIndex = MONTHS.findIndex(m => m.toLowerCase() === String(entry.month).trim().toLowerCase()) + 1;
 
@@ -148,7 +148,7 @@ router.post('/', async (req, res) => {
     if (err.code === '23505') { // PostgreSQL Unique Violation
       return res.status(409).json({
         success: false,
-        error: `A schedule entry for ${req.body.month || ''} ${req.body.year || 2026} already exists.`
+        error: `A schedule entry for ${req.body.month || ''} ${req.body.year || 2027} already exists.`
       });
     }
     console.error('Error saving swarnaprashana date:', err);
@@ -166,7 +166,7 @@ router.put('/:id', async (req, res) => {
       return res.status(400).json({ success: false, error: 'Month and Date are required.' });
     }
 
-    const numericYear = parseInt(entry.year, 10) || 2026;
+    const numericYear = parseInt(entry.year, 10) || 2027;
     const numericDate = parseInt(entry.date, 10);
     const monthIndex = MONTHS.findIndex(m => m.toLowerCase() === String(entry.month).trim().toLowerCase()) + 1;
 
@@ -221,7 +221,7 @@ router.put('/:id', async (req, res) => {
     if (err.code === '23505') {
       return res.status(409).json({
         success: false,
-        error: `A schedule entry for ${req.body.month || ''} ${req.body.year || 2026} already exists.`
+        error: `A schedule entry for ${req.body.month || ''} ${req.body.year || 2027} already exists.`
       });
     }
     console.error('Error updating swarnaprashana date:', err);

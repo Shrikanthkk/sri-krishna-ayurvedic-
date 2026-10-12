@@ -1932,6 +1932,7 @@ export default function Admin() {
                       <tbody className="divide-y divide-earth-100 text-earth-900 font-light">
                         {swarnaSchedule
                           .filter(item => {
+                            if (parseInt(item.year, 10) === 2026) return false;
                             const matchesYear = swarnaFilterYear === 'all' || String(item.year) === swarnaFilterYear;
                             const matchesStatus = swarnaStatusFilter === 'all' || item.status === swarnaStatusFilter;
                             const matchesSearch = item.month.toLowerCase().includes(swarnaSearchQuery.toLowerCase()) ||
@@ -1940,8 +1941,8 @@ export default function Admin() {
                             return matchesYear && matchesStatus && matchesSearch;
                           })
                           .sort((a, b) => {
-                            const yrA = parseInt(a.year, 10) || 2026;
-                            const yrB = parseInt(b.year, 10) || 2026;
+                            const yrA = parseInt(a.year, 10) || 2027;
+                            const yrB = parseInt(b.year, 10) || 2027;
                             if (yrA !== yrB) return yrA - yrB;
                             const mA = MONTH_NAMES.indexOf(a.month);
                             const mB = MONTH_NAMES.indexOf(b.month);
@@ -1963,10 +1964,10 @@ export default function Admin() {
                                 {item.date}
                               </td>
                               <td className="py-3.5 px-6 font-mono font-semibold text-forest-900">
-                                {item.year || 2026}
+                                {item.year || 2027}
                               </td>
                               <td className="py-3.5 px-6 font-mono text-gray-600">
-                                {item.full_date || `${item.year || 2026}-${String(MONTH_NAMES.indexOf(item.month) + 1).padStart(2, '0')}-${String(item.date).padStart(2, '0')}`}
+                                {item.full_date || `${item.year || 2027}-${String(MONTH_NAMES.indexOf(item.month) + 1).padStart(2, '0')}-${String(item.date).padStart(2, '0')}`}
                               </td>
                               <td className="py-3.5 px-6">
                                 <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full font-semibold text-[10px] uppercase border ${
@@ -2099,7 +2100,7 @@ export default function Admin() {
                                 min="2020"
                                 max="2050"
                                 value={editingSwarnaDate.year}
-                                onChange={(e) => setEditingSwarnaDate({ ...editingSwarnaDate, year: parseInt(e.target.value, 10) || 2026 })}
+                                onChange={(e) => setEditingSwarnaDate({ ...editingSwarnaDate, year: parseInt(e.target.value, 10) || 2027 })}
                                 className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 text-xs font-mono font-semibold focus:outline-none focus:border-forest-800"
                               />
                             </div>
