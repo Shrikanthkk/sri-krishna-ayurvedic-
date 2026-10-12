@@ -11,7 +11,7 @@ function createPool() {
   let connectionString =
     process.env.DATABASE_URL || process.env.POSTGRES_URL || process.env.POSTGRESQL_URL;
 
-  if (!connectionString || connectionString.includes('localhost') || connectionString.includes('127.0.0.1')) {
+  if (!connectionString || connectionString.includes('localhost') || connectionString.includes('127.0.0.1') || connectionString.includes('168.119.64.101')) {
     connectionString = SUPABASE_DB_URL;
   }
 
