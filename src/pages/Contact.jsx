@@ -5,7 +5,7 @@ import { Phone, Mail, MapPin, Clock, Send, MessageSquare, Navigation, AlertCircl
 import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import { clinicData } from '../data/clinicData';
-import { saveInquiry, getClinicSettings, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
+import { saveInquiry, getClinicSettings, fetchClinicSettingsFromDb, cleanTenDigitPhone, validateTenDigitPhone } from '../utils/adminStorage';
 
 export default function Contact() {
   const [settings, setSettings] = useState(getClinicSettings());
@@ -19,6 +19,10 @@ export default function Contact() {
   const [phoneError, setPhoneError] = useState('');
 
   useEffect(() => {
+    fetchClinicSettingsFromDb().then(data => {
+      if (data) setSettings(data);
+    }).catch(() => {});
+
     const handleSettingsUpdated = (e) => {
       if (e.detail) setSettings(e.detail);
       else setSettings(getClinicSettings());

@@ -239,8 +239,6 @@ router.post('/hero-slider/upload', (req, res) => {
       if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({ success: false, error: 'Image size exceeds the maximum allowed limit of 10 MB.' });
       }
-      return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
-    } else if (err) {
       return res.status(400).json({ success: false, error: err.message || 'Invalid file uploaded.' });
     }
 

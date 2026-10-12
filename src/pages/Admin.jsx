@@ -228,26 +228,19 @@ export default function Admin() {
   const handlePinSubmit = async (e) => {
     e.preventDefault();
     setLoadingAuth(true);
-    setPinError(false);
+    setPinError('');
     try {
       const res = await api.login({ username: username.trim(), pin: pin.trim() });
       if (res.success && res.user) {
         setIsAuthenticated(true);
-        setPinError(false);
+        setPinError('');
         await loadData();
       } else {
-        setPinError(true);
+        setPinError(res.error || 'Invalid credentials. Please check your username and password.');
       }
     } catch (err) {
       console.error('Admin authentication failed:', err);
-      // Local demo password fallback for offline resilience
-      if ((username.trim().toLowerCase() === 'srikrishna' || username.trim().toLowerCase() === 'admin') && pin.trim() === 'Srikrishna@321') {
-        setIsAuthenticated(true);
-        setPinError(false);
-        loadData();
-      } else {
-        setPinError(true);
-      }
+      setPinError(err.message || 'Database connection error. Ensure Vercel environment variables are set.');
     } finally {
       setLoadingAuth(false);
     }
@@ -727,10 +720,17 @@ export default function Admin() {
 
   const handleDeleteTreatmentItem = async (id, title) => {
     if (window.confirm(`Are you sure you want to delete the treatment "${title}"?`)) {
-      const updated = await deleteTreatment(id);
-      setTreatments(updated);
-      setTreatmentNotice(`Treatment "${title}" removed from database.`);
-      setTimeout(() => setTreatmentNotice(''), 4000);
+      try {
+        const updated = await deleteTreatment(id);
+        setTreatments(Array.isArray(updated) ? updated : treatments.filter(t => t.id !== id));
+        setTreatmentNotice(`Treatment "${title}" removed from database.`);
+        setTimeout(() => setTreatmentNotice(''), 4000);
+        // Refresh from DB to be sure
+        fetchTreatmentsFromDb().then(fresh => { if (Array.isArray(fresh)) setTreatments(fresh); }).catch(() => {});
+      } catch (err) {
+        console.error('Failed to delete treatment:', err);
+        alert(`Failed to delete treatment from database: ${err.message || 'Unknown error'}`);
+      }
     }
   };
 
@@ -921,14 +921,14 @@ export default function Admin() {
                 </div>
 
                 {/* Error message */}
-                {pinError && (
+                {Boolean(pinError) && (
                   <motion.div
                     initial={{ opacity: 0, y: -6 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="flex items-center gap-2 px-4 py-2.5 bg-red-900/30 border border-red-700/40 rounded-xl"
                   >
                     <XCircle className="w-4 h-4 text-red-400 flex-shrink-0" />
-                    <p className="text-xs text-red-300 font-medium">Invalid credentials. Please try again.</p>
+                    <p className="text-xs text-red-300 font-medium">{typeof pinError === 'string' ? pinError : 'Invalid credentials. Please try again.'}</p>
                   </motion.div>
                 )}
 
@@ -941,6 +941,13 @@ export default function Admin() {
                   Sign In to Dashboard
                 </button>
               </form>
+
+              {/* Credentials Note */}
+              <div className="mt-4 p-3 bg-forest-950/40 border border-forest-700/60 rounded-xl text-center space-y-1">
+                <span className="text-[10px] font-bold text-brass-400 uppercase tracking-wider block">Default Admin Credentials</span>
+                <p className="text-xs text-cream-100 font-mono">Username: <span className="text-brass-300 font-bold">srikrishna</span></p>
+                <p className="text-xs text-cream-100 font-mono">Password: <span className="text-brass-300 font-bold">Srikrishna@321</span></p>
+              </div>
 
               {/* Back link */}
               <div className="mt-6 text-center">

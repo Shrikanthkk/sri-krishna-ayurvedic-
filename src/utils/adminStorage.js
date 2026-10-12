@@ -1,7 +1,9 @@
-// Utility helper to bridge PostgreSQL database APIs with client-side reactivity and fallback caching
+// Utility helper to bridge PostgreSQL database APIs with client-side reactivity
+// ALL data is stored ONLY in PostgreSQL - localStorage is used ONLY as a read-cache for instant UI rendering
 import { clinicData } from '../data/clinicData';
 import { api } from '../services/api';
 
+// Cache keys - used ONLY for instant initial render, always overwritten by fresh DB data
 const APPOINTMENTS_KEY = 'sk_clinic_appointments';
 const INQUIRIES_KEY = 'sk_clinic_inquiries';
 const CLINIC_SETTINGS_KEY = 'sk_clinic_settings';
@@ -35,18 +37,8 @@ export const defaultHeroSlider = {
       mobileImage: '',
       enabled: true,
       order: 1,
-      card1: {
-        title: 'Ancient Wisdom',
-        subtitle: 'Charaka & Sushruta Samhita',
-        icon: 'Sparkles',
-        color: 'forest'
-      },
-      card2: {
-        title: 'Divine Healing',
-        subtitle: 'Classical Formulations',
-        icon: 'Award',
-        color: 'brass'
-      }
+      card1: { title: 'Ancient Wisdom', subtitle: 'Charaka & Sushruta Samhita', icon: 'Sparkles', color: 'forest' },
+      card2: { title: 'Divine Healing', subtitle: 'Classical Formulations', icon: 'Award', color: 'brass' }
     },
     {
       id: 'hero-2',
@@ -59,18 +51,8 @@ export const defaultHeroSlider = {
       mobileImage: '',
       enabled: true,
       order: 2,
-      card1: {
-        title: 'Tri-Dosha Harmony',
-        subtitle: 'Vata • Pitta • Kapha',
-        icon: 'ShieldCheck',
-        color: 'brass'
-      },
-      card2: {
-        title: 'Pure Botanicals',
-        subtitle: 'Handcrafted Formulations',
-        icon: 'Leaf',
-        color: 'forest'
-      }
+      card1: { title: 'Tri-Dosha Harmony', subtitle: 'Vata • Pitta • Kapha', icon: 'ShieldCheck', color: 'brass' },
+      card2: { title: 'Pure Botanicals', subtitle: 'Handcrafted Formulations', icon: 'Leaf', color: 'forest' }
     },
     {
       id: 'hero-3',
@@ -83,18 +65,8 @@ export const defaultHeroSlider = {
       mobileImage: '',
       enabled: true,
       order: 3,
-      card1: {
-        title: 'Personalized Care',
-        subtitle: 'Comprehensive Nadi Evaluation',
-        icon: 'HeartHandshake',
-        color: 'forest'
-      },
-      card2: {
-        title: '26+ Years Trust',
-        subtitle: 'Dr. Anand Krishna (BAMS)',
-        icon: 'Award',
-        color: 'brass'
-      }
+      card1: { title: 'Personalized Care', subtitle: 'Comprehensive Nadi Evaluation', icon: 'HeartHandshake', color: 'forest' },
+      card2: { title: '26+ Years Trust', subtitle: 'Dr. Anand Krishna (BAMS)', icon: 'Award', color: 'brass' }
     }
   ]
 };
@@ -144,339 +116,182 @@ export function getDaysInMonth(monthName, year = 2027) {
   const monthMap = {
     January: 31,
     February: (year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0)) ? 29 : 28,
-    March: 31,
-    April: 30,
-    May: 31,
-    June: 30,
-    July: 31,
-    August: 31,
-    September: 30,
-    October: 31,
-    November: 30,
-    December: 31
+    March: 31, April: 30, May: 31, June: 30, July: 31, August: 31,
+    September: 30, October: 31, November: 30, December: 31
   };
   return monthMap[monthName] || 31;
 }
 
 export function validatePushyaDate({ month, date, year }) {
-  if (!month || !month.trim()) {
-    return { valid: false, message: 'Month is required.' };
-  }
-  if (!MONTH_NAMES.includes(month)) {
-    return { valid: false, message: `Invalid month selected: "${month}".` };
-  }
+  if (!month || !month.trim()) return { valid: false, message: 'Month is required.' };
+  if (!MONTH_NAMES.includes(month)) return { valid: false, message: `Invalid month selected: "${month}".` };
   const numericDate = parseInt(date, 10);
-  if (isNaN(numericDate) || numericDate < 1 || numericDate > 31) {
-    return { valid: false, message: 'Date must be a valid number between 1 and 31.' };
-  }
+  if (isNaN(numericDate) || numericDate < 1 || numericDate > 31) return { valid: false, message: 'Date must be a valid number between 1 and 31.' };
   const numericYear = parseInt(year, 10) || 2026;
   const maxDays = getDaysInMonth(month, numericYear);
-  if (numericDate > maxDays) {
-    return { valid: false, message: `${month} ${numericYear} only has ${maxDays} days. Date ${numericDate} is invalid.` };
-  }
+  if (numericDate > maxDays) return { valid: false, message: `${month} ${numericYear} only has ${maxDays} days. Date ${numericDate} is invalid.` };
   return { valid: true, message: 'Valid' };
+}
+
+// ─── Read cache helpers (for instant first-render only) ───────────────────────
+function readCache(key) {
+  try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : null; } catch { return null; }
+}
+function writeCache(key, data) {
+  try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
 }
 
 // ----------------- Appointments -----------------
 export function getAppointments() {
-  try {
-    const stored = localStorage.getItem(APPOINTMENTS_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (err) {
-    return [];
-  }
+  return readCache(APPOINTMENTS_KEY) || [];
 }
 
 export async function fetchAppointmentsFromDb(filters = {}) {
-  try {
-    const data = await api.getAppointments(filters);
-    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(data));
-    return data;
-  } catch (err) {
-    console.warn('Using local cache for appointments:', err.message || err);
-    return getAppointments();
-  }
+  const data = await api.getAppointments(filters); // throws on error — caller handles it
+  writeCache(APPOINTMENTS_KEY, data);
+  return data;
 }
 
 export async function saveAppointment(appointmentData) {
-  try {
-    const result = await api.createAppointment(appointmentData);
-    if (result.data) {
-      const existing = getAppointments();
-      const updated = [result.data, ...existing.filter(a => a.id !== result.data.id)];
-      localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(updated));
-      return result.data;
-    }
-    return null;
-  } catch (err) {
-    console.error('Error saving appointment to PostgreSQL:', err);
-    // Fallback local save
-    const existing = getAppointments();
-    const fallback = {
-      id: 'apt-' + Date.now(),
-      name: appointmentData.name || 'Anonymous Patient',
-      phone: appointmentData.phone || 'N/A',
-      email: appointmentData.email || 'N/A',
-      treatment: appointmentData.treatment || 'General Consultation',
-      date: appointmentData.date || new Date().toISOString().split('T')[0],
-      timeSlot: appointmentData.timeSlot || '10:00 AM',
-      status: 'Pending',
-      notes: appointmentData.notes || appointmentData.message || 'Online booking request',
-      submittedAt: new Date().toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' })
-    };
-    const updated = [fallback, ...existing];
-    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(updated));
-    return fallback;
+  const result = await api.createAppointment(appointmentData); // throws on error
+  if (result.data) {
+    const existing = readCache(APPOINTMENTS_KEY) || [];
+    writeCache(APPOINTMENTS_KEY, [result.data, ...existing.filter(a => a.id !== result.data.id)]);
+    return result.data;
   }
+  return null;
 }
 
 export async function updateAppointmentStatus(id, newStatus) {
-  try {
-    await api.updateAppointmentStatus(id, newStatus);
-    const existing = getAppointments();
-    const updated = existing.map(apt => apt.id === id ? { ...apt, status: newStatus } : apt);
-    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(updated));
-    return updated;
-  } catch (err) {
-    console.error('Error updating appointment status in PostgreSQL:', err);
-    const existing = getAppointments();
-    const updated = existing.map(apt => apt.id === id ? { ...apt, status: newStatus } : apt);
-    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(updated));
-    return updated;
-  }
+  await api.updateAppointmentStatus(id, newStatus); // throws on error
+  const data = await api.getAppointments();
+  writeCache(APPOINTMENTS_KEY, data);
+  return data;
 }
 
 export async function deleteAppointment(id) {
-  try {
-    await api.deleteAppointment(id);
-    const existing = getAppointments();
-    const updated = existing.filter(apt => apt.id !== id);
-    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(updated));
-    return updated;
-  } catch (err) {
-    console.error('Error deleting appointment in PostgreSQL:', err);
-    const existing = getAppointments();
-    const updated = existing.filter(apt => apt.id !== id);
-    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(updated));
-    return updated;
-  }
+  await api.deleteAppointment(id); // throws on error
+  const data = await api.getAppointments();
+  writeCache(APPOINTMENTS_KEY, data);
+  return data;
 }
 
 // ----------------- Inquiries -----------------
 export function getInquiries() {
-  try {
-    const stored = localStorage.getItem(INQUIRIES_KEY);
-    return stored ? JSON.parse(stored) : [];
-  } catch (err) {
-    return [];
-  }
+  return readCache(INQUIRIES_KEY) || [];
 }
 
 export async function fetchInquiriesFromDb() {
-  try {
-    const data = await api.getInquiries();
-    localStorage.setItem(INQUIRIES_KEY, JSON.stringify(data));
-    return data;
-  } catch (err) {
-    console.warn('Using local cache for inquiries:', err.message || err);
-    return getInquiries();
-  }
+  const data = await api.getInquiries(); // throws on error
+  writeCache(INQUIRIES_KEY, data);
+  return data;
 }
 
 export async function saveInquiry(inquiryData) {
-  try {
-    const result = await api.createInquiry(inquiryData);
-    if (result.data) {
-      const existing = getInquiries();
-      const updated = [result.data, ...existing.filter(i => i.id !== result.data.id)];
-      localStorage.setItem(INQUIRIES_KEY, JSON.stringify(updated));
-      return result.data;
-    }
-    return null;
-  } catch (err) {
-    console.error('Error saving inquiry to PostgreSQL:', err);
-    const existing = getInquiries();
-    const fallback = {
-      id: 'inq-' + Date.now(),
-      name: inquiryData.name || inquiryData.fullName || 'Anonymous Visitor',
-      phone: inquiryData.phone || 'N/A',
-      email: inquiryData.email || 'N/A',
-      subject: inquiryData.subject || 'General Inquiry',
-      message: inquiryData.message || 'No message content',
-      read: false,
-      submittedAt: new Date().toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' })
-    };
-    const updated = [fallback, ...existing];
-    localStorage.setItem(INQUIRIES_KEY, JSON.stringify(updated));
-    return fallback;
+  const result = await api.createInquiry(inquiryData); // throws on error
+  if (result.data) {
+    const existing = readCache(INQUIRIES_KEY) || [];
+    writeCache(INQUIRIES_KEY, [result.data, ...existing.filter(i => i.id !== result.data.id)]);
+    return result.data;
   }
+  return null;
 }
 
 export async function toggleInquiryRead(id) {
-  try {
-    await api.toggleInquiryRead(id);
-    const existing = getInquiries();
-    const updated = existing.map(inq => inq.id === id ? { ...inq, read: !inq.read } : inq);
-    localStorage.setItem(INQUIRIES_KEY, JSON.stringify(updated));
-    return updated;
-  } catch (err) {
-    console.error('Error toggling inquiry read in PostgreSQL:', err);
-    const existing = getInquiries();
-    const updated = existing.map(inq => inq.id === id ? { ...inq, read: !inq.read } : inq);
-    localStorage.setItem(INQUIRIES_KEY, JSON.stringify(updated));
-    return updated;
-  }
+  await api.toggleInquiryRead(id); // throws on error
+  const data = await api.getInquiries();
+  writeCache(INQUIRIES_KEY, data);
+  return data;
 }
 
 export async function deleteInquiry(id) {
-  try {
-    await api.deleteInquiry(id);
-    const existing = getInquiries();
-    const updated = existing.filter(inq => inq.id !== id);
-    localStorage.setItem(INQUIRIES_KEY, JSON.stringify(updated));
-    return updated;
-  } catch (err) {
-    console.error('Error deleting inquiry in PostgreSQL:', err);
-    const existing = getInquiries();
-    const updated = existing.filter(inq => inq.id !== id);
-    localStorage.setItem(INQUIRIES_KEY, JSON.stringify(updated));
-    return updated;
-  }
+  await api.deleteInquiry(id); // throws on error
+  const data = await api.getInquiries();
+  writeCache(INQUIRIES_KEY, data);
+  return data;
 }
 
 // ----------------- Settings -----------------
 export function getClinicSettings() {
-  try {
-    const stored = localStorage.getItem(CLINIC_SETTINGS_KEY);
-    return stored ? JSON.parse(stored) : defaultSettings;
-  } catch (err) {
-    return defaultSettings;
-  }
+  return readCache(CLINIC_SETTINGS_KEY) || defaultSettings;
 }
 
 export async function fetchClinicSettingsFromDb() {
-  try {
-    const data = await api.getClinicSettings();
-    const result = data || defaultSettings;
-    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(result));
-    return result;
-  } catch (err) {
-    console.warn('Using default settings:', err.message || err);
-    return getClinicSettings();
-  }
+  const data = await api.getClinicSettings(); // throws on error
+  const result = data || defaultSettings;
+  writeCache(CLINIC_SETTINGS_KEY, result);
+  return result;
 }
 
 export async function saveClinicSettings(newSettings) {
-  try {
-    await api.saveClinicSettings(newSettings);
-    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(newSettings));
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('sk_clinic_settings_updated', { detail: newSettings }));
-      window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: newSettings.runningBar }));
-      window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: newSettings.heroSlider }));
-    }
-    return newSettings;
-  } catch (err) {
-    console.error('Error saving settings to PostgreSQL:', err);
-    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(newSettings));
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('sk_clinic_settings_updated', { detail: newSettings }));
-    }
-    return newSettings;
+  await api.saveClinicSettings(newSettings); // throws on error
+  writeCache(CLINIC_SETTINGS_KEY, newSettings);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('sk_clinic_settings_updated', { detail: newSettings }));
+    window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: newSettings.runningBar }));
+    window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: newSettings.heroSlider }));
   }
+  return newSettings;
 }
 
 export function getRunningBarSettings() {
-  const currentSettings = getClinicSettings();
-  return currentSettings.runningBar || defaultRunningBar;
+  return getClinicSettings().runningBar || defaultRunningBar;
 }
 
 export async function saveRunningBarSettings(runningBarData) {
-  try {
-    await api.updateRunningBarSettings(runningBarData);
-    const currentSettings = getClinicSettings();
-    const updatedSettings = { ...currentSettings, runningBar: runningBarData };
-    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(updatedSettings));
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: runningBarData }));
-    }
-    return runningBarData;
-  } catch (err) {
-    console.error('Error saving running bar settings:', err);
-    const currentSettings = getClinicSettings();
-    const updatedSettings = { ...currentSettings, runningBar: runningBarData };
-    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(updatedSettings));
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: runningBarData }));
-    }
-    return runningBarData;
+  await api.updateRunningBarSettings(runningBarData); // throws on error
+  const currentSettings = getClinicSettings();
+  const updatedSettings = { ...currentSettings, runningBar: runningBarData };
+  writeCache(CLINIC_SETTINGS_KEY, updatedSettings);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: runningBarData }));
   }
+  return runningBarData;
 }
 
 export function getHeroSliderSettings() {
-  const currentSettings = getClinicSettings();
-  return currentSettings.heroSlider || defaultHeroSlider;
+  return getClinicSettings().heroSlider || defaultHeroSlider;
 }
 
 export async function saveHeroSliderSettings(heroSliderData) {
-  try {
-    await api.updateHeroSliderSettings(heroSliderData);
-    const currentSettings = getClinicSettings();
-    const updatedSettings = { ...currentSettings, heroSlider: heroSliderData };
-    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(updatedSettings));
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: heroSliderData }));
-    }
-    return heroSliderData;
-  } catch (err) {
-    console.error('Error saving hero slider settings:', err);
-    const currentSettings = getClinicSettings();
-    const updatedSettings = { ...currentSettings, heroSlider: heroSliderData };
-    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(updatedSettings));
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: heroSliderData }));
-    }
-    return heroSliderData;
+  await api.updateHeroSliderSettings(heroSliderData); // throws on error
+  const currentSettings = getClinicSettings();
+  const updatedSettings = { ...currentSettings, heroSlider: heroSliderData };
+  writeCache(CLINIC_SETTINGS_KEY, updatedSettings);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: heroSliderData }));
   }
+  return heroSliderData;
 }
 
 // ----------------- Treatments -----------------
 export function getStoredTreatments() {
-  try {
-    const stored = localStorage.getItem(TREATMENTS_KEY);
-    if (!stored) return clinicData.treatments;
-    const parsed = JSON.parse(stored);
-    return parsed.map(t => {
+  const cached = readCache(TREATMENTS_KEY);
+  if (cached && cached.length > 0) {
+    return cached.map(t => {
       const match = clinicData.treatments.find(ct => ct.id === t.id);
-      return {
-        ...t,
-        review: t.review || match?.review
-      };
+      return { ...t, review: t.review || match?.review };
     });
-  } catch (err) {
-    return clinicData.treatments;
   }
+  return clinicData.treatments;
 }
 
 export async function fetchTreatmentsFromDb() {
-  try {
-    const data = await api.getTreatments();
-    if (Array.isArray(data) && data.length > 0) {
+  const data = await api.getTreatments(); // throws on error
+  if (Array.isArray(data)) {
+    if (data.length > 0) {
       const merged = data.map(t => {
         const match = clinicData.treatments.find(ct => ct.id === t.id);
-        return {
-          ...t,
-          review: t.review || match?.review
-        };
+        return { ...t, review: t.review || match?.review };
       });
-      localStorage.setItem(TREATMENTS_KEY, JSON.stringify(merged));
+      writeCache(TREATMENTS_KEY, merged);
       return merged;
     }
-    return getStoredTreatments();
-  } catch (err) {
-    console.warn('Using stored treatments:', err.message || err);
-    return getStoredTreatments();
+    // DB returned empty array — clear cache so we don't show stale data
+    writeCache(TREATMENTS_KEY, []);
+    return [];
   }
+  return getStoredTreatments(); // truly null/undefined response only
 }
 
 export async function saveTreatment(treatmentItem) {
@@ -501,6 +316,14 @@ export async function saveTreatment(treatmentItem) {
     localStorage.setItem(TREATMENTS_KEY, JSON.stringify(updated));
     return updated;
   }
+  // Step 2: Re-fetch the full list from DB to confirm and update cache
+  const refreshed = await api.getTreatments();
+  if (Array.isArray(refreshed)) {
+    writeCache(TREATMENTS_KEY, refreshed);
+    return refreshed;
+  }
+  // Worst case: return at least the saved item wrapped in an array
+  return saveResult.data ? [saveResult.data] : [];
 }
 
 export async function deleteTreatment(id) {
@@ -522,56 +345,34 @@ export async function deleteTreatment(id) {
 
 // ----------------- Swarnaprashana -----------------
 export function getAllSwarnaprashanaDates() {
-  try {
-    const stored = localStorage.getItem(SWARNAPRASHANA_KEY);
-    return stored ? JSON.parse(stored) : defaultSwarnaprashanaSchedule;
-  } catch (err) {
-    return defaultSwarnaprashanaSchedule;
-  }
+  return readCache(SWARNAPRASHANA_KEY) || defaultSwarnaprashanaSchedule;
 }
 
 export async function fetchSwarnaprashanaScheduleFromDb(params = {}) {
-  try {
-    const data = await api.getSwarnaprashanaSchedule(params);
-    if (Array.isArray(data)) {
-      localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(data));
-      return data;
-    }
-    return getAllSwarnaprashanaDates();
-  } catch (err) {
-    console.warn('Using stored schedule:', err.message || err);
-    return getAllSwarnaprashanaDates();
+  const data = await api.getSwarnaprashanaSchedule(params); // throws on error
+  if (Array.isArray(data)) {
+    writeCache(SWARNAPRASHANA_KEY, data);
+    return data;
   }
+  return getAllSwarnaprashanaDates();
 }
 
 export function getSwarnaprashanaSchedule({ year = null, activeOnly = true } = {}) {
   const allDates = getAllSwarnaprashanaDates();
   let filtered = [...allDates];
-
-  if (activeOnly) {
-    filtered = filtered.filter(item => item.status === 'Active');
-  }
-
+  if (activeOnly) filtered = filtered.filter(item => item.status === 'Active');
   if (year !== null && year !== undefined && year !== 'all') {
     const targetYear = parseInt(year, 10);
     filtered = filtered.filter(item => parseInt(item.year, 10) === targetYear);
   }
-
   return filtered.sort((a, b) => {
     const yrA = parseInt(a.year, 10) || 2026;
     const yrB = parseInt(b.year, 10) || 2026;
     if (yrA !== yrB) return yrA - yrB;
-
     const monthA = MONTH_NAMES.indexOf(a.month);
     const monthB = MONTH_NAMES.indexOf(b.month);
     if (monthA !== monthB && monthA !== -1 && monthB !== -1) return monthA - monthB;
-
-    const orderA = parseInt(a.display_order, 10) || 1;
-    const orderB = parseInt(b.display_order, 10) || 1;
-    if (orderA !== orderB) return orderA - orderB;
-
-    const dateDiff = (parseInt(a.date, 10) || 1) - (parseInt(b.date, 10) || 1);
-    return dateDiff;
+    return (parseInt(a.date, 10) || 1) - (parseInt(b.date, 10) || 1);
   });
 }
 
@@ -585,181 +386,85 @@ export function getAvailableScheduleYears() {
 }
 
 export async function saveSwarnaprashanaDate(entry) {
-  try {
-    const validation = validatePushyaDate(entry);
-    if (!validation.valid) {
-      return { success: false, error: validation.message };
-    }
-    const apiRes = await api.saveSwarnaprashanaDate(entry);
-    if (apiRes && apiRes.success === false) {
-      return { success: false, error: apiRes.error || 'Failed to save date.' };
-    }
-    const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-    if (Array.isArray(refreshed)) {
-      localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
-    }
+  const validation = validatePushyaDate(entry);
+  if (!validation.valid) return { success: false, error: validation.message };
+
+  const apiRes = await api.saveSwarnaprashanaDate(entry); // throws on error
+  if (apiRes && apiRes.success === false) return { success: false, error: apiRes.error || 'Failed to save date.' };
+
+  const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
+  if (Array.isArray(refreshed)) {
+    writeCache(SWARNAPRASHANA_KEY, refreshed);
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
     }
-    return { success: true, data: refreshed, message: 'Swarnaprashana schedule updated successfully.' };
-  } catch (err) {
-    console.error('Error saving schedule date to PostgreSQL:', err);
-    return { success: false, error: err.message || 'Failed to save date.' };
   }
+  return { success: true, data: refreshed, message: 'Swarnaprashana schedule updated successfully.' };
 }
 
 export async function toggleSwarnaprashanaStatus(id, status = null) {
-  try {
-    const apiRes = await api.toggleSwarnaprashanaStatus(id, status);
-    if (apiRes && apiRes.success === false) {
-      console.error('API Error toggling status:', apiRes.error);
-    }
-    const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-    if (Array.isArray(refreshed)) {
-      localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
-    }
+  await api.toggleSwarnaprashanaStatus(id, status); // throws on error
+  const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
+  if (Array.isArray(refreshed)) {
+    writeCache(SWARNAPRASHANA_KEY, refreshed);
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
     }
-    return refreshed;
-  } catch (err) {
-    console.error('Error toggling schedule status in PostgreSQL:', err);
-    return getAllSwarnaprashanaDates();
   }
+  return refreshed;
 }
 
 export async function deleteSwarnaprashanaDate(id) {
-  try {
-    const apiRes = await api.deleteSwarnaprashanaDate(id);
-    if (apiRes && apiRes.success === false) {
-      console.error('API Error deleting date:', apiRes.error);
-    }
-    const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-    if (Array.isArray(refreshed)) {
-      localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(refreshed));
-    }
+  await api.deleteSwarnaprashanaDate(id); // throws on error
+  const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
+  if (Array.isArray(refreshed)) {
+    writeCache(SWARNAPRASHANA_KEY, refreshed);
     if (typeof window !== 'undefined') {
       window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
     }
-    return refreshed;
-  } catch (err) {
-    console.error('Error deleting schedule date in PostgreSQL:', err);
-    return getAllSwarnaprashanaDates();
   }
+  return refreshed;
 }
 
 export async function clearAllAdminData() {
-  try {
-    await api.resetAdminDemoData();
-    const [apts, inqs, sets, trts, sw] = await Promise.all([
-      api.getAppointments(),
-      api.getInquiries(),
-      api.getClinicSettings(),
-      api.getTreatments(),
-      api.getSwarnaprashanaSchedule({ activeOnly: false })
-    ]);
-    localStorage.setItem(APPOINTMENTS_KEY, JSON.stringify(apts));
-    localStorage.setItem(INQUIRIES_KEY, JSON.stringify(inqs));
-    localStorage.setItem(CLINIC_SETTINGS_KEY, JSON.stringify(sets));
-    localStorage.setItem(TREATMENTS_KEY, JSON.stringify(trts));
-    localStorage.setItem(SWARNAPRASHANA_KEY, JSON.stringify(sw));
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: sw }));
-    }
-    return {
-      appointments: apts,
-      inquiries: inqs,
-      settings: sets,
-      treatments: trts,
-      swarnaprashana: sw
-    };
-  } catch (err) {
-    console.error('Error resetting admin data in PostgreSQL:', err);
-    return {
-      appointments: getAppointments(),
-      inquiries: getInquiries(),
-      settings: getClinicSettings(),
-      treatments: getStoredTreatments(),
-      swarnaprashana: getAllSwarnaprashanaDates()
-    };
+  await api.resetAdminDemoData();
+  const [apts, inqs, sets, trts, sw] = await Promise.all([
+    api.getAppointments(),
+    api.getInquiries(),
+    api.getClinicSettings(),
+    api.getTreatments(),
+    api.getSwarnaprashanaSchedule({ activeOnly: false })
+  ]);
+  writeCache(APPOINTMENTS_KEY, apts);
+  writeCache(INQUIRIES_KEY, inqs);
+  writeCache(CLINIC_SETTINGS_KEY, sets);
+  writeCache(TREATMENTS_KEY, trts);
+  writeCache(SWARNAPRASHANA_KEY, sw);
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: sw }));
   }
+  return { appointments: apts, inquiries: inqs, settings: sets, treatments: trts, swarnaprashana: sw };
 }
 
 // ----------------- Phone Validation & Formatting -----------------
-/**
- * Strips all non-digit characters and ensures maximum 10 digits.
- * Automatically strips country code if pasted (e.g. +91 9845012345 -> 9845012345).
- */
 export function cleanTenDigitPhone(val = '') {
   if (!val) return '';
   const digits = String(val).replace(/\D/g, '');
-  if (digits.length === 12 && digits.startsWith('91')) {
-    return digits.slice(2, 12);
-  }
-  if (digits.length === 11 && digits.startsWith('0')) {
-    return digits.slice(1, 11);
-  }
+  if (digits.length === 12 && digits.startsWith('91')) return digits.slice(2, 12);
+  if (digits.length === 11 && digits.startsWith('0')) return digits.slice(1, 11);
   return digits.slice(0, 10);
 }
 
-/**
- * Validates whether the given string is a valid 10-digit mobile number.
- */
 export function validateTenDigitPhone(val = '') {
   const cleaned = cleanTenDigitPhone(val);
-  if (!cleaned) {
-    return { isValid: false, message: 'Phone number is required.' };
-  }
-  if (cleaned.length < 10) {
-    return {
-      isValid: false,
-      message: `Phone number must be exactly 10 digits (currently ${cleaned.length} digits).`
-    };
-  }
-  if (!/^[6-9]\d{9}$/.test(cleaned)) {
-    return {
-      isValid: false,
-      message: 'Please enter a valid 10-digit mobile number (starts with 6, 7, 8, or 9).'
-    };
-  }
-
-  // Reject all identical digits (e.g., 7777777777, 9999999999, 8888888888)
-  if (/^(\d)\1{9}$/.test(cleaned)) {
-    return {
-      isValid: false,
-      message: 'Repeated digits (e.g. 7777777777) are not allowed. Please enter a genuine mobile number.'
-    };
-  }
-
-  // Reject 6 or more identical consecutive digits (e.g. 9777777123, 7777771234)
-  if (/(\d)\1{5,}/.test(cleaned)) {
-    return {
-      isValid: false,
-      message: 'Consecutive repeated digits are not allowed. Please enter a genuine mobile number.'
-    };
-  }
-
-  // Reject numbers with only 1 or 2 distinct digits (e.g. 9898989898, 7777777778)
+  if (!cleaned) return { isValid: false, message: 'Phone number is required.' };
+  if (cleaned.length < 10) return { isValid: false, message: `Phone number must be exactly 10 digits (currently ${cleaned.length} digits).` };
+  if (!/^[6-9]\d{9}$/.test(cleaned)) return { isValid: false, message: 'Please enter a valid 10-digit mobile number (starts with 6, 7, 8, or 9).' };
+  if (/^(\d)\1{9}$/.test(cleaned)) return { isValid: false, message: 'Repeated digits are not allowed. Please enter a genuine mobile number.' };
+  if (/(\d)\1{5,}/.test(cleaned)) return { isValid: false, message: 'Consecutive repeated digits are not allowed. Please enter a genuine mobile number.' };
   const uniqueDigits = new Set(cleaned.split(''));
-  if (uniqueDigits.size <= 2) {
-    return {
-      isValid: false,
-      message: 'Invalid phone pattern. Please enter a genuine 10-digit mobile number.'
-    };
-  }
-
-  // Reject common dummy / sequential sequences
-  const dummyNumbers = [
-    '1234567890', '9876543210', '0123456789', '9898989898',
-    '9000000000', '8000000000', '7000000000', '6000000000',
-    '9123456789', '8123456789', '7123456789'
-  ];
-  if (dummyNumbers.includes(cleaned)) {
-    return {
-      isValid: false,
-      message: 'Dummy or test numbers are not allowed. Please enter a genuine mobile number.'
-    };
-  }
-
+  if (uniqueDigits.size <= 2) return { isValid: false, message: 'Invalid phone pattern. Please enter a genuine 10-digit mobile number.' };
+  const dummyNumbers = ['1234567890', '9876543210', '0123456789', '9898989898', '9000000000', '8000000000', '7000000000', '6000000000', '9123456789', '8123456789', '7123456789'];
+  if (dummyNumbers.includes(cleaned)) return { isValid: false, message: 'Dummy or test numbers are not allowed. Please enter a genuine mobile number.' };
   return { isValid: true, message: '', cleaned };
 }

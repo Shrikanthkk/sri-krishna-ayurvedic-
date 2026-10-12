@@ -50,9 +50,9 @@ export async function query(text, params) {
       // console.log('[PostgreSQL Query]', { text: text.slice(0, 80), rows: res.rowCount, duration: `${duration}ms` });
     }
     return res;
-  } catch (error) {
-    console.error('Database query error:', { query: text.slice(0, 120), error: error.message });
-    throw error;
+  } catch (err) {
+    console.error('[DB Query Error]', { text: text.slice(0, 80), error: err.message });
+    throw err;
   }
 }
 

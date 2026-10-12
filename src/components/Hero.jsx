@@ -4,13 +4,16 @@ import { motion } from 'framer-motion';
 import { Calendar, ArrowRight, Sparkles, ShieldCheck, Award, HeartHandshake, Phone } from 'lucide-react';
 import heroChakraVideo from '../assets/Meditating_figure_chakras_glowing_202608181320.mp4';
 import { clinicData } from '../data/clinicData';
-import { getClinicSettings } from '../utils/adminStorage';
-
+import { getClinicSettings, fetchClinicSettingsFromDb } from '../utils/adminStorage';
 export default function Hero({ onOpenBooking }) {
   const videoRef = useRef(null);
   const [settings, setSettings] = useState(getClinicSettings());
 
   useEffect(() => {
+    fetchClinicSettingsFromDb().then(data => {
+      if (data) setSettings(data);
+    }).catch(() => {});
+
     const handleSettingsUpdated = (e) => {
       if (e.detail) setSettings(e.detail);
       else setSettings(getClinicSettings());

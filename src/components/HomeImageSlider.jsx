@@ -15,7 +15,7 @@ import {
   Star,
   Info
 } from 'lucide-react';
-import { getHeroSliderSettings, defaultHeroSlider } from '../utils/adminStorage';
+import { getHeroSliderSettings, fetchClinicSettingsFromDb, defaultHeroSlider } from '../utils/adminStorage';
 
 const ICON_MAP = {
   Sparkles,
@@ -56,9 +56,17 @@ export default function HomeImageSlider({ previewData = null }) {
     }
   }, [previewData]);
 
-  // Listen to live update event on public pages
+  // Listen to live update event on public pages and load initial DB settings
   useEffect(() => {
     if (previewData) return;
+
+    fetchClinicSettingsFromDb()
+      .then((settings) => {
+        if (settings && settings.heroSlider) {
+          setSliderConfig(settings.heroSlider);
+        }
+      })
+      .catch(() => {});
 
     const handleUpdate = (e) => {
       if (e.detail) {

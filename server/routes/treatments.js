@@ -32,9 +32,6 @@ router.post('/upload', (req, res) => {
       if (err.code === 'LIMIT_FILE_SIZE') {
         return res.status(400).json({ success: false, error: 'Image size exceeds 10 MB limit.' });
       }
-      return res.status(400).json({ success: false, error: `Upload error: ${err.message}` });
-    } else if (err) {
-      return res.status(400).json({ success: false, error: err.message || 'Invalid file uploaded.' });
     }
 
     if (!req.file) {
@@ -98,7 +95,7 @@ router.get('/', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const item = req.body;
-    if (!item.title) {
+    if (!item || !item.title) {
       return res.status(400).json({ success: false, error: 'Treatment title is required.' });
     }
 
@@ -106,22 +103,28 @@ router.post('/', async (req, res) => {
     const countRes = await query('SELECT COUNT(*) FROM treatments');
     const total = parseInt(countRes.rows[0].count, 10);
     const number = item.number || String(total + 1).padStart(2, '0');
-    const benefitsJson = JSON.stringify(item.benefits || ["Authentic Ayurvedic care", "Root-cause relief"]);
+    const benefitsJson = JSON.stringify(
+      Array.isArray(item.benefits) && item.benefits.length > 0
+        ? item.benefits
+        : ['Authentic Ayurvedic care', 'Root-cause relief']
+    );
 
     const result = await query(
       `INSERT INTO treatments (id, number, title, subtitle, description, benefits, duration, image, link, is_active)
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, true)
+        VALUES ($1, $2, $3, $4, $5, $6::jsonb, $7, $8, $9, true)
         ON CONFLICT (id) DO UPDATE SET
-          title = EXCLUDED.title,
-          subtitle = EXCLUDED.subtitle,
+          number    = EXCLUDED.number,
+          title     = EXCLUDED.title,
+          subtitle  = EXCLUDED.subtitle,
           description = EXCLUDED.description,
-          benefits = EXCLUDED.benefits,
-          duration = EXCLUDED.duration,
-          image = CASE 
+          benefits  = EXCLUDED.benefits,
+          duration  = EXCLUDED.duration,
+          image     = CASE 
             WHEN EXCLUDED.image IS NOT NULL AND EXCLUDED.image != '' THEN EXCLUDED.image 
             ELSE treatments.image 
           END,
-          link = COALESCE(EXCLUDED.link, treatments.link),
+          link      = COALESCE(EXCLUDED.link, treatments.link),
+          is_active = true,
           updated_at = CURRENT_TIMESTAMP
         RETURNING *`,
       [
@@ -137,10 +140,25 @@ router.post('/', async (req, res) => {
       ]
     );
 
-    return res.json({ success: true, data: result.rows[0], message: 'Treatment saved successfully.' });
+    const saved = result.rows[0];
+    return res.json({
+      success: true,
+      data: {
+        id: saved.id,
+        number: saved.number,
+        title: saved.title,
+        subtitle: saved.subtitle,
+        description: saved.description,
+        benefits: typeof saved.benefits === 'string' ? JSON.parse(saved.benefits) : saved.benefits || [],
+        duration: saved.duration,
+        image: saved.image,
+        link: saved.link
+      },
+      message: 'Treatment saved successfully to PostgreSQL database.'
+    });
   } catch (err) {
-    console.error('Error saving treatment:', err);
-    return res.status(500).json({ success: false, error: 'Failed to save treatment.' });
+    console.error('Error saving treatment to PostgreSQL:', err);
+    return res.status(500).json({ success: false, error: `Failed to save treatment: ${err.message}` });
   }
 });
 
