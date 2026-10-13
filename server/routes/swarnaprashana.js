@@ -32,6 +32,22 @@ function formatRow(row) {
   };
 }
 
+export const defaultSwarnaprashanaSchedule = [
+  { id: 'psh-2027-01', month: 'January', date: '22', year: 2027, full_date: '2027-01-22', status: 'Active', display_order: 1 },
+  { id: 'psh-2027-02', month: 'February', date: '19', year: 2027, full_date: '2027-02-19', status: 'Active', display_order: 2 },
+  { id: 'psh-2027-03', month: 'March', date: '18', year: 2027, full_date: '2027-03-18', status: 'Active', display_order: 3 },
+  { id: 'psh-2027-04', month: 'April', date: '15', year: 2027, full_date: '2027-04-15', status: 'Active', display_order: 4 },
+  { id: 'psh-2027-05', month: 'May', date: '12', year: 2027, full_date: '2027-05-12', status: 'Active', display_order: 5 },
+  { id: 'psh-2027-06', month: 'June', date: '8', year: 2027, full_date: '2027-06-08', status: 'Active', display_order: 6 },
+  { id: 'psh-2027-07', month: 'July', date: '6', year: 2027, full_date: '2027-07-06', status: 'Active', display_order: 7 },
+  { id: 'psh-2027-08', month: 'August', date: '2', year: 2027, full_date: '2027-08-02', status: 'Active', display_order: 8 },
+  { id: 'psh-2027-09', month: 'August', date: '29', year: 2027, full_date: '2027-08-29', status: 'Active', display_order: 9 },
+  { id: 'psh-2027-10', month: 'September', date: '26', year: 2027, full_date: '2027-09-26', status: 'Active', display_order: 10 },
+  { id: 'psh-2027-11', month: 'October', date: '23', year: 2027, full_date: '2027-10-23', status: 'Active', display_order: 11 },
+  { id: 'psh-2027-12', month: 'November', date: '19', year: 2027, full_date: '2027-11-19', status: 'Active', display_order: 12 },
+  { id: 'psh-2027-13', month: 'December', date: '17', year: 2027, full_date: '2027-12-17', status: 'Active', display_order: 13 }
+];
+
 // GET /api/swarnaprashana
 router.get('/', async (req, res) => {
   try {
@@ -72,12 +88,15 @@ router.get('/', async (req, res) => {
       display_order ASC`;
 
     const result = await query(sql, params);
-    const mapped = result.rows.map(formatRow);
+    if (result && result.rows && result.rows.length > 0) {
+      const mapped = result.rows.map(formatRow);
+      return res.status(200).json({ success: true, data: mapped });
+    }
 
-    return res.status(200).json({ success: true, data: mapped });
+    return res.status(200).json({ success: true, data: defaultSwarnaprashanaSchedule, fallback: true });
   } catch (err) {
-    console.error('Error fetching swarnaprashana schedule from PostgreSQL:', err);
-    return res.status(500).json({ success: false, error: err.message, data: [] });
+    console.warn('Error fetching swarnaprashana schedule from PostgreSQL, serving default schedule:', err.message);
+    return res.status(200).json({ success: true, data: defaultSwarnaprashanaSchedule, fallback: true });
   }
 });
 

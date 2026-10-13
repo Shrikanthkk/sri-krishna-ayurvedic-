@@ -127,12 +127,12 @@ async function runFullTestSuite() {
   // 7. Swarnaprashana Schedule test
   try {
     console.log('[Test 6] Swarnaprashana Schedule in PostgreSQL...');
-    const scheduleRes = await db.query("SELECT COUNT(*) FROM swarnaprashana_schedule WHERE year = 2026");
+    const scheduleRes = await db.query("SELECT COUNT(*) FROM swarnaprashana_schedule WHERE year = 2027");
     const count = parseInt(scheduleRes.rows[0].count, 10);
     if (count >= 12) {
-      successes.push(`Swarnaprashana 2026 Schedule Verified (${count} dates)`);
+      successes.push(`Swarnaprashana 2027 Schedule Verified (${count} dates)`);
     } else {
-      errors.push(`Swarnaprashana schedule has only ${count} dates, expected 12`);
+      errors.push(`Swarnaprashana schedule has only ${count} dates, expected 12 or more`);
     }
   } catch (err) {
     errors.push(`Swarnaprashana Test Failed: ${err.message}`);

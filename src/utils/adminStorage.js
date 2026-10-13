@@ -280,9 +280,9 @@ export function getStoredTreatments() {
 }
 
 export async function fetchTreatmentsFromDb() {
-  const data = await api.getTreatments(); // throws on error
-  if (Array.isArray(data)) {
-    if (data.length > 0) {
+  try {
+    const data = await api.getTreatments();
+    if (Array.isArray(data) && data.length > 0) {
       const merged = data.map(t => {
         const match = clinicData.treatments.find(ct => ct.id === t.id);
         return { ...t, review: t.review || match?.review };
@@ -290,11 +290,10 @@ export async function fetchTreatmentsFromDb() {
       writeCache(TREATMENTS_KEY, merged);
       return merged;
     }
-    // DB returned empty array — clear cache so we don't show stale data
-    writeCache(TREATMENTS_KEY, []);
-    return [];
+  } catch (err) {
+    console.warn('fetchTreatmentsFromDb caught error:', err.message);
   }
-  return getStoredTreatments(); // truly null/undefined response only
+  return getStoredTreatments();
 }
 
 export async function saveTreatment(treatmentItem) {

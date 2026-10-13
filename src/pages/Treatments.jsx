@@ -7,11 +7,11 @@ import Breadcrumb from '../components/Breadcrumb';
 import { getStoredTreatments, fetchTreatmentsFromDb } from '../utils/adminStorage';
 
 export default function Treatments({ onOpenBooking }) {
-  const [treatmentsList, setTreatmentsList] = useState([]);
+  const [treatmentsList, setTreatmentsList] = useState(() => getStoredTreatments());
 
   useEffect(() => {
     fetchTreatmentsFromDb().then(data => {
-      if (Array.isArray(data)) {
+      if (Array.isArray(data) && data.length > 0) {
         setTreatmentsList(data);
       }
     }).catch(() => {

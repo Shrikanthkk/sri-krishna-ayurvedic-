@@ -10,7 +10,7 @@ export const verifyToken = (req, res, next) => {
   const token = authHeader.split(' ')[1];
 
   try {
-    const secret = process.env.JWT_SECRET || 'sri_krishna_ayurvedic_super_secure_jwt_secret_key_2026';
+    const secret = process.env.JWT_SECRET || 'sri_krishna_ayurvedic_super_secure_jwt_secret_key_v1';
     const decoded = jwt.verify(token, secret);
     req.user = decoded;
     next();

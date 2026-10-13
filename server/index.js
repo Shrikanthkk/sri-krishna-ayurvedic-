@@ -88,16 +88,11 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start listening if executed directly (local server mode)
-const isDirectRun = process.argv[1] && (
-  process.argv[1].includes('index.js') ||
-  process.argv[1].includes('server')
-);
-
-if (isDirectRun && !process.env.VERCEL) {
+// Start listening if not running in Vercel serverless environment
+if (!process.env.VERCEL) {
   app.listen(PORT, () => {
-    console.log(`🌿 Sri Krishna Ayurvedic Clinic Backend running on http://127.0.0.1:${PORT}`);
-    console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`🌿 Sri Krishna Ayurvedic Clinic Backend running on port ${PORT}`);
+    console.log(`📊 Environment: ${process.env.NODE_ENV || 'production'}`);
     console.log(`🔗 Database: ${process.env.DATABASE_URL ? process.env.DATABASE_URL.replace(/:([^@]+)@/, ':****@') : 'Local (DB_HOST)'}`);
   });
 }
