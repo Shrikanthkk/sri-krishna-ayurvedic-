@@ -88,8 +88,10 @@ app.use((err, req, res, next) => {
   });
 });
 
-// Start listening if not running in Vercel serverless environment
-if (!process.env.VERCEL) {
+// Start listening if not running in Vercel serverless or Vite environment
+const isVite = process.argv.some(arg => typeof arg === 'string' && (arg.includes('vite') || arg.includes('preview')));
+
+if (!process.env.VERCEL && !isVite) {
   app.listen(PORT, () => {
     console.log(`🌿 Sri Krishna Ayurvedic Clinic Backend running on port ${PORT}`);
     console.log(`📊 Environment: ${process.env.NODE_ENV || 'production'}`);
