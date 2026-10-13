@@ -37,22 +37,37 @@ export const isSlotPassed = (slot, selectedDate) => {
   return false;
 };
 
+export const getInitialDateAndSlot = () => {
+  const today = getTodayDateString();
+  const availableToday = TIME_SLOTS.find(s => !isSlotPassed(s, today));
+  if (availableToday) {
+    return { date: today, timeSlot: availableToday.value };
+  }
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const yr = tomorrow.getFullYear();
+  const mo = String(tomorrow.getMonth() + 1).padStart(2, '0');
+  const da = String(tomorrow.getDate()).padStart(2, '0');
+  return { date: `${yr}-${mo}-${da}`, timeSlot: TIME_SLOTS[0].value };
+};
+
 export default function BookAppointment() {
   const todayStr = getTodayDateString();
-  const initialAvailableSlot = TIME_SLOTS.find(s => !isSlotPassed(s, todayStr))?.value || TIME_SLOTS[0].value;
+  const initial = getInitialDateAndSlot();
 
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
     email: '',
-    date: todayStr,
-    timeSlot: initialAvailableSlot,
+    date: initial.date,
+    timeSlot: initial.timeSlot,
     treatment: 'Chronic Diseases – Joint Pains (Arthritis)',
     notes: ''
   });
   const [phoneError, setPhoneError] = useState('');
   const [dateError, setDateError] = useState('');
   const [timeError, setTimeError] = useState('');
+  const [submitError, setSubmitError] = useState('');
   const [submittedAppointment, setSubmittedAppointment] = useState(null);
   const [treatmentsList, setTreatmentsList] = useState([]);
 
@@ -70,11 +85,6 @@ export default function BookAppointment() {
   const handlePhoneChange = (e) => {
     const cleaned = cleanTenDigitPhone(e.target.value);
     setFormData((prev) => ({ ...prev, phone: cleaned }));
-
-    if (cleaned.length >= 3 && /^(\d)\1+$/.test(cleaned)) {
-      setPhoneError('Repeated digits are not allowed. Please enter a genuine mobile number.');
-      return;
-    }
 
     if (cleaned.length === 10) {
       const valRes = validateTenDigitPhone(cleaned);
@@ -110,6 +120,7 @@ export default function BookAppointment() {
     e.preventDefault();
     setDateError('');
     setTimeError('');
+    setSubmitError('');
 
     const phoneRes = validateTenDigitPhone(formData.phone);
     if (!phoneRes.isValid) {
@@ -139,9 +150,14 @@ export default function BookAppointment() {
         ...formData,
         submittedAt: submittedAtStr
       });
-      setSubmittedAppointment(saved);
+      if (saved) {
+        setSubmittedAppointment(saved);
+      } else {
+        setSubmitError('Unable to process appointment booking. Please try again.');
+      }
     } catch (err) {
       console.error('Error booking appointment:', err);
+      setSubmitError(err.message || 'Error booking appointment. Please try again.');
     } finally {
       setSubmitting(false);
     }
@@ -257,7 +273,7 @@ export default function BookAppointment() {
                     <input
                       type="tel"
                       required
-                      maxLength={10}
+                      maxLength={15}
                       inputMode="numeric"
                       value={formData.phone}
                       onChange={handlePhoneChange}
@@ -376,6 +392,12 @@ export default function BookAppointment() {
                   className="w-full px-3.5 py-2.5 rounded-xl border border-earth-200 focus:outline-none focus:border-forest-800 text-sm"
                 />
               </div>
+
+              {submitError && (
+                <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
+                  {submitError}
+                </div>
+              )}
 
               <button
                 type="submit"

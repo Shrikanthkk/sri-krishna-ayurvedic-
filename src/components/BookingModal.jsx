@@ -31,17 +31,31 @@ export const isModalSlotPassed = (slot, selectedDate) => {
   return false;
 };
 
+export const getModalInitialDateAndSlot = () => {
+  const today = getModalTodayDateString();
+  const availableToday = MODAL_TIME_SLOTS.find(s => !isModalSlotPassed(s, today));
+  if (availableToday) {
+    return { date: today, timeSlot: availableToday.value };
+  }
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const yr = tomorrow.getFullYear();
+  const mo = String(tomorrow.getMonth() + 1).padStart(2, '0');
+  const da = String(tomorrow.getDate()).padStart(2, '0');
+  return { date: `${yr}-${mo}-${da}`, timeSlot: MODAL_TIME_SLOTS[0].value };
+};
+
 export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }) {
   const todayStr = getModalTodayDateString();
-  const initialAvailableSlot = MODAL_TIME_SLOTS.find(s => !isModalSlotPassed(s, todayStr))?.value || MODAL_TIME_SLOTS[0].value;
+  const initial = getModalInitialDateAndSlot();
 
   const [formData, setFormData] = useState({
     fullName: '',
     phone: '',
     email: '',
     treatment: selectedTreatment || 'General Consultation',
-    preferredDate: todayStr,
-    preferredTime: initialAvailableSlot,
+    preferredDate: initial.date,
+    preferredTime: initial.timeSlot,
     notes: ''
   });
 
@@ -83,11 +97,6 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
     if (name === 'phone') {
       const cleaned = cleanTenDigitPhone(value);
       setFormData((prev) => ({ ...prev, phone: cleaned }));
-
-      if (cleaned.length >= 3 && /^(\d)\1+$/.test(cleaned)) {
-        setErrors((prev) => ({ ...prev, phone: 'Repeated digits are not allowed. Please enter a genuine mobile number.' }));
-        return;
-      }
 
       if (cleaned.length === 10) {
         const valRes = validateTenDigitPhone(cleaned);
@@ -149,13 +158,15 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
     if (!validate()) return;
 
     setIsSubmitting(true);
+    setErrors((prev) => ({ ...prev, submit: '' }));
     
     try {
       const now = new Date();
       const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-      const submittedAtStr = `${todayStr} ${currentFormattedTime}`;
+      const currentFormattedDate = getModalTodayDateString();
+      const submittedAtStr = `${currentFormattedDate} ${currentFormattedTime}`;
 
-      // Save directly to PostgreSQL via saveAppointment
+      // Save appointment (directly with fallback resilience)
       const created = await saveAppointment({
         name: formData.fullName,
         phone: formData.phone,
@@ -167,10 +178,15 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
         submittedAt: submittedAtStr
       });
 
-      setSavedAppointment(created);
-      setIsSubmitted(true);
+      if (created) {
+        setSavedAppointment(created);
+        setIsSubmitted(true);
+      } else {
+        setErrors((prev) => ({ ...prev, submit: 'Unable to process appointment booking. Please try again.' }));
+      }
     } catch (err) {
       console.error('Error saving appointment:', err);
+      setErrors((prev) => ({ ...prev, submit: err.message || 'Error saving appointment. Please try again.' }));
     } finally {
       setIsSubmitting(false);
     }
@@ -179,15 +195,17 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
   const resetForm = () => {
     setIsSubmitted(false);
     setSavedAppointment(null);
+    const freshInitial = getModalInitialDateAndSlot();
     setFormData({
       fullName: '',
       phone: '',
       email: '',
       treatment: 'General Consultation',
-      preferredDate: todayStr,
-      preferredTime: initialAvailableSlot,
+      preferredDate: freshInitial.date,
+      preferredTime: freshInitial.timeSlot,
       notes: ''
     });
+    setErrors({});
     onClose();
   };
 
@@ -310,7 +328,7 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
                       <input
                         type="tel"
                         name="phone"
-                        maxLength={10}
+                        maxLength={15}
                         inputMode="numeric"
                         value={formData.phone}
                         onChange={handleChange}
@@ -443,9 +461,11 @@ export default function BookingModal({ isOpen, onClose, selectedTreatment = '' }
                 </div>
 
                 {/* Notice */}
-                <p className="text-[11px] text-gray-500 italic">
-
-                </p>
+                {errors.submit && (
+                  <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
+                    {errors.submit}
+                  </div>
+                )}
 
                 {/* Submit button */}
                 <div className="pt-2 flex justify-end gap-3">
