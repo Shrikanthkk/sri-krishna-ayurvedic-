@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { ArrowRight, Clock, CheckCircle2, Sparkles } from 'lucide-react';
 import { clinicData } from '../data/clinicData';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../utils/adminStorage';
 
 export default function Treatments({ onSelectTreatment }) {
+  const [treatmentsList, setTreatmentsList] = useState(() => getStoredTreatments());
+
+  useEffect(() => {
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data) && data.length > 0) {
+        setTreatmentsList(data);
+      }
+    }).catch(() => {});
+
+    const handleUpdate = (e) => {
+      if (Array.isArray(e.detail)) {
+        setTreatmentsList(e.detail);
+      }
+    };
+    window.addEventListener('treatments_updated', handleUpdate);
+    return () => window.removeEventListener('treatments_updated', handleUpdate);
+  }, []);
+
   return (
     <section id="treatments" className="py-24 bg-cream-50 relative overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -25,15 +44,27 @@ export default function Treatments({ onSelectTreatment }) {
 
         {/* Editorial Treatment Cards Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {clinicData.treatments.map((treatment, idx) => (
+          {treatmentsList.map((treatment, idx) => (
             <motion.div
               key={treatment.id}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ delay: idx * 0.08, duration: 0.6 }}
-              className="bg-cream-100/60 rounded-2xl border border-earth-200 p-8 flex flex-col justify-between hover:bg-cream-50 hover:shadow-elevated hover:border-brass-500/40 transition-all duration-300 group relative"
+              className="bg-cream-100/60 rounded-2xl border border-earth-200 p-8 flex flex-col justify-between hover:bg-cream-50 hover:shadow-elevated hover:border-brass-500/40 transition-all duration-300 group relative overflow-hidden"
             >
+              {treatment.image && (
+                <div className="h-44 -mx-8 -mt-8 mb-6 overflow-hidden relative">
+                  <img
+                    src={treatment.image}
+                    alt={treatment.title}
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
+                  />
+                  <div className="absolute top-3 left-3 px-2.5 py-1 rounded-full bg-forest-950/85 backdrop-blur-sm text-brass-400 text-[10px] font-mono font-bold uppercase tracking-wider border border-brass-400/30 shadow-md">
+                    {treatment.number || String(idx + 1).padStart(2, '0')} • THERAPY
+                  </div>
+                </div>
+              )}
               <div className="space-y-6">
                 {/* Top Number & Duration Badge */}
                 <div className="flex items-center justify-between border-b border-earth-200 pb-4">

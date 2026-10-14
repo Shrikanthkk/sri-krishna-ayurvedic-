@@ -30,6 +30,7 @@ import {
   clearAllAdminData,
   defaultSettings
 } from '../utils/adminStorage';
+import { optimizeImageForUpload } from '../utils/imageOptimizer';
 
 const VERCEL_API_BASE = 'https://sk-ayurvedic-clinic.vercel.app/api';
 
@@ -215,16 +216,61 @@ export const api = {
   },
 
   async uploadHeroSliderImage(file, onProgress) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (onProgress) onProgress(100);
-        resolve({ success: true, url: reader.result });
-      };
-      reader.onerror = () => reject(new Error('Failed to read image file.'));
-      if (onProgress) onProgress(50);
-      reader.readAsDataURL(file);
-    });
+    if (onProgress) onProgress(20);
+    let optimized;
+    try {
+      optimized = await optimizeImageForUpload(file, { maxWidth: 1920, maxHeight: 1080, quality: 0.85 });
+    } catch {
+      optimized = { file, dataUrl: null };
+    }
+
+    if (onProgress) onProgress(50);
+    const formData = new FormData();
+    formData.append('image', optimized.file || file);
+
+    let finalUrl = optimized.dataUrl;
+    const primaryUrl = getApiUrl('/settings/hero-slider/upload');
+
+    try {
+      const res = await fetch(primaryUrl, {
+        method: 'POST',
+        body: formData
+      });
+      if (res.ok) {
+        const json = await res.json().catch(() => null);
+        if (json?.success && json?.url) {
+          finalUrl = json.url;
+        }
+      }
+    } catch {
+      // Fallback to Vercel production bridge if primary failed
+      if (!primaryUrl.startsWith(VERCEL_API_BASE)) {
+        try {
+          const vRes = await fetch(`${VERCEL_API_BASE}/settings/hero-slider/upload`, {
+            method: 'POST',
+            body: formData
+          });
+          if (vRes.ok) {
+            const vJson = await vRes.json().catch(() => null);
+            if (vJson?.success && vJson?.url) {
+              finalUrl = vJson.url;
+            }
+          }
+        } catch {}
+      }
+    }
+
+    if (!finalUrl) {
+      finalUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Failed to read image file.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (onProgress) onProgress(100);
+    return { success: true, url: finalUrl };
   },
 
   // ----------------- Treatments -----------------
@@ -244,16 +290,60 @@ export const api = {
   },
 
   async uploadTreatmentImage(file, onProgress) {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = () => {
-        if (onProgress) onProgress(100);
-        resolve({ success: true, url: reader.result });
-      };
-      reader.onerror = () => reject(new Error('Failed to read treatment image.'));
-      if (onProgress) onProgress(50);
-      reader.readAsDataURL(file);
-    });
+    if (onProgress) onProgress(20);
+    let optimized;
+    try {
+      optimized = await optimizeImageForUpload(file, { maxWidth: 1200, maxHeight: 900, quality: 0.82 });
+    } catch {
+      optimized = { file, dataUrl: null };
+    }
+
+    if (onProgress) onProgress(50);
+    const formData = new FormData();
+    formData.append('image', optimized.file || file);
+
+    let finalUrl = optimized.dataUrl;
+    const primaryUrl = getApiUrl('/treatments/upload');
+
+    try {
+      const res = await fetch(primaryUrl, {
+        method: 'POST',
+        body: formData
+      });
+      if (res.ok) {
+        const json = await res.json().catch(() => null);
+        if (json?.success && json?.url) {
+          finalUrl = json.url;
+        }
+      }
+    } catch {
+      if (!primaryUrl.startsWith(VERCEL_API_BASE)) {
+        try {
+          const vRes = await fetch(`${VERCEL_API_BASE}/treatments/upload`, {
+            method: 'POST',
+            body: formData
+          });
+          if (vRes.ok) {
+            const vJson = await vRes.json().catch(() => null);
+            if (vJson?.success && vJson?.url) {
+              finalUrl = vJson.url;
+            }
+          }
+        } catch {}
+      }
+    }
+
+    if (!finalUrl) {
+      finalUrl = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = () => reject(new Error('Failed to read image file.'));
+        reader.readAsDataURL(file);
+      });
+    }
+
+    if (onProgress) onProgress(100);
+    return { success: true, url: finalUrl };
   },
 
   // ----------------- Swarnaprashana -----------------

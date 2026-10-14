@@ -524,7 +524,7 @@ export default function Admin() {
     }
   };
 
-  const handleSaveSlideModal = (e) => {
+  const handleSaveSlideModal = async (e) => {
     e.preventDefault();
     if (!editingSlide.image) {
       setSlideModalError('Desktop image is required. Please upload an image.');
@@ -556,24 +556,44 @@ export default function Admin() {
       currentSlides.push(newSlide);
     }
 
-    setHeroSlider(prev => ({ ...prev, slides: currentSlides }));
+    const updatedSlider = { ...(heroSlider || defaultHeroSlider), slides: currentSlides };
+    setHeroSlider(updatedSlider);
     setIsSlideModalOpen(false);
     setEditingSlide(null);
-    setHeroSliderNotice('Slide updated in draft. Click "Update Hero Slider" below to save to database.');
-    setTimeout(() => setHeroSliderNotice(''), 4000);
+    setHeroSliderNotice('Slide updated and saving to PostgreSQL database...');
+
+    try {
+      await saveHeroSliderSettings(updatedSlider);
+      setSettings(prev => ({ ...prev, heroSlider: updatedSlider }));
+      setHeroSliderNotice('✔ Slide saved and updated successfully in database and frontend!');
+      setTimeout(() => setHeroSliderNotice(''), 4500);
+    } catch (err) {
+      console.warn('Hero slider auto-save error:', err);
+      setHeroSliderNotice('Slide saved locally. Click "Update Hero Slider" below to retry.');
+    }
   };
 
-  const handleDeleteSlide = (id) => {
+  const handleDeleteSlide = async (id) => {
     const currentSlides = (heroSlider?.slides || []).filter(s => s.id !== id);
     if (currentSlides.length === 0) {
       alert('The hero slider must contain at least one slide.');
       return;
     }
     const updated = currentSlides.map((s, idx) => ({ ...s, order: idx + 1 }));
-    setHeroSlider(prev => ({ ...prev, slides: updated }));
+    const updatedSlider = { ...(heroSlider || defaultHeroSlider), slides: updated };
+    setHeroSlider(updatedSlider);
     setDeletingSlideId(null);
-    setHeroSliderNotice('Slide removed. Click "Update Hero Slider" below to apply changes.');
-    setTimeout(() => setHeroSliderNotice(''), 4000);
+    setHeroSliderNotice('Slide removed and updating PostgreSQL database...');
+
+    try {
+      await saveHeroSliderSettings(updatedSlider);
+      setSettings(prev => ({ ...prev, heroSlider: updatedSlider }));
+      setHeroSliderNotice('✔ Slide removed successfully from database and frontend.');
+      setTimeout(() => setHeroSliderNotice(''), 4000);
+    } catch (err) {
+      console.warn('Hero slider delete auto-save error:', err);
+      setHeroSliderNotice('Slide removed locally. Click "Update Hero Slider" below to retry.');
+    }
   };
 
   const handleToggleSlideStatus = (id) => {
