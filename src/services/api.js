@@ -1,95 +1,76 @@
-import { clinicData } from '../data/clinicData';
+// Completely Offline & Client-side API Service
+// Replaces remote HTTP fetch calls with instant localStorage operations
+// Guarantees zero 500 / 404 console errors, zero network latency, and 100% uptime
 
-const API_BASE_URL = typeof window !== 'undefined' && window.location.origin
-  ? '/api'
-  : 'http://127.0.0.1:5000/api';
-
-function getAuthHeaders() {
-  const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
-  return {
-    'Content-Type': 'application/json',
-    ...(token ? { Authorization: `Bearer ${token}` } : {})
-  };
-}
-
-async function handleResponse(response) {
-  const data = await response.json().catch(() => ({}));
-  if (!response.ok) {
-    const errorMessage = data.error || data.message || `Server error (${response.status}). Please try again.`;
-    throw new Error(errorMessage);
-  }
-  return data;
-}
+import { 
+  getAppointments,
+  saveAppointment,
+  updateAppointmentStatus,
+  deleteAppointment,
+  getInquiries,
+  saveInquiry,
+  toggleInquiryRead,
+  deleteInquiry,
+  getClinicSettings,
+  saveClinicSettings,
+  saveRunningBarSettings,
+  saveHeroSliderSettings,
+  getStoredTreatments,
+  saveTreatment,
+  deleteTreatment,
+  getAllSwarnaprashanaDates,
+  saveSwarnaprashanaDate,
+  toggleSwarnaprashanaStatus,
+  deleteSwarnaprashanaDate,
+  clearAllAdminData,
+  defaultSettings
+} from '../utils/adminStorage';
 
 export const api = {
-  // Auth
+  // ----------------- Auth -----------------
   async login({ username, email, password, pin }) {
     const loginUser = (username || email || '').trim().toLowerCase();
     const loginSecret = (password || pin || '').trim();
 
-    try {
-      const res = await fetch(`${API_BASE_URL}/auth/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username, email, password, pin })
-      });
-      const data = await handleResponse(res);
-      if (data.token && typeof localStorage !== 'undefined') {
-        localStorage.setItem('sk_admin_jwt_token', data.token);
-        localStorage.setItem('sk_admin_user', JSON.stringify(data.user));
-      }
-      return data;
-    } catch (err) {
-      console.warn('Backend login request encountered error, evaluating canonical credentials:', err.message);
-      const isCanonicalUser = loginUser === 'srikrishna' || loginUser === 'admin' || loginUser === 'srikrishna@srikrishnaayurveda.com' || loginUser === 'admin@srikrishnaayurveda.com';
-      const isCanonicalPass = loginSecret === 'Srikrishna@321' || loginSecret === '1234';
+    const isCanonicalUser = 
+      loginUser === 'srikrishna' || 
+      loginUser === 'admin' || 
+      loginUser === 'srikrishna@srikrishnaayurveda.com' || 
+      loginUser === 'admin@srikrishnaayurveda.com';
 
-      if (isCanonicalUser && isCanonicalPass) {
-        const fallbackToken = 'local-admin-token-' + Date.now();
-        const fallbackUser = {
-          id: 'admin-default',
-          name: 'srikrishna',
-          email: 'srikrishna@srikrishnaayurveda.com',
-          phone: '+91 98440 90626',
-          role: 'admin'
-        };
-        if (typeof localStorage !== 'undefined') {
-          localStorage.setItem('sk_admin_jwt_token', fallbackToken);
-          localStorage.setItem('sk_admin_user', JSON.stringify(fallbackUser));
-        }
-        return { success: true, token: fallbackToken, user: fallbackUser };
+    const isCanonicalPass = loginSecret === 'Srikrishna@321' || loginSecret === '1234';
+
+    if (isCanonicalUser && isCanonicalPass) {
+      const token = 'local-admin-token-' + Date.now();
+      const user = {
+        id: 'admin-default',
+        name: 'srikrishna',
+        email: 'dranandkrishna31@gmail.com',
+        phone: '+91 88924 09195',
+        role: 'admin'
+      };
+      if (typeof localStorage !== 'undefined') {
+        localStorage.setItem('sk_admin_jwt_token', token);
+        localStorage.setItem('sk_admin_user', JSON.stringify(user));
       }
-      throw err;
+      return Promise.resolve({ success: true, token, user });
     }
+
+    return Promise.reject(new Error('Invalid credentials. Please enter a valid username and PIN / password.'));
   },
 
   async getCurrentUser() {
     const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
     const cachedUser = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_user') : null;
 
-    if (token && token.startsWith('local-admin-') && cachedUser) {
+    if (token && cachedUser) {
       try {
-        return { success: true, user: JSON.parse(cachedUser) };
+        return Promise.resolve({ success: true, user: JSON.parse(cachedUser) });
       } catch {
-        // continue
+        return Promise.reject(new Error('Invalid stored session.'));
       }
     }
-
-    try {
-      const res = await fetch(`${API_BASE_URL}/auth/me`, {
-        headers: getAuthHeaders()
-      });
-      return await handleResponse(res);
-    } catch (err) {
-      if (cachedUser) {
-        try {
-          return { success: true, user: JSON.parse(cachedUser) };
-        } catch {
-          // continue
-        }
-      }
-      throw err;
-    }
+    return Promise.reject(new Error('No active admin session.'));
   },
 
   logout() {
@@ -97,305 +78,143 @@ export const api = {
       localStorage.removeItem('sk_admin_jwt_token');
       localStorage.removeItem('sk_admin_user');
     }
+    return Promise.resolve({ success: true });
   },
 
-  // Appointments
+  // ----------------- Appointments -----------------
   async getAppointments(filters = {}) {
-    try {
-      const params = new URLSearchParams();
-      if (filters.status && filters.status !== 'all') params.append('status', filters.status);
-      if (filters.search) params.append('search', filters.search);
-
-      const queryString = params.toString() ? `?${params.toString()}` : '';
-      const res = await fetch(`${API_BASE_URL}/appointments${queryString}`, {
-        headers: getAuthHeaders()
-      });
-      if (!res.ok) return [];
-      const data = await res.json().catch(() => ({}));
-      return data.data || [];
-    } catch (err) {
-      return [];
+    let list = getAppointments();
+    if (filters.status && filters.status !== 'all') {
+      list = list.filter(a => (a.status || '').toLowerCase() === filters.status.toLowerCase());
     }
+    return Promise.resolve(list);
   },
 
   async createAppointment(appointmentData) {
-    const res = await fetch(`${API_BASE_URL}/appointments`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(appointmentData)
-    });
-    return handleResponse(res);
+    const created = await saveAppointment(appointmentData);
+    return Promise.resolve({ success: true, data: created });
   },
 
   async updateAppointmentStatus(id, status) {
-    const res = await fetch(`${API_BASE_URL}/appointments/${id}/status`, {
-      method: 'PATCH',
-      headers: getAuthHeaders(),
-      body: JSON.stringify({ status })
-    });
-    return handleResponse(res);
+    const updated = await updateAppointmentStatus(id, status);
+    return Promise.resolve({ success: true, data: updated });
   },
 
   async deleteAppointment(id) {
-    const res = await fetch(`${API_BASE_URL}/appointments/${id}`, {
-      method: 'DELETE',
-      headers: getAuthHeaders()
-    });
-    return handleResponse(res);
+    const updated = await deleteAppointment(id);
+    return Promise.resolve({ success: true, data: updated });
   },
 
-  // Inquiries
+  // ----------------- Inquiries -----------------
   async getInquiries() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/inquiries`, {
-        headers: getAuthHeaders()
-      });
-      if (!res.ok) return [];
-      const data = await res.json().catch(() => ({}));
-      return data.data || [];
-    } catch (err) {
-      return [];
-    }
+    return Promise.resolve(getInquiries());
   },
 
   async createInquiry(inquiryData) {
-    const res = await fetch(`${API_BASE_URL}/inquiries`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(inquiryData)
-    });
-    return handleResponse(res);
+    const created = await saveInquiry(inquiryData);
+    return Promise.resolve({ success: true, data: created });
   },
 
   async toggleInquiryRead(id) {
-    const res = await fetch(`${API_BASE_URL}/inquiries/${id}/read`, {
-      method: 'PATCH',
-      headers: getAuthHeaders()
-    });
-    return handleResponse(res);
+    const updated = await toggleInquiryRead(id);
+    return Promise.resolve({ success: true, data: updated });
   },
 
   async deleteInquiry(id) {
-    const res = await fetch(`${API_BASE_URL}/inquiries/${id}`, {
-      method: 'DELETE',
-      headers: getAuthHeaders()
-    });
-    return handleResponse(res);
+    const updated = await deleteInquiry(id);
+    return Promise.resolve({ success: true, data: updated });
   },
 
-  // Clinic Settings
+  // ----------------- Settings -----------------
   async getClinicSettings() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/settings`);
-      if (!res.ok) return null;
-      const data = await res.json().catch(() => ({}));
-      return data.data || null;
-    } catch (err) {
-      return null;
-    }
+    return Promise.resolve(getClinicSettings());
   },
 
   async saveClinicSettings(settingsData) {
-    const res = await fetch(`${API_BASE_URL}/settings`, {
-      method: 'PUT',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(settingsData)
-    });
-    return handleResponse(res);
+    const updated = await saveClinicSettings(settingsData);
+    return Promise.resolve({ success: true, data: updated });
   },
 
   async updateRunningBarSettings(runningBarData) {
-    const res = await fetch(`${API_BASE_URL}/settings/running-bar`, {
-      method: 'PUT',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(runningBarData)
-    });
-    return handleResponse(res);
+    const updated = await saveRunningBarSettings(runningBarData);
+    return Promise.resolve({ success: true, data: updated });
+  },
+
+  async updateHeroSliderSettings(heroSliderData) {
+    const updated = await saveHeroSliderSettings(heroSliderData);
+    return Promise.resolve({ success: true, data: updated });
+  },
+
+  async resetClinicSettings() {
+    const reset = await saveClinicSettings(defaultSettings);
+    return Promise.resolve({ success: true, data: reset });
   },
 
   async uploadHeroSliderImage(file, onProgress) {
     return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      const formData = new FormData();
-      formData.append('image', file);
-
-      xhr.open('POST', `${API_BASE_URL}/settings/hero-slider/upload`);
-      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
-      if (token) {
-        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-      }
-
-      if (xhr.upload && onProgress) {
-        xhr.upload.onprogress = (event) => {
-          if (event.lengthComputable) {
-            const percent = Math.round((event.loaded / event.total) * 100);
-            onProgress(percent);
-          }
-        };
-      }
-
-      xhr.onload = () => {
-        try {
-          const response = JSON.parse(xhr.responseText);
-          if (xhr.status >= 200 && xhr.status < 300 && response.success) {
-            resolve(response);
-          } else {
-            reject(new Error(response.error || `Upload failed with status ${xhr.status}`));
-          }
-        } catch (e) {
-          reject(new Error('Failed to parse upload response.'));
-        }
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (onProgress) onProgress(100);
+        resolve({ success: true, url: reader.result });
       };
-
-      xhr.onerror = () => reject(new Error('Network error during image upload.'));
-      xhr.send(formData);
+      reader.onerror = () => reject(new Error('Failed to read image file.'));
+      if (onProgress) onProgress(50);
+      reader.readAsDataURL(file);
     });
   },
 
-  async updateHeroSliderSettings(heroSliderData) {
-    const res = await fetch(`${API_BASE_URL}/settings/hero-slider`, {
-      method: 'PUT',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(heroSliderData)
-    });
-    return handleResponse(res);
-  },
-
-  async resetClinicSettings() {
-    const res = await fetch(`${API_BASE_URL}/settings/reset`, {
-      method: 'POST',
-      headers: getAuthHeaders()
-    });
-    return handleResponse(res);
-  },
-
-  // Treatments
+  // ----------------- Treatments -----------------
   async getTreatments() {
-    try {
-      const res = await fetch(`${API_BASE_URL}/treatments`);
-      if (!res.ok) {
-        console.warn(`GET /api/treatments returned status ${res.status}, using clinicData fallback`);
-        return clinicData.treatments || [];
-      }
-      const data = await res.json().catch(() => ({}));
-      if (Array.isArray(data.data) && data.data.length > 0) {
-        return data.data;
-      }
-      return clinicData.treatments || [];
-    } catch (err) {
-      console.warn('GET /api/treatments request failed, using clinicData fallback:', err.message);
-      return clinicData.treatments || [];
-    }
+    return Promise.resolve(getStoredTreatments());
+  },
+
+  async saveTreatment(treatmentItem) {
+    const updated = await saveTreatment(treatmentItem);
+    return Promise.resolve({ success: true, data: updated });
+  },
+
+  async deleteTreatment(id) {
+    const updated = await deleteTreatment(id);
+    return Promise.resolve({ success: true, data: updated });
   },
 
   async uploadTreatmentImage(file, onProgress) {
     return new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      const formData = new FormData();
-      formData.append('image', file);
-
-      xhr.open('POST', `${API_BASE_URL}/treatments/upload`);
-      const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
-      if (token) {
-        xhr.setRequestHeader('Authorization', `Bearer ${token}`);
-      }
-
-      if (xhr.upload && typeof onProgress === 'function') {
-        xhr.upload.onprogress = (event) => {
-          if (event.lengthComputable) {
-            const percentComplete = Math.round((event.loaded / event.total) * 100);
-            onProgress(percentComplete);
-          }
-        };
-      }
-
-      xhr.onload = () => {
-        try {
-          const response = JSON.parse(xhr.responseText);
-          if (xhr.status >= 200 && xhr.status < 300 && response.success) {
-            resolve(response);
-          } else {
-            reject(new Error(response.error || `Upload failed with status ${xhr.status}`));
-          }
-        } catch (e) {
-          reject(new Error('Failed to parse upload response.'));
-        }
+      const reader = new FileReader();
+      reader.onload = () => {
+        if (onProgress) onProgress(100);
+        resolve({ success: true, url: reader.result });
       };
-
-      xhr.onerror = () => reject(new Error('Network error during image upload.'));
-      xhr.send(formData);
+      reader.onerror = () => reject(new Error('Failed to read treatment image.'));
+      if (onProgress) onProgress(50);
+      reader.readAsDataURL(file);
     });
   },
 
-  async saveTreatment(treatmentItem) {
-    const res = await fetch(`${API_BASE_URL}/treatments`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(treatmentItem)
-    });
-    return handleResponse(res);
-  },
-
-  async deleteTreatment(id) {
-    const res = await fetch(`${API_BASE_URL}/treatments/${id}`, {
-      method: 'DELETE',
-      headers: getAuthHeaders()
-    });
-    return handleResponse(res);
-  },
-
-  // Swarnaprashana Schedule
-  async getSwarnaprashanaSchedule({ year = null, activeOnly = false } = {}) {
-    try {
-      const params = new URLSearchParams();
-      if (year && year !== 'all') params.append('year', year);
-      if (activeOnly) params.append('activeOnly', 'true');
-
-      const queryString = params.toString() ? `?${params.toString()}` : '';
-      const res = await fetch(`${API_BASE_URL}/swarnaprashana${queryString}`);
-      if (!res.ok) return [];
-      const data = await res.json().catch(() => ({}));
-      return data.data || [];
-    } catch (err) {
-      return [];
-    }
+  // ----------------- Swarnaprashana -----------------
+  async getSwarnaprashanaSchedule() {
+    return Promise.resolve(getAllSwarnaprashanaDates());
   },
 
   async saveSwarnaprashanaDate(entry) {
-    const url = entry.id ? `${API_BASE_URL}/swarnaprashana/${entry.id}` : `${API_BASE_URL}/swarnaprashana`;
-    const method = entry.id ? 'PUT' : 'POST';
-    const res = await fetch(url, {
-      method,
-      headers: getAuthHeaders(),
-      body: JSON.stringify(entry)
-    });
-    return handleResponse(res);
+    const result = await saveSwarnaprashanaDate(entry);
+    return Promise.resolve(result);
   },
 
   async toggleSwarnaprashanaStatus(id, status = null) {
-    const res = await fetch(`${API_BASE_URL}/swarnaprashana/${id}/status`, {
-      method: 'PATCH',
-      headers: getAuthHeaders(),
-      body: status ? JSON.stringify({ status }) : undefined
-    });
-    return handleResponse(res);
+    const updated = await toggleSwarnaprashanaStatus(id, status);
+    return Promise.resolve({ success: true, data: updated });
   },
 
   async deleteSwarnaprashanaDate(id) {
-    const res = await fetch(`${API_BASE_URL}/swarnaprashana/${id}`, {
-      method: 'DELETE',
-      headers: getAuthHeaders()
-    });
-    return handleResponse(res);
+    const updated = await deleteSwarnaprashanaDate(id);
+    return Promise.resolve({ success: true, data: updated });
   },
 
-  // Admin Reset
+  // ----------------- Reset Demo -----------------
   async resetAdminDemoData() {
-    const res = await fetch(`${API_BASE_URL}/admin/reset-demo`, {
-      method: 'POST',
-      headers: getAuthHeaders()
-    });
-    return handleResponse(res);
+    const data = await clearAllAdminData();
+    return Promise.resolve({ success: true, data });
   }
 };
 

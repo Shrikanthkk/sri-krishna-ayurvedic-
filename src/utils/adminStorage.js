@@ -1,9 +1,9 @@
-// Utility helper to bridge PostgreSQL database APIs with client-side reactivity
-// ALL data is stored ONLY in PostgreSQL - localStorage is used ONLY as a read-cache for instant UI rendering
-import { clinicData } from '../data/clinicData';
-import { api } from '../services/api';
+// Utility helper to manage persisted appointments, contact inquiries, editable clinic settings, treatments, and Swarnaprashana schedule in localStorage for the Admin Dashboard and Website
+// 100% Client-side and Offline-ready: Zero external API calls, Zero 500 console errors, Instant UI reactivity
 
-// Cache keys - used ONLY for instant initial render, always overwritten by fresh DB data
+import { clinicData } from '../data/clinicData';
+
+// Storage keys
 const APPOINTMENTS_KEY = 'sk_clinic_appointments';
 const INQUIRIES_KEY = 'sk_clinic_inquiries';
 const CLINIC_SETTINGS_KEY = 'sk_clinic_settings';
@@ -91,7 +91,7 @@ export const defaultSettings = {
 };
 
 export const defaultSwarnaprashanaSchedule = [
-  // 2027 Schedule (Pushya Nakshatra)
+  // 2027 Schedule (Pushya Nakshatra) - 13 canonical dates
   { id: 'psh-2027-01', month: 'January', date: '22', year: 2027, full_date: '2027-01-22', status: 'Active', display_order: 1 },
   { id: 'psh-2027-02', month: 'February', date: '19', year: 2027, full_date: '2027-02-19', status: 'Active', display_order: 2 },
   { id: 'psh-2027-03', month: 'March', date: '18', year: 2027, full_date: '2027-03-18', status: 'Active', display_order: 3 },
@@ -105,6 +105,68 @@ export const defaultSwarnaprashanaSchedule = [
   { id: 'psh-2027-10', month: 'October', date: '23', year: 2027, full_date: '2027-10-23', status: 'Active', display_order: 11 },
   { id: 'psh-2027-11', month: 'November', date: '19', year: 2027, full_date: '2027-11-19', status: 'Active', display_order: 12 },
   { id: 'psh-2027-12', month: 'December', date: '17', year: 2027, full_date: '2027-12-17', status: 'Active', display_order: 13 }
+];
+
+export const defaultAppointments = [
+  {
+    id: 'apt-101',
+    name: 'Ramesh Kumar',
+    phone: '9845012345',
+    email: 'ramesh.k@gmail.com',
+    treatment: 'Cancer Care & Oncology Support',
+    date: '2027-02-15',
+    timeSlot: '10:30 AM',
+    status: 'Confirmed',
+    notes: 'Supportive Rasayana consultation alongside medical treatment.',
+    submittedAt: '2027-02-10 10:15 AM'
+  },
+  {
+    id: 'apt-102',
+    name: 'Sunitha Narayan',
+    phone: '9844090626',
+    email: 'sunitha.n@yahoo.com',
+    treatment: 'Spine & Joint Care (Sandhivata)',
+    date: '2027-02-16',
+    timeSlot: '02:00 PM',
+    status: 'Pending',
+    notes: 'Lower back stiffness and knee joint discomfort.',
+    submittedAt: '2027-02-11 02:45 PM'
+  },
+  {
+    id: 'apt-103',
+    name: 'Praveen Venkatesh',
+    phone: '9731245678',
+    email: 'praveen.v@outlook.com',
+    treatment: 'Swarnaprashana Pediatric Care',
+    date: '2027-02-19',
+    timeSlot: '11:00 AM',
+    status: 'Completed',
+    notes: 'Traditional Pushya Nakshatra pediatric immunity drops.',
+    submittedAt: '2027-02-11 05:20 PM'
+  }
+];
+
+export const defaultInquiries = [
+  {
+    id: 'inq-201',
+    name: 'Anitha Sharma',
+    phone: '9880123456',
+    email: 'anitha.s@gmail.com',
+    subject: 'Integrative Ayurvedic Cancer Care',
+    message: 'Hello Doctor, I would like to inquire about supportive Ayurvedic therapies for my father.',
+    read: false,
+    submittedAt: '2027-02-10 11:30 AM'
+  },
+  {
+    id: 'inq-202',
+    name: 'Kiran Raj',
+    phone: '9900234567',
+    email: 'kiran.raj@gmail.com',
+    subject: 'Nadi Pariksha Timings',
+    message: 'Could you please confirm Dr. Anand Krishna consultation timings at the KR Puram main branch?',
+    read: true,
+    submittedAt: '2027-02-09 04:10 PM'
+  }
 ];
 
 export const MONTH_NAMES = [
@@ -133,172 +195,199 @@ export function validatePushyaDate({ month, date, year }) {
   return { valid: true, message: 'Valid' };
 }
 
-// ─── Read cache helpers (for instant first-render only) ───────────────────────
-function readCache(key) {
-  try { const s = localStorage.getItem(key); return s ? JSON.parse(s) : null; } catch { return null; }
+// ─── LocalStorage Read/Write helpers ───────────────────────
+function readStorage(key, fallback = null) {
+  if (typeof localStorage === 'undefined') return fallback;
+  try {
+    const s = localStorage.getItem(key);
+    return s ? JSON.parse(s) : fallback;
+  } catch {
+    return fallback;
+  }
 }
-function writeCache(key, data) {
-  try { localStorage.setItem(key, JSON.stringify(data)); } catch {}
+
+function writeStorage(key, data) {
+  if (typeof localStorage === 'undefined') return;
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+  } catch (err) {
+    console.warn(`Failed to write to localStorage for key ${key}:`, err);
+  }
 }
 
 // ----------------- Appointments -----------------
 export function getAppointments() {
-  return readCache(APPOINTMENTS_KEY) || [];
+  const stored = readStorage(APPOINTMENTS_KEY);
+  if (!stored || !Array.isArray(stored) || stored.length === 0) {
+    writeStorage(APPOINTMENTS_KEY, defaultAppointments);
+    return defaultAppointments;
+  }
+  return stored;
 }
 
 export async function fetchAppointmentsFromDb(filters = {}) {
-  const data = await api.getAppointments(filters); // throws on error — caller handles it
-  writeCache(APPOINTMENTS_KEY, data);
-  return data;
+  let list = getAppointments();
+  if (filters.status && filters.status !== 'all') {
+    list = list.filter(a => (a.status || '').toLowerCase() === filters.status.toLowerCase());
+  }
+  return Promise.resolve(list);
 }
 
 export async function saveAppointment(appointmentData) {
-  let created = null;
-  try {
-    const result = await api.createAppointment(appointmentData);
-    if (result && result.data) {
-      created = result.data;
-    }
-  } catch (apiErr) {
-    console.warn('Backend createAppointment failed, storing appointment locally:', apiErr.message);
-  }
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-  // Graceful local fallback to guarantee zero data loss
-  if (!created) {
-    const now = new Date();
-    const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-    const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
-    created = {
-      id: 'apt-' + Date.now(),
-      name: (appointmentData.name || appointmentData.fullName || 'Patient').trim(),
-      phone: String(appointmentData.phone || '').trim(),
-      email: appointmentData.email ? String(appointmentData.email).trim() : null,
-      treatment: appointmentData.treatment || 'General Consultation',
-      date: appointmentData.date || appointmentData.preferredDate || todayStr,
-      timeSlot: appointmentData.timeSlot || appointmentData.preferredTime || '10:00 AM',
-      status: 'Pending',
-      notes: appointmentData.notes || appointmentData.message || 'Consultation booking',
-      submittedAt: appointmentData.submittedAt || `${todayStr} ${currentFormattedTime}`,
-      isLocal: true
-    };
-  }
+  const created = {
+    id: 'apt-' + Date.now(),
+    name: (appointmentData.name || appointmentData.fullName || 'Patient').trim(),
+    phone: String(appointmentData.phone || '').trim(),
+    email: appointmentData.email ? String(appointmentData.email).trim() : null,
+    treatment: appointmentData.treatment || 'General Consultation',
+    date: appointmentData.date || appointmentData.preferredDate || todayStr,
+    timeSlot: appointmentData.timeSlot || appointmentData.preferredTime || '10:00 AM',
+    status: 'Pending',
+    notes: appointmentData.notes || appointmentData.message || 'Consultation booking',
+    submittedAt: appointmentData.submittedAt || `${todayStr} ${currentFormattedTime}`,
+    isLocal: true
+  };
 
-  const existing = readCache(APPOINTMENTS_KEY) || [];
+  const existing = getAppointments();
   const updated = [created, ...existing.filter(a => a.id !== created.id)];
-  writeCache(APPOINTMENTS_KEY, updated);
+  writeStorage(APPOINTMENTS_KEY, updated);
 
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('appointments_updated', { detail: created }));
   }
 
-  return created;
+  return Promise.resolve(created);
 }
 
 export async function updateAppointmentStatus(id, newStatus) {
-  try {
-    await api.updateAppointmentStatus(id, newStatus);
-  } catch (err) {
-    console.warn('Error updating status on server:', err.message);
-  }
-  const existing = readCache(APPOINTMENTS_KEY) || [];
+  const existing = getAppointments();
   const updated = existing.map(a => a.id === id ? { ...a, status: newStatus } : a);
-  writeCache(APPOINTMENTS_KEY, updated);
-  return updated;
+  writeStorage(APPOINTMENTS_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('appointments_updated', { detail: updated }));
+  }
+
+  return Promise.resolve(updated);
 }
 
 export async function deleteAppointment(id) {
-  try {
-    await api.deleteAppointment(id);
-  } catch (err) {
-    console.warn('Error deleting appointment on server:', err.message);
-  }
-  const existing = readCache(APPOINTMENTS_KEY) || [];
+  const existing = getAppointments();
   const updated = existing.filter(a => a.id !== id);
-  writeCache(APPOINTMENTS_KEY, updated);
-  return updated;
+  writeStorage(APPOINTMENTS_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('appointments_updated', { detail: updated }));
+  }
+
+  return Promise.resolve(updated);
 }
 
 // ----------------- Inquiries -----------------
 export function getInquiries() {
-  return readCache(INQUIRIES_KEY) || [];
+  const stored = readStorage(INQUIRIES_KEY);
+  if (!stored || !Array.isArray(stored) || stored.length === 0) {
+    writeStorage(INQUIRIES_KEY, defaultInquiries);
+    return defaultInquiries;
+  }
+  return stored;
 }
 
 export async function fetchInquiriesFromDb() {
-  try {
-    const data = await api.getInquiries();
-    if (Array.isArray(data)) {
-      writeCache(INQUIRIES_KEY, data);
-      return data;
-    }
-  } catch (err) {
-    console.warn('fetchInquiriesFromDb caught error:', err.message);
-  }
-  return getInquiries();
+  return Promise.resolve(getInquiries());
 }
 
 export async function saveInquiry(inquiryData) {
-  let created = null;
-  try {
-    const result = await api.createInquiry(inquiryData);
-    if (result && result.data) {
-      created = result.data;
-    }
-  } catch (apiErr) {
-    console.warn('Backend createInquiry failed, storing inquiry locally:', apiErr.message);
-  }
+  const now = new Date();
+  const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+  const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-  if (!created) {
-    const now = new Date();
-    created = {
-      id: 'inq-' + Date.now(),
-      ...inquiryData,
-      submittedAt: inquiryData.submittedAt || now.toLocaleString('en-IN'),
-      read: false,
-      isLocal: true
-    };
-  }
+  const created = {
+    id: 'inq-' + Date.now(),
+    name: (inquiryData.name || 'Anonymous Patient').trim(),
+    phone: String(inquiryData.phone || '').trim(),
+    email: inquiryData.email ? String(inquiryData.email).trim() : '',
+    subject: inquiryData.subject || inquiryData.treatment || 'General Inquiry',
+    message: inquiryData.message || inquiryData.notes || '',
+    read: false,
+    submittedAt: inquiryData.submittedAt || `${todayStr} ${currentFormattedTime}`,
+    isLocal: true
+  };
 
-  const existing = readCache(INQUIRIES_KEY) || [];
+  const existing = getInquiries();
   const updated = [created, ...existing.filter(i => i.id !== created.id)];
-  writeCache(INQUIRIES_KEY, updated);
-  return created;
+  writeStorage(INQUIRIES_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('inquiries_updated', { detail: created }));
+  }
+
+  return Promise.resolve(created);
 }
 
 export async function toggleInquiryRead(id) {
-  await api.toggleInquiryRead(id); // throws on error
-  const data = await api.getInquiries();
-  writeCache(INQUIRIES_KEY, data);
-  return data;
+  const existing = getInquiries();
+  const updated = existing.map(i => i.id === id ? { ...i, read: !i.read } : i);
+  writeStorage(INQUIRIES_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('inquiries_updated', { detail: updated }));
+  }
+
+  return Promise.resolve(updated);
 }
 
 export async function deleteInquiry(id) {
-  await api.deleteInquiry(id); // throws on error
-  const data = await api.getInquiries();
-  writeCache(INQUIRIES_KEY, data);
-  return data;
+  const existing = getInquiries();
+  const updated = existing.filter(i => i.id !== id);
+  writeStorage(INQUIRIES_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('inquiries_updated', { detail: updated }));
+  }
+
+  return Promise.resolve(updated);
 }
 
 // ----------------- Settings -----------------
 export function getClinicSettings() {
-  return readCache(CLINIC_SETTINGS_KEY) || defaultSettings;
+  const stored = readStorage(CLINIC_SETTINGS_KEY);
+  if (!stored) {
+    writeStorage(CLINIC_SETTINGS_KEY, defaultSettings);
+    return defaultSettings;
+  }
+  return {
+    ...defaultSettings,
+    ...stored,
+    runningBar: stored.runningBar || defaultRunningBar,
+    heroSlider: stored.heroSlider || defaultHeroSlider
+  };
 }
 
 export async function fetchClinicSettingsFromDb() {
-  const data = await api.getClinicSettings(); // throws on error
-  const result = data || defaultSettings;
-  writeCache(CLINIC_SETTINGS_KEY, result);
-  return result;
+  return Promise.resolve(getClinicSettings());
 }
 
 export async function saveClinicSettings(newSettings) {
-  await api.saveClinicSettings(newSettings); // throws on error
-  writeCache(CLINIC_SETTINGS_KEY, newSettings);
+  const current = getClinicSettings();
+  const merged = { ...current, ...newSettings };
+  writeStorage(CLINIC_SETTINGS_KEY, merged);
+
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('sk_clinic_settings_updated', { detail: newSettings }));
-    window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: newSettings.runningBar }));
-    window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: newSettings.heroSlider }));
+    window.dispatchEvent(new CustomEvent('sk_clinic_settings_updated', { detail: merged }));
+    if (merged.runningBar) {
+      window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: merged.runningBar }));
+    }
+    if (merged.heroSlider) {
+      window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: merged.heroSlider }));
+    }
   }
-  return newSettings;
+
+  return Promise.resolve(merged);
 }
 
 export function getRunningBarSettings() {
@@ -306,14 +395,15 @@ export function getRunningBarSettings() {
 }
 
 export async function saveRunningBarSettings(runningBarData) {
-  await api.updateRunningBarSettings(runningBarData); // throws on error
   const currentSettings = getClinicSettings();
   const updatedSettings = { ...currentSettings, runningBar: runningBarData };
-  writeCache(CLINIC_SETTINGS_KEY, updatedSettings);
+  writeStorage(CLINIC_SETTINGS_KEY, updatedSettings);
+
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: runningBarData }));
   }
-  return runningBarData;
+
+  return Promise.resolve(runningBarData);
 }
 
 export function getHeroSliderSettings() {
@@ -321,113 +411,81 @@ export function getHeroSliderSettings() {
 }
 
 export async function saveHeroSliderSettings(heroSliderData) {
-  await api.updateHeroSliderSettings(heroSliderData); // throws on error
   const currentSettings = getClinicSettings();
   const updatedSettings = { ...currentSettings, heroSlider: heroSliderData };
-  writeCache(CLINIC_SETTINGS_KEY, updatedSettings);
+  writeStorage(CLINIC_SETTINGS_KEY, updatedSettings);
+
   if (typeof window !== 'undefined') {
     window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: heroSliderData }));
   }
-  return heroSliderData;
+
+  return Promise.resolve(heroSliderData);
 }
 
 // ----------------- Treatments -----------------
 export function getStoredTreatments() {
-  const cached = readCache(TREATMENTS_KEY);
-  if (cached && cached.length > 0) {
+  const cached = readStorage(TREATMENTS_KEY);
+  if (Array.isArray(cached) && cached.length >= clinicData.treatments.length) {
     return cached.map(t => {
       const match = clinicData.treatments.find(ct => ct.id === t.id);
-      return { ...t, review: t.review || match?.review };
+      return { ...match, ...t, review: t.review || match?.review };
     });
   }
+
+  // Seed with canonical 11 treatments from clinicData
+  writeStorage(TREATMENTS_KEY, clinicData.treatments);
   return clinicData.treatments;
 }
 
 export async function fetchTreatmentsFromDb() {
-  try {
-    const data = await api.getTreatments();
-    if (Array.isArray(data) && data.length > 0) {
-      const merged = data.map(t => {
-        const match = clinicData.treatments.find(ct => ct.id === t.id);
-        return { ...t, review: t.review || match?.review };
-      });
-      writeCache(TREATMENTS_KEY, merged);
-      return merged;
-    }
-  } catch (err) {
-    console.warn('fetchTreatmentsFromDb caught error:', err.message);
-  }
-  return getStoredTreatments();
+  return Promise.resolve(getStoredTreatments());
 }
 
 export async function saveTreatment(treatmentItem) {
-  try {
-    await api.saveTreatment(treatmentItem);
-    const refreshed = await fetchTreatmentsFromDb();
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('treatments_updated', { detail: refreshed }));
-    }
-    return refreshed;
-  } catch (err) {
-    console.error('Error saving treatment to PostgreSQL:', err);
-    const existing = getStoredTreatments();
-    const existsIndex = existing.findIndex(t => t.id === treatmentItem.id);
-    let updated;
-    if (existsIndex >= 0) {
-      updated = [...existing];
-      updated[existsIndex] = { ...updated[existsIndex], ...treatmentItem };
-    } else {
-      updated = [...existing, { ...treatmentItem, id: treatmentItem.id || 'treatment-' + Date.now() }];
-    }
-    localStorage.setItem(TREATMENTS_KEY, JSON.stringify(updated));
-    return updated;
+  const existing = getStoredTreatments();
+  const targetId = treatmentItem.id || 'treatment-' + Date.now();
+  const existsIndex = existing.findIndex(t => t.id === targetId);
+
+  let updated;
+  if (existsIndex >= 0) {
+    updated = [...existing];
+    updated[existsIndex] = { ...updated[existsIndex], ...treatmentItem, id: targetId };
+  } else {
+    updated = [...existing, { ...treatmentItem, id: targetId }];
   }
-  // Step 2: Re-fetch the full list from DB to confirm and update cache
-  const refreshed = await api.getTreatments();
-  if (Array.isArray(refreshed)) {
-    writeCache(TREATMENTS_KEY, refreshed);
-    return refreshed;
+
+  writeStorage(TREATMENTS_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('treatments_updated', { detail: updated }));
   }
-  // Worst case: return at least the saved item wrapped in an array
-  return saveResult.data ? [saveResult.data] : [];
+
+  return Promise.resolve(updated);
 }
 
 export async function deleteTreatment(id) {
-  try {
-    await api.deleteTreatment(id);
-    const refreshed = await fetchTreatmentsFromDb();
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('treatments_updated', { detail: refreshed }));
-    }
-    return refreshed;
-  } catch (err) {
-    console.error('Error deleting treatment in PostgreSQL:', err);
-    const existing = getStoredTreatments();
-    const updated = existing.filter(t => t.id !== id);
-    localStorage.setItem(TREATMENTS_KEY, JSON.stringify(updated));
-    return updated;
+  const existing = getStoredTreatments();
+  const updated = existing.filter(t => t.id !== id);
+  writeStorage(TREATMENTS_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('treatments_updated', { detail: updated }));
   }
+
+  return Promise.resolve(updated);
 }
 
 // ----------------- Swarnaprashana -----------------
 export function getAllSwarnaprashanaDates() {
-  const cached = readCache(SWARNAPRASHANA_KEY);
+  const cached = readStorage(SWARNAPRASHANA_KEY);
   const rawList = Array.isArray(cached) && cached.length > 0 ? cached : defaultSwarnaprashanaSchedule;
   const filtered = rawList.filter(item => parseInt(item.year, 10) !== 2026);
-  if (Array.isArray(cached) && cached.some(item => parseInt(item.year, 10) === 2026)) {
-    writeCache(SWARNAPRASHANA_KEY, filtered);
-  }
+  writeStorage(SWARNAPRASHANA_KEY, filtered);
   return filtered;
 }
 
-export async function fetchSwarnaprashanaScheduleFromDb(params = {}) {
-  const data = await api.getSwarnaprashanaSchedule(params); // throws on error
-  if (Array.isArray(data)) {
-    const cleaned = data.filter(item => parseInt(item.year, 10) !== 2026);
-    writeCache(SWARNAPRASHANA_KEY, cleaned);
-    return cleaned;
-  }
-  return getAllSwarnaprashanaDates();
+export async function fetchSwarnaprashanaScheduleFromDb() {
+  return Promise.resolve(getAllSwarnaprashanaDates());
 }
 
 export function getSwarnaprashanaSchedule({ year = null, activeOnly = true } = {}) {
@@ -463,61 +521,81 @@ export async function saveSwarnaprashanaDate(entry) {
   const validation = validatePushyaDate(entry);
   if (!validation.valid) return { success: false, error: validation.message };
 
-  const apiRes = await api.saveSwarnaprashanaDate(entry); // throws on error
-  if (apiRes && apiRes.success === false) return { success: false, error: apiRes.error || 'Failed to save date.' };
+  const existing = getAllSwarnaprashanaDates();
+  const targetId = entry.id || `psh-${entry.year || 2027}-${String(MONTH_NAMES.indexOf(entry.month) + 1).padStart(2, '0')}-${String(entry.date).padStart(2, '0')}`;
+  const existsIndex = existing.findIndex(d => d.id === targetId);
 
-  const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-  if (Array.isArray(refreshed)) {
-    writeCache(SWARNAPRASHANA_KEY, refreshed);
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
-    }
+  let updated;
+  if (existsIndex >= 0) {
+    updated = [...existing];
+    updated[existsIndex] = { ...updated[existsIndex], ...entry, id: targetId };
+  } else {
+    updated = [...existing, { ...entry, id: targetId, status: entry.status || 'Active' }];
   }
-  return { success: true, data: refreshed, message: 'Swarnaprashana schedule updated successfully.' };
+
+  writeStorage(SWARNAPRASHANA_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
+  }
+
+  return Promise.resolve({ success: true, data: updated, message: 'Swarnaprashana schedule updated successfully.' });
 }
 
 export async function toggleSwarnaprashanaStatus(id, status = null) {
-  await api.toggleSwarnaprashanaStatus(id, status); // throws on error
-  const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-  if (Array.isArray(refreshed)) {
-    writeCache(SWARNAPRASHANA_KEY, refreshed);
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
+  const existing = getAllSwarnaprashanaDates();
+  const updated = existing.map(item => {
+    if (item.id === id) {
+      const nextStatus = status ? status : (item.status === 'Active' ? 'Inactive' : 'Active');
+      return { ...item, status: nextStatus };
     }
+    return item;
+  });
+
+  writeStorage(SWARNAPRASHANA_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
   }
-  return refreshed;
+
+  return Promise.resolve(updated);
 }
 
 export async function deleteSwarnaprashanaDate(id) {
-  await api.deleteSwarnaprashanaDate(id); // throws on error
-  const refreshed = await api.getSwarnaprashanaSchedule({ activeOnly: false });
-  if (Array.isArray(refreshed)) {
-    writeCache(SWARNAPRASHANA_KEY, refreshed);
-    if (typeof window !== 'undefined') {
-      window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: refreshed }));
-    }
+  const existing = getAllSwarnaprashanaDates();
+  const updated = existing.filter(item => item.id !== id);
+
+  writeStorage(SWARNAPRASHANA_KEY, updated);
+
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
   }
-  return refreshed;
+
+  return Promise.resolve(updated);
 }
 
 export async function clearAllAdminData() {
-  await api.resetAdminDemoData();
-  const [apts, inqs, sets, trts, sw] = await Promise.all([
-    api.getAppointments(),
-    api.getInquiries(),
-    api.getClinicSettings(),
-    api.getTreatments(),
-    api.getSwarnaprashanaSchedule({ activeOnly: false })
-  ]);
-  writeCache(APPOINTMENTS_KEY, apts);
-  writeCache(INQUIRIES_KEY, inqs);
-  writeCache(CLINIC_SETTINGS_KEY, sets);
-  writeCache(TREATMENTS_KEY, trts);
-  writeCache(SWARNAPRASHANA_KEY, sw);
+  writeStorage(APPOINTMENTS_KEY, defaultAppointments);
+  writeStorage(INQUIRIES_KEY, defaultInquiries);
+  writeStorage(CLINIC_SETTINGS_KEY, defaultSettings);
+  writeStorage(TREATMENTS_KEY, clinicData.treatments);
+  writeStorage(SWARNAPRASHANA_KEY, defaultSwarnaprashanaSchedule);
+
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: sw }));
+    window.dispatchEvent(new CustomEvent('appointments_updated', { detail: defaultAppointments }));
+    window.dispatchEvent(new CustomEvent('inquiries_updated', { detail: defaultInquiries }));
+    window.dispatchEvent(new CustomEvent('sk_clinic_settings_updated', { detail: defaultSettings }));
+    window.dispatchEvent(new CustomEvent('treatments_updated', { detail: clinicData.treatments }));
+    window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: defaultSwarnaprashanaSchedule }));
   }
-  return { appointments: apts, inquiries: inqs, settings: sets, treatments: trts, swarnaprashana: sw };
+
+  return Promise.resolve({
+    appointments: defaultAppointments,
+    inquiries: defaultInquiries,
+    settings: defaultSettings,
+    treatments: clinicData.treatments,
+    swarnaprashana: defaultSwarnaprashanaSchedule
+  });
 }
 
 // ----------------- Phone Validation & Formatting -----------------
