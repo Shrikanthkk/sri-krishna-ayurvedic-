@@ -10,9 +10,9 @@
  */
 export async function optimizeImageForUpload(file, options = {}) {
   const {
-    maxWidth = 1440,
-    maxHeight = 1080,
-    quality = 0.84
+    maxWidth = 960,
+    maxHeight = 720,
+    quality = 0.78
   } = options;
 
   return new Promise((resolve, reject) => {
@@ -53,10 +53,19 @@ export async function optimizeImageForUpload(file, options = {}) {
         ctx.imageSmoothingQuality = 'high';
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Determine optimal format
-        const outputMime = file.type === 'image/png' && file.size < 400 * 1024
-          ? 'image/png'
-          : 'image/jpeg';
+        // Determine optimal format - prioritize WebP for ultra-compact size
+        let outputMime = 'image/jpeg';
+        let extension = '.jpg';
+        try {
+          const testWebp = canvas.toDataURL('image/webp', 0.5);
+          if (testWebp && testWebp.startsWith('data:image/webp')) {
+            outputMime = 'image/webp';
+            extension = '.webp';
+          }
+        } catch {
+          outputMime = 'image/jpeg';
+          extension = '.jpg';
+        }
 
         const dataUrl = canvas.toDataURL(outputMime, quality);
 
@@ -72,7 +81,7 @@ export async function optimizeImageForUpload(file, options = {}) {
               });
             }
 
-            const cleanFileName = file.name.replace(/\.[^/.]+$/, outputMime === 'image/jpeg' ? '.jpg' : '.png');
+            const cleanFileName = file.name.replace(/\.[^/.]+$/, extension);
             const optimizedFile = new File([blob], cleanFileName, {
               type: outputMime,
               lastModified: Date.now()

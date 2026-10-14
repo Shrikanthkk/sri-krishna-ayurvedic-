@@ -183,16 +183,21 @@ async function safeFetchWithFallback(endpoint, options = {}) {
     if (res.ok) {
       return await res.json().catch(() => null);
     }
-  } catch {}
+  } catch (err) {
+    console.warn('[API Fetch Primary Error]:', url, err?.message);
+  }
 
   // If local route failed and wasn't already calling VERCEL_API_BASE, gracefully fall back to VERCEL_API_BASE
   if (!url.startsWith(VERCEL_API_BASE)) {
     try {
-      const res = await fetch(`${VERCEL_API_BASE}${endpoint}`, options);
+      const fallbackUrl = `${VERCEL_API_BASE}${endpoint}`;
+      const res = await fetch(fallbackUrl, options);
       if (res.ok) {
         return await res.json().catch(() => null);
       }
-    } catch {}
+    } catch (err) {
+      console.warn('[API Fetch Fallback Error]:', `${VERCEL_API_BASE}${endpoint}`, err?.message);
+    }
   }
 
   return null;
@@ -207,8 +212,7 @@ async function silentApiPost(endpoint, body) {
   return await safeFetchWithFallback(endpoint, {
     method: 'POST',
     headers: getAuthHeaders(),
-    body: JSON.stringify(body),
-    keepalive: true
+    body: JSON.stringify(body)
   });
 }
 
@@ -216,8 +220,7 @@ async function silentApiPatch(endpoint, body) {
   return await safeFetchWithFallback(endpoint, {
     method: 'PATCH',
     headers: getAuthHeaders(),
-    body: JSON.stringify(body),
-    keepalive: true
+    body: JSON.stringify(body)
   });
 }
 
@@ -225,16 +228,14 @@ async function silentApiPut(endpoint, body) {
   return await safeFetchWithFallback(endpoint, {
     method: 'PUT',
     headers: getAuthHeaders(),
-    body: JSON.stringify(body),
-    keepalive: true
+    body: JSON.stringify(body)
   });
 }
 
 async function silentApiDelete(endpoint) {
   return await safeFetchWithFallback(endpoint, {
     method: 'DELETE',
-    headers: getAuthHeaders(),
-    keepalive: true
+    headers: getAuthHeaders()
   });
 }
 
@@ -285,8 +286,7 @@ export async function saveAppointment(appointmentData) {
     const res = await safeFetchWithFallback('/appointments', {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify(payload),
-      keepalive: true
+      body: JSON.stringify(payload)
     });
     if (res?.success && res.data) {
       serverData = res.data;
@@ -322,8 +322,7 @@ export async function updateAppointmentStatus(id, newStatus) {
   await safeFetchWithFallback(`/appointments/${id}/status`, {
     method: 'PATCH',
     headers: getAuthHeaders(),
-    body: JSON.stringify({ status: newStatus }),
-    keepalive: true
+    body: JSON.stringify({ status: newStatus })
   }).catch(() => {});
 
   return updated;
@@ -341,8 +340,7 @@ export async function deleteAppointment(id) {
   // Delete directly in PostgreSQL
   await safeFetchWithFallback(`/appointments/${id}`, {
     method: 'DELETE',
-    headers: getAuthHeaders(),
-    keepalive: true
+    headers: getAuthHeaders()
   }).catch(() => {});
 
   return updated;
@@ -391,8 +389,7 @@ export async function saveInquiry(inquiryData) {
     const res = await safeFetchWithFallback('/inquiries', {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify(payload),
-      keepalive: true
+      body: JSON.stringify(payload)
     });
     if (res?.success && res.data) {
       serverData = res.data;
@@ -426,8 +423,7 @@ export async function toggleInquiryRead(id) {
   // Update directly in PostgreSQL
   await safeFetchWithFallback(`/inquiries/${id}/read`, {
     method: 'PATCH',
-    headers: getAuthHeaders(),
-    keepalive: true
+    headers: getAuthHeaders()
   }).catch(() => {});
 
   return updated;
@@ -445,8 +441,7 @@ export async function deleteInquiry(id) {
   // Delete directly in PostgreSQL
   await safeFetchWithFallback(`/inquiries/${id}`, {
     method: 'DELETE',
-    headers: getAuthHeaders(),
-    keepalive: true
+    headers: getAuthHeaders()
   }).catch(() => {});
 
   return updated;
@@ -500,8 +495,7 @@ export async function saveClinicSettings(newSettings) {
     await safeFetchWithFallback('/settings', {
       method: 'PUT',
       headers: getAuthHeaders(),
-      body: JSON.stringify(merged),
-      keepalive: true
+      body: JSON.stringify(merged)
     });
   } catch (err) {
     console.warn('Database saveClinicSettings error:', err);
@@ -527,8 +521,7 @@ export async function saveRunningBarSettings(runningBarData) {
     await safeFetchWithFallback('/settings/running-bar', {
       method: 'PUT',
       headers: getAuthHeaders(),
-      body: JSON.stringify(runningBarData),
-      keepalive: true
+      body: JSON.stringify(runningBarData)
     });
   } catch (err) {
     console.warn('Database saveRunningBarSettings error:', err);
@@ -554,8 +547,7 @@ export async function saveHeroSliderSettings(heroSliderData) {
     await safeFetchWithFallback('/settings/hero-slider', {
       method: 'PUT',
       headers: getAuthHeaders(),
-      body: JSON.stringify(heroSliderData),
-      keepalive: true
+      body: JSON.stringify(heroSliderData)
     });
   } catch (err) {
     console.warn('Database saveHeroSliderSettings error:', err);
@@ -636,8 +628,7 @@ export async function saveTreatment(treatmentItem) {
     const res = await safeFetchWithFallback('/treatments', {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify(payload),
-      keepalive: true
+      body: JSON.stringify(payload)
     });
     if (res?.success && res.data) {
       const serverUpdated = updated.map(t => t.id === targetId ? { ...t, ...res.data, image: res.data.image || payload.image } : t);
@@ -647,8 +638,12 @@ export async function saveTreatment(treatmentItem) {
       }
       return serverUpdated;
     }
+    if (res && res.success === false) {
+      throw new Error(res.error || 'Failed to save treatment to PostgreSQL');
+    }
   } catch (err) {
-    console.warn('Database saveTreatment error:', err);
+    console.error('Database saveTreatment error:', err);
+    throw err;
   }
 
   return updated;
@@ -666,8 +661,7 @@ export async function deleteTreatment(id) {
   try {
     await safeFetchWithFallback(`/treatments/${id}`, {
       method: 'DELETE',
-      headers: getAuthHeaders(),
-      keepalive: true
+      headers: getAuthHeaders()
     });
   } catch (err) {
     console.warn('Database deleteTreatment error:', err);
@@ -754,8 +748,7 @@ export async function saveSwarnaprashanaDate(entry) {
     await safeFetchWithFallback('/swarnaprashana', {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify(payload),
-      keepalive: true
+      body: JSON.stringify(payload)
     });
   } catch (err) {
     console.warn('Database saveSwarnaprashanaDate error:', err);
@@ -785,8 +778,7 @@ export async function toggleSwarnaprashanaStatus(id, status = null) {
     await safeFetchWithFallback(`/swarnaprashana/${id}/status`, {
       method: 'PATCH',
       headers: getAuthHeaders(),
-      body: JSON.stringify({ status: nextStatus }),
-      keepalive: true
+      body: JSON.stringify({ status: nextStatus })
     });
   } catch (err) {
     console.warn('Database toggleSwarnaprashanaStatus error:', err);
@@ -808,8 +800,7 @@ export async function deleteSwarnaprashanaDate(id) {
   try {
     await safeFetchWithFallback(`/swarnaprashana/${id}`, {
       method: 'DELETE',
-      headers: getAuthHeaders(),
-      keepalive: true
+      headers: getAuthHeaders()
     });
   } catch (err) {
     console.warn('Database deleteSwarnaprashanaDate error:', err);
@@ -837,8 +828,7 @@ export async function clearAllAdminData() {
     await safeFetchWithFallback('/admin/reset-demo', {
       method: 'POST',
       headers: getAuthHeaders(),
-      body: JSON.stringify({}),
-      keepalive: true
+      body: JSON.stringify({})
     });
   } catch (err) {
     console.warn('Database clearAllAdminData error:', err);

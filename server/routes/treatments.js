@@ -228,9 +228,8 @@ router.post('/', async (req, res) => {
     }
 
     const id = item.id || 'treatment-' + Date.now();
-    const countRes = await query('SELECT COUNT(*) FROM treatments');
-    const total = parseInt(countRes.rows[0].count, 10);
-    const number = item.number || String(total + 1).padStart(2, '0');
+    const number = item.number ? String(item.number).padStart(2, '0') : null;
+    const image = (item.image && typeof item.image === 'string' && item.image.trim()) ? item.image.trim() : null;
     const benefitsJson = JSON.stringify(
       Array.isArray(item.benefits) && item.benefits.length > 0
         ? item.benefits
@@ -239,21 +238,21 @@ router.post('/', async (req, res) => {
 
     const result = await query(
       `INSERT INTO treatments (id, number, title, subtitle, description, benefits, duration, image, link, is_active)
-        VALUES ($1, $2, $3, $4, $5, $6::jsonb, $7, $8, $9, true)
+        VALUES ($1, COALESCE($2, LPAD((SELECT COUNT(*) + 1 FROM treatments)::text, 2, '0')), $3, $4, $5, $6::jsonb, $7, COALESCE($8, '/images/hero_adobe_5.jpg'), $9, true)
         ON CONFLICT (id) DO UPDATE SET
-          number    = EXCLUDED.number,
-          title     = EXCLUDED.title,
-          subtitle  = EXCLUDED.subtitle,
+          number      = COALESCE(NULLIF(EXCLUDED.number, ''), treatments.number),
+          title       = EXCLUDED.title,
+          subtitle    = EXCLUDED.subtitle,
           description = EXCLUDED.description,
-          benefits  = EXCLUDED.benefits,
-          duration  = EXCLUDED.duration,
-          image     = CASE 
+          benefits    = EXCLUDED.benefits,
+          duration    = EXCLUDED.duration,
+          image       = CASE 
             WHEN EXCLUDED.image IS NOT NULL AND EXCLUDED.image != '' THEN EXCLUDED.image 
             ELSE treatments.image 
           END,
-          link      = COALESCE(EXCLUDED.link, treatments.link),
-          is_active = true,
-          updated_at = CURRENT_TIMESTAMP
+          link        = COALESCE(EXCLUDED.link, treatments.link),
+          is_active   = true,
+          updated_at  = CURRENT_TIMESTAMP
         RETURNING *`,
       [
         id,
@@ -263,7 +262,7 @@ router.post('/', async (req, res) => {
         item.description || 'Custom treatment protocol prepared by Dr. Anand Krishna.',
         benefitsJson,
         item.duration || '45 Minutes',
-        item.image || '/images/hero_adobe_5.jpg',
+        image,
         item.link || '/treatments/' + id
       ]
     );
