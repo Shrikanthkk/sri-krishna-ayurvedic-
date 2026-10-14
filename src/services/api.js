@@ -83,12 +83,29 @@ export const api = {
       }
 
       // In background, silently obtain server JWT from PostgreSQL
-      const loginUrl = getApiUrl('/auth/login');
-      fetch(loginUrl, {
+      const primaryUrl = getApiUrl('/auth/login');
+      const authBody = JSON.stringify({ username: loginUser, pin: loginSecret });
+      fetch(primaryUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: loginUser, pin: loginSecret })
-      }).then(res => res.json()).then(data => {
+        body: authBody
+      }).then(async res => {
+        const cType = res.headers.get('content-type') || '';
+        if (res.ok && cType.includes('application/json')) return res.json();
+        throw new Error('Not JSON');
+      }).catch(async () => {
+        if (!primaryUrl.startsWith(VERCEL_API_BASE)) {
+          const fb = await fetch(`${VERCEL_API_BASE}/auth/login`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: authBody
+          }).catch(() => null);
+          if (fb?.ok && (fb.headers.get('content-type') || '').includes('application/json')) {
+            return fb.json().catch(() => null);
+          }
+        }
+        return null;
+      }).then(data => {
         if (data?.token && typeof localStorage !== 'undefined') {
           localStorage.setItem('sk_admin_jwt_token', data.token);
           if (data.user) localStorage.setItem('sk_admin_user', JSON.stringify(data.user));
@@ -100,21 +117,39 @@ export const api = {
 
     // 2. Database authentication for custom accounts in users table
     try {
-      const loginUrl = getApiUrl('/auth/login');
-      const res = await fetch(loginUrl, {
+      const primaryUrl = getApiUrl('/auth/login');
+      const authBody = JSON.stringify({ username: loginUser, password: loginSecret });
+      let res = await fetch(primaryUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ username: loginUser, password: loginSecret })
-      });
-      const data = await res.json().catch(() => ({}));
-      if (res.ok && data.success && data.token) {
+        body: authBody
+      }).catch(() => null);
+
+      let data = null;
+      if (res && res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
+        data = await res.json().catch(() => null);
+      }
+
+      if ((!data || !data.token) && !primaryUrl.startsWith(VERCEL_API_BASE)) {
+        const fbRes = await fetch(`${VERCEL_API_BASE}/auth/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: authBody
+        }).catch(() => null);
+        if (fbRes && fbRes.ok && (fbRes.headers.get('content-type') || '').includes('application/json')) {
+          data = await fbRes.json().catch(() => null);
+          res = fbRes;
+        }
+      }
+
+      if (data && data.success && data.token) {
         if (typeof localStorage !== 'undefined') {
           localStorage.setItem('sk_admin_jwt_token', data.token);
           localStorage.setItem('sk_admin_user', JSON.stringify(data.user));
         }
         return data;
       }
-      return Promise.reject(new Error(data.error || 'Invalid credentials. Please enter a valid username and PIN / password.'));
+      return Promise.reject(new Error(data?.error || 'Invalid credentials. Please enter a valid username and PIN / password.'));
     } catch {
       return Promise.reject(new Error('Invalid credentials. Please enter a valid username and PIN / password.'));
     }
@@ -236,28 +271,28 @@ export const api = {
         method: 'POST',
         body: formData
       });
-      if (res.ok) {
+      if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
         const json = await res.json().catch(() => null);
         if (json?.success && json?.url) {
           finalUrl = json.url;
         }
       }
-    } catch {
-      // Fallback to Vercel production bridge if primary failed
-      if (!primaryUrl.startsWith(VERCEL_API_BASE)) {
-        try {
-          const vRes = await fetch(`${VERCEL_API_BASE}/settings/hero-slider/upload`, {
-            method: 'POST',
-            body: formData
-          });
-          if (vRes.ok) {
-            const vJson = await vRes.json().catch(() => null);
-            if (vJson?.success && vJson?.url) {
-              finalUrl = vJson.url;
-            }
+    } catch {}
+
+    // Fallback to Vercel production bridge if primary did not return valid URL
+    if (!finalUrl && !primaryUrl.startsWith(VERCEL_API_BASE)) {
+      try {
+        const vRes = await fetch(`${VERCEL_API_BASE}/settings/hero-slider/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        if (vRes.ok && (vRes.headers.get('content-type') || '').includes('application/json')) {
+          const vJson = await vRes.json().catch(() => null);
+          if (vJson?.success && vJson?.url) {
+            finalUrl = vJson.url;
           }
-        } catch {}
-      }
+        }
+      } catch {}
     }
 
     if (!finalUrl) {
@@ -310,27 +345,28 @@ export const api = {
         method: 'POST',
         body: formData
       });
-      if (res.ok) {
+      if (res.ok && (res.headers.get('content-type') || '').includes('application/json')) {
         const json = await res.json().catch(() => null);
         if (json?.success && json?.url) {
           finalUrl = json.url;
         }
       }
-    } catch {
-      if (!primaryUrl.startsWith(VERCEL_API_BASE)) {
-        try {
-          const vRes = await fetch(`${VERCEL_API_BASE}/treatments/upload`, {
-            method: 'POST',
-            body: formData
-          });
-          if (vRes.ok) {
-            const vJson = await vRes.json().catch(() => null);
-            if (vJson?.success && vJson?.url) {
-              finalUrl = vJson.url;
-            }
+    } catch {}
+
+    // Fallback to Vercel production bridge if primary did not return valid URL
+    if (!finalUrl && !primaryUrl.startsWith(VERCEL_API_BASE)) {
+      try {
+        const vRes = await fetch(`${VERCEL_API_BASE}/treatments/upload`, {
+          method: 'POST',
+          body: formData
+        });
+        if (vRes.ok && (vRes.headers.get('content-type') || '').includes('application/json')) {
+          const vJson = await vRes.json().catch(() => null);
+          if (vJson?.success && vJson?.url) {
+            finalUrl = vJson.url;
           }
-        } catch {}
-      }
+        }
+      } catch {}
     }
 
     if (!finalUrl) {

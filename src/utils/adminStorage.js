@@ -181,19 +181,27 @@ async function safeFetchWithFallback(endpoint, options = {}) {
   try {
     const res = await fetch(url, options);
     if (res.ok) {
-      return await res.json().catch(() => null);
+      const contentType = res.headers.get('content-type') || '';
+      if (contentType.includes('application/json')) {
+        const json = await res.json().catch(() => null);
+        if (json !== null) return json;
+      }
     }
   } catch (err) {
     console.warn('[API Fetch Primary Error]:', url, err?.message);
   }
 
-  // If local route failed and wasn't already calling VERCEL_API_BASE, gracefully fall back to VERCEL_API_BASE
+  // If primary route failed or returned non-JSON, gracefully fall back to VERCEL_API_BASE
   if (!url.startsWith(VERCEL_API_BASE)) {
     try {
       const fallbackUrl = `${VERCEL_API_BASE}${endpoint}`;
       const res = await fetch(fallbackUrl, options);
       if (res.ok) {
-        return await res.json().catch(() => null);
+        const contentType = res.headers.get('content-type') || '';
+        if (contentType.includes('application/json')) {
+          const json = await res.json().catch(() => null);
+          if (json !== null) return json;
+        }
       }
     } catch (err) {
       console.warn('[API Fetch Fallback Error]:', `${VERCEL_API_BASE}${endpoint}`, err?.message);
