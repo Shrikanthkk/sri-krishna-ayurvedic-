@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, PhoneCall, CheckCircle2, Sparkles, ShieldCheck, HeartPulse, Droplets, SunMedium } from 'lucide-react';
@@ -6,9 +6,29 @@ import PageHero from '../../components/PageHero';
 import Breadcrumb from '../../components/Breadcrumb';
 import RelatedTreatments from '../../components/RelatedTreatments';
 import { clinicData } from '../../data/clinicData';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../../utils/adminStorage';
 
 export default function SkinProblems({ onOpenBooking }) {
+  const [treatment, setTreatment] = useState(() => getStoredTreatments().find(t => t.id === 'skin-problems'));
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
+
+  useEffect(() => {
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data)) {
+        const found = data.find(t => t.id === 'skin-problems');
+        if (found) setTreatment(found);
+      }
+    }).catch(() => {});
+
+    const handleUpdate = (e) => {
+      if (Array.isArray(e.detail)) {
+        const found = e.detail.find(t => t.id === 'skin-problems');
+        if (found) setTreatment(found);
+      }
+    };
+    window.addEventListener('treatments_updated', handleUpdate);
+    return () => window.removeEventListener('treatments_updated', handleUpdate);
+  }, []);
 
   const concerns = [
     "Acne, pimples & chronic breakouts",
@@ -56,7 +76,7 @@ export default function SkinProblems({ onOpenBooking }) {
         badge="DERMATOLOGICAL AYURVEDA"
         title="Skin Problems – Ayurvedic Skin Care"
         subtitle="Personalized Ayurvedic skin care addressing the root causes of skin concerns through blood purification, Dosha balance, and herbal therapy."
-        bgImage="/images/skin_problems.png"
+        bgImage={treatment?.image || "/images/skin_problems.png"}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

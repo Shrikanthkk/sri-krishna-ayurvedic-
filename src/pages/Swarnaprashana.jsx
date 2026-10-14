@@ -6,7 +6,7 @@ import PageHero from '../components/PageHero';
 import Breadcrumb from '../components/Breadcrumb';
 import RelatedTreatments from '../components/RelatedTreatments';
 import { clinicData } from '../data/clinicData';
-import { getSwarnaprashanaSchedule, getAvailableScheduleYears, fetchSwarnaprashanaScheduleFromDb } from '../utils/adminStorage';
+import { getSwarnaprashanaSchedule, getAvailableScheduleYears, fetchSwarnaprashanaScheduleFromDb, getStoredTreatments, fetchTreatmentsFromDb } from '../utils/adminStorage';
 import swarnaImg1 from '../assets/swarnaprashana_1.png';
 import swarnaImg2 from '../assets/swarnaprashana_2.png';
 import swarnaImg3 from '../assets/swarnaprashana_3.png';
@@ -14,6 +14,7 @@ import swarnaImg3 from '../assets/swarnaprashana_3.png';
 export default function Swarnaprashana({ onOpenBooking }) {
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
 
+  const [treatment, setTreatment] = useState(() => getStoredTreatments().find(t => t.id === 'swarnaprashana'));
   const [availableYears, setAvailableYears] = useState([2027]);
   const [selectedYear, setSelectedYear] = useState(2027);
   const [schedule, setSchedule] = useState([]);
@@ -59,9 +60,26 @@ export default function Swarnaprashana({ onOpenBooking }) {
 
     window.addEventListener('swarnaprashana_schedule_updated', handleUpdate);
     window.addEventListener('storage', handleUpdate);
+
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data)) {
+        const found = data.find(t => t.id === 'swarnaprashana');
+        if (found) setTreatment(found);
+      }
+    }).catch(() => {});
+
+    const handleTreatmentUpdate = (e) => {
+      if (Array.isArray(e.detail)) {
+        const found = e.detail.find(t => t.id === 'swarnaprashana');
+        if (found) setTreatment(found);
+      }
+    };
+    window.addEventListener('treatments_updated', handleTreatmentUpdate);
+
     return () => {
       window.removeEventListener('swarnaprashana_schedule_updated', handleUpdate);
       window.removeEventListener('storage', handleUpdate);
+      window.removeEventListener('treatments_updated', handleTreatmentUpdate);
     };
   }, [selectedYear]);
 
@@ -87,7 +105,7 @@ export default function Swarnaprashana({ onOpenBooking }) {
         badge="PEDIATRIC AYURVEDA"
         title="Swarnaprashana"
         subtitle="Traditional Ayurvedic Wellness for Children"
-        bgImage={swarnaImg1}
+        bgImage={treatment?.image || swarnaImg1}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

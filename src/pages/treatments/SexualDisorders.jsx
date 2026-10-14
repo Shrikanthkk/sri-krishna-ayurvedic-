@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, PhoneCall, CheckCircle2, Sparkles, ShieldCheck, Lock, HeartPulse, HeartHandshake, Shield } from 'lucide-react';
@@ -6,9 +6,29 @@ import PageHero from '../../components/PageHero';
 import Breadcrumb from '../../components/Breadcrumb';
 import RelatedTreatments from '../../components/RelatedTreatments';
 import { clinicData } from '../../data/clinicData';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../../utils/adminStorage';
 
 export default function SexualDisorders({ onOpenBooking }) {
+  const [treatment, setTreatment] = useState(() => getStoredTreatments().find(t => t.id === 'sexual-disorders'));
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
+
+  useEffect(() => {
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data)) {
+        const found = data.find(t => t.id === 'sexual-disorders');
+        if (found) setTreatment(found);
+      }
+    }).catch(() => {});
+
+    const handleUpdate = (e) => {
+      if (Array.isArray(e.detail)) {
+        const found = e.detail.find(t => t.id === 'sexual-disorders');
+        if (found) setTreatment(found);
+      }
+    };
+    window.addEventListener('treatments_updated', handleUpdate);
+    return () => window.removeEventListener('treatments_updated', handleUpdate);
+  }, []);
 
   const concerns = [
     "Sexual wellness & overall vitality concerns",
@@ -59,7 +79,7 @@ export default function SexualDisorders({ onOpenBooking }) {
         badge="VAJIKARANA & REPRODUCTIVE WELLNESS"
         title="Sexual Disorders – Ayurvedic Wellness Care"
         subtitle="Personalized, dignified, and confidential Ayurvedic wellness care to restore vitality, stamina, reproductive equilibrium, and inner confidence."
-        bgImage="/images/consultation.png"
+        bgImage={treatment?.image || "/images/consultation.png"}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

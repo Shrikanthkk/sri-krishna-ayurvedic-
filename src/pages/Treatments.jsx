@@ -17,6 +17,14 @@ export default function Treatments({ onOpenBooking }) {
     }).catch(() => {
       setTreatmentsList(getStoredTreatments());
     });
+
+    const handleUpdate = (e) => {
+      if (Array.isArray(e.detail) && e.detail.length > 0) {
+        setTreatmentsList(e.detail);
+      }
+    };
+    window.addEventListener('treatments_updated', handleUpdate);
+    return () => window.removeEventListener('treatments_updated', handleUpdate);
   }, []);
 
   return (

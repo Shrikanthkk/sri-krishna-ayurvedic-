@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, PhoneCall, CheckCircle2, Sparkles, ShieldAlert, Scale, Flame, Activity, Zap, Droplet } from 'lucide-react';
@@ -6,9 +6,29 @@ import PageHero from '../../components/PageHero';
 import Breadcrumb from '../../components/Breadcrumb';
 import RelatedTreatments from '../../components/RelatedTreatments';
 import { clinicData } from '../../data/clinicData';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../../utils/adminStorage';
 
 export default function ReduceObesity({ onOpenBooking }) {
+  const [treatment, setTreatment] = useState(() => getStoredTreatments().find(t => t.id === 'reduce-obesity' || t.id === 'obesity'));
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
+
+  useEffect(() => {
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data)) {
+        const found = data.find(t => t.id === 'reduce-obesity' || t.id === 'obesity');
+        if (found) setTreatment(found);
+      }
+    }).catch(() => {});
+
+    const handleUpdate = (e) => {
+      if (Array.isArray(e.detail)) {
+        const found = e.detail.find(t => t.id === 'reduce-obesity' || t.id === 'obesity');
+        if (found) setTreatment(found);
+      }
+    };
+    window.addEventListener('treatments_updated', handleUpdate);
+    return () => window.removeEventListener('treatments_updated', handleUpdate);
+  }, []);
 
   const areasOfSupport = [
     "Targeted visceral and subcutaneous fat reduction (Medasaha Pravilaapanam)",
@@ -72,7 +92,7 @@ export default function ReduceObesity({ onOpenBooking }) {
         badge="METABOLIC & WEIGHT MANAGEMENT"
         title="Reduce Obesity – Ayurvedic Weight & Fat Loss"
         subtitle="Holistic, root-cause Ayurvedic weight management combining Udwarthanam herbal powder scraping, gentle metabolic detox, and metabolic revival for sustainable fat loss."
-        bgImage="/images/reduce_obesity.jpg"
+        bgImage={treatment?.image || "/images/reduce_obesity.jpg"}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

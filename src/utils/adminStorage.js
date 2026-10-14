@@ -567,10 +567,15 @@ export async function saveHeroSliderSettings(heroSliderData) {
 // ----------------- Treatments -----------------
 export function getStoredTreatments() {
   const cached = readStorage(TREATMENTS_KEY);
-  if (Array.isArray(cached) && cached.length >= clinicData.treatments.length) {
+  if (Array.isArray(cached) && cached.length > 0) {
     return cached.map(t => {
       const match = clinicData.treatments.find(ct => ct.id === t.id);
-      return { ...match, ...t, review: t.review || match?.review };
+      return {
+        ...match,
+        ...t,
+        image: t.image || match?.image || '/images/hero_adobe_5.jpg',
+        review: t.review || match?.review
+      };
     });
   }
 
@@ -585,9 +590,17 @@ export async function fetchTreatmentsFromDb() {
     if (Array.isArray(dbData) && dbData.length > 0) {
       const merged = dbData.map(t => {
         const match = clinicData.treatments.find(ct => ct.id === t.id);
-        return { ...match, ...t, review: t.review || match?.review };
+        return {
+          ...match,
+          ...t,
+          image: t.image || match?.image || '/images/hero_adobe_5.jpg',
+          review: t.review || match?.review
+        };
       });
       writeStorage(TREATMENTS_KEY, merged);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('treatments_updated', { detail: merged }));
+      }
       return merged;
     }
   } catch {}
@@ -599,7 +612,12 @@ export async function saveTreatment(treatmentItem) {
   const targetId = treatmentItem.id || 'treatment-' + Date.now();
   const existsIndex = existing.findIndex(t => t.id === targetId);
 
-  const payload = { ...treatmentItem, id: targetId };
+  const payload = {
+    ...treatmentItem,
+    id: targetId,
+    image: treatmentItem.image || (existsIndex >= 0 ? existing[existsIndex].image : '/images/hero_adobe_5.jpg')
+  };
+
   let updated;
   if (existsIndex >= 0) {
     updated = [...existing];
@@ -615,12 +633,20 @@ export async function saveTreatment(treatmentItem) {
   }
 
   try {
-    await safeFetchWithFallback('/treatments', {
+    const res = await safeFetchWithFallback('/treatments', {
       method: 'POST',
       headers: getAuthHeaders(),
       body: JSON.stringify(payload),
       keepalive: true
     });
+    if (res?.success && res.data) {
+      const serverUpdated = updated.map(t => t.id === targetId ? { ...t, ...res.data, image: res.data.image || payload.image } : t);
+      writeStorage(TREATMENTS_KEY, serverUpdated);
+      if (typeof window !== 'undefined') {
+        window.dispatchEvent(new CustomEvent('treatments_updated', { detail: serverUpdated }));
+      }
+      return serverUpdated;
+    }
   } catch (err) {
     console.warn('Database saveTreatment error:', err);
   }

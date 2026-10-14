@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { 
@@ -28,6 +28,7 @@ import RelatedTreatments from '../../components/RelatedTreatments';
 import CancerDetailModal from '../../components/CancerDetailModal';
 import { majorCancerTypes } from '../../data/cancerData';
 import { clinicData } from '../../data/clinicData';
+import { getStoredTreatments, fetchTreatmentsFromDb } from '../../utils/adminStorage';
 
 const iconMap = {
   Activity,
@@ -42,7 +43,26 @@ const iconMap = {
 export default function CancerTreatment({ onOpenBooking }) {
   const [selectedCancer, setSelectedCancer] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
+  const [treatment, setTreatment] = useState(() => getStoredTreatments().find(t => t.id === 'cancer-treatment'));
   const telUri = `tel:${clinicData.contact.phone.replace(/\s+/g, '')}`;
+
+  useEffect(() => {
+    fetchTreatmentsFromDb().then(data => {
+      if (Array.isArray(data)) {
+        const found = data.find(t => t.id === 'cancer-treatment');
+        if (found) setTreatment(found);
+      }
+    }).catch(() => {});
+
+    const handleUpdate = (e) => {
+      if (Array.isArray(e.detail)) {
+        const found = e.detail.find(t => t.id === 'cancer-treatment');
+        if (found) setTreatment(found);
+      }
+    };
+    window.addEventListener('treatments_updated', handleUpdate);
+    return () => window.removeEventListener('treatments_updated', handleUpdate);
+  }, []);
 
   const handleOpenDetail = (cancerItem) => {
     setSelectedCancer(cancerItem);
@@ -98,7 +118,7 @@ export default function CancerTreatment({ onOpenBooking }) {
         badge="INTEGRATIVE ONCOLOGY SUPPORT"
         title="Cancer Treatment – Ayurvedic Supportive Care"
         subtitle="Compassionate, complementary Ayurvedic supportive care focused on enhancing wellbeing, vitality, and quality of life alongside oncology treatment."
-        bgImage="/images/cancer_treatment.jpg"
+        bgImage={treatment?.image || "/images/cancer_treatment.jpg"}
       />
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">

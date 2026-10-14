@@ -12,6 +12,14 @@ export default function RelatedTreatments({ currentTreatmentId, count = 3 }) {
         setTreatmentsList(data);
       }
     });
+
+    const handleUpdate = (e) => {
+      if (Array.isArray(e.detail) && e.detail.length > 0) {
+        setTreatmentsList(e.detail);
+      }
+    };
+    window.addEventListener('treatments_updated', handleUpdate);
+    return () => window.removeEventListener('treatments_updated', handleUpdate);
   }, []);
 
   const otherTreatments = treatmentsList
