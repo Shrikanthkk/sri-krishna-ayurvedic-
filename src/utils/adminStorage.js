@@ -207,7 +207,8 @@ async function silentApiPost(endpoint, body) {
   return await safeFetchWithFallback(endpoint, {
     method: 'POST',
     headers: getAuthHeaders(),
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
+    keepalive: true
   });
 }
 
@@ -215,7 +216,8 @@ async function silentApiPatch(endpoint, body) {
   return await safeFetchWithFallback(endpoint, {
     method: 'PATCH',
     headers: getAuthHeaders(),
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
+    keepalive: true
   });
 }
 
@@ -223,14 +225,16 @@ async function silentApiPut(endpoint, body) {
   return await safeFetchWithFallback(endpoint, {
     method: 'PUT',
     headers: getAuthHeaders(),
-    body: JSON.stringify(body)
+    body: JSON.stringify(body),
+    keepalive: true
   });
 }
 
 async function silentApiDelete(endpoint) {
   return await safeFetchWithFallback(endpoint, {
     method: 'DELETE',
-    headers: getAuthHeaders()
+    headers: getAuthHeaders(),
+    keepalive: true
   });
 }
 
@@ -491,10 +495,19 @@ export async function saveClinicSettings(newSettings) {
     }
   }
 
-  // Silently sync with PostgreSQL
-  silentApiPut('/settings', merged).catch(() => {});
+  // Directly await sync with PostgreSQL database
+  try {
+    await safeFetchWithFallback('/settings', {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(merged),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database saveClinicSettings error:', err);
+  }
 
-  return Promise.resolve(merged);
+  return merged;
 }
 
 export function getRunningBarSettings() {
@@ -510,9 +523,18 @@ export async function saveRunningBarSettings(runningBarData) {
     window.dispatchEvent(new CustomEvent('sk_running_bar_updated', { detail: runningBarData }));
   }
 
-  silentApiPut('/settings/running-bar', runningBarData).catch(() => {});
+  try {
+    await safeFetchWithFallback('/settings/running-bar', {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(runningBarData),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database saveRunningBarSettings error:', err);
+  }
 
-  return Promise.resolve(runningBarData);
+  return runningBarData;
 }
 
 export function getHeroSliderSettings() {
@@ -528,9 +550,18 @@ export async function saveHeroSliderSettings(heroSliderData) {
     window.dispatchEvent(new CustomEvent('sk_hero_slider_updated', { detail: heroSliderData }));
   }
 
-  silentApiPut('/settings/hero-slider', heroSliderData).catch(() => {});
+  try {
+    await safeFetchWithFallback('/settings/hero-slider', {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(heroSliderData),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database saveHeroSliderSettings error:', err);
+  }
 
-  return Promise.resolve(heroSliderData);
+  return heroSliderData;
 }
 
 // ----------------- Treatments -----------------
@@ -568,12 +599,13 @@ export async function saveTreatment(treatmentItem) {
   const targetId = treatmentItem.id || 'treatment-' + Date.now();
   const existsIndex = existing.findIndex(t => t.id === targetId);
 
+  const payload = { ...treatmentItem, id: targetId };
   let updated;
   if (existsIndex >= 0) {
     updated = [...existing];
-    updated[existsIndex] = { ...updated[existsIndex], ...treatmentItem, id: targetId };
+    updated[existsIndex] = { ...updated[existsIndex], ...payload };
   } else {
-    updated = [...existing, { ...treatmentItem, id: targetId }];
+    updated = [...existing, payload];
   }
 
   writeStorage(TREATMENTS_KEY, updated);
@@ -582,9 +614,18 @@ export async function saveTreatment(treatmentItem) {
     window.dispatchEvent(new CustomEvent('treatments_updated', { detail: updated }));
   }
 
-  silentApiPost('/treatments', treatmentItem).catch(() => {});
+  try {
+    await safeFetchWithFallback('/treatments', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(payload),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database saveTreatment error:', err);
+  }
 
-  return Promise.resolve(updated);
+  return updated;
 }
 
 export async function deleteTreatment(id) {
@@ -596,9 +637,17 @@ export async function deleteTreatment(id) {
     window.dispatchEvent(new CustomEvent('treatments_updated', { detail: updated }));
   }
 
-  silentApiDelete(`/treatments/${id}`).catch(() => {});
+  try {
+    await safeFetchWithFallback(`/treatments/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database deleteTreatment error:', err);
+  }
 
-  return Promise.resolve(updated);
+  return updated;
 }
 
 // ----------------- Swarnaprashana -----------------
@@ -658,14 +707,15 @@ export async function saveSwarnaprashanaDate(entry) {
 
   const existing = getAllSwarnaprashanaDates();
   const targetId = entry.id || `psh-${entry.year || 2027}-${String(MONTH_NAMES.indexOf(entry.month) + 1).padStart(2, '0')}-${String(entry.date).padStart(2, '0')}`;
+  const payload = { ...entry, id: targetId, status: entry.status || 'Active' };
   const existsIndex = existing.findIndex(d => d.id === targetId);
 
   let updated;
   if (existsIndex >= 0) {
     updated = [...existing];
-    updated[existsIndex] = { ...updated[existsIndex], ...entry, id: targetId };
+    updated[existsIndex] = { ...updated[existsIndex], ...payload };
   } else {
-    updated = [...existing, { ...entry, id: targetId, status: entry.status || 'Active' }];
+    updated = [...existing, payload];
   }
 
   writeStorage(SWARNAPRASHANA_KEY, updated);
@@ -674,16 +724,26 @@ export async function saveSwarnaprashanaDate(entry) {
     window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
   }
 
-  silentApiPost('/swarnaprashana', entry).catch(() => {});
+  try {
+    await safeFetchWithFallback('/swarnaprashana', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(payload),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database saveSwarnaprashanaDate error:', err);
+  }
 
-  return Promise.resolve({ success: true, data: updated, message: 'Swarnaprashana schedule updated successfully.' });
+  return { success: true, data: updated, message: 'Swarnaprashana schedule updated successfully.' };
 }
 
 export async function toggleSwarnaprashanaStatus(id, status = null) {
   const existing = getAllSwarnaprashanaDates();
+  let nextStatus = status;
   const updated = existing.map(item => {
     if (item.id === id) {
-      const nextStatus = status ? status : (item.status === 'Active' ? 'Inactive' : 'Active');
+      nextStatus = status ? status : (item.status === 'Active' ? 'Inactive' : 'Active');
       return { ...item, status: nextStatus };
     }
     return item;
@@ -695,9 +755,18 @@ export async function toggleSwarnaprashanaStatus(id, status = null) {
     window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
   }
 
-  silentApiPatch(`/swarnaprashana/${id}/status`, { status }).catch(() => {});
+  try {
+    await safeFetchWithFallback(`/swarnaprashana/${id}/status`, {
+      method: 'PATCH',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ status: nextStatus }),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database toggleSwarnaprashanaStatus error:', err);
+  }
 
-  return Promise.resolve(updated);
+  return updated;
 }
 
 export async function deleteSwarnaprashanaDate(id) {
@@ -710,9 +779,17 @@ export async function deleteSwarnaprashanaDate(id) {
     window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: updated }));
   }
 
-  silentApiDelete(`/swarnaprashana/${id}`).catch(() => {});
+  try {
+    await safeFetchWithFallback(`/swarnaprashana/${id}`, {
+      method: 'DELETE',
+      headers: getAuthHeaders(),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database deleteSwarnaprashanaDate error:', err);
+  }
 
-  return Promise.resolve(updated);
+  return updated;
 }
 
 export async function clearAllAdminData() {
@@ -730,15 +807,24 @@ export async function clearAllAdminData() {
     window.dispatchEvent(new CustomEvent('swarnaprashana_schedule_updated', { detail: defaultSwarnaprashanaSchedule }));
   }
 
-  silentApiPost('/admin/reset-demo', {}).catch(() => {});
+  try {
+    await safeFetchWithFallback('/admin/reset-demo', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({}),
+      keepalive: true
+    });
+  } catch (err) {
+    console.warn('Database clearAllAdminData error:', err);
+  }
 
-  return Promise.resolve({
+  return {
     appointments: [],
     inquiries: [],
     settings: defaultSettings,
     treatments: clinicData.treatments,
     swarnaprashana: defaultSwarnaprashanaSchedule
-  });
+  };
 }
 
 // ----------------- Phone Validation & Formatting -----------------

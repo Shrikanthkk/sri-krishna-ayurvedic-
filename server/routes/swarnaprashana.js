@@ -120,6 +120,7 @@ router.post('/', async (req, res) => {
     const padMonth = String(monthIndex).padStart(2, '0');
     const padDate = String(numericDate).padStart(2, '0');
     const id = entry.id || `psh-${numericYear}-${padMonth}-${padDate}`;
+    const fullDate = entry.full_date || `${numericYear}-${padMonth}-${padDate}`;
 
     // Duplicate Check: Verify whether that exact date already exists under a different ID
     const dupCheck = await query(
@@ -293,12 +294,7 @@ router.patch('/:id/status', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await query('DELETE FROM swarnaprashana_schedule WHERE id = $1 RETURNING id', [id]);
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, error: 'Schedule entry not found in database.' });
-    }
-
+    await query('DELETE FROM swarnaprashana_schedule WHERE id = $1', [id]);
     return res.status(200).json({ success: true, message: 'Schedule entry deleted permanently from database.' });
   } catch (err) {
     console.error('Error deleting swarnaprashana date:', err);

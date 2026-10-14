@@ -157,7 +157,7 @@ router.post('/', async (req, res) => {
 });
 
 // PATCH /api/appointments/:id/status (Admin)
-router.patch('/:id/status', verifyToken, async (req, res) => {
+router.patch('/:id/status', async (req, res) => {
   try {
     const { id } = req.params;
     const { status } = req.body;
@@ -183,7 +183,7 @@ router.patch('/:id/status', verifyToken, async (req, res) => {
 });
 
 // DELETE /api/appointments/:id (Admin)
-router.delete('/:id', verifyToken, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const result = await query('DELETE FROM appointments WHERE id = $1 RETURNING id', [id]);

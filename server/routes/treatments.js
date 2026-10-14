@@ -294,12 +294,7 @@ router.post('/', async (req, res) => {
 router.delete('/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const result = await query('DELETE FROM treatments WHERE id = $1 RETURNING id', [id]);
-
-    if (result.rows.length === 0) {
-      return res.status(404).json({ success: false, error: 'Treatment not found.' });
-    }
-
+    await query('DELETE FROM treatments WHERE id = $1', [id]);
     return res.json({ success: true, message: 'Treatment removed successfully.' });
   } catch (err) {
     console.error('Error deleting treatment:', err);
