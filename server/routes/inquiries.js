@@ -59,14 +59,20 @@ router.post('/', async (req, res) => {
 
     const visitorPhone = tenDigits;
 
-    const id = 'inq-' + Date.now();
+    const id = req.body.id || ('inq-' + Date.now());
     const inquirySubject = subject || (preferredDate ? `Consultation Request for ${preferredDate} (${preferredTime || 'Standard'})` : 'General Inquiry');
     const inquiryMessage = message || (preferredDate ? `Requested preferred date: ${preferredDate}, time slot: ${preferredTime || '10:00 AM - 1:00 PM'}` : 'No additional message provided.');
-    const submittedAt = new Date().toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' });
+    const submittedAt = req.body.submittedAt || new Date().toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' });
 
     const result = await query(
       `INSERT INTO inquiries (id, name, phone, email, subject, message, is_read, submitted_at)
         VALUES ($1, $2, $3, $4, $5, $6, false, $7)
+        ON CONFLICT (id) DO UPDATE SET
+          name = EXCLUDED.name,
+          phone = EXCLUDED.phone,
+          email = EXCLUDED.email,
+          subject = EXCLUDED.subject,
+          message = EXCLUDED.message
         RETURNING *`,
       [id, visitorName, visitorPhone, email ? email.trim() : null, inquirySubject, inquiryMessage, submittedAt]
     );

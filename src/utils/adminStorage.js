@@ -241,23 +241,19 @@ export function getAppointments() {
 }
 
 export async function fetchAppointmentsFromDb(filters = {}) {
-  const localList = getAppointments();
+  const queryParams = filters.status && filters.status !== 'all' ? `?status=${encodeURIComponent(filters.status)}` : '';
+  const dbRes = await safeFetchWithFallback(`/appointments${queryParams}`, {
+    headers: getAuthHeaders()
+  });
 
-  // Silently query PostgreSQL in the background
-  try {
-    const queryParams = filters.status && filters.status !== 'all' ? `?status=${encodeURIComponent(filters.status)}` : '';
-    const dbData = await silentApiGet(`/appointments${queryParams}`);
-    if (Array.isArray(dbData)) {
-      // Merge database appointments with local appointments
-      const dbIds = new Set(dbData.map(a => a.id));
-      const localUnsynced = localList.filter(a => !dbIds.has(a.id));
-      const merged = [...localUnsynced, ...dbData];
-      writeStorage(APPOINTMENTS_KEY, merged);
-      return merged;
-    }
-  } catch {}
+  const dbData = dbRes?.success && Array.isArray(dbRes.data) ? dbRes.data : (Array.isArray(dbRes) ? dbRes : null);
 
-  return localList;
+  if (Array.isArray(dbData)) {
+    writeStorage(APPOINTMENTS_KEY, dbData);
+    return dbData;
+  }
+
+  return getAppointments();
 }
 
 export async function saveAppointment(appointmentData) {
@@ -265,8 +261,9 @@ export async function saveAppointment(appointmentData) {
   const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-  const created = {
-    id: 'apt-' + Date.now(),
+  const tempId = 'apt-' + Date.now();
+  const payload = {
+    id: tempId,
     name: (appointmentData.name || appointmentData.fullName || 'Patient').trim(),
     phone: String(appointmentData.phone || '').trim(),
     email: appointmentData.email ? String(appointmentData.email).trim() : null,
@@ -278,28 +275,34 @@ export async function saveAppointment(appointmentData) {
     submittedAt: appointmentData.submittedAt || `${todayStr} ${currentFormattedTime}`
   };
 
-  // 1. Immediately save locally for instant UI confirmation
+  // 1. Send directly to PostgreSQL database via smart bridge
+  let serverData = null;
+  try {
+    const res = await safeFetchWithFallback('/appointments', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(payload),
+      keepalive: true
+    });
+    if (res?.success && res.data) {
+      serverData = res.data;
+    }
+  } catch (err) {
+    console.warn('Database appointment save error:', err);
+  }
+
+  const finalApt = serverData ? { ...payload, ...serverData, isSynced: true } : payload;
+
+  // 2. Save into local storage
   const existing = getAppointments();
-  const updated = [created, ...existing.filter(a => a.id !== created.id)];
+  const updated = [finalApt, ...existing.filter(a => a.id !== finalApt.id && a.id !== tempId)];
   writeStorage(APPOINTMENTS_KEY, updated);
 
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('appointments_updated', { detail: created }));
+    window.dispatchEvent(new CustomEvent('appointments_updated', { detail: finalApt }));
   }
 
-  // 2. Silently synchronize with PostgreSQL in background
-  silentApiPost('/appointments', created).then(res => {
-    if (res?.success && res.data) {
-      const current = getAppointments();
-      const idx = current.findIndex(a => a.id === created.id);
-      if (idx >= 0) {
-        current[idx] = { ...current[idx], ...res.data, isSynced: true };
-        writeStorage(APPOINTMENTS_KEY, current);
-      }
-    }
-  }).catch(() => {});
-
-  return Promise.resolve(created);
+  return finalApt;
 }
 
 export async function updateAppointmentStatus(id, newStatus) {
@@ -311,10 +314,15 @@ export async function updateAppointmentStatus(id, newStatus) {
     window.dispatchEvent(new CustomEvent('appointments_updated', { detail: updated }));
   }
 
-  // Silently update PostgreSQL in background
-  silentApiPatch(`/appointments/${id}/status`, { status: newStatus }).catch(() => {});
+  // Update directly in PostgreSQL
+  await safeFetchWithFallback(`/appointments/${id}/status`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    body: JSON.stringify({ status: newStatus }),
+    keepalive: true
+  }).catch(() => {});
 
-  return Promise.resolve(updated);
+  return updated;
 }
 
 export async function deleteAppointment(id) {
@@ -326,10 +334,14 @@ export async function deleteAppointment(id) {
     window.dispatchEvent(new CustomEvent('appointments_updated', { detail: updated }));
   }
 
-  // Silently delete from PostgreSQL in background
-  silentApiDelete(`/appointments/${id}`).catch(() => {});
+  // Delete directly in PostgreSQL
+  await safeFetchWithFallback(`/appointments/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+    keepalive: true
+  }).catch(() => {});
 
-  return Promise.resolve(updated);
+  return updated;
 }
 
 // ----------------- Inquiries -----------------
@@ -339,20 +351,18 @@ export function getInquiries() {
 }
 
 export async function fetchInquiriesFromDb() {
-  const localList = getInquiries();
+  const dbRes = await safeFetchWithFallback('/inquiries', {
+    headers: getAuthHeaders()
+  });
 
-  try {
-    const dbData = await silentApiGet('/inquiries');
-    if (Array.isArray(dbData)) {
-      const dbIds = new Set(dbData.map(i => i.id));
-      const localUnsynced = localList.filter(i => !dbIds.has(i.id));
-      const merged = [...localUnsynced, ...dbData];
-      writeStorage(INQUIRIES_KEY, merged);
-      return merged;
-    }
-  } catch {}
+  const dbData = dbRes?.success && Array.isArray(dbRes.data) ? dbRes.data : (Array.isArray(dbRes) ? dbRes : null);
 
-  return localList;
+  if (Array.isArray(dbData)) {
+    writeStorage(INQUIRIES_KEY, dbData);
+    return dbData;
+  }
+
+  return getInquiries();
 }
 
 export async function saveInquiry(inquiryData) {
@@ -360,8 +370,9 @@ export async function saveInquiry(inquiryData) {
   const todayStr = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
   const currentFormattedTime = now.toLocaleTimeString('en-IN', { hour: '2-digit', minute: '2-digit', hour12: true });
 
-  const created = {
-    id: 'inq-' + Date.now(),
+  const tempId = 'inq-' + Date.now();
+  const payload = {
+    id: tempId,
     name: (inquiryData.name || 'Anonymous Patient').trim(),
     phone: String(inquiryData.phone || '').trim(),
     email: inquiryData.email ? String(inquiryData.email).trim() : '',
@@ -371,27 +382,32 @@ export async function saveInquiry(inquiryData) {
     submittedAt: inquiryData.submittedAt || `${todayStr} ${currentFormattedTime}`
   };
 
+  let serverData = null;
+  try {
+    const res = await safeFetchWithFallback('/inquiries', {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(payload),
+      keepalive: true
+    });
+    if (res?.success && res.data) {
+      serverData = res.data;
+    }
+  } catch (err) {
+    console.warn('Database inquiry save error:', err);
+  }
+
+  const finalInq = serverData ? { ...payload, ...serverData, isSynced: true } : payload;
+
   const existing = getInquiries();
-  const updated = [created, ...existing.filter(i => i.id !== created.id)];
+  const updated = [finalInq, ...existing.filter(i => i.id !== finalInq.id && i.id !== tempId)];
   writeStorage(INQUIRIES_KEY, updated);
 
   if (typeof window !== 'undefined') {
-    window.dispatchEvent(new CustomEvent('inquiries_updated', { detail: created }));
+    window.dispatchEvent(new CustomEvent('inquiries_updated', { detail: finalInq }));
   }
 
-  // Silently send to PostgreSQL in background
-  silentApiPost('/inquiries', created).then(res => {
-    if (res?.success && res.data) {
-      const current = getInquiries();
-      const idx = current.findIndex(i => i.id === created.id);
-      if (idx >= 0) {
-        current[idx] = { ...current[idx], ...res.data, isSynced: true };
-        writeStorage(INQUIRIES_KEY, current);
-      }
-    }
-  }).catch(() => {});
-
-  return Promise.resolve(created);
+  return finalInq;
 }
 
 export async function toggleInquiryRead(id) {
@@ -403,10 +419,14 @@ export async function toggleInquiryRead(id) {
     window.dispatchEvent(new CustomEvent('inquiries_updated', { detail: updated }));
   }
 
-  // Silently update PostgreSQL
-  silentApiPatch(`/inquiries/${id}/read`, {}).catch(() => {});
+  // Update directly in PostgreSQL
+  await safeFetchWithFallback(`/inquiries/${id}/read`, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    keepalive: true
+  }).catch(() => {});
 
-  return Promise.resolve(updated);
+  return updated;
 }
 
 export async function deleteInquiry(id) {
@@ -418,10 +438,14 @@ export async function deleteInquiry(id) {
     window.dispatchEvent(new CustomEvent('inquiries_updated', { detail: updated }));
   }
 
-  // Silently delete from PostgreSQL
-  silentApiDelete(`/inquiries/${id}`).catch(() => {});
+  // Delete directly in PostgreSQL
+  await safeFetchWithFallback(`/inquiries/${id}`, {
+    method: 'DELETE',
+    headers: getAuthHeaders(),
+    keepalive: true
+  }).catch(() => {});
 
-  return Promise.resolve(updated);
+  return updated;
 }
 
 // ----------------- Settings -----------------

@@ -99,7 +99,7 @@ router.post('/', async (req, res) => {
     }
   }
 
-  const id = 'apt-' + Date.now();
+  const id = req.body.id || ('apt-' + Date.now());
   const formattedDate = date || todayStr;
   const formattedTimeSlot = timeSlot || '10:00 AM';
   const appointmentNotes = notes || message || 'Online consultation booking';
@@ -110,6 +110,14 @@ router.post('/', async (req, res) => {
     const result = await query(
       `INSERT INTO appointments (id, name, phone, email, treatment, date, time_slot, status, notes, submitted_at)
         VALUES ($1, $2, $3, $4, $5, $6, $7, 'Pending', $8, $9)
+        ON CONFLICT (id) DO UPDATE SET
+          name = EXCLUDED.name,
+          phone = EXCLUDED.phone,
+          email = EXCLUDED.email,
+          treatment = EXCLUDED.treatment,
+          date = EXCLUDED.date,
+          time_slot = EXCLUDED.time_slot,
+          notes = EXCLUDED.notes
         RETURNING *`,
       [id, patientName, tenDigits, email ? email.trim() : null, treatment || 'General Consultation', formattedDate, formattedTimeSlot, appointmentNotes, submittedAt]
     );
