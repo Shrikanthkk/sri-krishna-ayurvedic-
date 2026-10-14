@@ -155,6 +155,8 @@ function writeStorage(key, data) {
 
 // ─── Silent Safe Database Sync Helpers ───────────────────────
 // Performs background synchronization to PostgreSQL without throwing uncaught errors
+const VERCEL_API_BASE = 'https://sk-ayurvedic-clinic.vercel.app/api';
+
 function getAuthHeaders() {
   const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
   return {
@@ -163,70 +165,73 @@ function getAuthHeaders() {
   };
 }
 
-async function silentApiGet(endpoint) {
-  try {
-    const res = await fetch(`/api${endpoint}`, { headers: getAuthHeaders() });
-    if (!res.ok) return null;
-    const json = await res.json().catch(() => null);
-    return json?.success && json?.data ? json.data : (Array.isArray(json) ? json : null);
-  } catch {
-    return null;
+function getApiUrl(endpoint) {
+  if (typeof window !== 'undefined') {
+    // If on roiclients.co.in custom domain where local proxy doesn't route /api, use live Vercel database bridge
+    if (window.location.hostname.includes('roiclients.co.in')) {
+      return `${VERCEL_API_BASE}${endpoint}`;
+    }
+    return `/api${endpoint}`;
   }
+  return `${VERCEL_API_BASE}${endpoint}`;
+}
+
+async function safeFetchWithFallback(endpoint, options = {}) {
+  const url = getApiUrl(endpoint);
+  try {
+    const res = await fetch(url, options);
+    if (res.ok) {
+      return await res.json().catch(() => null);
+    }
+  } catch {}
+
+  // If local route failed and wasn't already calling VERCEL_API_BASE, gracefully fall back to VERCEL_API_BASE
+  if (!url.startsWith(VERCEL_API_BASE)) {
+    try {
+      const res = await fetch(`${VERCEL_API_BASE}${endpoint}`, options);
+      if (res.ok) {
+        return await res.json().catch(() => null);
+      }
+    } catch {}
+  }
+
+  return null;
+}
+
+async function silentApiGet(endpoint) {
+  const json = await safeFetchWithFallback(endpoint, { headers: getAuthHeaders() });
+  return json?.success && json?.data ? json.data : (Array.isArray(json) ? json : null);
 }
 
 async function silentApiPost(endpoint, body) {
-  try {
-    const res = await fetch(`/api${endpoint}`, {
-      method: 'POST',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(body)
-    });
-    if (!res.ok) return null;
-    return await res.json().catch(() => null);
-  } catch {
-    return null;
-  }
+  return await safeFetchWithFallback(endpoint, {
+    method: 'POST',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body)
+  });
 }
 
 async function silentApiPatch(endpoint, body) {
-  try {
-    const res = await fetch(`/api${endpoint}`, {
-      method: 'PATCH',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(body)
-    });
-    if (!res.ok) return null;
-    return await res.json().catch(() => null);
-  } catch {
-    return null;
-  }
+  return await safeFetchWithFallback(endpoint, {
+    method: 'PATCH',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body)
+  });
 }
 
 async function silentApiPut(endpoint, body) {
-  try {
-    const res = await fetch(`/api${endpoint}`, {
-      method: 'PUT',
-      headers: getAuthHeaders(),
-      body: JSON.stringify(body)
-    });
-    if (!res.ok) return null;
-    return await res.json().catch(() => null);
-  } catch {
-    return null;
-  }
+  return await safeFetchWithFallback(endpoint, {
+    method: 'PUT',
+    headers: getAuthHeaders(),
+    body: JSON.stringify(body)
+  });
 }
 
 async function silentApiDelete(endpoint) {
-  try {
-    const res = await fetch(`/api${endpoint}`, {
-      method: 'DELETE',
-      headers: getAuthHeaders()
-    });
-    if (!res.ok) return null;
-    return await res.json().catch(() => null);
-  } catch {
-    return null;
-  }
+  return await safeFetchWithFallback(endpoint, {
+    method: 'DELETE',
+    headers: getAuthHeaders()
+  });
 }
 
 // ----------------- Appointments -----------------

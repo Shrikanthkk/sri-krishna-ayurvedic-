@@ -31,6 +31,18 @@ import {
   defaultSettings
 } from '../utils/adminStorage';
 
+const VERCEL_API_BASE = 'https://sk-ayurvedic-clinic.vercel.app/api';
+
+function getApiUrl(endpoint) {
+  if (typeof window !== 'undefined') {
+    if (window.location.hostname.includes('roiclients.co.in')) {
+      return `${VERCEL_API_BASE}${endpoint}`;
+    }
+    return `/api${endpoint}`;
+  }
+  return `${VERCEL_API_BASE}${endpoint}`;
+}
+
 function getAuthHeaders() {
   const token = typeof localStorage !== 'undefined' ? localStorage.getItem('sk_admin_jwt_token') : null;
   return {
@@ -70,7 +82,8 @@ export const api = {
       }
 
       // In background, silently obtain server JWT from PostgreSQL
-      fetch('/api/auth/login', {
+      const loginUrl = getApiUrl('/auth/login');
+      fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: loginUser, pin: loginSecret })
@@ -86,7 +99,8 @@ export const api = {
 
     // 2. Database authentication for custom accounts in users table
     try {
-      const res = await fetch('/api/auth/login', {
+      const loginUrl = getApiUrl('/auth/login');
+      const res = await fetch(loginUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username: loginUser, password: loginSecret })
@@ -114,7 +128,8 @@ export const api = {
         const user = JSON.parse(cachedUser);
         // Silently verify with server
         if (token && !token.startsWith('local-admin-')) {
-          fetch('/api/auth/me', { headers: getAuthHeaders() }).catch(() => {});
+          const meUrl = getApiUrl('/auth/me');
+          fetch(meUrl, { headers: getAuthHeaders() }).catch(() => {});
         }
         return Promise.resolve({ success: true, user });
       } catch {}
