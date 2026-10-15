@@ -36,9 +36,6 @@ const VERCEL_API_BASE = 'https://sk-ayurvedic-clinic.vercel.app/api';
 
 function getApiUrl(endpoint) {
   if (typeof window !== 'undefined') {
-    if (window.location.hostname.includes('roiclients.co.in')) {
-      return `${VERCEL_API_BASE}${endpoint}`;
-    }
     return `/api${endpoint}`;
   }
   return `${VERCEL_API_BASE}${endpoint}`;

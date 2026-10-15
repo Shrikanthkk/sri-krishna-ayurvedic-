@@ -48,31 +48,31 @@ app.use('/api/treatments', treatmentsRoutes);
 app.use('/api/swarnaprashana', swarnaRoutes);
 app.use('/api/admin', adminRoutes);
 
-// Also mount at root paths for when Vercel serverless strips /api prefix
-app.use('/auth', authRoutes);
-app.use('/appointments', appointmentsRoutes);
-app.use('/inquiries', inquiriesRoutes);
-app.use('/settings', settingsRoutes);
-app.use('/treatments', treatmentsRoutes);
-app.use('/swarnaprashana', swarnaRoutes);
-app.use('/admin', adminRoutes);
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
-// Serve production static frontend build if dist/ exists (local server mode)
-const distPath = path.join(process.cwd(), 'dist');
+// Production static frontend directory resolution
+const distPath = fs.existsSync(path.join(process.cwd(), 'dist'))
+  ? path.join(process.cwd(), 'dist')
+  : path.join(__dirname, '../dist');
+
 if (fs.existsSync(distPath)) {
   app.use(express.static(distPath));
 }
 
-// 404 handler for unknown API routes
+// 404 handler for unknown API routes ONLY
+app.use('/api', (req, res) => {
+  return res.status(404).json({ success: false, error: 'API endpoint not found.' });
+});
+
+// Serve SPA index.html for all frontend routes (/admin, /treatments/*, /swarnaprashana, etc.)
 app.use((req, res, next) => {
-  if (req.path.startsWith('/api') || req.path.startsWith('/auth') || req.path.startsWith('/appointments') ||
-      req.path.startsWith('/inquiries') || req.path.startsWith('/settings') || req.path.startsWith('/treatments') ||
-      req.path.startsWith('/swarnaprashana') || req.path.startsWith('/admin')) {
-    return res.status(404).json({ success: false, error: 'API endpoint not found.' });
-  }
-  // Serve SPA index.html for all other routes (local server only)
-  if (fs.existsSync(distPath)) {
-    return res.sendFile(path.join(distPath, 'index.html'));
+  if (req.method === 'GET') {
+    const indexPath = path.join(distPath, 'index.html');
+    if (fs.existsSync(indexPath)) {
+      return res.sendFile(indexPath);
+    }
   }
   next();
 });

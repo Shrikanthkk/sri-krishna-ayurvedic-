@@ -167,10 +167,6 @@ function getAuthHeaders() {
 
 function getApiUrl(endpoint) {
   if (typeof window !== 'undefined') {
-    // If on roiclients.co.in custom domain where local proxy doesn't route /api, use live Vercel database bridge
-    if (window.location.hostname.includes('roiclients.co.in')) {
-      return `${VERCEL_API_BASE}${endpoint}`;
-    }
     return `/api${endpoint}`;
   }
   return `${VERCEL_API_BASE}${endpoint}`;
