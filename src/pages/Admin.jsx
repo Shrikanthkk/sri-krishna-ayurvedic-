@@ -962,13 +962,6 @@ export default function Admin() {
                 </button>
               </form>
 
-              {/* Credentials Note */}
-              <div className="mt-4 p-3 bg-forest-950/40 border border-forest-700/60 rounded-xl text-center space-y-1">
-                <span className="text-[10px] font-bold text-brass-400 uppercase tracking-wider block">Default Admin Credentials</span>
-                <p className="text-xs text-cream-100 font-mono">Username: <span className="text-brass-300 font-bold">srikrishna</span></p>
-                <p className="text-xs text-cream-100 font-mono">Password: <span className="text-brass-300 font-bold">Srikrishna@321</span></p>
-              </div>
-
               {/* Back link */}
               <div className="mt-6 text-center">
                 <Link to="/" className="text-xs text-cream-200/40 hover:text-brass-400 transition-colors">
@@ -977,11 +970,6 @@ export default function Admin() {
               </div>
             </div>
           </div>
-
-          {/* Hint */}
-          <p className="text-center text-[10px] text-cream-200/20 mt-4">
-            Default: username <span className="font-mono text-brass-500/50">srikrishna</span> • password <span className="font-mono text-brass-500/50">Srikrishna@321</span>
-          </p>
         </motion.div>
       </div>
     );
