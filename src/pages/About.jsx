@@ -202,7 +202,7 @@ export default function About() {
                   className="px-7 py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs tracking-wider uppercase rounded-full shadow-elevated transition-all flex items-center justify-center gap-2"
                 >
                   <Calendar className="w-4 h-4 text-brass-400" />
-                  <span>Book Consultation (₹50)</span>
+                  <span>Book Consultation</span>
                 </Link>
 
                 <a

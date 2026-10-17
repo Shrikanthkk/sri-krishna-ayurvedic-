@@ -431,7 +431,7 @@ export default function Navbar({ onOpenBooking }) {
               >
                 <span className="skew-x-12 flex items-center gap-2">
                   <Calendar className="w-4 h-4" />
-                  <span>Book Consultation (₹50)</span>
+                  <span>Book Consultation</span>
                 </span>
               </Link>
 

@@ -50,7 +50,7 @@ export default function CancerSection({ onOpenBooking }) {
                 className="px-8 py-3.5 bg-brass-500 hover:bg-brass-400 text-forest-950 font-semibold text-xs tracking-widest uppercase rounded-full transition-all shadow-elevated flex items-center gap-2.5"
               >
                 <Calendar className="w-4 h-4 text-forest-950" />
-                <span>Consult Dr. Anand Krishna (₹50)</span>
+                <span>Consult Dr. Anand Krishna</span>
               </button>
             </div>
           </motion.div>

@@ -83,7 +83,7 @@ export default function SwarnamruthaSection({ onOpenBooking }) {
                 className="px-8 py-3.5 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs tracking-widest uppercase rounded-full transition-all shadow-elevated flex items-center gap-2.5 cursor-pointer"
               >
                 <Calendar className="w-4 h-4 text-brass-400" />
-                <span>Book Pediatric Consultation (₹50)</span>
+                <span>Book Pediatric Consultation</span>
               </button>
             </div>
           </motion.div>

@@ -373,7 +373,7 @@ export const clinicData = {
     {
       number: "05",
       title: "Transparent & Accessible Care",
-      description: "Affordable consultations (₹50) ensuring quality holistic healthcare for every family."
+      description: "Affordable consultations ensuring quality holistic healthcare for every family."
     },
     {
       number: "06",

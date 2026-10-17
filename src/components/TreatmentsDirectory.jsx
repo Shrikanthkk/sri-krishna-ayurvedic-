@@ -299,7 +299,7 @@ export default function TreatmentsDirectory({ onOpenBooking }) {
                   onClick={() => onOpenBooking()}
                   className="px-6 py-2.5 bg-forest-900 text-cream-50 text-xs font-semibold uppercase tracking-wider rounded-full hover:bg-forest-800 transition-colors"
                 >
-                  Book Appointment (₹50)
+                  Book Appointment
                 </button>
               </div>
             </motion.div>

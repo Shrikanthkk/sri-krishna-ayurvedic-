@@ -60,7 +60,7 @@ export default function BookingCTA({ onOpenBooking }) {
             className="px-10 py-4 bg-brass-500 hover:bg-brass-400 text-forest-950 font-semibold text-xs tracking-ultra uppercase rounded-full shadow-elevated transition-all duration-300 transform hover:-translate-y-0.5 flex items-center gap-3"
           >
             <Calendar className="w-4 h-4" />
-            <span>Book a Consultation (₹50)</span>
+            <span>Book a Consultation</span>
           </button>
         </motion.div>
       </div>

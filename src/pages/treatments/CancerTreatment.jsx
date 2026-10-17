@@ -141,22 +141,6 @@ export default function CancerTreatment({ onOpenBooking }) {
           </Link>
         </div>
 
-        {/* PROMINENT MANDATORY MEDICAL DISCLAIMER BANNER */}
-        <div className="p-5 sm:p-6 bg-amber-500/15 border-2 border-amber-600 rounded-3xl mb-8 flex items-start gap-4 text-xs sm:text-sm text-earth-950 shadow-md">
-          <ShieldAlert className="w-6 h-6 text-amber-800 shrink-0 mt-0.5" />
-          <div className="space-y-1.5">
-            <strong className="text-forest-950 font-bold uppercase tracking-wider text-sm block">
-              IMPORTANT MEDICAL DISCLAIMER
-            </strong>
-            <p className="leading-relaxed font-medium">
-              Ayurvedic supportive care should not replace evidence-based cancer treatment such as surgery, chemotherapy, radiation therapy, immunotherapy or targeted therapy. Patients should consult their oncologist before using Ayurvedic medicines, herbs or supplements because some products may interact with cancer treatments.
-            </p>
-            <p className="text-xs text-earth-800 font-light leading-relaxed pt-1 border-t border-amber-500/30">
-              Sri Krishna Ayurvedic Clinic does not claim to cure cancer, eliminate tumors, or replace oncological therapies. All consultations are strictly dedicated to supportive quality-of-life care, digestive comfort, and emotional resilience.
-            </p>
-          </div>
-        </div>
-
         {/* Hero Section Introduction */}
         <div className="bg-white p-6 sm:p-8 rounded-3xl border border-earth-200 shadow-elevated mb-10 space-y-4">
           <div className="flex items-center gap-2 text-xs font-bold text-brass-600 uppercase tracking-widest">

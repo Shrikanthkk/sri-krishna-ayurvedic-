@@ -648,7 +648,7 @@ export default function Swarnaprashana({ onOpenBooking }) {
                     onClick={() => onOpenBooking ? onOpenBooking('Swarnaprashana Pediatric Consultation') : null}
                     className="w-full py-3 bg-forest-900 hover:bg-forest-800 text-cream-50 font-semibold text-xs uppercase tracking-wider rounded-full shadow-md transition-all text-center cursor-pointer"
                   >
-                    Schedule Child Consultation (₹50)
+                    Schedule Child Consultation
                   </button>
                 </div>
               </div>
